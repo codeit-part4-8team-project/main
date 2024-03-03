@@ -10,14 +10,14 @@
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "importOrder": [
     "^react",
-    "^[^../|./*](.*)$",
-    "^(?:../|./)*contexts(.*)$",
-    "^(?:../|./)*components/common(.*)$",
-    "^(?:../|./)*components/(.*)$",
-    "^(?:../|./)*lib/(.*)$",
-    "^(?:../|./)*hooks/(.*)$",
-    "^(?:../|./)*types/(.*)$",
-    "^(?:../|./)*assets/(.*)$",
+    "^[^@/](.*)$",
+    "^@/contexts(.*)$",
+    "^@/components/common(.*)$",
+    "^@/components/(.*)$",
+    "^@/lib/(.*)$",
+    "^@/hooks/(.*)$",
+    "^@/types/(.*)$",
+    "^@/assets/(.*)$",
     "^[./]"
   ],
   "importOrderSortSpecifiers": true
