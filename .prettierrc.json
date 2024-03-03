@@ -11,9 +11,9 @@
   "importOrder": [
     "^react",
     "^[^@/](.*)$",
-    "^@/contexts(.*)$",
     "^@/components/common(.*)$",
     "^@/components/(.*)$",
+    "^@/contexts(.*)$",
     "^@/lib/(.*)$",
     "^@/hooks/(.*)$",
     "^@/types/(.*)$",
