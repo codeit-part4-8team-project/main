@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import CloseImg from '../../../public/images/Close.svg';
 
 interface ModalProps {
   title: string;
@@ -28,8 +29,7 @@ function Modal({
         <div className="flex justify-between">
           <h3 className="text-2xl">{title}</h3>
           <button onClick={wrong}>
-            {/* 이미지 구해서 넣기 */}
-            <img />x
+            <img src={CloseImg} alt="CloseImg" />
           </button>
         </div>
         {children}
