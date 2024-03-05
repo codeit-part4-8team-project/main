@@ -9,8 +9,10 @@
   "arrowParens": "always",
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
   "importOrder": [
-    "^react",
+    "^react(.*)$",
+    "^@types/(.*)$",
     "^[^@/](.*)$",
+    "^@/pages/(.*)$",
     "^@/components/common(.*)$",
     "^@/components/(.*)$",
     "^@/contexts(.*)$",
