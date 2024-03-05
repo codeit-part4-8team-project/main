@@ -1,5 +1,11 @@
+import SideBar from '@/components/common/SideBar';
+
 const TeamsPage = () => {
-  return <div>여기는 팀페이지입니다.</div>;
+  return (
+    <div>
+      <SideBar />
+    </div>
+  );
 };
 
 export default TeamsPage;
