@@ -1,9 +1,9 @@
-import KanbanBoard from '@/components/issue/KanbanBoard';
+import AnnouncementBoard from '@/components/announcement/AnnouncementBoard';
 
 const TeamsPage = () => {
   return (
     <div>
-      <KanbanBoard />
+      <AnnouncementBoard />
     </div>
   );
 };
