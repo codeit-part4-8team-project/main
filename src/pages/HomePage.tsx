@@ -1,5 +1,7 @@
+import Modal from '@/components/common/Modal';
+
 const HomePage = () => {
-  return <div>여기는 홈페이지 입니다.</div>;
+  return <Modal />;
 };
 
 export default HomePage;
