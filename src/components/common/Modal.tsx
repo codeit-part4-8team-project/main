@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import CloseImg from '../../../public/images/Close.svg';
 
 interface ModalProps {
   title: string;
@@ -7,7 +8,7 @@ interface ModalProps {
   submit?: () => void;
   wrong?: () => void;
   modalRef?: React.RefObject<HTMLDivElement>;
-  handleModalClick?: (e: any) => void;
+  handleModalOutsideClick?: (e: any) => void;
 }
 function Modal({
   title,
@@ -16,20 +17,19 @@ function Modal({
   submit,
   wrong,
   modalRef,
-  handleModalClick,
+  handleModalOutsideClick,
 }: ModalProps) {
   return (
     <div
       className="fixed top-0 z-10 flex size-full items-center justify-center bg-black bg-opacity-5"
       ref={modalRef}
-      // onClick={(e) => handleModalClick(e)}
+      // onClick={(e) => handleModalOutsideClick(e)}
     >
       <div className="h-[731px] w-[1326px] bg-white px-20 py-10">
         <div className="flex justify-between">
           <h3 className="text-2xl">{title}</h3>
           <button onClick={wrong}>
-            {/* 이미지 구해서 넣기 */}
-            <img />x
+            <img src={CloseImg} alt="CloseImg" />
           </button>
         </div>
         {children}
@@ -55,9 +55,9 @@ export default Modal;
 //   <Modal
 //     title="일정생성"
 //     buttonText="수락"
-//     wrong={handleClick}
-//     modalRef={modalRef}
-//     handleModalClick={handleModalClick}
+//     wrong={해당함수(모달창닫는X버튼함수입니다)}
+//     modalRef={해당함수(모달외부Ref입니다)}
+//     handleModalOutsideClick={해당함수(Ref로 외부창 판단하는함수입니다)}
 //   />
 // )}
 
