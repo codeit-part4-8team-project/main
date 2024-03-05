@@ -7,7 +7,7 @@ interface ModalProps {
   submit?: () => void;
   wrong?: () => void;
   modalRef?: React.RefObject<HTMLDivElement>;
-  handleModalClick: (e: any) => void;
+  handleModalClick?: (e: any) => void;
 }
 function Modal({
   title,
@@ -22,9 +22,9 @@ function Modal({
     <div
       className="fixed top-0 z-10 flex size-full items-center justify-center bg-black bg-opacity-5"
       ref={modalRef}
-      onClick={(e) => handleModalClick(e)}
+      // onClick={(e) => handleModalClick(e)}
     >
-      <div className="h-[80rem] w-[120rem] bg-white px-20 py-10">
+      <div className="h-[731px] w-[1326px] bg-white px-20 py-10">
         <div className="flex justify-between">
           <h3 className="text-2xl">{title}</h3>
           <button onClick={wrong}>
@@ -35,7 +35,7 @@ function Modal({
         {children}
         <div className="flex w-[100%] justify-end">
           <button
-            className=" cursor-pointer rounded-lg border-[1px] border-solid px-14 py-3"
+            className=" cursor-pointer rounded-lg border-[1px] border-solid px-16 py-2 text-lg"
             onClick={submit}
           >
             {buttonText}
