@@ -1,5 +1,11 @@
+import KanbanBoard from '@/components/issue/KanbanBoard';
+
 const TeamsPage = () => {
-  return <div>여기는 팀페이지입니다.</div>;
+  return (
+    <div>
+      <KanbanBoard />
+    </div>
+  );
 };
 
 export default TeamsPage;
