@@ -1,7 +1,7 @@
 import checkIcon from '../../../public/check.svg';
 import profileImg from '../../../public/profile.svg';
 
-export default function TaskCard() {
+function TaskCard() {
   return (
     <div className="flex h-[15.1rem] w-[29.6rem] flex-col justify-between border-[0.1rem] border-[#D2D2D2] bg-white p-[2.2rem]">
       <div className="flex justify-between">
@@ -22,6 +22,17 @@ export default function TaskCard() {
           <img className="mr-[-10px]" src={profileImg} alt="프로필 이미지" />
         </div>
       </div>
+    </div>
+  );
+}
+
+export default function TaskCards() {
+  return (
+    <div className="flex flex-col gap-[1.5rem]">
+      <TaskCard />
+      <TaskCard />
+      <TaskCard />
+      <TaskCard />
     </div>
   );
 }
