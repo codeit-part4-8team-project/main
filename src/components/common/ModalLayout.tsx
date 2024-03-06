@@ -3,6 +3,7 @@ import CloseImg from '../../../public/images/Close.svg';
 
 interface ModalProps {
   title: string;
+  modalName: string;
   children?: ReactNode;
   buttonText: string;
   submit?: () => void;
@@ -10,8 +11,9 @@ interface ModalProps {
   modalRef?: React.RefObject<HTMLDivElement>;
   handleModalOutsideClick?: (e: any) => void;
 }
-function Modal({
+function ModalLayout({
   title,
+  modalName,
   children,
   buttonText,
   submit,
@@ -32,6 +34,7 @@ function Modal({
             <img src={CloseImg} alt="CloseImg" />
           </button>
         </div>
+        <div className="mb-14 mt-20 text-[2rem]">{modalName}</div>
         {children}
         <div className="flex w-[100%] justify-end">
           <button
@@ -46,13 +49,13 @@ function Modal({
   );
 }
 
-export default Modal;
+export default ModalLayout;
 
 // 모달창 사용 예시
 
 // 불러올때 state토글하고 props로 원하는 값 넣어주기
 // {test && (
-//   <Modal
+//   <ModalLayout
 //     title="일정생성"
 //     buttonText="수락"
 //     wrong={해당함수(모달창닫는X버튼함수입니다)}
