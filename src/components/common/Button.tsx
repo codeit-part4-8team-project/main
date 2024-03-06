@@ -5,10 +5,11 @@ interface ButtonProps {
   submit?: () => void;
 }
 function Button({ text, submit }: ButtonProps) {
+  const buttonStyles = 'border-[1px] border-solid bg-red-400 p-4';
   return (
     <>
       <button
-        className={`${text === '게시' ? 'w-[7.3rem]  border-[1px] border-solid bg-red-400 p-4' : 'w-[10rem] border-[1px] border-solid bg-red-400 p-4'}`}
+        className={`${text === '게시' ? `w-[7.3rem] ${buttonStyles}` : `w-[10rem] ${buttonStyles}`}`}
         onClick={submit}
       >
         <div className="flex items-center gap-2 text-lg">

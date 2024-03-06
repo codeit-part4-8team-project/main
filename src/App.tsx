@@ -1,14 +1,13 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-import MainPage from "@/pages/MainPage";
-import HomePage from "@/pages/HomePage";
-import SigninPage from "@/pages/SigninPage";
-import SignupPage from "@/pages/SignupPage";
-import SchedulesPage from "@/pages/SchedulesPage";
-import TeamsPage from "@/pages/TeamsPage";
-import TeamsPostsPage from "@/pages/TeamsPostsPage";
-import MyIssuesPage from "@/pages/MyIssuesPage";
-
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import MyPage from './pages/MyPage';
+import HomePage from '@/pages/HomePage';
+import MainPage from '@/pages/MainPage';
+import MyIssuesPage from '@/pages/MyIssuesPage';
+import SchedulesPage from '@/pages/SchedulesPage';
+import SigninPage from '@/pages/SigninPage';
+import SignupPage from '@/pages/SignupPage';
+import TeamsPage from '@/pages/TeamsPage';
+import TeamsPostsPage from '@/pages/TeamsPostsPage';
 
 function App() {
   return (
@@ -24,6 +23,7 @@ function App() {
           <Route path=":teamsId" element={<TeamsPage />} />
           <Route path=":teamsId/posts" element={<TeamsPostsPage />} />
         </Route>
+        <Route path="/myPage/:userId" element={<MyPage />} />
       </Routes>
     </Router>
   );
