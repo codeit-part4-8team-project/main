@@ -31,7 +31,7 @@ function GroupModal() {
   return (
     <ModalLayout title="그룹 생성" buttonText="팀 생성" modalName="그룹 게시자">
       <div className="mb-24 flex items-center gap-7 text-[1.4rem]">
-        <img src={profile} alt="profile" />
+        {profileImg === 'null' ? <img src={profile} alt="profile" /> : <div>해당 이미지</div>}
         {nickName}
       </div>
       <div className="mb-[6.3rem] flex justify-between">

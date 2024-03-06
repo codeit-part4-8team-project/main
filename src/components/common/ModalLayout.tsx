@@ -3,7 +3,7 @@ import CloseImg from '../../../public/images/Close.svg';
 
 interface ModalProps {
   title: string;
-  modalName: string;
+  modalName?: string;
   children?: ReactNode;
   buttonText: string;
   submit?: () => void;

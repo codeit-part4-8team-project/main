@@ -1,7 +1,7 @@
 import { ChangeEventHandler, ReactNode } from 'react';
 
 interface ModalInputProps {
-  placeholder: string;
+  placeholder?: string;
   children?: ReactNode;
   value?: ChangeEventHandler<HTMLInputElement>;
 }
