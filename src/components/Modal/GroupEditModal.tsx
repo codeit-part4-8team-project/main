@@ -6,9 +6,11 @@ import profile from '../../../public/profile.svg';
 import ModalInput from '../common/ModalInput';
 import ModalLayout from '../common/ModalLayout';
 
+interface GroupEditModalProps {
+  closeClick: () => void;
+}
 
-function GroupEditModal() {
-
+function GroupEditModal({ closeClick }: GroupEditModalProps) {
   const { members } = TeamMembers; // mock team data
   console.log(members); // mock team data
   const { userData } = Mock; // mock user data
@@ -18,7 +20,12 @@ function GroupEditModal() {
   };
   return (
     <>
-      <ModalLayout title="그룹 수정" buttonText="수정 완료" modalName="팀 게시자">
+      <ModalLayout
+        title="그룹 수정"
+        buttonText="수정 완료"
+        modalName="팀 게시자"
+        wrong={closeClick}
+      >
         <div className="mb-24 flex items-center gap-7 text-[1.4rem]">
           {profileImg === 'null' ? <img src={profile} alt="profile" /> : <div>해당이미지</div>}
           {nickName}
@@ -47,6 +54,4 @@ function GroupEditModal() {
   );
 }
 
-
 export default GroupEditModal;
-

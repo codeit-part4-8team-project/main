@@ -3,7 +3,11 @@ import Plus from '../../../public/plus.svg';
 import ModalInput from '../common/ModalInput';
 import ModalLayout from '../common/ModalLayout';
 
-function AnnouncementModal() {
+interface AnnouncementModalProps {
+  closeClick: () => void;
+}
+
+function AnnouncementModal({ closeClick }: AnnouncementModalProps) {
   const [announcemnetValue, setAnnouncemnetValue] = useState('');
   const [memberValue, setMemberValue] = useState('');
   const handleAnnouncementValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -14,7 +18,12 @@ function AnnouncementModal() {
     setMemberValue(e.target.value);
   };
   return (
-    <ModalLayout title="공지사항 생성" buttonText="이슈 생성" modalName="2024-03-04">
+    <ModalLayout
+      title="공지사항 생성"
+      buttonText="이슈 생성"
+      modalName="2024-03-04"
+      wrong={closeClick}
+    >
       <ModalInput placeholder="공지사항을 입력하세요" value={(e) => handleAnnouncementValue(e)} />
       <div className="mt-[4.7rem] flex text-[2rem]">
         팀원 태그
