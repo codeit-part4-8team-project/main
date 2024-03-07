@@ -2,16 +2,15 @@ import PlusImg from '../../../public/images/Plus.svg';
 
 interface ButtonProps {
   text: string;
-  onClick: () => void;
-  // submit?: () => void;
+  submit?: () => void;
 }
-function Button({ text, onClick }: ButtonProps) {
+function Button({ text, submit }: ButtonProps) {
   const buttonStyles = 'border-[1px] border-solid bg-red-400 p-4';
   return (
     <>
       <button
         className={`${text === '게시' ? `w-[7.3rem] ${buttonStyles}` : `w-[10rem] ${buttonStyles}`}`}
-        onClick={onClick}
+        onClick={submit}
       >
         <div className="flex items-center gap-2 text-lg">
           <img src={PlusImg} alt="PlusImg" />

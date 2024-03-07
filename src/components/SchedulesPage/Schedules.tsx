@@ -47,7 +47,7 @@ function Schedules({ calendarType }: SchedulesProps) {
                 />
               </>
             )}
-            <Button onClick={openModal} text="일정생성" />
+            <Button submit={openModal} text="일정생성" />
             {isModalOpen && (
               <ModalLayout
                 title="일정 생성"
