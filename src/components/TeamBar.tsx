@@ -2,7 +2,7 @@ import profileImg from '../../public/profile.svg';
 
 export default function TeamBar() {
   return (
-    <div className="w-fill flex h-[5.8rem] items-center justify-between border-[0.1rem] border-[#eee] bg-white px-[2.4rem] py-[1.1rem]">
+    <div className="w-fill left-[26rem] right-0 top-[4.3rem] flex h-[5.8rem] items-center justify-between border-[0.1rem] border-[#eee] bg-white px-[2.4rem] py-[1.1rem]">
       <span className="text-[1.6rem] font-bold">팀 1</span>
       <div className="flex items-center gap-[1.8rem]">
         <div className="flex gap-[1rem]">

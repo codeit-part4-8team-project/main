@@ -1,6 +1,6 @@
 export default function SideBar() {
   return (
-    <div className="h-[97rem] w-[26rem] bg-[#F2F2F2] py-[2.4rem]">
+    <div className="fixed left-0 h-[97rem] w-[26rem] bg-[#F2F2F2] py-[2.4rem]">
       <div className="flex h-[5.8rem] w-full items-center justify-between bg-[#E3E3E3] px-[2.4rem] py-[1.7rem]">
         <div className="flex items-center gap-[1rem]">
           <div className="h-[2.4rem] w-[2.4rem] rounded-full bg-[#5F5F5F]"></div>
