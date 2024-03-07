@@ -6,7 +6,9 @@ import profile from '../../../public/profile.svg';
 import ModalInput from '../common/ModalInput';
 import ModalLayout from '../common/ModalLayout';
 
+
 function GroupEditModal() {
+
   const { members } = TeamMembers; // mock team data
   console.log(members); // mock team data
   const { userData } = Mock; // mock user data
@@ -45,4 +47,6 @@ function GroupEditModal() {
   );
 }
 
+
 export default GroupEditModal;
+
