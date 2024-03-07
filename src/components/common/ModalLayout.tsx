@@ -3,7 +3,7 @@ import CloseImg from '../../../public/images/Close.svg';
 
 interface ModalProps {
   title: string;
-  modalName: string;
+  modalName?: string;
   children?: ReactNode;
   buttonText: string;
   submit?: () => void;
@@ -27,7 +27,7 @@ function ModalLayout({
       ref={modalRef}
       // onClick={(e) => handleModalOutsideClick(e)}
     >
-      <div className="h-[731px] w-[1326px] bg-white px-20 py-10">
+      <div className="relative h-[731px] w-[1326px] bg-white px-20 py-10">
         <div className="flex justify-between">
           <h3 className="text-2xl">{title}</h3>
           <button onClick={wrong}>
@@ -38,7 +38,7 @@ function ModalLayout({
         {children}
         <div className="flex w-[100%] justify-end">
           <button
-            className=" cursor-pointer rounded-lg border-[1px] border-solid px-16 py-2 text-lg"
+            className=" absolute bottom-[5.6rem] right-[5.5rem] cursor-pointer rounded-lg  border-[0.1rem] px-16 py-2 text-lg"
             onClick={submit}
           >
             {buttonText}

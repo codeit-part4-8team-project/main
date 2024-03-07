@@ -1,0 +1,17 @@
+{
+  "id": "1",
+  "name": "team1",
+  "description": "team1입니다",
+  "members": [
+    {
+      "name": "user1",
+      "role": "FRONTEND",
+      "grade": "TEAM_MEMBER"
+    },
+    {
+      "name": "user2",
+      "role": "BACKEND",
+      "grade": "TEAM_MEMBER"
+    }
+  ]
+}
