@@ -3,7 +3,7 @@ import PlusImg from '../../../public/plus.svg';
 import ModalInput from '../common/ModalInput';
 import ModalLayout from '../common/ModalLayout';
 
-function CreateIssuesModal() {
+function IssuesModal() {
   const [tagValues, setTagValues] = useState('');
   const [members, setMembers] = useState('');
   const handleTagClick = () => {
@@ -45,4 +45,4 @@ function CreateIssuesModal() {
   );
 }
 
-export default CreateIssuesModal;
+export default IssuesModal;
