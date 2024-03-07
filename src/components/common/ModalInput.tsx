@@ -7,13 +7,14 @@ interface ModalInputProps {
 }
 
 function ModalInput({ placeholder, children, value }: ModalInputProps) {
-  const placeholderName = 'w-[53.6rem] border-b-[0.1rem] border-solid border-black';
+  const placeholderName = ' border-b-[0.1rem] border-solid border-black';
   return (
     <>
       <div className="flex">
         {children}
         <input
-          className={`${placeholder === '검색' ? `${placeholderName} pb-[0.5rem] text-2xl` : `${placeholderName} text-[4rem]`}`}
+          // defaultValue={}
+          className={`${placeholder === '검색' ? `${placeholderName} w-[53.6rem] pb-[0.5rem] text-2xl` : `${placeholderName} w-[53.6rem] text-[4rem]`}${placeholder === '일정 내용을 입력하세요' ? `${placeholderName} w-[119rem] text-[4rem]` : `${placeholderName} w-[53.6rem] text-[4rem]`}`}
           placeholder={placeholder}
           onChange={value}
         />
