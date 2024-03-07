@@ -1,21 +1,79 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import fileterIcon from '../../../public/images/filter.svg';
+import Button from '../common/Button';
+import ModalLayout from '../common/ModalLayout';
 import ControlDate from './ControlDate';
 import DateBox from './DateBox';
+import clsx from 'clsx';
 
-function Schedules() {
-  const Container = 'w-full flex flex-col  items-center';
+interface SchedulesProps {
+  calendarType: string;
+}
+
+function Schedules({ calendarType }: SchedulesProps) {
+  const Container = 'w-full flex flex-col items-center h-full p-[2.4rem]';
+  const Contents = clsx('pt-[2.3rem] pl-12 pr-[3.2rem] pb-[2.2rem]');
+  const Text = clsx('text-[#111] font-normal text-[1.6rem]');
   const [nowDate, setNowDate] = useState<Date>(new Date());
   const [clickedDate, setClickedDate] = useState<Date>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const handleModalOutsideClick = (e: MouseEvent) => {
+    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+      setIsModalOpen(false);
+    }
+  };
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSubmit = () => {};
   return (
     <div className={Container}>
-      <ControlDate nowDate={nowDate} setNowDate={setNowDate} />
-      <DateBox
-        nowDate={nowDate}
-        setNowDate={setNowDate}
-        clickedDate={clickedDate}
-        setClickedDate={setClickedDate}
-      />
+      <div className={Contents}>
+        <div className={clsx('ju m-0 flex items-center justify-between gap-[122.8rem] p-0')}>
+          <div className={Text}>{calendarType} 캘린더</div>
+          <div className={clsx(`flex items-center ${Text}`)}>
+            {calendarType !== '팀  || 스터디' && (
+              <>
+                그룹필터
+                <img
+                  src={fileterIcon}
+                  alt="필터 아이콘"
+                  className={clsx('ml-4 mr-8 h-[2.4rem] w-[2.4rem] bg-[#D9D9D9]')}
+                />
+              </>
+            )}
+            <Button onClick={openModal} text="일정생성" />
+            {isModalOpen && (
+              <ModalLayout
+                title="일정 생성"
+                modalName="scheduleModal"
+                modalRef={modalRef}
+                handleModalOutsideClick={handleModalOutsideClick}
+                buttonText="확인"
+                submit={handleSubmit}
+                wrong={closeModal}
+              />
+            )}
+          </div>
+        </div>
+        <div className={clsx('pl-[2.1rem] pr-4')}>
+          <ControlDate nowDate={nowDate} setNowDate={setNowDate} />
+
+          <DateBox
+            nowDate={nowDate}
+            setNowDate={setNowDate}
+            clickedDate={clickedDate}
+            setClickedDate={setClickedDate}
+          />
+        </div>
+      </div>
     </div>
   );
 }
+
 export default Schedules;

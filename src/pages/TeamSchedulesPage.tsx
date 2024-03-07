@@ -3,15 +3,16 @@ import Nav from '@/components/common/Nav';
 import SideBar from '@/components/common/SideBar';
 import Schedules from '@/components/SchedulesPage/Schedules';
 
-const SchedulesPage = () => {
+const TeamSchedulesPage = () => {
   return (
     <div>
       <Nav />
       <div className={clsx('flex')}>
         <SideBar />
-        <Schedules calendarType="나의" />
+        <Schedules calendarType="팀의" />
       </div>
     </div>
   );
 };
-export default SchedulesPage;
+
+export default TeamSchedulesPage;
