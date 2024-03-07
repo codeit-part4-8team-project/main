@@ -14,7 +14,7 @@ function ModalInput({ placeholder, children, value }: ModalInputProps) {
         {children}
         <input
           // defaultValue={}
-          className={`${placeholder === '검색' ? `${placeholderName} w-[53.6rem] pb-[0.5rem] text-2xl` : `${placeholderName} w-[53.6rem] text-[4rem]`}${placeholder === '일정 내용을 입력하세요' ? `${placeholderName} w-[119rem] text-[4rem]` : `${placeholderName} w-[53.6rem] text-[4rem]`}`}
+          className={`${placeholder === '검색' ? `${placeholderName} w-[53.6rem] pb-[0.5rem] pl-[0.2rem] text-[1.6rem]` : `${placeholderName} w-[53.6rem] text-[4rem]`}`}
           placeholder={placeholder}
           onChange={value}
         />

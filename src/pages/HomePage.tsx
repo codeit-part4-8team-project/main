@@ -1,19 +1,10 @@
-// import Nav from '@/components/common/Nav';
-import CreateScheduleModal from '@/components/Modal/CreateScheduleModal';
-
-// const HomePage = () => {
-//   return (
-//     <>
-//       <Nav />
-//       <div>홈페이지입니다.</div>
-//     </>
-//   );
-// };
+import Nav from '@/components/common/Nav';
 
 const HomePage = () => {
   return (
     <>
-      <CreateScheduleModal />
+      <Nav />
+      <div>홈페이지입니다.</div>
     </>
   );
 };

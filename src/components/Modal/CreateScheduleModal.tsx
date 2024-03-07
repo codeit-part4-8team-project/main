@@ -24,9 +24,10 @@ function CreateScheduleModal() {
         <img />
       </ModalInput>
       <div className="mb-[15.8rem] mt-[6.5rem]">
-        <ModalInput
+        <input
+          className="w-[119rem] border-b-[0.1rem] border-solid border-black text-[4rem]"
           placeholder="일정 내용을 입력하세요"
-          value={(e) => handleScheduleDetailValue(e)}
+          onChange={(e) => handleScheduleDetailValue(e)}
         />
       </div>
     </ModalLayout>
