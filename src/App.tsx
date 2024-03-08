@@ -6,6 +6,7 @@ import MyIssuesPage from '@/pages/MyIssuesPage';
 import SchedulesPage from '@/pages/SchedulesPage';
 import SigninPage from '@/pages/SigninPage';
 import SignupPage from '@/pages/SignupPage';
+import TeamSchedulesPage from '@/pages/TeamSchedulesPage';
 import TeamsPage from '@/pages/TeamsPage';
 import TeamsPostsPage from '@/pages/TeamsPostsPage';
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/schedules/:userId" element={<SchedulesPage />} />
         <Route path="/myIssues/:userId" element={<MyIssuesPage />} />
         <Route path="/teams">
+          <Route path=":teamsId/schedules" element={<TeamSchedulesPage />} />
           <Route path=":teamsId" element={<TeamsPage />} />
           <Route path=":teamsId/posts" element={<TeamsPostsPage />} />
         </Route>

@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import CloseImg from '../../../public/images/Close.svg';
+import clsx from 'clsx';
 
 interface ModalProps {
   title: string;
@@ -19,13 +20,15 @@ function ModalLayout({
   submit,
   wrong,
   modalRef,
-  handleModalOutsideClick,
+  // handleModalOutsideClick,
 }: ModalProps) {
   return (
     <div
-      className="fixed top-0 z-10 flex size-full items-center justify-center bg-black bg-opacity-5"
+      className={clsx(
+        'fixed right-4 top-0 z-10 flex size-full items-center justify-center bg-black bg-opacity-5',
+      )}
       ref={modalRef}
-      // onClick={(e) => handleModalOutsideClick(e)}
+      //onClick={(e) => handleModalOutsideClick(e)}
     >
       <div className="relative h-[731px] w-[1326px] bg-white px-20 py-10">
         <div className="flex justify-between">
