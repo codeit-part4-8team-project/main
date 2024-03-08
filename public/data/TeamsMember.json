@@ -5,11 +5,49 @@
   "members": [
     {
       "name": "user1",
+      "profileImg": "null",
       "role": "FRONTEND",
       "grade": "TEAM_MEMBER"
     },
     {
       "name": "user2",
+      "profileImg": "null",
+      "role": "BACKEND",
+      "grade": "TEAM_MEMBER"
+    },
+    {
+      "name": "user3",
+      "profileImg": "null",
+      "role": "FRONTEND",
+      "grade": "TEAM_MEMBER"
+    },
+    {
+      "name": "user4",
+      "profileImg": "null",
+      "role": "BACKEND",
+      "grade": "TEAM_MEMBER"
+    },
+    {
+      "name": "user5",
+      "profileImg": "null",
+      "role": "BACKEND",
+      "grade": "TEAM_MEMBER"
+    },
+    {
+      "name": "user6",
+      "profileImg": "null",
+      "role": "FRONTEND",
+      "grade": "TEAM_MEMBER"
+    },
+    {
+      "name": "user7",
+      "profileImg": "null",
+      "role": "FRONTEND",
+      "grade": "TEAM_MEMBER"
+    },
+    {
+      "name": "user8",
+      "profileImg": "null",
       "role": "BACKEND",
       "grade": "TEAM_MEMBER"
     }
