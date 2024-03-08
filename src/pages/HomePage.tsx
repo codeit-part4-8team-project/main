@@ -1,4 +1,5 @@
 import Nav from '@/components/common/Nav';
+import MemberProfile from '@/components/Modal/MemberProfile';
 import TeamMemberList from '@/components/TeamMemberList';
 
 // const HomePage = () => {
@@ -15,6 +16,7 @@ const HomePage = () => {
     <>
       <Nav />
       <TeamMemberList />
+      {/* <MemberProfile /> */}
     </>
   );
 };
