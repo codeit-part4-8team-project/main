@@ -13,6 +13,7 @@ function AnnouncementCard() {
         </div>
         <div className="flex gap-[0.8rem]">
           <img src={checkIcon} alt="체크 표시 아이콘" />
+          {/* TODO 펼치기 & 닫기 기능 */}
           <img src={closedIcon} alt="닫힘 표시 아이콘" />
         </div>
       </div>

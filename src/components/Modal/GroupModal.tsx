@@ -7,7 +7,11 @@ import profile from '../../../public/profile.svg';
 import ModalInput from '../common/ModalInput';
 import ModalLayout from '@/components/common/ModalLayout';
 
-function GroupModal() {
+interface GroupModalProps {
+  closeClick: () => void;
+}
+
+function GroupModal({ closeClick }: GroupModalProps) {
   const [teamNameValue, setTeamNameValue] = useState<string>('');
   const [teamColorValue, setTeamColorValue] = useState('');
   const [memberValue, setMemberValue] = useState('');
@@ -29,7 +33,7 @@ function GroupModal() {
     setMemberValue(e.target.value);
   };
   return (
-    <ModalLayout title="그룹 생성" buttonText="팀 생성" modalName="그룹 게시자">
+    <ModalLayout title="그룹 생성" buttonText="팀 생성" modalName="그룹 게시자" wrong={closeClick}>
       <div className="mb-24 flex items-center gap-7 text-[1.4rem]">
         {profileImg === 'null' ? <img src={profile} alt="profile" /> : <div>해당 이미지</div>}
         {nickName}

@@ -3,7 +3,11 @@ import PlusImg from '../../../public/plus.svg';
 import ModalInput from '../common/ModalInput';
 import ModalLayout from '../common/ModalLayout';
 
-function IssuesModal() {
+interface IssuesModalProps {
+  closeClick: () => void;
+}
+
+function IssuesModal({ closeClick }: IssuesModalProps) {
   const [tagValues, setTagValues] = useState('');
   const [members, setMembers] = useState('');
   const handleTagClick = () => {
@@ -19,7 +23,12 @@ function IssuesModal() {
   };
 
   return (
-    <ModalLayout title="이슈 생성" buttonText="이슈 생성" modalName="이슈 게시자">
+    <ModalLayout
+      title="이슈 생성"
+      buttonText="이슈 생성"
+      modalName="이슈 게시자"
+      wrong={closeClick}
+    >
       <ModalInput placeholder="이슈를 입력하세요" />
       <div className="mt-[4.5rem] flex gap-5 text-[2rem]">
         관련태그
