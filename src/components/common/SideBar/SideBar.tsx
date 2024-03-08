@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import CreateIcon from '../../../../public/assets/plus-circle-light.svg';
 import GroupModal from '../../Modal/GroupModal';
-import BoardItems from './BoardItem';
+import BoardList from './BoardList';
 import clsx from 'clsx';
 
 export default function SideBar() {
@@ -21,7 +21,7 @@ export default function SideBar() {
       <div
         className={clsx(`fixed bottom-0 left-0 top-[8.2rem] w-[26rem] rounded-tr-3xl bg-[#292929]`)}
       >
-        <BoardItems />
+        <BoardList />
         <div
           className={clsx(
             `mt-[47.8rem] flex items-center justify-between bg-[#222222] py-[1.8rem] pl-16 pr-[2.4rem]`,

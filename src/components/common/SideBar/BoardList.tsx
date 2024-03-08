@@ -24,7 +24,7 @@ function BoardItem({ boardType, isCurrent }: BoardItemProps) {
   );
 }
 
-export default function BoardItems() {
+export default function BoardList() {
   // TODO isCurrent는 context에서 관리할 수 있겠다
   return (
     <ul className="absolute left-[2.4rem] top-40 flex flex-col gap-[1.6rem]">
