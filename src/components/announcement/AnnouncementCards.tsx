@@ -3,7 +3,6 @@ import ArrowDownIcon from '../../../public/assets/arrow-down-dark.png';
 import CheckIcon from '../../../public/assets/check-circle-dark.svg';
 import CloseIcon from '../../../public/assets/hidden-dark.svg';
 import ProfileImg from '../../../public/assets/profile-small.svg';
-import clsx from 'clsx';
 
 function AnnouncementCard() {
   const content =
@@ -17,37 +16,25 @@ function AnnouncementCard() {
   };
 
   return (
-    <div
-      className={clsx(
-        'relative flex w-[42.6rem] flex-col gap-[1.7rem] rounded-[2.4rem] bg-[#ECF619] p-[2.4rem]',
-      )}
-    >
-      <span className={clsx('text-[1.4rem] font-bold text-[#292929]')}>디자인 스터디</span>
-      <span className={clsx('text-[1.4rem] text-[#292929]')}>{isOpen ? content : shortened}</span>
-      <span className={clsx('text-40 text-[#222222] opacity-30')}>게시 : 2024-03-04</span>
-      <div className={clsx('absolute right-[2.4rem] top-[2.4rem] flex items-center gap-[0.8rem]')}>
+    <div className="relative flex w-[42.6rem] flex-col gap-[1.7rem] rounded-[2.4rem] bg-[#ECF619] p-[2.4rem]">
+      <span className="text-[1.4rem] font-bold text-[#292929]">디자인 스터디</span>
+      <span className="text-[1.4rem] text-[#292929]">{isOpen ? content : shortened}</span>
+      <span className="text-40 text-[#222222] opacity-30">게시 : 2024-03-04</span>
+      <div className="absolute right-[2.4rem] top-[2.4rem] flex items-center gap-[0.8rem]">
         <button type="button">
-          <img className={clsx('h-[2.4rem] w-[2.4rem]')} src={CheckIcon} alt="체크 버튼" />
+          <img className="h-[2.4rem] w-[2.4rem]" src={CheckIcon} alt="체크 버튼" />
         </button>
         <button type="button" onClick={handleToggleContent}>
           {isOpen ? (
-            <img
-              className={clsx('m-[0.4rem] w-[1.6rem] opacity-65')}
-              src={CloseIcon}
-              alt="닫힘 아이콘"
-            />
+            <img className="m-[0.4rem] w-[1.6rem] opacity-65" src={CloseIcon} alt="닫힘 아이콘" />
           ) : (
-            <img
-              className={clsx('h-[2.4rem] w-[2.4rem]')}
-              src={ArrowDownIcon}
-              alt="펼치기 아이콘"
-            />
+            <img className="h-[2.4rem] w-[2.4rem]" src={ArrowDownIcon} alt="펼치기 아이콘" />
           )}
         </button>
       </div>
       <button type="button">
         <img
-          className={clsx('absolute bottom-[2.4rem] right-[2.4rem] h-[2.4rem] w-[2.4rem]')}
+          className="absolute bottom-[2.4rem] right-[2.4rem] h-[2.4rem] w-[2.4rem]"
           src={ProfileImg}
           alt="프로필 이미지"
         />
