@@ -11,6 +11,7 @@
   "importOrder": [
     "^react(.*)$",
     "^@types/(.*)$",
+    "^clsx(.*)$",
     "^[^@/](.*)$",
     "^@/pages/(.*)$",
     "^@/components/common(.*)$",
