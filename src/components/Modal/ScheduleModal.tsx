@@ -4,9 +4,7 @@ import profile from '../../../public/profile.svg';
 import ModalInput from '../common/ModalInput';
 import ModalLayout from '../common/ModalLayout';
 
-
 function ScheduleModal() {
-
   const [scheduleDetail, setScheduleDetail] = useState('');
   const { userData } = Mock; // userMockData
   const [{ userId, profileImg, nickName, birth }] = userData; // userMockData
@@ -36,6 +34,4 @@ function ScheduleModal() {
   );
 }
 
-
 export default ScheduleModal;
-
