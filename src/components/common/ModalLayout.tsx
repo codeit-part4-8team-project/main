@@ -24,9 +24,7 @@ function ModalLayout({
 }: ModalProps) {
   return (
     <div
-      className={clsx(
-        'fixed right-4 top-0 z-10 flex size-full items-center justify-center bg-black bg-opacity-5',
-      )}
+      className={clsx('flex size-full items-center justify-center bg-black bg-opacity-5')}
       ref={modalRef}
       //onClick={(e) => handleModalOutsideClick(e)}
     >
