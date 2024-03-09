@@ -3,8 +3,6 @@ import TeamsMember from '../../public/data/TeamsMember.json';
 import profile from '../../public/profile.svg';
 import MemberProfile from './Modal/MemberProfile';
 
-console.log(TeamsMember);
-
 function TeamMemberList() {
   const [memberProfile, setMemberProfile] = useState(false);
   const [memberId, setMemberId] = useState<number | null>(null);
@@ -13,8 +11,8 @@ function TeamMemberList() {
     setMemberProfile(!memberProfile);
     setMemberId(userId);
   };
-  console.log('랜더링이 계속 되나?');
   const { members } = TeamsMember;
+
   const getMemberId = () => {
     if (memberId === null) {
       return null;
