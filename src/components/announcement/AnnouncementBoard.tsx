@@ -1,29 +1,24 @@
-import { useState } from 'react';
-import AnnouncementModal from '../Modal/AnnouncementModal';
-import Button from '../common/Button';
+import checkIcon from '../../../public/check.svg';
 import AnnouncementCards from './AnnouncementCards';
 
 export default function AnnouncementBoard() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleButtonClick = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleCloseClick = () => {
-    setIsOpen(false);
-  };
-
   return (
-    <div className="flex h-[110.7rem] w-fit flex-col gap-[1rem] border-[0.1rem] border-[#DCDCDC] bg-white p-[2.4rem]">
-      <div className="flex justify-between">
-        <span className="text-[1.6rem]">팀 공지사항</span>
-        {isOpen && <AnnouncementModal closeClick={handleCloseClick} />}
-        <Button text="게시" submit={handleButtonClick} />
-      </div>
+    <div className="flex h-[110.7rem] w-fit flex-col gap-[2.6rem]">
+      <AnnouncememntNotification />
       <div className="h-full">
         <AnnouncementCards />
       </div>
+    </div>
+  );
+}
+
+function AnnouncememntNotification() {
+  return (
+    <div className="flex gap-4">
+      <img src={checkIcon} alt="메가폰 아이콘" />
+      <span className="text-[1.6rem] font-medium">
+        새로운 공지사항이 총 <span className="font-extrabold">3</span>건이 있습니다.
+      </span>
     </div>
   );
 }
