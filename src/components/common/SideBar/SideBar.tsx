@@ -14,23 +14,19 @@ interface SideBarGroupProp {
 export default function SideBar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleCreateClick = () => {
+  const handleToggleModalClick = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleCloseClick = () => {
-    setIsOpen(false);
   };
 
   return (
     <>
-      {isOpen && <GroupModal closeClick={handleCloseClick} />}
+      {isOpen && <GroupModal closeClick={handleToggleModalClick} />}
       <div
         className={clsx(`fixed bottom-0 left-0 top-[8.2rem] w-[26rem] rounded-tr-3xl bg-[#292929]`)}
       >
         <ProfileSection />
         <BoardList />
-        <GroupSection onCreateClick={handleCreateClick} />
+        <GroupSection onCreateClick={handleToggleModalClick} />
       </div>
     </>
   );
