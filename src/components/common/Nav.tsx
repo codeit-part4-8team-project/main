@@ -1,33 +1,32 @@
-import plusIcon from '../../../public/plus.svg';
+import LogoImg from '../../../public/assets/Logo.svg';
+import profileIcon from '../../../public/assets/ProfileIcon.svg';
+import bellIcon from '../../../public/assets/bellFill.svg';
+import globalLink from '../../../public/assets/globe-dark.svg';
+import plusCircle from '../../../public/assets/plus-circle-dark.svg';
 
 function Nav() {
-  const linkStyles =
-    ' text-xs text-gray-400   font-extrabold hover:underline rounded-full bg-gray-100 w-9 h-9 px-2 py-4';
-  const ProfileAlarmStyles =
-    'text-xs text-gray-300 hover:underline rounded-full bg-gray-700 w-9 h-9 px-1.5 py-2.5';
-
   return (
-    <div className="z-1 fixed left-0 right-0 top-0 m-0 flex items-center justify-between border-b  border-solid border-gray-300 bg-white">
-      <div className="flex items-center ">
-        <a href="/" className="my-4  ml-28 h-6 w-10 text-sm font-bold text-gray-300">
-          Logo
+    <div className="z-1 fixed left-0 right-0 top-0 m-0 flex items-center justify-between  bg-[#F7F7F7]">
+      <div className="mb-[0.8rem] mt-[1.1rem] flex items-center  ">
+        <a href="/" className="ml-16 mt-[1.7rem] ">
+          <img src={LogoImg} alt="로고 이미지 " />
         </a>
-        <div className=" my-2.5 ml-40">
-          <a href="#" className={`${linkStyles} mr-2.5`}>
-            링크1
+        <div className=" ml-[17.4rem] flex items-center gap-[0.8rem]">
+          <a href="#" className="relative h-[3.6rem] w-[3.6rem] rounded-full bg-[#5F5F5F1A]">
+            <img
+              className="[0.6rem] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform"
+              src={globalLink}
+              alt="글로벌 아이콘"
+            />
           </a>
-          <a href="#" className={`${linkStyles} mr-2.5`}>
-            링크2
-          </a>
-          <a href="#" className={linkStyles}>
-            링크3
+          <a href="#" className="mr-2.5">
+            <img src={plusCircle} alt="추가하기 아이콘" />
           </a>
         </div>
-        <img src={plusIcon} alt="Plus Icon" className="my-4 ml-4 bg-gray-300 px-1 py-1" />
       </div>
-      <div className="my-2.5 mr-6 flex items-center">
-        <div className={`${ProfileAlarmStyles} mr-4`}>알림</div>
-        <div className={ProfileAlarmStyles}>프로필</div>
+      <div className="my-2.5 mr-6 flex items-center gap-8">
+        <img src={bellIcon} alt="알람 아이콘" />
+        <img src={profileIcon} alt="프로필 아이콘" />
       </div>
     </div>
   );
