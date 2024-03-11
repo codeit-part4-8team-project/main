@@ -2,7 +2,7 @@ import Nav from '@/components/common/Nav';
 import SideBar from '@/components/common/SideBar/SideBar';
 import TeamBar from '@/components/TeamBar';
 import AnnouncementBoard from '@/components/announcement/AnnouncementBoard';
-import KanbanBoard from '@/components/issue/KanbanBoard';
+import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
 
 const TeamsPage = () => {
   return (
