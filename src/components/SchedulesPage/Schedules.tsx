@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import fileterIcon from '../../../public/images/filter.svg';
+import ScheduleModal from '../Modal/ScheduleModal';
 import Button from '../common/Button';
-import ModalLayout from '../common/ModalLayout';
 import ControlDate from './ControlDate';
 import DateBox from './DateBox';
 import clsx from 'clsx';
@@ -30,7 +30,6 @@ function Schedules({ calendarType }: SchedulesProps) {
     setIsModalOpen(false);
   };
 
-  const handleSubmit = () => {};
   return (
     <div className={Container}>
       <div className={Contents}>
@@ -48,17 +47,7 @@ function Schedules({ calendarType }: SchedulesProps) {
               </>
             )}
             <Button submit={openModal} text="일정생성" />
-            {isModalOpen && (
-              <ModalLayout
-                title="일정 생성"
-                modalName="scheduleModal"
-                modalRef={modalRef}
-                handleModalOutsideClick={handleModalOutsideClick}
-                buttonText="확인"
-                submit={handleSubmit}
-                wrong={closeModal}
-              />
-            )}
+            {isModalOpen && <ScheduleModal />}
           </div>
         </div>
         <div className={clsx('pl-[2.1rem] pr-4')}>
