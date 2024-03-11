@@ -3,9 +3,9 @@ import AnnouncementCards from './AnnouncementCards';
 
 export default function AnnouncementBoard() {
   return (
-    <div className="flex h-[110.7rem] w-fit flex-col gap-[2.6rem]">
+    <div className="mt-[3.6rem] flex h-full w-fit flex-col gap-[2.6rem]">
       <AnnouncememntNotification />
-      <div className="h-full">
+      <div className="h-full  overflow-scroll">
         <AnnouncementCards />
       </div>
     </div>
