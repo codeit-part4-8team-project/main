@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Rammetto+One&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,12 +6,18 @@
 * {
   box-sizing: border-box;
   margin: 0;
-  font-family: 'Pretendard';
 }
+
 html,
 body {
+  font-family: 'Pretendard';
+  -ms-overflow-style: none;
   font-size: 62.5%;
   margin: 0;
+}
+
+body ::-webkit-scrollbar {
+  display: none;
 }
 
 @layer components {
