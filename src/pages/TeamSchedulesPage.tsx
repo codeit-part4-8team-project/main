@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import Nav from '@/components/common/Nav';
-import SideBar from '@/components/common/SideBar/SideBar';
+import SideBar from '@/components/common/sideBar/SideBar';
 import Schedules from '@/components/SchedulesPage/Schedules';
 
 const TeamSchedulesPage = () => {
