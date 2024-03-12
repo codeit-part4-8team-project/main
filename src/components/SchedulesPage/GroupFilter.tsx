@@ -2,7 +2,6 @@ import { useState } from 'react';
 import BaseProfile from '../../../public/assets/ProfileIcon.svg';
 import CheckOn from '../../../public/assets/check-circle-fill-dark.svg';
 import CheckOff from '../../../public/assets/check-circle-fill.svg';
-import Yellow from '../../../public/assets/color chip-yellow.svg';
 
 interface ChecklistItemProps {
   isChecked: boolean;
