@@ -23,6 +23,11 @@ const SigninPage = () => {
   const openModal = useModal();
   const handleClickOpenModal = () => {
     openModal(({ close }) => <GroupEditModal closeClick={close}></GroupEditModal>);
+    openModal(({ close }) => (
+      <AlertModal buttonClick={close} buttonText="첫번째모달 닫기">
+        {' '}
+      </AlertModal>
+    ));
   };
   const handleClickOpenMultiModal = () => {
     openModal(({ close }) => (
@@ -53,7 +58,7 @@ const SigninPage = () => {
         <button onClick={handleRefetch}>Refetcher</button>
       </div>
       <button className=" bg-teal-700 text-4xl" onClick={handleClickOpenModal}>
-        모달 테스터
+        모달 동시에 두 개 띄우기
       </button>
       <button className=" bg-fuchsia-500 text-4xl" onClick={handleClickOpenMultiModal}>
         모달 속에서 모달 띄우기
