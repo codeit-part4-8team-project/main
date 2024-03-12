@@ -17,7 +17,11 @@ function BoardItem({ boardType, isCurrent }: BoardItemProps) {
           isCurrent && 'bg-[#EDEEDC]/10',
         )}
       >
-        <img src={isCurrent ? iconOn : iconOff} alt={`${boardName} 아이콘`} />
+        <img
+          className={clsx(!isCurrent && 'opacity-10')}
+          src={isCurrent ? iconOn : iconOff}
+          alt={`${boardName} 아이콘`}
+        />
         <span className="text-[1.4rem] text-[#EDEEDC] opacity-100">{boardName}</span>
       </button>
     </Link>
@@ -36,6 +40,9 @@ export default function BoardList() {
       </li>
       <li>
         <BoardItem boardType="kanbanboard" />
+      </li>
+      <li>
+        <BoardItem boardType="board" />
       </li>
     </ul>
   );
