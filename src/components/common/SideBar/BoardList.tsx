@@ -1,14 +1,16 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { BOARDS, Boards } from '@/components/common/sideBar/constants';
 
 interface BoardItemProps {
   boardType: string;
-  isCurrent?: boolean;
+  pathname: string;
 }
 
-function BoardItem({ boardType, isCurrent }: BoardItemProps) {
+function BoardItem({ boardType, pathname }: BoardItemProps) {
   const { boardName, iconOn, iconOff, link } = BOARDS[boardType as keyof Boards];
+  const isCurrent = pathname === link ? true : false;
+
   return (
     <Link to={link}>
       <button
@@ -29,20 +31,21 @@ function BoardItem({ boardType, isCurrent }: BoardItemProps) {
 }
 
 export default function BoardList() {
-  // TODO isCurrent는 context에서 관리할 수 있겠다
+  const { pathname } = useLocation();
+
   return (
     <ul className="absolute left-[2.4rem] top-40 flex flex-col gap-[1.6rem]">
       <li>
-        <BoardItem boardType="dashboard" isCurrent />
+        <BoardItem boardType="dashboard" pathname={pathname} />
       </li>
       <li>
-        <BoardItem boardType="calendar" />
+        <BoardItem boardType="calendar" pathname={pathname} />
       </li>
       <li>
-        <BoardItem boardType="kanbanboard" />
+        <BoardItem boardType="kanbanboard" pathname={pathname} />
       </li>
       <li>
-        <BoardItem boardType="board" />
+        <BoardItem boardType="board" pathname={pathname} />
       </li>
     </ul>
   );
