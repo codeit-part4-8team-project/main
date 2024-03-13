@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import PlusImg from '../../../public/plus.svg';
-import ModalInput from '../common/ModalInput';
+import ModalInput from '../ModalAtuom/ModalInput';
 import ModalLayout from '../common/ModalLayout';
 
 interface IssuesModalProps {

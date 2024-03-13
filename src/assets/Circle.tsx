@@ -1,4 +1,9 @@
-const Circles = [
+interface circleType {
+  id: number;
+  color: string;
+}
+
+const Circles: circleType[] = [
   {
     id: 1,
     color: '#7187FE',
@@ -9,7 +14,7 @@ const Circles = [
   },
   {
     id: 3,
-    color: '#DDD22',
+    color: '#ffffff',
   },
   {
     id: 4,
