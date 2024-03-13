@@ -7,7 +7,7 @@ const profiles = [ProfileImg, ProfileImg, ProfileImg];
 
 function IssueItem() {
   return (
-    <div className="relative h-64 rounded-[2.4rem] border border-[#E5E5E5] bg-white p-8">
+    <div className="relative min-h-64 rounded-[2.4rem] border border-[#E5E5E5] bg-white p-8">
       <div className="flex flex-col gap-[1.2rem]">
         <div className="flex items-center gap-4">
           <img src={GreenDop} />
@@ -32,7 +32,7 @@ function IssueItem() {
 
 export default function IssueList() {
   return (
-    <div className="flex flex-col gap-[1.5rem]">
+    <div className="flex flex-col gap-[1.5rem] overflow-scroll">
       <IssueItem />
       <IssueItem />
       <IssueItem />

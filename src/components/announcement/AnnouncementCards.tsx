@@ -16,7 +16,7 @@ function AnnouncementCard() {
   };
 
   return (
-    <div className="relative flex w-[42.6rem] flex-col gap-[1.7rem] rounded-[2.4rem] bg-[#ECF619] p-[2.4rem]">
+    <div className="relative flex w-full flex-col gap-[1.7rem] rounded-[2.4rem] bg-[#ECF619] p-[2.4rem]">
       <span className="text-[1.4rem] font-bold text-[#292929]">디자인 스터디</span>
       <span className="text-[1.4rem] text-[#292929]">{isOpen ? content : shortened}</span>
       <span className="text-40 text-[#222222] opacity-30">게시 : 2024-03-04</span>
@@ -46,6 +46,7 @@ function AnnouncementCard() {
 export default function AnnouncementCards() {
   return (
     <div className="flex flex-col gap-[2.4rem]">
+      <AnnouncementCard />
       <AnnouncementCard />
       <AnnouncementCard />
       <AnnouncementCard />
