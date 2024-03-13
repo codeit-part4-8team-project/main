@@ -23,7 +23,7 @@ export const BOARDS: Boards = {
     boardName: '대시보드',
     iconOn: BoxOnIcon,
     iconOff: BoxOffIcon,
-    link: '/teams/1',
+    link: '/main',
   },
   calendar: {
     boardName: '나의 캘린더',
