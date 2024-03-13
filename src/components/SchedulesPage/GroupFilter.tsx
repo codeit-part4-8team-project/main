@@ -2,6 +2,7 @@ import { useState } from 'react';
 import BaseProfile from '../../../public/assets/ProfileIcon.svg';
 import CheckOn from '../../../public/assets/check-circle-fill-dark.svg';
 import CheckOff from '../../../public/assets/check-circle-fill.svg';
+import Yellow from '../../../public/assets/color chip-yellow.svg';
 
 interface ChecklistItemProps {
   isChecked: boolean;
@@ -11,15 +12,16 @@ interface ChecklistItemProps {
 }
 
 function ChecklistItem({ name, color, isChecked, onCheck }: ChecklistItemProps) {
+  const nameStyle = 'text-[1.2rem] font-bold ml-4 text-[#292929]';
   return (
     <div className="flex w-[17.3rem] items-center justify-between">
       <div className="flex">
         {color ? (
-          <div className={`mr-1 h-4 w-4 rounded-full`} style={{ backgroundColor: color }}></div>
+          <div className={` h-4 w-4 rounded-full`} style={{ backgroundColor: color }}></div>
         ) : (
           <img className="h-4 w-4" src={BaseProfile} alt="기본 프로필" />
         )}
-        <span className="ml-4">{name}</span>
+        <span className={nameStyle}>{name}</span>
       </div>
       <img onClick={onCheck} src={isChecked ? CheckOn : CheckOff} alt="체크리스트" />
     </div>
@@ -45,7 +47,7 @@ function GroupFilter() {
 
   return (
     <div className="flex flex-col">
-      <div className="text-[1.4rem] font-bold text-[#A1A1A1]">그룹 필터</div>
+      <div className="mb-14 text-[1.4rem] font-bold text-[#A1A1A1]">그룹 필터</div>
       {items.map((item, index) => (
         <ChecklistItem
           key={index}
