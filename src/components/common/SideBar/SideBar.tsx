@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import CreateIcon from '../../../../public/assets/plus-circle-light.svg';
 import ProfileImg from '../../../../public/assets/profile-small.svg';
 import GroupModal from '../../Modal/GroupModal';
+import ToolTip from '../ToolTip';
 import BoardList from './BoardList';
 import GroupList from './GroupList';
 
@@ -44,8 +45,11 @@ function GroupSection({ onCreateClick }: SideBarGroupProp) {
   return (
     <div className="relative mt-[47.8rem] flex items-center justify-between bg-[#222222] py-[1.8rem] pl-16 pr-[2.4rem]">
       <span className="text-[1.6rem] font-bold text-[#EDEEDC]">그룹</span>
-      <button onClick={onCreateClick}>
+      <button className="relative" onClick={onCreateClick}>
         <img src={CreateIcon} alt="그룹 생성 버튼" />
+        <div className="absolute -left-[7.4rem] -top-[5.1rem]">
+          <ToolTip />
+        </div>
       </button>
       <GroupList />
     </div>
