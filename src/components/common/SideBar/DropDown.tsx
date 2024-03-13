@@ -1,4 +1,6 @@
 import { ReactNode } from 'react';
+import GroupEditModal from '@/components/Modal/GroupEditModal';
+import { useModal } from '@/contexts/ModalProvider';
 
 interface DropDownItemProps {
   children: ReactNode;
@@ -14,10 +16,16 @@ export default function DropDown() {
 }
 
 function DropDownItem({ children }: DropDownItemProps) {
+  const openModal = useModal();
+  const handleClickOpenModal = () => {
+    openModal(({ close }) => <GroupEditModal closeClick={close}></GroupEditModal>);
+  };
+
   return (
     <button
-      className="inline-flex h-[3.7rem] items-center justify-center p-4 text-[1.4rem] font-medium text-[#5F5F5F] hover:bg-[#EAEAEA]"
+      onClick={handleClickOpenModal}
       type="button"
+      className="inline-flex h-[3.7rem] items-center justify-center p-4 text-[1.4rem] font-medium text-[#5F5F5F] hover:bg-[#EAEAEA]"
     >
       {children}
     </button>
