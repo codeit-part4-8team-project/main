@@ -1,53 +1,60 @@
-// interface Props{
-//   day: Date;
-//   nowDate:Date;
-//   setNowDate:React.Dispatch<React.SetStateAction<Date>>;
-//   clickedDate:Date|undefined;
-//   setClickedDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
-// }
-// function AllDay({day,nowDate,setNowDate,clickedDate,setClickedDate}:Props){
-//     const Container ="w-full flex justify-center items-center";
-//     //const nowTime = new Date();
-//     //const sameMonth = nowDate.getMonth()=== day.getMonth();
-//     // const sameDay = nowTime.getFullYear() === day.getFullYear() &&
-//     // nowTime.getMonth()=== day.getMonth()&&
-//     // nowTime.getDate()=== day.getDate();
-//     // const clickDay:boolean = clickedDate //undefined일 수 있기 때문
-//     // ?clickedDate.getFullYear()===day.getFullYear()
-//     // && clickedDate.getMonth() === day.getMonth() &&
-//     // clickedDate.getDate() === day.getDate(): false;
-//     const clickDate = ()=>{
-//       setClickedDate(day);
-//     }
-//   return<div  className={Container}onClick={clickDate}
-//  //  sameMonth={sameMonth} sameDay={sameDay} clickDay ={clickDay}
-//   ><p>{day.getDate()} </p></div>;
-// }
-// export default AllDay;
-import { useState } from 'react';
-import ScheduleModal from '../Modal/ScheduleModal';
+import { useContext, useState } from 'react';
 import clsx from 'clsx';
+import ScheduleModal from '../Modal/ScheduleModal';
+import { calendarContext } from '@/contexts/CalenarProvider';
 
-interface Props {
+interface AllDayProp {
   day: Date;
-  nowDate: Date;
-  setNowDate: React.Dispatch<React.SetStateAction<Date>>;
-  clickedDate: Date | undefined;
-  setClickedDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
 }
+function AllDay({ day }: AllDayProp) {
+  const Container = 'w-full h-full flex justify-center items-center rounded-[2.4rem] border-none  ';
+  const hover = 'hover:bg-[#D1D5DB]';
+  const today = new Date();
 
-function AllDay({ day, nowDate, setNowDate, clickedDate, setClickedDate }: Props) {
-  const Container = clsx('w-full flex justify-center items-center ');
-  const hover = clsx('hover:bg-[#D1D5DB]');
+  const notTodayStyle = 'text-[#A1A1A1] bg-[#FFF]';
+
+  //Context
+  const { nowDate } = useContext(calendarContext);
+
+  // 오늘 날짜에 대한 스타일 클래스 결정
+  let todayClass = '';
+  if (day.getDate() === today.getDate() && day.getMonth() === today.getMonth()) {
+    todayClass = 'text-[#292929] bg-[#F7F7F7]'; // 배경색 스타일을 직접 지정
+  }
+  let notTodayClass = '';
+  if (day.getDate() !== today.getDate()) {
+    notTodayClass = notTodayStyle;
+  }
+
+  // 해당 월이 아닌 경우에 대한 클래스 결합
+  const notThisMonthClass = clsx({
+    'text-[#E5E5E5]':
+      day.getMonth() !== nowDate.getMonth() || day.getFullYear() !== nowDate.getFullYear(),
+  });
+  const numColumns = 7; // 그리드의 총 열 수 (일주일의 일수에 따라 달라질 수 있음)
+  const numRows = 12;
+  const columnIndex = day.getDay(); // 현재 요일의 열 인덱스 (0부터 시작)
+  const isLastColumn = columnIndex === numColumns - 1;
+
+  const weekIndex = Math.floor((day.getDate() - 1) / 7); // 해당 날짜의 주 인덱스 계산
+  const isLastRow = weekIndex === numRows - 1; // 해당 주가 마지막 주인지 여부 확인
+
+  //const rowIndex = day.getDate();
+  const isNotLastRow = !isLastRow;
+  // 날짜에 대한 클래스 결합
   const DateDay = clsx(
-    'text-black text-[1.2rem] font-bold w-[22rem] h-[15rem] text-center',
-    {
-      'bg-[#EDEDED]':
-        day.getDay() === 0 || day.getDay() === 2 || day.getDay() === 4 || day.getDay() === 6, // 월, 수, 금
-      'bg-[#FFF]': day.getDay() === 1 || day.getDay() === 3 || day.getDay() === 5, // 화, 목, 토
-    },
+    ' w-[15.3rem] h-[19.7rem] text-[1.4rem] font-bold text-start py-4 px-[2.4rem] ',
+    todayClass,
+    notTodayClass,
+    notThisMonthClass,
     hover,
+    {
+      'border-r border-solid border-[#EFEFEF]': !isLastColumn,
+      'border-t border-solid border-[#EFEFEF]': isNotLastRow,
+      'text-[#F74242]': day.getDay() === 0,
+    },
   );
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
@@ -56,22 +63,10 @@ function AllDay({ day, nowDate, setNowDate, clickedDate, setClickedDate }: Props
     setIsModalOpen(false);
   };
 
-  const clickDate = () => {
-    setClickedDate(day);
-  };
-
-  const getWeekDay = (dayIndex: number): string => {
-    const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
-    return weekDays[dayIndex];
-  };
-
   return (
-    <div className={Container} onClick={clickDate}>
+    <div className={Container}>
       <div>
-        <p
-          onClick={openModal}
-          className={DateDay}
-        >{`${day.getDate()}(${getWeekDay(day.getDay())})`}</p>
+        <p onClick={openModal} className={DateDay}>{` ${day.getDate()} `}</p>
         {isModalOpen && <ScheduleModal />}
       </div>
     </div>

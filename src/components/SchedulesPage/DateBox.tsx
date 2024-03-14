@@ -1,59 +1,105 @@
+import React, { useContext, useEffect, useState } from 'react';
 import AllDay from './AllDay';
+import WeekBox from './WeekBox';
+import { calendarContext } from '@/contexts/CalenarProvider';
 
-//import WeekBox from './WeekBox';
-
-const monthList = (nowDate: Date) => {
-  const nowYear = nowDate.getFullYear();
-  const nowMonth = nowDate.getMonth();
-
-  const dayOneWeek = new Date(nowYear, nowMonth, 1).getDay(); //해당 연도와 월의 1일
-  const dayLastWeek = new Date(nowYear, nowMonth + 1, 0).getDay(); //해당 연도와 다음달의 마지막 날
-
-  const result: Date[] = [];
-  const prevMonthEnd = new Date(nowYear, nowMonth, 0).getDate(); //이전 월의 마지막 날짜
-  const nowMonthed = new Date(nowYear, nowMonth + 1, 0).getDate(); //현재 월의 마지막 날짜
-  for (let i = dayOneWeek - 1; i >= 0; i--) {
-    result.push(new Date(nowYear, nowMonth - 1, prevMonthEnd - i));
-  } //전 달의 마지막 날짜부터 현재 월력의 시작 요일까지의 날짜
-
-  for (let i = 1; i <= nowMonthed; i++) {
-    result.push(new Date(nowYear, nowMonth, i));
-  } //현재 월에 해당하는 모든 날짜
-
-  for (let i = 1; i < 7 - dayLastWeek; i++) {
-    result.push(new Date(nowYear, nowMonth + 1, i));
-  } //현재 월의 다음 달로 넘어가는 날짜
-  return result;
-};
-
-interface Props {
-  nowDate: Date;
-  setNowDate: React.Dispatch<React.SetStateAction<Date>>;
-  clickedDate: Date | undefined;
-  setClickedDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+interface DateBoxProp {
+  mode: 'month' | 'week';
 }
-function DateBox({ nowDate, setNowDate, clickedDate, setClickedDate }: Props) {
-  const Container = 'w-full  grid  grid-cols-[repeat(7,1fr)]';
-  const allDay: Date[] = monthList(nowDate);
-  // const weeks = ['일', '월', '화', '수', '목', '금', '토'];
-  return (
-    <div className={Container}>
-      {/* {weeks.map((week:string)=>
-    {return <WeekBox weekName={week}/>;
-    })} */}
+function DateBox({ mode }: DateBoxProp) {
+  const [week, setWeek] = useState<Array<[number, Date]>>([]);
+  const [allDay, setAllDay] = useState<Date[]>([]);
+  const { nowDate } = useContext(calendarContext);
 
-      {allDay.map((day: Date) => {
-        return (
-          <AllDay
-            day={day}
-            nowDate={nowDate}
-            setNowDate={setNowDate}
-            clickedDate={clickedDate}
-            setClickedDate={setClickedDate}
-          />
-        );
-      })}
-    </div>
+  useEffect(() => {
+    if (mode === 'month') {
+      setAllDay(monthList(nowDate));
+    } else if (mode === 'week') {
+      const currentDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate());
+      const weekArr = makeWeekArr(currentDate);
+      setWeek(weekArr);
+    }
+  }, [nowDate, mode]);
+
+  const makeWeekArr = (date: Date): Array<[number, Date]> => {
+    const day = date.getDay();
+    const week: Array<[number, Date]> = [];
+    for (let i = 0; i < 7; i++) {
+      const newDate = new Date(date.valueOf() + 86400000 * (i - day));
+      week.push([i, newDate]);
+    }
+    return week;
+  };
+
+  const monthList = (nowDate: Date) => {
+    const nowYear = nowDate.getFullYear();
+    const nowMonth = nowDate.getMonth();
+
+    const dayOneWeek = new Date(nowYear, nowMonth, 1).getDay();
+    const dayLastWeek = new Date(nowYear, nowMonth + 1, 0).getDay();
+
+    const result: Date[] = [];
+    const prevMonthEnd = new Date(nowYear, nowMonth, 0).getDate();
+    const nowMonthed = new Date(nowYear, nowMonth + 1, 0).getDate();
+    for (let i = dayOneWeek - 1; i >= 0; i--) {
+      result.push(new Date(nowYear, nowMonth - 1, prevMonthEnd - i));
+    }
+    for (let i = 1; i <= nowMonthed; i++) {
+      result.push(new Date(nowYear, nowMonth, i));
+    }
+    for (let i = 1; i < 7 - dayLastWeek; i++) {
+      result.push(new Date(nowYear, nowMonth + 1, i));
+    }
+    return result;
+  };
+
+  const getDayOfWeek = (date: Date): string => {
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    return days[date.getDay()];
+  };
+
+  const WeekDisplay: React.FC<{ week: Array<[number, Date]> }> = ({ week }) => (
+    <>
+      {week.map(([index, date]) => (
+        <div
+          className="border-r border-solid border-[#E5E5E5] text-center text-[1.4rem] font-bold text-[#A1A1A1] "
+          key={index}
+        >
+          {`  ${date.getMonth() + 1}.${date.getDate()}.`} ({getDayOfWeek(date)})
+        </div>
+      ))}
+    </>
+  );
+  const weeks = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+  const weeksStyle = ' text-center text-[#FFF] font-bold text-[1.4rem] bg-[#292929] p-4 ';
+
+  return (
+    <>
+      {mode === 'month' && (
+        <div className=" shadow-[ 0_0_1rem_0_rgba(17, 17,  17, 0.05)] grid h-[40.6rem] grid-cols-7 rounded-[2.4rem] ">
+          {weeks.map((week: string, index: number) => {
+            return (
+              <div
+                key={index}
+                className={`${weeksStyle} ${index === 0 ? 'rounded-tl-[2.4rem] bg-[#F74242]' : ''} ${index === 6 ? 'rounded-tr-[2.4rem]' : ''} `}
+              >
+                <WeekBox weekName={week} />
+              </div>
+            );
+          })}
+
+          {allDay.map((day: Date) => (
+            <AllDay key={day.getTime()} day={day} />
+          ))}
+        </div>
+      )}
+      {mode === 'week' && (
+        <div className="grid h-[40.6rem] grid-cols-7 gap-2 rounded-[2.4rem]  ">
+          <WeekDisplay week={week} />
+        </div>
+      )}
+    </>
   );
 }
+
 export default DateBox;

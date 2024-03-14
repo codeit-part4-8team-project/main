@@ -1,38 +1,87 @@
+import { useContext } from 'react';
 import clsx from 'clsx';
-interface Props{
-  nowDate: Date;
-  setNowDate: React.Dispatch<React.SetStateAction<Date>>;
-}
-function ControlDate ({nowDate, setNowDate}:Props){
-   const Container = clsx('w-full','flex', 'flex-start', 'items-center');
-   const Button= clsx('w-[1.6rem]','h-[1.6rem]','text-[#11111]','border-[0.1rem]','border-solid','border-slate-300');
-  const DateText =clsx('font-bold','text-xl');
+import ArrowLeftAll from '../../../public/assets/_allow-left-all.svg';
+import ArrowLeft from '../../../public/assets/_allow-left.svg';
+import ArrrowRightAll from '../../../public/assets/_allow-right-all.svg';
+import ArrowRight from '../../../public/assets/_allow-right.svg';
+import { calendarContext } from '@/contexts/CalenarProvider';
 
-  const changeYear=(change:number)=>{
+interface ControlDateProp {
+  mode: 'month' | 'week';
+}
+function ControlDate({ mode }: ControlDateProp) {
+  const Container = clsx('w-full', 'flex', 'items-center');
+  const arrowButton = 'w-[2.4rem] h-[2.4rem]';
+  const DateText = clsx('font-bold text-[1.2rem] text-[#292929] mx-[1.6rem]');
+  const { nowDate, setNowDate } = useContext(calendarContext);
+
+  const changeYear = (change: number) => {
     const date = new Date(nowDate.getTime());
-    date.setFullYear(date.getFullYear()+change);
+    date.setFullYear(date.getFullYear() + change);
     setNowDate(date);
   };
-const changeMonth=(change:number)=>{
-  const date = new Date(nowDate.getTime());
-  date.setMonth(date.getMonth()+ change);
-  setNowDate(date);
-};
+  const changeMonth = (change: number) => {
+    const date = new Date(nowDate.getTime());
+    date.setMonth(date.getMonth() + change);
+    setNowDate(date);
+  };
 
-  return(
-<div className={Container}>
-  
-   <button  className={Button} onClick={()=>changeYear(-1)}>{`<<`}</button>
-   <button className={Button} onClick={()=>changeMonth(-1)}>{`<`}</button>
-  
-   <h1 className={DateText}>{`${nowDate.getFullYear()}년 ${nowDate.getMonth()+1}월`}</h1>
+  const getWeekRange = (date: Date): [Date, Date] => {
+    const dayOfWeek = date.getDay();
+    const diff = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
 
-   <button className={Button} onClick={()=>changeMonth(1)}>{`>`}</button>
-   <button className={Button} onClick={()=>changeYear(1)}>{`>>`}</button>
-   
- 
-    </div>
+    const startDate = new Date(date);
+    startDate.setDate(startDate.getDate() - diff - 1);
+
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 6);
+
+    return [startDate, endDate];
+  };
+
+  const changeWeekCalendar = (change: number) => {
+    const today = new Date(nowDate.getTime());
+    const dayOfWeek = today.getDay();
+    const diff = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+
+    today.setDate(today.getDate() - diff + 7 * change);
+    setNowDate(today);
+  };
+  const [startDate, endDate] = getWeekRange(nowDate);
+  return (
+    <>
+      {mode === 'month' && (
+        <div className={Container}>
+          <button className={`${arrowButton} mr-[0.4rem]`} onClick={() => changeYear(-1)}>
+            <img src={ArrowLeftAll} alt="이전 년도 이동 아이콘" />
+          </button>
+          <button className={arrowButton} onClick={() => changeMonth(-1)}>
+            <img src={ArrowLeft} alt="이전 달 이동 아이콘" />
+          </button>
+
+          <h1 className={DateText}>{`${nowDate.getFullYear()}년 ${nowDate.getMonth() + 1}월`}</h1>
+
+          <button className={arrowButton} onClick={() => changeMonth(1)}>
+            <img src={ArrowRight} alt="다음 달 이동 아이콘" />
+          </button>
+          <button className={`${arrowButton}mr-[0.4rem]`} onClick={() => changeYear(1)}>
+            <img src={ArrrowRightAll} alt="다음 년도 이동 아이콘" />
+          </button>
+        </div>
+      )}
+      {mode === 'week' && (
+        <div className={Container}>
+          <button className={arrowButton} onClick={() => changeMonth(-1)}>{`<<`}</button>
+          <button className={arrowButton} onClick={() => changeWeekCalendar(-1)}>{`<`}</button>
+
+          <h1
+            className={DateText}
+          >{`${startDate.getFullYear()}. ${startDate.getMonth() + 1}. ${startDate.getDate()} ~ ${endDate.getFullYear()}.${endDate.getMonth() + 1}. ${endDate.getDate()}`}</h1>
+          <button className={arrowButton} onClick={() => changeWeekCalendar(1)}>{`>`}</button>
+          <button className={arrowButton} onClick={() => changeMonth(1)}>{`>>`}</button>
+        </div>
+      )}
+    </>
   );
-  
 }
 export default ControlDate;
