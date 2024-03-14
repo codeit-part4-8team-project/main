@@ -11,9 +11,7 @@ export default function MainPage() {
       <SideBar />
       <div className="grid h-[113rem] w-[161.2rem] grid-cols-[107.4fr_42.6fr] grid-rows-[auto_auto] gap-[5.2rem] rounded-[2.4rem] bg-[#F7F7F7] p-12 shadow-[0px_0px_5px_0px_rgba(17,17,17,0.1)]">
         <BoardSection title="My calendar" content={<Temp />} />
-        <div className="row-span-2">
-          <AnnouncementBoard />
-        </div>
+        <AnnouncementBoard />
         <BoardSection title="Kanban board" content={<KanbanBoard />} />
       </div>
     </div>
