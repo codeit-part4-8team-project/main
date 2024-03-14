@@ -7,7 +7,7 @@ interface circleType {
 
 interface ModalToggleProps {
   closeClick?: () => void;
-  handleColorClick?: (color: string) => void;
+  handleColorClick?: any;
 }
 
 function ModalColorToggle({ closeClick, handleColorClick }: ModalToggleProps) {

@@ -13,7 +13,7 @@ interface ModalProps {
 function ModalLayout({ children, closeClick, title, size = 'lg' }: ModalProps) {
   console.log(title == '일정 추가');
   const container = clsx({
-    'relative h-[85.5rem] w-[49.7rem] bg-white p-16': size === 'lg',
+    'relative h-[109.3rem] w-[49.7rem] bg-white p-16': size === 'lg',
     'relative h-[59.1rem] w-[49.7rem] bg-white p-16': size === 'md',
   });
   return (
