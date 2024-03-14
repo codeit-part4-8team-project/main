@@ -18,7 +18,7 @@ export default function SideBar() {
   return (
     <>
       {isOpen && <GroupModal closeClick={handleToggleModalClick} />}
-      <div className="fixed bottom-0 left-0 top-[8.2rem] w-[26rem] rounded-tr-3xl bg-[#292929]">
+      <div className="fixed bottom-0 left-0 top-[8.2rem] w-[26rem] rounded-tr-3xl bg-gray100">
         <ProfileSection />
         <BoardList />
         <GroupSection />
@@ -45,7 +45,7 @@ function GroupSection() {
   };
 
   return (
-    <div className="relative mt-[47.8rem] flex items-center justify-between bg-[#222222] py-[1.8rem] pl-16 pr-[2.4rem]">
+    <div className="relative mt-[47.8rem] flex items-center justify-between bg-black py-[1.8rem] pl-16 pr-[2.4rem]">
       <span className="text-[1.6rem] font-bold text-[#EDEEDC]">그룹</span>
       <button className="relative" onClick={handleClickOpenModal}>
         <img src={CreateIcon} alt="그룹 생성 버튼" />

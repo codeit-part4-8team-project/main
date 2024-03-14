@@ -25,7 +25,7 @@ function DropDownItem({ children }: DropDownItemProps) {
     <button
       onClick={handleClickOpenModal}
       type="button"
-      className="inline-flex h-[3.7rem] items-center justify-center p-4 text-[1.4rem] font-medium text-[#5F5F5F] hover:bg-[#EAEAEA]"
+      className="inline-flex h-[3.7rem] items-center justify-center p-4 text-[1.4rem] font-medium text-gray80 hover:bg-[#EAEAEA]"
     >
       {children}
     </button>
