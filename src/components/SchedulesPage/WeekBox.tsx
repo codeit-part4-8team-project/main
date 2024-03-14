@@ -1,7 +1,11 @@
-interface Props{
-  weekName:string;
+interface Props {
+  weekName: string;
 }
-function WeekBox ({weekName}:Props){
-  return<div><p>{weekName}</p></div>
+function WeekBox({ weekName }: Props) {
+  return (
+    <div>
+      <p>{weekName}</p>
+    </div>
+  );
 }
 export default WeekBox;

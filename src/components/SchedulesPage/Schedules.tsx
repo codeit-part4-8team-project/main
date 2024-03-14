@@ -1,23 +1,26 @@
 import { useRef, useState } from 'react';
-import fileterIcon from '../../../public/images/filter.svg';
+import clsx from 'clsx';
+import MyCalendar from '../../../public/assets/My calendar.svg';
+import CalendarImg from '../../../public/assets/calendar-dark.svg';
 import ScheduleModal from '../Modal/ScheduleModal';
 import Button from '../common/Button';
 import ControlDate from './ControlDate';
 import DateBox from './DateBox';
-import clsx from 'clsx';
+import GruoupFilter from './GroupFilter';
 
 interface SchedulesProps {
   calendarType: string;
 }
 
 function Schedules({ calendarType }: SchedulesProps) {
-  const Container = 'w-full flex flex-col items-center h-full p-[2.4rem]';
-  const Contents = clsx('pt-[2.3rem] pl-12 pr-[3.2rem] pb-[2.2rem]');
-  const Text = clsx('text-[#111] font-normal text-[1.6rem]');
-  const [nowDate, setNowDate] = useState<Date>(new Date());
-  const [clickedDate, setClickedDate] = useState<Date>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+
+  const container =
+    'w-full h-screen bg-[#F7F7F7] mt-[8.6rem] ml-[28.4rem] mb-[2.4rem]  mr-[2.4rem] pt-12 pl-12 pr-[26.9rem] rounded-[2.4rem]';
+
+  const title = clsx('flex item-center ');
+
   const handleModalOutsideClick = (e: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
       setIsModalOpen(false);
@@ -29,39 +32,26 @@ function Schedules({ calendarType }: SchedulesProps) {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
+  let calendarsType = calendarType === '나의 캘린더' ? MyCalendar : '';
   return (
-    <div className={Container}>
-      <div className={Contents}>
-        <div className={clsx('ju m-0 flex items-center justify-between gap-[122.8rem] p-0')}>
-          <div className={Text}>{calendarType} 캘린더</div>
-          <div className={clsx(`flex items-center ${Text}`)}>
-            {calendarType !== '팀  || 스터디' && (
-              <>
-                그룹필터
-                <img
-                  src={fileterIcon}
-                  alt="필터 아이콘"
-                  className={clsx('ml-4 mr-8 h-[2.4rem] w-[2.4rem] bg-[#D9D9D9]')}
-                />
-              </>
-            )}
-            <Button submit={openModal} text="일정생성" />
-            {isModalOpen && <ScheduleModal />}
+    <>
+      <div className={container}>
+        <div className={clsx('ju m-0 flex items-center  gap-[78.8rem] p-0 ')}>
+          <div className={title}>
+            <img className="mr-4" src={CalendarImg} alt="달력 이미지" />
+            <img className="mr-[2.4rem]" src={calendarsType} />
+            <ControlDate mode="month" />
           </div>
-        </div>
-        <div className={clsx('pl-[2.1rem] pr-4')}>
-          <ControlDate nowDate={nowDate} setNowDate={setNowDate} />
 
-          <DateBox
-            nowDate={nowDate}
-            setNowDate={setNowDate}
-            clickedDate={clickedDate}
-            setClickedDate={setClickedDate}
-          />
+          <Button submit={openModal} text="일정생성" />
+          {isModalOpen && <ScheduleModal />}
+        </div>
+        <div className="mr-[0.1rem] mt-[3.9rem] flex gap-12">
+          <GruoupFilter />
+          <DateBox mode="month" />
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

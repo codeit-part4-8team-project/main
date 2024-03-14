@@ -1,18 +1,14 @@
-import { useState } from 'react';
-import ControlDate from '@/components/MainPage/ControlDate';
-import DateBox from '@/components/MainPage/DateBox';
+import ControlDate from '@/components/SchedulesPage/ControlDate';
+import DateBox from '@/components/SchedulesPage/DateBox';
 
 function MainSchedules() {
   const Container = 'w-full m-[1.5rem] rounded-[2.4rem] shadow';
-  const [nowDate, setNowDate] = useState<Date>(new Date());
-
   return (
     <>
-      {' '}
-      <ControlDate nowDate={nowDate} setNowDate={setNowDate} />
+      <ControlDate mode="week" />
       <div className={Container}>
         <div>
-          <DateBox nowDate={nowDate} />
+          <DateBox mode="week" />
         </div>
       </div>
     </>

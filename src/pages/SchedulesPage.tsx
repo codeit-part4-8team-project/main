@@ -4,14 +4,17 @@ import SideBar from '@/components/common/sideBar/SideBar';
 import Schedules from '@/components/SchedulesPage/Schedules';
 
 const SchedulesPage = () => {
+  const container = 'bg-[ #EFEFEF]';
   return (
-    <div>
-      <Nav />
-      <div className={clsx('flex')}>
-        <SideBar />
-        <Schedules calendarType="나의" />
+    <>
+      <div className={container}>
+        <Nav />
+        <div className={clsx(' flex ')}>
+          <SideBar />
+          <Schedules calendarType="나의 캘린더" />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 export default SchedulesPage;
