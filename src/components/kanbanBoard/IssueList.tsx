@@ -32,7 +32,7 @@ function IssueItem() {
 
 export default function IssueList() {
   return (
-    <div className="flex flex-col gap-[1.5rem] overflow-scroll">
+    <div className="flex h-full flex-col gap-[1.5rem] overflow-scroll pb-12">
       <IssueItem />
       <IssueItem />
       <IssueItem />

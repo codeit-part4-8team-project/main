@@ -45,7 +45,8 @@ function AnnouncementCard() {
 
 export default function AnnouncementCards() {
   return (
-    <div className="flex flex-col gap-[2.4rem]">
+    <div className="flex h-full flex-col gap-[2.4rem] overflow-scroll">
+      <AnnouncementCard />
       <AnnouncementCard />
       <AnnouncementCard />
       <AnnouncementCard />
