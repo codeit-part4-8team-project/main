@@ -1,6 +1,7 @@
 import CheckIcon from '../../../public/assets/check-circle-dark.svg';
 import GreenDop from '../../../public/assets/green-dot.svg';
 import ProfileImg from '../../../public/assets/profile-small.svg';
+import NoCard from '../common/NoCard';
 import ProfileStack from '../common/ProfileStack';
 
 const profiles = [ProfileImg, ProfileImg, ProfileImg];
@@ -31,12 +32,20 @@ function IssueItem() {
 }
 
 export default function IssueList() {
+  const hasCard = false;
+
   return (
-    <div className="flex h-full flex-col gap-[1.5rem] overflow-scroll pb-12">
-      <IssueItem />
-      <IssueItem />
-      <IssueItem />
-      <IssueItem />
+    <div className="flex flex-col gap-[1.5rem] h-full pb-12 overflow-scroll">
+      {hasCard ? (
+        <>
+          <IssueItem />
+          <IssueItem />
+          <IssueItem />
+          <IssueItem />
+        </>
+      ) : (
+        <NoCard backgroundColor="[#F6F6F6]">이슈가 없습니다.</NoCard>
+      )}
     </div>
   );
 }
