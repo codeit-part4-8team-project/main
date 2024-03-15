@@ -7,29 +7,6 @@ interface BoardItemProps {
   pathname: string;
 }
 
-function BoardItem({ boardType, pathname }: BoardItemProps) {
-  const { boardName, iconOn, iconOff, link } = BOARDS[boardType as keyof Boards];
-  const isCurrent = pathname === link ? true : false;
-
-  return (
-    <Link to={link}>
-      <button
-        className={clsx(
-          'flex h-16 w-[21.2rem] items-center gap-[1.6rem] rounded-[0.6rem] px-[1.6rem] py-[0.8rem] hover:bg-[#EDEEDC]/10',
-          isCurrent && 'bg-[#EDEEDC]/10',
-        )}
-      >
-        <img
-          className={clsx(!isCurrent && 'opacity-10')}
-          src={isCurrent ? iconOn : iconOff}
-          alt={`${boardName} 아이콘`}
-        />
-        <span className="text-[1.4rem] text-[#EDEEDC] opacity-100">{boardName}</span>
-      </button>
-    </Link>
-  );
-}
-
 export default function BoardList() {
   const { pathname } = useLocation();
 
@@ -48,5 +25,28 @@ export default function BoardList() {
         <BoardItem boardType="board" pathname={pathname} />
       </li>
     </ul>
+  );
+}
+
+function BoardItem({ boardType, pathname }: BoardItemProps) {
+  const { boardName, iconOn, iconOff, link } = BOARDS[boardType as keyof Boards];
+  const isCurrent = pathname === link ? true : false;
+
+  return (
+    <Link to={link}>
+      <button
+        className={clsx(
+          'flex h-16 w-[21.2rem] items-center gap-[1.6rem] rounded-[0.6rem] px-[1.6rem] py-[0.8rem] hover:bg-[#EDEEDC]/10',
+          isCurrent && 'bg-[#EDEEDC]/10',
+        )}
+      >
+        <img
+          className={clsx(!isCurrent && 'opacity-10')}
+          src={isCurrent ? iconOn : iconOff}
+          alt={`${boardName} 아이콘`}
+        />
+        <span className="text-body3-regular text-[#EDEEDC] opacity-100">{boardName}</span>
+      </button>
+    </Link>
   );
 }
