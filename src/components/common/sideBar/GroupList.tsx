@@ -2,7 +2,7 @@ import { ReactNode, useState } from 'react';
 import { Link } from 'react-router-dom';
 import GreenDot from '../../../../public/assets/green-dot.svg';
 import KebabIcon from '../../../../public/assets/kebab-light.svg';
-import DropDown from './DropDown';
+import DropDown from '@/components/common/sideBar/DropDown';
 
 interface GroupItemProps {
   children: ReactNode;

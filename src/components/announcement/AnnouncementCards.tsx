@@ -3,7 +3,7 @@ import ArrowDownIcon from '../../../public/assets/arrow-down-dark.png';
 import CheckIcon from '../../../public/assets/check-circle-dark.svg';
 import CloseIcon from '../../../public/assets/hidden-dark.svg';
 import ProfileImg from '../../../public/assets/profile-small.svg';
-import NoCard from '../common/NoCard';
+import NoCard from '@/components/common/NoCard';
 
 const content =
   '떠나는 길에 니가 내게 말했지. 너는 바라는 게 너무나 많아. 잠깐이라도 널 안 바라보면 머리에 불이 나버린다니까 나는 흐르려는 눈물을 참고 하려던 얘길 어렵게 누르고 그래 미안해 라는 한 마디로 너랑 나눈 날들 마무리했었지 달디달고 달디달고 달디단 밤양갱 밤양갱 내가 먹고 싶었던 건 달디단 밤양갱 밤양갱이야 떠나는 길에 니가 내게 말했지 너는 바라는 게 너무나 많아 아냐 내가 늘 바란 건 하나야';

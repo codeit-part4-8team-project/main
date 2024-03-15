@@ -1,8 +1,8 @@
 import CheckIcon from '../../../public/assets/check-circle-dark.svg';
 import GreenDop from '../../../public/assets/green-dot.svg';
 import ProfileImg from '../../../public/assets/profile-small.svg';
-import NoCard from '../common/NoCard';
-import ProfileStack from '../common/ProfileStack';
+import NoCard from '@/components/common/NoCard';
+import ProfileStack from '@/components/common/ProfileStack';
 
 const profiles = [ProfileImg, ProfileImg, ProfileImg];
 

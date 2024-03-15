@@ -1,4 +1,4 @@
-import IssueList from './IssueList';
+import IssueList from '@/components/kanbanBoard/IssueList';
 
 interface KanbanBoardItemProps {
   title: string;

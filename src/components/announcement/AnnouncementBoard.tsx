@@ -1,5 +1,5 @@
 import MegaphoneIcon from '../../../public/assets/megaphone-dark.svg';
-import AnnouncementCards from './AnnouncementCards';
+import AnnouncementCards from '@/components/announcement/AnnouncementCards';
 
 export default function AnnouncementBoard() {
   return (
