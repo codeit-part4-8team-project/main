@@ -3,6 +3,7 @@ import ArrowDownIcon from '../../../public/assets/arrow-down-dark.png';
 import CheckIcon from '../../../public/assets/check-circle-dark.svg';
 import CloseIcon from '../../../public/assets/hidden-dark.svg';
 import ProfileImg from '../../../public/assets/profile-small.svg';
+import NoCard from '../common/NoCard';
 
 function AnnouncementCard() {
   const content =
@@ -44,13 +45,20 @@ function AnnouncementCard() {
 }
 
 export default function AnnouncementCards() {
+  const hasCard = false;
+
   return (
-    <div className="flex h-full flex-col gap-[2.4rem] overflow-scroll">
-      <AnnouncementCard />
-      <AnnouncementCard />
-      <AnnouncementCard />
-      <AnnouncementCard />
-      <AnnouncementCard />
+    <div className="flex h-full w-full flex-col gap-[2.4rem] overflow-scroll">
+      {hasCard ? (
+        <>
+          <AnnouncementCard />
+          <AnnouncementCard />
+          <AnnouncementCard />
+          <AnnouncementCard />
+        </>
+      ) : (
+        <NoCard backgroundColor="white">공지사항이 없습니다.</NoCard>
+      )}
     </div>
   );
 }
