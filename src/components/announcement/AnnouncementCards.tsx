@@ -18,9 +18,9 @@ function AnnouncementCard() {
 
   return (
     <div className="relative flex w-full flex-col gap-[1.7rem] rounded-[2.4rem] bg-[#ECF619] p-[2.4rem]">
-      <span className="text-[1.4rem] font-bold text-gray100">디자인 스터디</span>
-      <span className="text-[1.4rem] text-gray100">{isOpen ? content : shortened}</span>
-      <span className="text-40 text-black opacity-30">게시 : 2024-03-04</span>
+      <span className="text-body3-bold text-gray100">디자인 스터디</span>
+      <span className="text-body3-regular text-gray100">{isOpen ? content : shortened}</span>
+      <span className="text-body5-regular text-black opacity-30">게시 : 2024-03-04</span>
       <div className="absolute right-[2.4rem] top-[2.4rem] flex items-center gap-[0.8rem]">
         <button type="button">
           <img className="h-[2.4rem] w-[2.4rem]" src={CheckIcon} alt="체크 버튼" />

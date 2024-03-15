@@ -7,7 +7,7 @@ interface KanbanBoardItemProps {
 function KanbanBoardItem({ title }: KanbanBoardItemProps) {
   return (
     <div className="flex h-[47.9rem] w-full flex-col gap-[2.4rem] rounded-[2.4rem] bg-[#FCFCFC] px-12 pt-12 shadow-[0_0_1rem_0_rgba(17,17,17,0.05)]">
-      <span className="text-[1.6rem] font-bold text-gray80">{title}</span>
+      <span className="text-body2-bold text-gray80">{title}</span>
       <IssueList />
     </div>
   );

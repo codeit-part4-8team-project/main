@@ -7,27 +7,6 @@ interface BoardItemProps {
   pathname: string;
 }
 
-export default function BoardList() {
-  const { pathname } = useLocation();
-
-  return (
-    <ul className="absolute left-[2.4rem] top-40 flex flex-col gap-[1.6rem]">
-      <li>
-        <BoardItem boardType="dashboard" pathname={pathname} />
-      </li>
-      <li>
-        <BoardItem boardType="calendar" pathname={pathname} />
-      </li>
-      <li>
-        <BoardItem boardType="kanbanboard" pathname={pathname} />
-      </li>
-      <li>
-        <BoardItem boardType="board" pathname={pathname} />
-      </li>
-    </ul>
-  );
-}
-
 function BoardItem({ boardType, pathname }: BoardItemProps) {
   const { boardName, iconOn, iconOff, link } = BOARDS[boardType as keyof Boards];
   const isCurrent = pathname === link ? true : false;
@@ -48,5 +27,26 @@ function BoardItem({ boardType, pathname }: BoardItemProps) {
         <span className="text-body3-regular text-[#EDEEDC] opacity-100">{boardName}</span>
       </button>
     </Link>
+  );
+}
+
+export default function BoardList() {
+  const { pathname } = useLocation();
+
+  return (
+    <ul className="absolute left-[2.4rem] top-40 flex flex-col gap-[1.6rem]">
+      <li>
+        <BoardItem boardType="dashboard" pathname={pathname} />
+      </li>
+      <li>
+        <BoardItem boardType="calendar" pathname={pathname} />
+      </li>
+      <li>
+        <BoardItem boardType="kanbanboard" pathname={pathname} />
+      </li>
+      <li>
+        <BoardItem boardType="board" pathname={pathname} />
+      </li>
+    </ul>
   );
 }
