@@ -80,7 +80,7 @@ function GroupModal({ closeClick }: GroupModalProps) {
     <ModalLayout closeClick={closeClick} title="그룹 생성" size="lg">
       <ModalForm
         // +++ 여기 +++ 입니다 +++
-        firstHookform={register('name')}
+        firstHookform={watch('name')}
         secondHookform={register('invite')}
         onSubmit={handleSubmit(onSubmit)}
         hidden={true}
