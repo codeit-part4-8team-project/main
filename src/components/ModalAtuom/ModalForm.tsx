@@ -5,6 +5,8 @@ import ModalLabel from '../ModalAtuom/ModalLabel';
 import ModalMemberList from './ModalMemberList';
 
 interface ModalFormProps {
+  firstHookform?: any;
+  secondHookform?: any;
   children?: ReactNode;
   who: string;
   profile: string;
@@ -19,8 +21,7 @@ interface ModalFormProps {
   firstType: string;
   secondType: string;
   onSubmit?: any;
-  firstHookform?: any;
-  secondHookform?: any;
+
   firstName?: string;
   secondName?: string;
 }
@@ -91,7 +92,8 @@ function ModalForm({
             className={`${formTextSize} ${borderStyle} `}
           />
           {/* 밑에 p태그 데이터는 이 컴포넌트 안에서 처리 */}
-          <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">0/20</p>
+          {/* 여기 values값 실시간으로 받아야하는데 어떻게하지? */}
+          <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">{firstHookform?.length}/20</p>
         </div>
         {children}
         <div className=" flex flex-col gap-[0.8rem]">

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import github from '../../../public/assets/Github.svg';
 import arrowDown from '../../../public/assets/arrow-down-dark.png';
+import discord from '../../../public/assets/discord.svg';
+import figma from '../../../public/assets/figma.svg';
 import profile from '../../../public/profile.svg';
 import ModalForm from '../ModalAtuom/ModalForm';
 import ModalLabel from '../ModalAtuom/ModalLabel';
@@ -9,12 +11,28 @@ import ModalColorToggle from '@/components/common/ModalColorToggle';
 import ModalLayout from '@/components/common/ModalLayout';
 import ModalInput from '@/components/ModalAtuom/ModalInput';
 
+// {
+//   "name": "string",
+//   "description": "string", 이건 뭐지?? 물어봐야할듯
+//   "color": "string",
+//   "startDate": "string",
+//   "endDate": "string",
+//   "members": [
+//     "string"
+//   ],
+//   "figmaLink": "string",
+//   "githubLink": "string",
+//   "discordLink": "string"
+// }
+// console.log('여기', data);
+
 type Inputs = {
   name: string;
   invite: string;
   startDate: string;
   endDate: string;
   githubLink: string;
+  color: string;
 };
 
 interface GroupModalProps {
@@ -25,6 +43,7 @@ function GroupModal({ closeClick }: GroupModalProps) {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -34,40 +53,24 @@ function GroupModal({ closeClick }: GroupModalProps) {
       startDate: data.startDate,
       endDate: data.endDate,
       githubLink: data.githubLink,
+      color: data.color,
     };
-    console.log(createTeam);
+    console.log('createTema', createTeam);
   };
-  // {
-  //   "name": "string",
-  //   "description": "string", 이건 뭐지?? 물어봐야할듯
-  //   "color": "string",
-  //   "startDate": "string",
-  //   "endDate": "string",
-  //   "members": [
-  //     "string"
-  //   ],
-  //   "figmaLink": "string",
-  //   "githubLink": "string",
-  //   "discordLink": "string"
-  // }
-  // console.log('여기', data);
 
   const formTextSize = 'text-[1.4rem] font-medium';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5]';
-  const [color, setColor] = useState('');
   const [toggle, setToggle] = useState(false);
 
   const handleColorClick = (color: string) => {
-    setColor(color);
-  };
-  console.log(color);
-  const inputVlaue = (e: any) => {
-    console.log(e.target);
+    setValue('color', color);
+    console.log('color test', color);
   };
 
-  const handlePreventDefault = (e: any) => {
-    e.preventDefault();
+  const handleNameValue = (name: string) => {
+    setValue('name', name);
   };
+
   const handleToggle = () => {
     setToggle(!toggle);
   };
@@ -76,6 +79,7 @@ function GroupModal({ closeClick }: GroupModalProps) {
   return (
     <ModalLayout closeClick={closeClick} title="그룹 생성" size="lg">
       <ModalForm
+        // +++ 여기 +++ 입니다 +++
         firstHookform={register('name')}
         secondHookform={register('invite')}
         onSubmit={handleSubmit(onSubmit)}
@@ -97,10 +101,11 @@ function GroupModal({ closeClick }: GroupModalProps) {
         <div className={`${formTextSize} `}>그룹 컬러 칩</div>
         <div className="mb-12 mt-8 flex items-center gap-12">
           {/* 여기임 */}
-          {color ? (
+
+          {watch('color') ? (
             <div
               className={`h-[4.7rem] w-[4.7rem] rounded-[50%]`}
-              style={{ backgroundColor: color }}
+              style={{ backgroundColor: watch('color') }}
             />
           ) : (
             <div className={`h-[4.7rem] w-[4.7rem] rounded-[50%] bg-[#F7F7F7]`} />
@@ -134,7 +139,7 @@ function GroupModal({ closeClick }: GroupModalProps) {
             id="date"
             className={`${formTextSize} ${borderStyle}`}
             placeholder="2024년 3월 13일"
-            value={inputVlaue}
+            // value={inputVlaue}
           />
         </div>
         <ModalLabel htmlFor="link" label="외부 연결 링크" className={`${formTextSize}`} />
