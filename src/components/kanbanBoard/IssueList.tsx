@@ -6,6 +6,25 @@ import ProfileStack from '../common/ProfileStack';
 
 const profiles = [ProfileImg, ProfileImg, ProfileImg];
 
+export default function IssueList() {
+  const hasCard = false;
+
+  return (
+    <div className="flex h-full flex-col gap-[1.5rem] overflow-scroll pb-12">
+      {hasCard ? (
+        <>
+          <IssueItem />
+          <IssueItem />
+          <IssueItem />
+          <IssueItem />
+        </>
+      ) : (
+        <NoCard backgroundColor="[#F6F6F6]">이슈가 없습니다.</NoCard>
+      )}
+    </div>
+  );
+}
+
 function IssueItem() {
   return (
     <div className="relative min-h-64 rounded-[2.4rem] border border-gray30 bg-white p-8">
@@ -27,25 +46,6 @@ function IssueItem() {
       <div className="absolute bottom-8 right-8">
         <ProfileStack profileImgs={profiles} />
       </div>
-    </div>
-  );
-}
-
-export default function IssueList() {
-  const hasCard = false;
-
-  return (
-    <div className="flex h-full flex-col gap-[1.5rem] overflow-scroll pb-12">
-      {hasCard ? (
-        <>
-          <IssueItem />
-          <IssueItem />
-          <IssueItem />
-          <IssueItem />
-        </>
-      ) : (
-        <NoCard backgroundColor="[#F6F6F6]">이슈가 없습니다.</NoCard>
-      )}
     </div>
   );
 }

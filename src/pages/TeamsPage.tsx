@@ -4,7 +4,7 @@ import TeamBar from '@/components/TeamBar';
 import AnnouncementBoard from '@/components/announcement/AnnouncementBoard';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
 
-const TeamsPage = () => {
+export default function TeamsPage() {
   return (
     <div className="relative ml-[26rem] mt-[4.3rem]">
       <Nav />
@@ -17,6 +17,4 @@ const TeamsPage = () => {
       </div>
     </div>
   );
-};
-
-export default TeamsPage;
+}
