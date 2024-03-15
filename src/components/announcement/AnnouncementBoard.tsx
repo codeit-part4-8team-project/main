@@ -5,9 +5,7 @@ export default function AnnouncementBoard() {
   return (
     <div className="mt-[3.6rem] flex h-full w-fit flex-col gap-[2.6rem]">
       <AnnouncememntNotification />
-      <div className="h-full  overflow-scroll">
-        <AnnouncementCards />
-      </div>
+      <AnnouncementCards />
     </div>
   );
 }
