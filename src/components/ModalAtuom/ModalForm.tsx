@@ -3,8 +3,10 @@ import clsx from 'clsx';
 import ModalInput from '../ModalAtuom/ModalInput';
 import ModalLabel from '../ModalAtuom/ModalLabel';
 import ModalMemberList from './ModalMemberList';
+import { watch } from 'fs';
 
 interface ModalFormProps {
+  watch?: any;
   firstHookform?: any;
   secondHookform?: any;
   children?: ReactNode;
@@ -21,7 +23,6 @@ interface ModalFormProps {
   firstType: string;
   secondType: string;
   onSubmit?: any;
-
   firstName?: string;
   secondName?: string;
 }
@@ -45,13 +46,14 @@ function ModalForm({
   secondHookform,
   firstName,
   secondName,
+  watch,
 }: ModalFormProps) {
   const formTextSize = 'text-[1.4rem] font-medium';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5]';
   const borderSize = clsx(
     'mt-16 w-[41.7rem]',
     borderStyle,
-    'px-16 pt-16',
+    'px-12 pt-12',
     { 'h-[35.5rem]': who === '게시자 (나)' },
     {
       'h-[85.7rem]': who !== '게시자 (나)',
@@ -67,6 +69,7 @@ function ModalForm({
     console.log('일정내용입력인풋입니다.-필겸-');
     setScheduleDetail(e.target.value);
   };
+  console.log('watchTest', watch);
   return (
     <form onSubmit={onSubmit}>
       <div className={`${borderSize}`}>
@@ -93,7 +96,11 @@ function ModalForm({
           />
           {/* 밑에 p태그 데이터는 이 컴포넌트 안에서 처리 */}
           {/* 여기 values값 실시간으로 받아야하는데 어떻게하지? */}
-          <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">{firstHookform?.length}/20</p>
+          {watch ? (
+            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">{watch?.length}/20</p>
+          ) : (
+            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">0/20</p>
+          )}
         </div>
         {children}
         <div className=" flex flex-col gap-[0.8rem]">
@@ -102,15 +109,25 @@ function ModalForm({
             className={`${formTextSize}`}
             htmlFor={`${secondHtmlForId}`}
           />
-          <ModalInput
-            name={secondName}
-            hookform={secondHookform}
-            type={secondType}
-            placeholder={`${secondPlaceholder}`}
-            id={`${secondHtmlForId}`}
-            className={`${formTextSize} ${borderStyle} `}
-          />
+          <div className="flex items-center gap-[1.2rem]">
+            <ModalInput
+              name={secondName}
+              hookform={secondHookform}
+              type={secondType}
+              placeholder={`${secondPlaceholder}`}
+              id={`${secondHtmlForId}`}
+              className={`${formTextSize} ${borderStyle} `}
+            />
+            {hidden && (
+              <button>
+                <div className="flex h-[4.6rem] w-[8.7rem] items-center justify-center rounded-[0.6rem] border bg-[#292929] font-bold text-[#FFF]">
+                  초대하기
+                </div>
+              </button>
+            )}
+          </div>
         </div>
+
         {hidden && <ModalMemberList formTextSize={formTextSize} />}
       </div>
 

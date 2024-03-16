@@ -11,7 +11,7 @@ interface ModalInputProps {
 }
 
 function ModalInput({ placeholder, className, id, type, name, hookform }: ModalInputProps) {
-  const inputSize = ' px-[1.8rem] py-[1.2rem] ${formTextSize} size-full';
+  const inputSize = ' px-[1.8rem] py-[1.2rem] ${formTextSize} w-full';
   return (
     <>
       <input
@@ -19,7 +19,7 @@ function ModalInput({ placeholder, className, id, type, name, hookform }: ModalI
         name={name}
         // value={...hookform}
         // defaultValue={}
-        className={`${className} ${inputSize}`}
+        className={`${className} ${inputSize} `}
         placeholder={placeholder}
         id={id}
         type={type}

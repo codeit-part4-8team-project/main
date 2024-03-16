@@ -6,17 +6,13 @@ interface circleType {
 }
 
 interface ModalToggleProps {
-  closeClick?: () => void;
-  handleColorClick?: any;
+  handleColorClick?: (color: string) => void | undefined;
 }
 
-function ModalColorToggle({ closeClick, handleColorClick }: ModalToggleProps) {
+function ModalColorToggle({ handleColorClick }: ModalToggleProps) {
   return (
     <>
-      <div
-        className="absolute left-0 right-0 top-[6rem] grid h-[16.2rem] w-[25.4rem] grid-cols-5 gap-[1.6rem] rounded-[0.6rem] border-[0.2rem] border-black bg-white p-8 shadow-2xl"
-        onClick={closeClick}
-      >
+      <div className="absolute left-0 right-0 top-[6rem] grid h-[16.2rem] w-[25.4rem] grid-cols-5 gap-[1.6rem] rounded-[0.6rem] border-[0.2rem] border-black bg-white p-8 shadow-2xl">
         {Circles.map((circle: circleType) => (
           <div
             onClick={() => handleColorClick(circle?.color)}
