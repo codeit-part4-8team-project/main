@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
-import Board from './Board';
-import Nav from './Nav';
-import SideBar from './sideBar/SideBar';
+import Board from '@/components/common/Board';
+import Nav from '@/components/common/Nav';
+import SideBar from '@/components/common/sideBar/SideBar';
 
 interface PageLayoutProp {
   children: ReactNode;
