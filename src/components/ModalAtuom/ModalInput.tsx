@@ -10,7 +10,14 @@ interface ModalInputProps {
   hookform?: any;
 }
 
-function ModalInput({ placeholder, className, id, type, name, hookform }: ModalInputProps) {
+export default function ModalInput({
+  placeholder,
+  className,
+  id,
+  type,
+  name,
+  hookform,
+}: ModalInputProps) {
   const inputSize = ' px-[1.8rem] py-[1.2rem] ${formTextSize} w-full';
   return (
     <>
@@ -27,5 +34,3 @@ function ModalInput({ placeholder, className, id, type, name, hookform }: ModalI
     </>
   );
 }
-
-export default ModalInput;

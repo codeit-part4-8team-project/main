@@ -7,7 +7,7 @@ interface IssuesModalProps {
   closeClick: () => void;
 }
 
-function IssuesModal({ closeClick }: IssuesModalProps) {
+export default function IssuesModal({ closeClick }: IssuesModalProps) {
   const [tagValues, setTagValues] = useState('');
   const [members, setMembers] = useState('');
   const handleTagClick = () => {
@@ -53,5 +53,3 @@ function IssuesModal({ closeClick }: IssuesModalProps) {
     </ModalLayout>
   );
 }
-
-export default IssuesModal;

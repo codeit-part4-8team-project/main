@@ -3,11 +3,10 @@ interface ModalLabelProps {
   label?: string;
   className?: string;
 }
-function ModalLabel({ htmlFor, label, className }: ModalLabelProps) {
+export default function ModalLabel({ htmlFor, label, className }: ModalLabelProps) {
   return (
     <label htmlFor={`${htmlFor}`} className={`${className}`}>
       {label}
     </label>
   );
 }
-export default ModalLabel;

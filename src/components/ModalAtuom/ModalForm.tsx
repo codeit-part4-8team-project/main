@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import ModalInput from '../ModalAtuom/ModalInput';
 import ModalLabel from '../ModalAtuom/ModalLabel';
 import ModalMemberList from './ModalMemberList';
-import { watch } from 'fs';
 
 interface ModalFormProps {
   watch?: any;
@@ -27,7 +26,7 @@ interface ModalFormProps {
   secondName?: string;
 }
 
-function ModalForm({
+export default function ModalForm({
   who,
   profile,
   userNickName,
@@ -137,5 +136,3 @@ function ModalForm({
     </form>
   );
 }
-
-export default ModalForm;

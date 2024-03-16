@@ -14,7 +14,7 @@ interface GroupEditModalProps {
   closeClick: () => void;
 }
 
-function GroupEditModal({ closeClick }: GroupEditModalProps) {
+export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
   const urlToggleRef = useRef<HTMLButtonElement | null>(null);
   const [color, setColor] = useState('');
@@ -185,5 +185,3 @@ function GroupEditModal({ closeClick }: GroupEditModalProps) {
     </>
   );
 }
-
-export default GroupEditModal;

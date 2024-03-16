@@ -2,7 +2,7 @@ interface ModalMemberListProps {
   formTextSize?: string;
 }
 
-function ModalMemberList({ formTextSize }: ModalMemberListProps) {
+export default function ModalMemberList({ formTextSize }: ModalMemberListProps) {
   return (
     <>
       <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
@@ -14,5 +14,3 @@ bg-[#F7F7F7]"
     </>
   );
 }
-
-export default ModalMemberList;

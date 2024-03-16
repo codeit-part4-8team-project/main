@@ -37,7 +37,7 @@ type Inputs = {
 interface GroupModalProps {
   closeClick?: () => void;
 }
-function GroupModal({ closeClick }: GroupModalProps) {
+export default function GroupModal({ closeClick }: GroupModalProps) {
   const {
     register,
     handleSubmit,
@@ -237,4 +237,3 @@ function GroupModal({ closeClick }: GroupModalProps) {
     </ModalLayout>
   );
 }
-export default GroupModal;
