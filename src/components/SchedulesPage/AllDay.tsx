@@ -50,7 +50,7 @@ function AllDay({ day }: AllDayProp) {
       'border-b border-solid border-[#EFEFEF]': !isLastRow,
       'rounded-bl-[2.4rem]': columnIndex === 0 && isLastRow,
       'rounded-br-[2.4rem]': isLastColumn && isLastRow,
-      'text-[#F74242]': day.getDay() === 0,
+      'text-[#F74242]': day.getDay() === 0 && !notThisMonthClass,
     },
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
