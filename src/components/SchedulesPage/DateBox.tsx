@@ -13,7 +13,7 @@ function DateBox({ mode }: DateBoxProp) {
   const [week, setWeek] = useState<Array<[number, Date]>>([]);
   const [allDay, setAllDay] = useState<Date[]>([]);
   const { nowDate } = useContext(calendarContext);
-  const weeksStyle = ' text-center text-[#FFF] font-bold text-[1.4rem] bg-[#292929] p-4 ';
+  const weeksStyle = ' text-center text-[#FFF] text-body3-bold bg-[#292929] p-4 ';
 
   const monthList = (nowDate: Date) => {
     const nowYear = nowDate.getFullYear();

@@ -12,7 +12,7 @@ export const WeekDisplay: React.FC<WeekDisplayProps> = ({ week }) => {
     <>
       {week.map(([index, date]) => (
         <div
-          className={` text-center text-[1.4rem] font-bold ${index === 6 ? 'border-none' : 'border-r border-solid border-[#E5E5E5]'}
+          className={` text-body3-bold text-center ${index === 6 ? 'border-none' : 'border-r border-solid border-[#E5E5E5]'}
            ${date.toDateString() === today.toDateString() ? 'text-[#292929]' : 'text-[#A1A1A1]'}`}
           key={index}
         >

@@ -11,7 +11,7 @@ interface ChecklistItemProps {
 }
 
 function ChecklistItem({ name, color, isChecked, onCheck }: ChecklistItemProps) {
-  const nameStyle = 'text-[1.2rem] font-bold ml-4 text-[#292929]';
+  const nameStyle = 'text-body4-bold ml-4 text-[#292929]';
   return (
     <div className="flex w-[17.3rem] items-center justify-between">
       <div className="flex">
@@ -46,7 +46,7 @@ function GroupFilter() {
 
   return (
     <div className="flex flex-col">
-      <div className="mb-14 text-[1.4rem] font-bold text-[#A1A1A1]">그룹 필터</div>
+      <div className="text-body3-bold mb-14 text-[#A1A1A1]">그룹 필터</div>
       {items.map((item, index) => (
         <ChecklistItem
           key={index}

@@ -12,7 +12,7 @@ interface ControlDateProp {
 function ControlDate({ mode }: ControlDateProp) {
   const Container = clsx('w-full', 'flex', 'items-center');
   const arrowButton = 'w-[2.4rem] h-[2.4rem] ';
-  const DateText = clsx('font-bold text-[1.2rem] text-[#292929] mx-[1.6rem]');
+  const DateText = clsx('text-body4-bold text-[#292929] mx-[1.6rem]');
   const { nowDate, setNowDate } = useContext(calendarContext);
 
   const changeYear = (change: number) => {

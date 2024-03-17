@@ -13,11 +13,10 @@ function AllDay({ day }: AllDayProp) {
   const today = new Date();
 
   const notTodayStyle = 'text-[#A1A1A1] ';
-
   // 오늘 날짜에 대한 스타일 클래스 결정
   let todayClass = '';
   if (day.getDate() === today.getDate() && day.getMonth() === today.getMonth()) {
-    todayClass = 'text-[#292929]'; // 배경색 스타일을 직접 지정
+    todayClass = 'text-[black]'; // 배경색 스타일을 직접 지정
   }
   let notTodayClass = '';
   if (day.getDate() !== today.getDate()) {
@@ -40,7 +39,7 @@ function AllDay({ day }: AllDayProp) {
   const isLastRow = rowIndex === numRows; // 마지막 줄 여부 확인
 
   const DateDay = clsx(
-    'bg-[#FFF] w-full h-[16.2rem] text-[1.4rem] font-bold text-start py-4 px-[2.4rem] ',
+    'bg-[#FFF] w-full h-[16.2rem] text-body3-bold text-start py-4 px-[2.4rem] ',
 
     todayClass,
     notTodayClass,
