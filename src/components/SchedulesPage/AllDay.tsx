@@ -32,11 +32,11 @@ function AllDay({ day }: AllDayProp) {
   const columnIndex = day.getDay(); // 현재 요일의 열 인덱스 (0부터 시작)
   const isLastColumn = columnIndex === numColumns - 1;
   const numRows = 6;
-  const daysInNextMonth = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 0).getDate(); //다음달의 첫번째 날
-  const currentDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1).getDate(); // 현재 달의 첫째 날
-  const daysInPrevMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 0).getDate(); // 이전 달의 마지막 날
-
+  const daysInNextMonth = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 0).getDate(); //이전달의 첫번째 날
+  const currentDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 1).getDate(); //현재 달의 일수
+  const daysInPrevMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 0).getDate(); //다음 달의 마지막 날
   const rowIndex = (daysInNextMonth + currentDate + daysInPrevMonth) / 7;
+
   const isLastRow = rowIndex === numRows; // 마지막 줄 여부 확인
 
   const DateDay = clsx(
@@ -49,8 +49,8 @@ function AllDay({ day }: AllDayProp) {
     {
       'border-r border-solid border-[#EFEFEF]': !isLastColumn,
       'border-b border-solid border-[#EFEFEF]': !isLastRow,
-      'rounded-bl-[2.4rem]': day.getDay() === 0 && isLastRow, // 마지막 줄의 일요일인 경우에만 왼쪽 끝을 둥글게
-      'rounded-br-[2.4rem]': day.getDay() === 6 && isLastRow, //
+      'rounded-bl-[2.4rem]': columnIndex === 0 && isLastRow,
+      'rounded-br-[2.4rem]': isLastColumn && isLastRow,
       'text-[#F74242]': day.getDay() === 0,
     },
   );

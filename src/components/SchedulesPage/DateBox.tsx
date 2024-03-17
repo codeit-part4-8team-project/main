@@ -8,36 +8,12 @@ import { calendarContext } from '@/contexts/CalenarProvider';
 interface DateBoxProp {
   mode: 'month' | 'week';
 }
+
 function DateBox({ mode }: DateBoxProp) {
   const [week, setWeek] = useState<Array<[number, Date]>>([]);
   const [allDay, setAllDay] = useState<Date[]>([]);
   const { nowDate } = useContext(calendarContext);
   const weeksStyle = ' text-center text-[#FFF] font-bold text-[1.4rem] bg-[#292929] p-4 ';
-  //없애보기
-  // useEffect(() => {
-  //   if (mode === 'month') {
-  //     setAllDay(monthList(nowDate));
-  //   } else if (mode === 'week') {
-  //     const currentDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate());
-  //     const weekArray = makeWeekArr(currentDate);
-  //     setWeek(weekArray);
-  //   }
-  // }, [nowDate]);
-  const handleModeChange = useCallback(() => {
-    if (mode === 'month') {
-      setAllDay(monthList(nowDate));
-      setWeek([]); // mode가 month로 변경되면 week 상태 초기화
-    } else if (mode === 'week') {
-      const currentDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate());
-      const weekArray = makeWeekArr(currentDate);
-      setWeek(weekArray);
-      setAllDay([]); // mode가 week으로 변경되면 allDay 상태 초기화
-    }
-  }, [nowDate]);
-
-  useEffect(() => {
-    handleModeChange();
-  }, [handleModeChange]);
 
   const monthList = useCallback((nowDate: Date) => {
     const nowYear = nowDate.getFullYear();
@@ -64,6 +40,16 @@ function DateBox({ mode }: DateBoxProp) {
     });
     return result;
   }, []);
+
+  useEffect(() => {
+    if (mode === 'month') {
+      setAllDay(monthList(nowDate));
+    } else if (mode === 'week') {
+      const currentDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate());
+      const weekArray = makeWeekArr(currentDate);
+      setWeek(weekArray);
+    }
+  }, [nowDate, mode, monthList]);
 
   const days = ['일', '월', '화', '수', '목', '금', '토'];
 
