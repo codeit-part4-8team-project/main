@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { makeWeekArr } from '../MainPage/WeekArr';
 import { WeekDisplay } from '../MainPage/WeekDisplay';
 import AllDay from './AllDay';
@@ -15,7 +15,7 @@ function DateBox({ mode }: DateBoxProp) {
   const { nowDate } = useContext(calendarContext);
   const weeksStyle = ' text-center text-[#FFF] font-bold text-[1.4rem] bg-[#292929] p-4 ';
 
-  const monthList = useCallback((nowDate: Date) => {
+  const monthList = (nowDate: Date) => {
     const nowYear = nowDate.getFullYear();
     const nowMonth = nowDate.getMonth();
 
@@ -39,9 +39,9 @@ function DateBox({ mode }: DateBoxProp) {
       }
     });
     return result;
-  }, []);
+  };
 
-  useEffect(() => {
+  const updateDateList = () => {
     if (mode === 'month') {
       setAllDay(monthList(nowDate));
     } else if (mode === 'week') {
@@ -49,7 +49,12 @@ function DateBox({ mode }: DateBoxProp) {
       const weekArray = makeWeekArr(currentDate);
       setWeek(weekArray);
     }
-  }, [nowDate, mode, monthList]);
+  };
+
+  // 초기 렌더링 시 한 번 호출
+  useEffect(() => {
+    updateDateList();
+  }, [updateDateList]);
 
   const days = ['일', '월', '화', '수', '목', '금', '토'];
 

@@ -8,11 +8,6 @@ import ControlDate from './ControlDate';
 import DateBox from './DateBox';
 import GruoupFilter from './GroupFilter';
 
-// const requestData = {
-//   url: `https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo`,
-//   serviceKey: process.env.REACT_APP_SERVICE_KEY,
-// };
-
 interface SchedulesProps {
   calendarType: string;
 }
