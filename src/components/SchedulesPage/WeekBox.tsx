@@ -4,7 +4,7 @@ interface Props {
 function WeekBox({ weekName }: Props) {
   return (
     <div>
-      <p>{weekName}</p>
+      <p>{weekName}요일</p>
     </div>
   );
 }

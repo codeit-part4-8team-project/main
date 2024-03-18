@@ -11,8 +11,8 @@ interface ControlDateProp {
 }
 function ControlDate({ mode }: ControlDateProp) {
   const Container = clsx('w-full', 'flex', 'items-center');
-  const arrowButton = 'w-[2.4rem] h-[2.4rem]';
-  const DateText = clsx('font-bold text-[1.2rem] text-[#292929] mx-[1.6rem]');
+  const arrowButton = 'w-[2.4rem] h-[2.4rem] ';
+  const DateText = clsx('text-body4-bold text-[#292929] mx-[1.6rem]');
   const { nowDate, setNowDate } = useContext(calendarContext);
 
   const changeYear = (change: number) => {
@@ -71,14 +71,22 @@ function ControlDate({ mode }: ControlDateProp) {
       )}
       {mode === 'week' && (
         <div className={Container}>
-          <button className={arrowButton} onClick={() => changeMonth(-1)}>{`<<`}</button>
-          <button className={arrowButton} onClick={() => changeWeekCalendar(-1)}>{`<`}</button>
+          <button className={arrowButton} onClick={() => changeMonth(-1)}>
+            <img src={ArrowLeftAll} alt="이전 달 이동 아이콘" />
+          </button>
+          <button className={arrowButton} onClick={() => changeWeekCalendar(-1)}>
+            <img src={ArrowLeft} alt="이전 주 이동 아이콘" />
+          </button>
 
           <h1
             className={DateText}
           >{`${startDate.getFullYear()}. ${startDate.getMonth() + 1}. ${startDate.getDate()} ~ ${endDate.getFullYear()}.${endDate.getMonth() + 1}. ${endDate.getDate()}`}</h1>
-          <button className={arrowButton} onClick={() => changeWeekCalendar(1)}>{`>`}</button>
-          <button className={arrowButton} onClick={() => changeMonth(1)}>{`>>`}</button>
+          <button className={arrowButton} onClick={() => changeWeekCalendar(1)}>
+            <img src={ArrowRight} alt="다음 주 이동 아이콘" />
+          </button>
+          <button className={arrowButton} onClick={() => changeMonth(1)}>
+            <img src={ArrrowRightAll} alt="다음 달 이동 아이콘" />
+          </button>
         </div>
       )}
     </>

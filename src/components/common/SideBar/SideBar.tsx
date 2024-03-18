@@ -18,7 +18,7 @@ export default function SideBar() {
   return (
     <>
       {isOpen && <GroupModal closeClick={handleToggleModalClick} />}
-      <div className="fixed bottom-0 left-0 top-[8.2rem] w-[26rem] rounded-tr-3xl bg-gray100">
+      <div className="bg-gray100 fixed bottom-0 left-0 top-[8.2rem] w-[26rem] rounded-tr-3xl">
         <ProfileSection />
         <BoardList />
         <GroupSection />
