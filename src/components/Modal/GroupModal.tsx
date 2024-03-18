@@ -27,6 +27,7 @@ import ModalInput from '@/components/ModalAtuom/ModalInput';
 
 type Inputs = {
   name: string;
+  description: string;
   members: string[];
   color: string;
   startDate: string;
@@ -48,6 +49,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const createTeam = {
       name: data.name,
+      description: data.description,
       members: [data?.members],
       startDate: data.startDate,
       endDate: data.endDate,
@@ -138,6 +140,24 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
         profile={profile}
         userNickName="#userNickName"
       >
+        <div className="flex flex-col gap-[0.8rem]">
+          <ModalLabel htmlFor="description" label="그룹 설명" className={`${formTextSize}`} />
+          <ModalInput
+            id="description"
+            type="text"
+            placeholder="그룹 설명을 입력해 주세요."
+            className={`${formTextSize}${borderStyle}`}
+            name="description"
+            hookform={register('description')}
+          />
+        </div>
+        {watch('description') ? (
+          <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">
+            {watch('description')?.length}/40
+          </p>
+        ) : (
+          <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">0/20</p>
+        )}
         <div className={`${formTextSize} `}>그룹 컬러 칩</div>
         <div className="mb-12 mt-8 flex items-center gap-12">
           {watch('color') ? (

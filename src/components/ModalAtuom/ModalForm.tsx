@@ -55,7 +55,7 @@ export default function ModalForm({
     'px-12 pt-12',
     { 'h-[35.5rem]': who === '게시자 (나)' },
     {
-      'h-[85.7rem]': who !== '게시자 (나)',
+      'h-[96.3rem]': who !== '게시자 (나)',
     },
   );
   const [scheduleDetail, setScheduleDetail] = useState(''); // hookForm 쓸지 안 쓸지 결정해서 작업하기

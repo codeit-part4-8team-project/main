@@ -1,4 +1,5 @@
 import { MouseEventHandler, useEffect, useRef, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import github from '../../../public/assets/Github.svg';
 import arrowDown from '../../../public/assets/arrow-down-dark.png';
 import discord from '../../../public/assets/discord.svg';
@@ -10,14 +11,42 @@ import ModalForm from '@/components/ModalAtuom/ModalForm';
 import ModalInput from '@/components/ModalAtuom/ModalInput';
 import ModalLabel from '@/components/ModalAtuom/ModalLabel';
 
+type Inputs = {
+  name: string;
+  description: string;
+  members: string[];
+  color: string;
+  startDate: string;
+  endDate: string;
+  githubLink: string;
+};
+
 interface GroupEditModalProps {
   closeClick: () => void;
 }
 
 export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    const createTeam = {
+      name: data.name,
+      description: data.description,
+      members: [data?.members],
+      startDate: data.startDate,
+      endDate: data.endDate,
+      githubLink: data.githubLink,
+      color: data.color,
+    };
+    console.log('createTema', createTeam);
+  };
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
   const urlToggleRef = useRef<HTMLButtonElement | null>(null);
-  const [color, setColor] = useState('');
   const [colorToggle, setColorToggle] = useState(false);
   const [urlToggle, setUrlToggle] = useState(false);
   const [urlImg, setUrlImg] = useState<string | null>(null);
@@ -25,9 +54,8 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
   const formTextSize = 'text-[1.4rem] font-medium';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5]';
   const handleColorClick = (color: string) => {
-    setColor(color);
+    setValue('color', color);
   };
-  console.log(color);
 
   const handleColorToggle = () => {
     setColorToggle(!colorToggle);
@@ -51,10 +79,11 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
       setUrlToggle(false);
     }
   };
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // 폼 기본 동작 방지
-    // 나머지 로직 추가
-  };
+
+  // const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault(); // 폼 기본 동작 방지
+  //   // 나머지 로직 추가
+  // };
 
   useEffect(() => {
     if (colorToggle) {
@@ -80,27 +109,50 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
     <>
       <ModalLayout title="그룹 편집" closeClick={closeClick}>
         <ModalForm
-          onSubmit={onSubmit}
+          watch={watch('name')}
+          firstHookform={register('name')}
+          secondHookform={register('members')}
+          onSubmit={handleSubmit(onSubmit)}
           hidden={true}
           firstLabel="그룹 이름"
           firstPlaceholder="그룹 이름을 입력해 주세요."
           firstHtmlForId="groupName"
+          firstName="name"
           firstType="text"
           secondLabel="팀원초대"
           secondPlaceholder="닉네임을 검색해 주세요."
           secondHtmlForId="invite"
+          secondName="members"
           secondType="text"
           who="그룹 게시자"
           profile={profile}
           userNickName="#userNickName"
         >
+          <div className="flex flex-col gap-[0.8rem]">
+            <ModalLabel htmlFor="description" label="그룹 설명" className={`${formTextSize}`} />
+            <ModalInput
+              id="description"
+              type="text"
+              placeholder="그룹 설명을 입력해 주세요."
+              className={`${formTextSize}${borderStyle}`}
+              name="description"
+              hookform={register('description')}
+            />
+          </div>
+          {watch('description') ? (
+            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">
+              {watch('description')?.length}/40
+            </p>
+          ) : (
+            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">0/20</p>
+          )}
           <div className={`${formTextSize} `}>그룹 컬러 칩</div>
           <div className="mb-12 mt-8 flex items-center gap-12">
             {/* 여기임 */}
-            {color ? (
+            {watch('color') ? (
               <div
                 className={`h-[4.7rem] w-[4.7rem] rounded-[50%]`}
-                style={{ backgroundColor: color }}
+                style={{ backgroundColor: watch('color') }}
               />
             ) : (
               <div className={`h-[4.7rem] w-[4.7rem] rounded-[50%] bg-[#F7F7F7]`} />

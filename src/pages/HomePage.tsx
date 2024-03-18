@@ -8,9 +8,9 @@ import { useModal } from '@/contexts/ModalProvider';
 const HomePage = () => {
   const openModal = useModal();
   const handleClickOpenModal = () => {
-    openModal(({ close }) => <GroupModal closeClick={close} />);
+    // openModal(({ close }) => <GroupModal closeClick={close} />);
     // openModal(({ close }) => <ScheduleModal closeClick={close} />);
-    // openModal(({ close }) => <GroupEditModal closeClick={close} />);
+    openModal(({ close }) => <GroupEditModal closeClick={close} />);
   };
   // ScheduleModal
   // GroupEditModal
