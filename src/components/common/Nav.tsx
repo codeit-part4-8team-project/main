@@ -6,7 +6,7 @@ import plusCircle from '../../../public/assets/plus-circle-dark.svg';
 
 function Nav() {
   return (
-    <div className="z-1 fixed left-0 right-0 top-0 m-0 flex  items-center justify-between  bg-[#F7F7F7]">
+    <div className="z-1 fixed left-0 right-0 top-0 z-50 m-0  flex items-center justify-between bg-[#F7F7F7]">
       <div className="mb-[0.8rem] mt-[1.1rem] flex items-center  ">
         <a href="/" className="ml-16 mt-[1.7rem] ">
           <img src={LogoImg} alt="로고 이미지 " />
