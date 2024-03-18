@@ -7,7 +7,7 @@ import ArrowRight from '../../../public/assets/_allow-right.svg';
 import { calendarContext } from '@/contexts/CalenarProvider';
 
 interface ControlDateProp {
-  mode: 'month' | 'week';
+  mode: 'month' | 'week' | 'modal';
 }
 function ControlDate({ mode }: ControlDateProp) {
   const Container = clsx('w-full', 'flex', 'items-center');
@@ -71,7 +71,7 @@ function ControlDate({ mode }: ControlDateProp) {
       )}
       {mode === 'week' && (
         <div className={Container}>
-          <button className={arrowButton} onClick={() => changeMonth(-1)}>
+          <button className={`${arrowButton} mr-[0.4rem]`} onClick={() => changeMonth(-1)}>
             <img src={ArrowLeftAll} alt="이전 달 이동 아이콘" />
           </button>
           <button className={arrowButton} onClick={() => changeWeekCalendar(-1)}>
@@ -81,11 +81,30 @@ function ControlDate({ mode }: ControlDateProp) {
           <h1
             className={DateText}
           >{`${startDate.getFullYear()}. ${startDate.getMonth() + 1}. ${startDate.getDate()} ~ ${endDate.getFullYear()}.${endDate.getMonth() + 1}. ${endDate.getDate()}`}</h1>
-          <button className={arrowButton} onClick={() => changeWeekCalendar(1)}>
+          <button className={`${arrowButton} mr-[0.4rem]`} onClick={() => changeWeekCalendar(1)}>
             <img src={ArrowRight} alt="다음 주 이동 아이콘" />
           </button>
           <button className={arrowButton} onClick={() => changeMonth(1)}>
             <img src={ArrrowRightAll} alt="다음 달 이동 아이콘" />
+          </button>
+        </div>
+      )}
+      {mode === 'modal' && (
+        <div className={Container}>
+          <button className={`${arrowButton} mr-[0.4rem]`} onClick={() => changeYear(-1)}>
+            <img src={ArrowLeftAll} alt="이전 년도 이동 아이콘" />
+          </button>
+          <button className={arrowButton} onClick={() => changeMonth(-1)}>
+            <img src={ArrowLeft} alt="이전 달 이동 아이콘" />
+          </button>
+
+          <h1 className=" mx-[4rem] w-[4.3rem] whitespace-nowrap text-body5-bold">{`${nowDate.getFullYear()}-${nowDate.getMonth() + 1}`}</h1>
+
+          <button className={arrowButton} onClick={() => changeMonth(1)}>
+            <img src={ArrowRight} alt="다음 달 이동 아이콘" />
+          </button>
+          <button className={`${arrowButton}ml-[0.4rem]`} onClick={() => changeYear(1)}>
+            <img src={ArrrowRightAll} alt="다음 년도 이동 아이콘" />
           </button>
         </div>
       )}
