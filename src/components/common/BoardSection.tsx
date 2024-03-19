@@ -9,7 +9,7 @@ interface BoardSection {
 export default function BoardSection({ title, content }: BoardSection) {
   return (
     <div className="flex h-full flex-col gap-[1.6rem]">
-      <div className="text-body1-regular font-rammetto text-gray100 flex items-center gap-[0.9rem] tracking-[-0.036rem]">
+      <div className="flex items-center gap-[0.9rem] font-rammetto text-body1-regular tracking-[-0.036rem] text-gray100">
         <img src={CalendarIcon} alt="캘린더 아이콘" />
         <span>{title}</span>
       </div>

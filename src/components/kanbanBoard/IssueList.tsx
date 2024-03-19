@@ -1,10 +1,29 @@
 import CheckIcon from '../../../public/assets/check-circle-dark.svg';
 import GreenDop from '../../../public/assets/green-dot.svg';
 import ProfileImg from '../../../public/assets/profile-small.svg';
-import NoCard from '../common/NoCard';
-import ProfileStack from '../common/ProfileStack';
+import NoCard from '@/components/common/NoCard';
+import ProfileStack from '@/components/common/ProfileStack';
 
 const profiles = [ProfileImg, ProfileImg, ProfileImg];
+
+export default function IssueList() {
+  const hasCard = false;
+
+  return (
+    <div className="flex h-full flex-col gap-[1.5rem] overflow-scroll pb-12">
+      {hasCard ? (
+        <>
+          <IssueItem />
+          <IssueItem />
+          <IssueItem />
+          <IssueItem />
+        </>
+      ) : (
+        <NoCard backgroundColor="[#F6F6F6]">이슈가 없습니다.</NoCard>
+      )}
+    </div>
+  );
+}
 
 function IssueItem() {
   return (
@@ -12,9 +31,9 @@ function IssueItem() {
       <div className="flex flex-col gap-[1.2rem]">
         <div className="flex items-center gap-4">
           <img src={GreenDop} />
-          <div className="text-[1.2rem] font-bold text-gray100">코드잇 프로젝트</div>
+          <div className="text-body4-bold text-gray100">코드잇 프로젝트</div>
         </div>
-        <span className="text-[1.2rem] font-normal leading-[1.6rem] text-gray50">
+        <span className="text-body4-regular leading-[1.6rem] text-gray50">
           프로젝트 시작전에 간단한 자기 소개부터 하려고 합니다. 장기자랑 준비해 오세요.
         </span>
       </div>
@@ -27,25 +46,6 @@ function IssueItem() {
       <div className="absolute bottom-8 right-8">
         <ProfileStack profileImgs={profiles} />
       </div>
-    </div>
-  );
-}
-
-export default function IssueList() {
-  const hasCard = false;
-
-  return (
-    <div className="flex flex-col gap-[1.5rem] h-full pb-12 overflow-scroll">
-      {hasCard ? (
-        <>
-          <IssueItem />
-          <IssueItem />
-          <IssueItem />
-          <IssueItem />
-        </>
-      ) : (
-        <NoCard backgroundColor="[#F6F6F6]">이슈가 없습니다.</NoCard>
-      )}
     </div>
   );
 }
