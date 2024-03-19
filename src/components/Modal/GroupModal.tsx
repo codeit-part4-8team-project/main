@@ -10,6 +10,7 @@ import ModalLabel from '../ModalAtuom/ModalLabel';
 import ModalColorToggle from '@/components/common/ModalColorToggle';
 import ModalLayout from '@/components/common/ModalLayout';
 import ModalInput from '@/components/ModalAtuom/ModalInput';
+import { useAxios } from '@/hooks/useAxios';
 
 // {
 //   "name": "string",
@@ -20,7 +21,11 @@ import ModalInput from '@/components/ModalAtuom/ModalInput';
 //   "members": [
 //     "string"
 //   ],
-//   "figmaLink": "string",
+// 여기 굳이 세개로 나눈 이유는? 세개의 데이터가 다 필요한게 아니라는데
+// 그렇다면 그냥 "link": 'string'; 하나랑
+// linkImg를 따로 받으면 안되나?
+// 그리고 만약 3개를 한번에 다 넣고 싶다면 현재 ui가 인풋창이1개인데 3개로 만들어야하나..?
+//   "figmaLink": "string", // 이 부분 작업이 좀 헷갈리네
 //   "githubLink": "string",
 //   "discordLink": "string"
 // }
@@ -67,6 +72,15 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
 
   const formTextSize = 'text-[1.4rem] font-medium';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5]';
+
+  // const testTeamId = 1;
+  // const { data, loading, error, fetchData } = useAxios({
+  //   path: `/api/member/${testTeamId}`,
+  //   method: 'GET',
+  //   data: {},
+  // });
+  // console.log('axiosFetchData', fetchData);
+  // console.log('axiosData', data);
 
   const handleColorClick = (color: string) => {
     setValue('color', color);
