@@ -1,13 +1,13 @@
 import CheckIcon from '../../../public/assets/check-circle-dark.svg';
-import GreenDop from '../../../public/assets/green-dot.svg';
-import ProfileImg from '../../../public/assets/profile-small.svg';
 import NoCard from '@/components/common/NoCard';
 import ProfileStack from '@/components/common/ProfileStack';
+import ColorChipIcon from '@/assets/ColorChipIcon';
+import ProfileIcon from '@/assets/ProfileIcon';
 
-const profiles = [ProfileImg, ProfileImg, ProfileImg];
+// const profiles = [ProfileImg, ProfileImg, ProfileImg];
 
 export default function IssueList() {
-  const hasCard = false;
+  const hasCard = true;
 
   return (
     <div className="flex h-full flex-col gap-[1.5rem] overflow-scroll pb-12">
@@ -30,7 +30,7 @@ function IssueItem() {
     <div className="relative min-h-64 rounded-[2.4rem] border border-gray30 bg-white p-8">
       <div className="flex flex-col gap-[1.2rem]">
         <div className="flex items-center gap-4">
-          <img src={GreenDop} />
+          <ColorChipIcon />
           <div className="text-body4-bold text-gray100">코드잇 프로젝트</div>
         </div>
         <span className="text-body4-regular leading-[1.6rem] text-gray50">
@@ -40,11 +40,12 @@ function IssueItem() {
       <button className="absolute right-8 top-8">
         <img src={CheckIcon} alt="체크 아이콘" />
       </button>
-      <button className="text-body5-regular absolute bottom-8 left-8 flex items-center justify-center rounded-[4rem] border border-gray50 px-4 py-[0.6rem] text-gray50">
+      <button className="absolute bottom-8 left-8 flex items-center justify-center rounded-[4rem] border border-gray50 px-4 py-[0.6rem] text-body5-regular text-gray50">
         간단한 자기소개
       </button>
       <div className="absolute bottom-8 right-8">
-        <ProfileStack profileImgs={profiles} />
+        <ProfileIcon size="sm" />
+        {/* <ProfileStack profileImgs={profiles} /> */}
       </div>
     </div>
   );
