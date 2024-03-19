@@ -5,11 +5,11 @@ import Schedules from '@/components/SchedulesPage/Schedules';
 
 const TeamSchedulesPage = () => {
   return (
-    <div className=" h-full w-full bg-[#EFEFEF] pb-[4.1rem] pl-[28.4rem] pr-[2.4rem] pt-[8.6rem]">
+    <div className="bg-[ #EFEFEF] w-[192rem]">
       <Nav />
       <div className={clsx('flex')}>
         <SideBar />
-        <Schedules calendarType="팀의" />
+        <Schedules calendarType="팀 캘린더 " />
       </div>
     </div>
   );
