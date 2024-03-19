@@ -1,19 +1,20 @@
-import CalendarIcon from '../../../public/assets/calendar-dark.svg';
 import ControlDate from '@/components/SchedulesPage/ControlDate';
 import DateBox from '@/components/SchedulesPage/DateBox';
+import CalendarIcon from '@/assets/CalendarIcon';
 
 function MainSchedules() {
-  const Container = 'w-full m-[1.5rem] rounded-[2.4rem]';
+  const Container = 'w-full mt-[1.6rem] rounded-[2.4rem]';
   return (
     <>
-      <div className=" bg-[#F7F7F7]">
-        <div className="flex gap-[67.5rem] whitespace-nowrap">
+      <div className="ml-[0.3rem] mr-[5.2rem] mt-[0.3rem] bg-[#F7F7F7]">
+        <div className="content flex justify-between gap-[120rem]  whitespace-nowrap">
           <div className="flex items-center  gap-[0.9rem] font-rammetto text-[1.8rem] text-[#292929]">
-            <img src={CalendarIcon} alt="캘린더 아이콘" />
-            My calendar
+            <CalendarIcon active={true}></CalendarIcon>
+            <span> My calendar </span>
           </div>
           <ControlDate mode="week" />
         </div>
+
         <div className={Container}>
           <div>
             <DateBox mode="week" />

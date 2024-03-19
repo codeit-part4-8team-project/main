@@ -5,8 +5,9 @@ import { calendarContext } from '@/contexts/CalenarProvider';
 
 interface AllDayProp {
   day: Date;
+  mode: 'month' | 'modal';
 }
-function AllDay({ day }: AllDayProp) {
+function AllDay({ day, mode }: AllDayProp) {
   const { nowDate } = useContext(calendarContext);
   const Container = 'w-full h-full flex justify-center items-center rounded-[2.4rem] border-none  ';
   const hover = 'hover:bg-[#F7F7F7]';
@@ -53,6 +54,15 @@ function AllDay({ day }: AllDayProp) {
       'text-[#F74242]': day.getDay() === 0 && !notThisMonthClass,
     },
   );
+  const modalCell = clsx(
+    'my-[0.2rem] mx-[0.4rem] w-[1.9rem] text-center text-[#A1A1A1] ',
+    hover,
+    todayClass,
+    notThisMonthClass,
+    {
+      'text-[#F74242]': day.getDay() === 0 && !notThisMonthClass,
+    },
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
@@ -62,10 +72,20 @@ function AllDay({ day }: AllDayProp) {
   };
 
   return (
-    <div className={Container}>
-      <p onClick={openModal} className={DateDay}>{` ${day.getDate()} `}</p>
-      {isModalOpen && <ScheduleModal />}
-    </div>
+    <>
+      {mode === 'month' && (
+        <div className={Container}>
+          <p onClick={openModal} className={DateDay}>{` ${day.getDate()} `}</p>
+          {isModalOpen && <ScheduleModal />}
+        </div>
+      )}
+
+      {mode === 'modal' && (
+        <div>
+          <p className={modalCell}>{` ${day.getDate()} `}</p>
+        </div>
+      )}
+    </>
   );
 }
 
