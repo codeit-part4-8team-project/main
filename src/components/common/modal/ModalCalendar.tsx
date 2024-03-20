@@ -1,5 +1,5 @@
-import ControlDate from '../SchedulesPage/ControlDate';
-import DateBox from '../SchedulesPage/DateBox';
+import ControlDate from '../../SchedulesPage/ControlDate';
+import DateBox from '../../SchedulesPage/DateBox';
 
 function ModalCalendar() {
   return (

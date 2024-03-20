@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import PlusImg from '../../../public/plus.svg';
-import ModalInput from '../ModalAtuom/ModalInput';
-import ModalLayout from '../common/ModalLayout';
+import ModalInput from '../common/modal/ModalInput';
+import ModalLayout from '../common/modal/ModalLayout';
 
 interface IssuesModalProps {
   closeClick: () => void;

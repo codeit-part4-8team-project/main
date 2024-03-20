@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, ReactNode } from 'react';
 
 interface ModalInputProps {
   placeholder?: string;
@@ -8,6 +8,7 @@ interface ModalInputProps {
   type?: string;
   name?: string;
   hookform?: any;
+  children?: ReactNode;
 }
 
 export default function ModalInput({
@@ -17,20 +18,22 @@ export default function ModalInput({
   type,
   name,
   hookform,
+  children,
 }: ModalInputProps) {
   const inputSize = ' px-[1.8rem] py-[1.2rem] ${formTextSize} w-full';
   return (
     <>
-      <input
-        {...hookform}
-        name={name}
-        // value={...hookform}
-        // defaultValue={}
-        className={`${className} ${inputSize} `}
-        placeholder={placeholder}
-        id={id}
-        type={type}
-      />
+      <div className="relative w-full">
+        <input
+          {...hookform}
+          name={name}
+          className={`${className} ${inputSize} `}
+          placeholder={placeholder}
+          id={id}
+          type={type}
+        />
+        {children}
+      </div>
     </>
   );
 }

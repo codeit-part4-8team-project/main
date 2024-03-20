@@ -1,20 +1,21 @@
 import { ReactNode } from 'react';
 import clsx from 'clsx';
-import calendar from '../../../public/assets/calendar-dark.svg';
-import close from '../../../public/assets/close.svg';
-import people from '../../../public/assets/people-fill.svg';
+import calendar from '../../../../public/assets/calendar-dark.svg';
+import close from '../../../../public/assets/close.svg';
+import people from '../../../../public/assets/people-fill.svg';
 
 interface ModalProps {
   children?: ReactNode;
   closeClick?: () => void;
   onClick?: (e: any) => void;
   title: string;
-  size?: 'lg' | 'md';
+  size?: 'lg' | 'md' | 'sm';
 }
 function ModalLayout({ children, closeClick, title, onClick, size = 'lg' }: ModalProps) {
   const container = clsx({
     'relative h-[109.3rem] w-[49.7rem] bg-white p-16': size === 'lg',
-    'relative h-[59.1rem] w-[49.7rem] bg-white p-16': size === 'md',
+    'relative h-[74rem] w-[49.7rem] bg-white p-16 rounded-[2.4rem]': size === 'md',
+    'relative h-[59.1rem] w-[49.7rem] bg-white p-16 rounded-[2.4rem]': size === 'sm',
   });
   return (
     <div className="flex size-full items-center justify-center bg-black bg-opacity-5">

@@ -1,7 +1,7 @@
 import { ChangeEvent, ReactNode, useState } from 'react';
 import clsx from 'clsx';
-import ModalInput from '../ModalAtuom/ModalInput';
-import ModalLabel from '../ModalAtuom/ModalLabel';
+import ModalInput from './ModalInput';
+import ModalLabel from './ModalLabel';
 import ModalMemberList from './ModalMemberList';
 
 interface ModalFormProps {

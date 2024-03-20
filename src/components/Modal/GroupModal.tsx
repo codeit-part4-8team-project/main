@@ -2,14 +2,16 @@ import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import github from '../../../public/assets/Github.svg';
 import arrowDown from '../../../public/assets/arrow-down-dark.png';
+import calender from '../../../public/assets/calendar-dark.svg';
 import discord from '../../../public/assets/discord.svg';
 import figma from '../../../public/assets/figma.svg';
 import profile from '../../../public/profile.svg';
-import ModalForm from '../ModalAtuom/ModalForm';
-import ModalLabel from '../ModalAtuom/ModalLabel';
-import ModalColorToggle from '@/components/common/ModalColorToggle';
-import ModalLayout from '@/components/common/ModalLayout';
-import ModalInput from '@/components/ModalAtuom/ModalInput';
+import ModalCalendar from '../common/modal/ModalCalendar';
+import ModalForm from '../common/modal/ModalForm';
+import ModalLabel from '../common/modal/ModalLabel';
+import ModalColorToggle from '@/components/common/modal/ModalColorToggle';
+import ModalInput from '@/components/common/modal/ModalInput';
+import ModalLayout from '@/components/common/modal/ModalLayout';
 import { useAxios } from '@/hooks/useAxios';
 
 // {
@@ -33,7 +35,7 @@ import { useAxios } from '@/hooks/useAxios';
 type Inputs = {
   name: string;
   description: string;
-  members: string[];
+  // members: string[] | null;
   color: string;
   startDate: string;
   endDate: string;
@@ -43,6 +45,10 @@ type Inputs = {
 interface GroupModalProps {
   closeClick?: () => void;
 }
+
+// 남은 작업 members 해결
+// date 클릭했을때 값 들어오게끔 + 년도를 계속 올릴수 있게끔
+// members 갈색div박스를 도대체 어떻게 해결할건지
 export default function GroupModal({ closeClick }: GroupModalProps) {
   const {
     register,
@@ -55,7 +61,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     const createTeam = {
       name: data.name,
       description: data.description,
-      members: [data?.members],
+      // members: [data?.members],
       startDate: data.startDate,
       endDate: data.endDate,
       githubLink: data.githubLink,
@@ -66,8 +72,12 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
 
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
   const urlToggleRef = useRef<HTMLButtonElement | null>(null);
+  const startDateToggleRef = useRef<HTMLButtonElement | null>(null);
+  const endDateToggleRef = useRef<HTMLButtonElement | null>(null);
   const [colorToggle, setColorToggle] = useState(false);
   const [urlToggle, setUrlToggle] = useState(false);
+  const [startDateToggle, setStartDateToggle] = useState(false);
+  const [endDateToggle, setEndDateToggle] = useState(false);
   const [urlImg, setUrlImg] = useState<string | null>(null);
 
   const formTextSize = 'text-[1.4rem] font-medium';
@@ -89,6 +99,12 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
 
   const handleUrlClick = () => {
     setUrlToggle(!urlToggle);
+  };
+  const handleStartDateClick = () => {
+    setStartDateToggle(!startDateToggle);
+  };
+  const handleEndDateClick = () => {
+    setEndDateToggle(!endDateToggle);
   };
 
   const handleUrlImgClick: MouseEventHandler<HTMLDivElement> = (e) => {
@@ -112,6 +128,15 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
       setUrlToggle(false);
   };
 
+  const handleStartDateClickOutside = (e: MouseEvent) => {
+    if (startDateToggleRef.current && !startDateToggleRef.current.contains(e.target as Node))
+      setStartDateToggle(false);
+  };
+  const handleEndDateClickOutside = (e: MouseEvent) => {
+    if (endDateToggleRef.current && !endDateToggleRef.current.contains(e.target as Node))
+      setEndDateToggle(false);
+  };
+
   useEffect(() => {
     if (colorToggle) {
       document.addEventListener('mousedown', handleColorClickOutside);
@@ -132,12 +157,30 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     };
   }, [urlToggle]);
 
+  useEffect(() => {
+    if (startDateToggle) {
+      document.addEventListener('mousedown', handleStartDateClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleStartDateClickOutside);
+    };
+  }, [startDateToggle]);
+
+  useEffect(() => {
+    if (endDateToggle) {
+      document.addEventListener('mousedown', handleEndDateClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleEndDateClickOutside);
+    };
+  }, [endDateToggle]);
+
   return (
     <ModalLayout closeClick={closeClick} title="그룹 생성" size="lg">
       <ModalForm
         watch={watch('name')}
         firstHookform={register('name')}
-        secondHookform={register('members')}
+        // secondHookform={register('members')}
         onSubmit={handleSubmit(onSubmit)}
         hidden={true}
         firstLabel="그룹이름"
@@ -199,24 +242,52 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
           </button>
         </div>
         <ModalLabel htmlFor="date" label="날짜 (시작-종료)" className={`${formTextSize}`} />
-        <div className="mb-12 mt-[0.9rem] flex items-center gap-2">
+        <div className=" mb-12 mt-[0.9rem] flex items-center gap-2">
           <ModalInput
             hookform={register('startDate')}
-            type="date"
+            type="text"
             name="startDate"
             id="date"
             className={`${formTextSize} ${borderStyle}`}
-            placeholder="2024년 3월 13일"
-          />
+            placeholder="YYYY-MM-DD"
+          >
+            <button
+              className="absolute bottom-0 right-[1.8rem] top-0"
+              onClick={handleStartDateClick}
+              ref={startDateToggleRef}
+            >
+              <img src={calender} alt="캘린더" />
+            </button>
+            {startDateToggle && (
+              <div className="absolute top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem]">
+                <ModalCalendar />
+              </div>
+            )}
+            {/* box-shadow: 0px 0px 10px 0px rgba(17, 17, 17, 0.05) */}
+          </ModalInput>
+
           <p className={`${formTextSize} text-[#5F5F5F]`}>-</p>
           <ModalInput
             hookform={register('endDate')}
-            type="date"
+            type="text"
             name="endDate"
             id="date"
             className={`${formTextSize} ${borderStyle}`}
-            placeholder="2024년 3월 13일"
-          />
+            placeholder="YYYY-MM-DD"
+          >
+            <button
+              className="absolute bottom-0 right-[1.8rem] top-0"
+              onClick={handleEndDateClick}
+              ref={endDateToggleRef}
+            >
+              <img src={calender} alt="캘린더" />
+            </button>
+            {endDateToggle && (
+              <div className="absolute top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem]">
+                <ModalCalendar />
+              </div>
+            )}
+          </ModalInput>
         </div>
         <ModalLabel htmlFor="link" label="외부 연결 링크" className={`${formTextSize}`} />
         <div className="mb-12 mt-[1.6rem] flex gap-[1.6rem]">
@@ -233,7 +304,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             <img src={arrowDown} alt="토글버튼" />
             {urlToggle && (
               // 나중에 컴포넌트로 분리
-              <div className="absolute left-0 right-0 top-[5rem] h-[7.4rem] w-[7.5rem] rounded-[0.6rem] bg-[#FFF] py-[0.4rem] shadow-lg">
+              <div className="absolute left-0 right-0 top-[5rem] z-50 h-[7.4rem] w-[7.5rem] rounded-[0.6rem] bg-[#FFF] py-[0.4rem] shadow-lg">
                 <div
                   className="hover:bg-gray10 flex justify-center py-[0.4rem]"
                   onClick={handleUrlImgClick}

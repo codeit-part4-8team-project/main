@@ -2,14 +2,16 @@ import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import github from '../../../public/assets/Github.svg';
 import arrowDown from '../../../public/assets/arrow-down-dark.png';
+import calender from '../../../public/assets/calendar-dark.svg';
 import discord from '../../../public/assets/discord.svg';
 import figma from '../../../public/assets/figma.svg';
 import profile from '../../../public/profile.svg';
-import ModalColorToggle from '@/components/common/ModalColorToggle';
-import ModalLayout from '@/components/common/ModalLayout';
-import ModalForm from '@/components/ModalAtuom/ModalForm';
-import ModalInput from '@/components/ModalAtuom/ModalInput';
-import ModalLabel from '@/components/ModalAtuom/ModalLabel';
+import ModalCalendar from '../common/modal/ModalCalendar';
+import ModalColorToggle from '@/components/common/modal/ModalColorToggle';
+import ModalForm from '@/components/common/modal/ModalForm';
+import ModalInput from '@/components/common/modal/ModalInput';
+import ModalLabel from '@/components/common/modal/ModalLabel';
+import ModalLayout from '@/components/common/modal/ModalLayout';
 
 type Inputs = {
   name: string;
@@ -47,8 +49,12 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
   };
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
   const urlToggleRef = useRef<HTMLButtonElement | null>(null);
+  const startDateToggleRef = useRef<HTMLButtonElement | null>(null);
+  const endDateToggleRef = useRef<HTMLButtonElement | null>(null);
   const [colorToggle, setColorToggle] = useState(false);
   const [urlToggle, setUrlToggle] = useState(false);
+  const [startDateToggle, setStartDateToggle] = useState(false);
+  const [endDateToggle, setEndDateToggle] = useState(false);
   const [urlImg, setUrlImg] = useState<string | null>(null);
 
   const formTextSize = 'text-[1.4rem] font-medium';
@@ -63,6 +69,13 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
   const handleUrlClick = () => {
     setUrlToggle(!urlToggle);
   };
+  const handleStartDateClick = () => {
+    setStartDateToggle(!startDateToggle);
+  };
+  const handleEndDateClick = () => {
+    setEndDateToggle(!endDateToggle);
+  };
+
   const handleUrlImgClick: MouseEventHandler<HTMLImageElement> = (e) => {
     console.log('tttt', e.currentTarget);
     setUrlImg(e.currentTarget.src);
@@ -78,6 +91,15 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
     if (urlToggleRef.current && !urlToggleRef.current.contains(e.target as Node)) {
       setUrlToggle(false);
     }
+  };
+
+  const handleStartDateClickOutside = (e: MouseEvent) => {
+    if (startDateToggleRef.current && !startDateToggleRef.current.contains(e.target as Node))
+      setStartDateToggle(false);
+  };
+  const handleEndDateClickOutside = (e: MouseEvent) => {
+    if (endDateToggleRef.current && !endDateToggleRef.current.contains(e.target as Node))
+      setEndDateToggle(false);
   };
 
   // const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -104,6 +126,24 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
       document.removeEventListener('mousedown', handleUrlClickOutside);
     };
   }, [urlToggle]);
+
+  useEffect(() => {
+    if (startDateToggle) {
+      document.addEventListener('mousedown', handleStartDateClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleStartDateClickOutside);
+    };
+  }, [startDateToggle]);
+
+  useEffect(() => {
+    if (endDateToggle) {
+      document.addEventListener('mousedown', handleEndDateClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleEndDateClickOutside);
+    };
+  }, [endDateToggle]);
 
   return (
     <>
@@ -176,20 +216,50 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
           <ModalLabel htmlFor="date" label="날짜 (시작-종료)" className={`${formTextSize}`} />
           <div className="mb-12 mt-[0.9rem] flex items-center gap-2">
             <ModalInput
-              type="date"
-              name="date"
+              hookform={register('startDate')}
+              type="text"
+              name="startDate"
               id="date"
               className={`${formTextSize} ${borderStyle}`}
-              placeholder="2024년 3월 13일"
-            />
+              placeholder="YYYY-MM-DD"
+            >
+              <button
+                className="absolute bottom-0 right-[1.8rem] top-0"
+                onClick={handleStartDateClick}
+                ref={startDateToggleRef}
+              >
+                <img src={calender} alt="캘린더" />
+              </button>
+              {startDateToggle && (
+                <div className="absolute top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem]">
+                  <ModalCalendar />
+                </div>
+              )}
+              {/* box-shadow: 0px 0px 10px 0px rgba(17, 17, 17, 0.05) */}
+            </ModalInput>
+
             <p className={`${formTextSize} text-[#5F5F5F]`}>-</p>
             <ModalInput
-              type="date"
-              name="date"
+              hookform={register('endDate')}
+              type="text"
+              name="endDate"
               id="date"
               className={`${formTextSize} ${borderStyle}`}
-              placeholder="2024년 3월 13일"
-            />
+              placeholder="YYYY-MM-DD"
+            >
+              <button
+                className="absolute bottom-0 right-[1.8rem] top-0"
+                onClick={handleEndDateClick}
+                ref={endDateToggleRef}
+              >
+                <img src={calender} alt="캘린더" />
+              </button>
+              {endDateToggle && (
+                <div className="absolute top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem]">
+                  <ModalCalendar />
+                </div>
+              )}
+            </ModalInput>
           </div>
           <ModalLabel htmlFor="link" label="외부 연결 링크" className={`${formTextSize}`} />
           <div className="mb-12 mt-[1.6rem] flex gap-[1.6rem]">
