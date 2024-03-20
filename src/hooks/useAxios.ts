@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import axios, { AxiosError, AxiosResponse, HttpStatusCode, Method, isAxiosError } from 'axios';
+import axios, { AxiosError, HttpStatusCode, Method, isAxiosError } from 'axios';
 
 const defaultInstance = axios.create({
-  baseURL: 'http://ec2-43-203-69-64.ap-northeast-2.compute.amazonaws.com:8080/',
-  timeout: 3000,
+  baseURL: 'http://ec2-43-203-69-64.ap-northeast-2.compute.amazonaws.com:8080/api',
+  timeout: 6000,
+  withCredentials: true,
 });
 
 defaultInstance.interceptors.request.use(
@@ -42,6 +43,9 @@ defaultInstance.interceptors.response.use(
   (err) => {
     console.log('axios response error config : ', err);
     if (isAxiosError(err)) {
+      if (err.status === HttpStatusCode.Unauthorized) {
+        //일단 accessToken 직접 지우시고 새로 로그인 하시면 됩니다.
+      }
       if (err.status === HttpStatusCode.InternalServerError) {
         throw Error('서버 이상');
       }
@@ -51,19 +55,19 @@ defaultInstance.interceptors.response.use(
 );
 
 interface UseAxiosParams<T> {
-  path: string;
-  method: Method;
-  data: T | Record<string, never>;
+  path?: string;
+  method?: Method;
+  data?: T | Record<string, never>;
 }
 
-export const useAxios = <T>(
-  { path = '', method = 'GET', data = {} }: UseAxiosParams<T>,
+export const useAxios = <T = unknown, P = unknown, E = unknown>(
+  { path = '', method = 'GET', data = {} }: UseAxiosParams<P>,
   shouldFetch: boolean = false,
 ) => {
   const [state, setState] = useState<{
     loading: boolean;
-    error: AxiosError | null;
-    data: AxiosResponse | null;
+    error: AxiosError<E> | null;
+    data: T | null;
   }>({
     loading: true,
     error: null,
@@ -86,7 +90,7 @@ export const useAxios = <T>(
       setState((prev) => ({
         ...prev,
         loading: false,
-        data: response.data,
+        data: response?.data ?? null,
       }));
     } catch (error) {
       setState((prev) => ({
@@ -101,7 +105,7 @@ export const useAxios = <T>(
     if (shouldFetch) {
       fetchData();
     }
-  });
+  }, [shouldFetch]);
 
   return { ...state, fetchData };
 };
