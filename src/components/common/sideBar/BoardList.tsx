@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
-import { BOARDS, Boards } from '@/components/common/sideBar/constants';
+import { BOARDS, Boards } from '@/components/common/SideBar/constants';
 
 interface BoardItemProps {
   boardType: string;

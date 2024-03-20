@@ -1,13 +1,13 @@
 import { ChangeEvent, useState } from 'react';
 import Plus from '../../../public/plus.svg';
-import ModalInput from '../common/ModalInput';
+import ModalInput from '../ModalAtuom/ModalInput';
 import ModalLayout from '../common/ModalLayout';
 
 interface AnnouncementModalProps {
   closeClick: () => void;
 }
 
-function AnnouncementModal({ closeClick }: AnnouncementModalProps) {
+export default function AnnouncementModal({ closeClick }: AnnouncementModalProps) {
   const [announcemnetValue, setAnnouncemnetValue] = useState('');
   const [memberValue, setMemberValue] = useState('');
   const handleAnnouncementValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -35,5 +35,3 @@ function AnnouncementModal({ closeClick }: AnnouncementModalProps) {
     </ModalLayout>
   );
 }
-
-export default AnnouncementModal;

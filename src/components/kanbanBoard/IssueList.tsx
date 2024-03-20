@@ -40,7 +40,7 @@ function IssueItem() {
       <button className="absolute right-8 top-8">
         <img src={CheckIcon} alt="체크 아이콘" />
       </button>
-      <button className="text-body5-regular absolute bottom-8 left-8 flex items-center justify-center rounded-[4rem] border border-gray50 px-4 py-[0.6rem] text-gray50">
+      <button className="text-4 absolute bottom-8 left-8 flex items-center justify-center rounded-[4rem] border border-gray50 px-4 py-[0.6rem] text-gray50">
         간단한 자기소개
       </button>
       <div className="absolute bottom-8 right-8">

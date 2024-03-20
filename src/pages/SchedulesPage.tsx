@@ -1,5 +1,5 @@
 import Nav from '@/components/common/Nav';
-import SideBar from '@/components/common/sideBar/SideBar';
+import SideBar from '@/components/common/SideBar/SideBar';
 import Schedules from '@/components/SchedulesPage/Schedules';
 
 const SchedulesPage = () => {

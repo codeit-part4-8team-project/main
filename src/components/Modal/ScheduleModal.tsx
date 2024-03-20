@@ -1,35 +1,27 @@
-import { ChangeEvent, useState } from 'react';
-import Mock from '../../../public/data/Mock.json';
 import profile from '../../../public/profile.svg';
-import ModalInput from '../common/ModalInput';
+import ModalForm from '../ModalAtuom/ModalForm';
 import ModalLayout from '../common/ModalLayout';
 
-function ScheduleModal() {
-  const [scheduleDetail, setScheduleDetail] = useState('');
-  const { userData } = Mock; // userMockData
-  const [{ userId, profileImg, nickName, birth }] = userData; // userMockData
+interface ScheduleModalProps {
+  closeClick?: () => void;
+}
 
-  const handleScheduleDetailValue = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log('일정내용입력인풋입니다.-필겸-');
-    setScheduleDetail(e.target.value);
-  };
+function ScheduleModal({ closeClick }: ScheduleModalProps) {
   return (
-    <ModalLayout title="일정 생성" buttonText="일정 생성">
-      <div className="mb-24 flex items-center gap-7 text-[1.4rem]">
-        {profileImg === 'null' ? <img src={profile} alt="profile" /> : <div>해당 이미지</div>}
-        {nickName}
-      </div>
-      <div className="mb-[2.8rem] text-[2rem]">날짜</div>
-      <ModalInput placeholder="defaultValues,toggleImg들어가야함">
-        <img />
-      </ModalInput>
-      <div className="mb-[15.8rem] mt-[6.5rem]">
-        <input
-          className="w-[119rem] border-b-[0.1rem] border-solid border-black text-[4rem]"
-          placeholder="일정 내용을 입력하세요"
-          onChange={(e) => handleScheduleDetailValue(e)}
-        />
-      </div>
+    <ModalLayout title="일정 추가" closeClick={closeClick} size="md">
+      <ModalForm
+        firstLabel="제목"
+        firstPlaceholder="일정 제목을 입력해 주세요."
+        firstHtmlForId="title"
+        firstType="text"
+        secondLabel="날짜"
+        secondPlaceholder="2024년 3월 13일 (수요일)"
+        secondHtmlForId="schedule"
+        secondType="date"
+        who="게시자 (나)"
+        profile={profile}
+        userNickName="#userNickName"
+      />
     </ModalLayout>
   );
 }

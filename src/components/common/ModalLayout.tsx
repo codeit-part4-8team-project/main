@@ -1,80 +1,41 @@
 import { ReactNode } from 'react';
-import CloseImg from '../../../public/images/Close.svg';
 import clsx from 'clsx';
+import calendar from '../../../public/assets/calendar-dark.svg';
+import close from '../../../public/assets/close.svg';
+import people from '../../../public/assets/people-fill.svg';
 
 interface ModalProps {
-  title: string;
-  modalName?: string;
   children?: ReactNode;
-  buttonText: string;
-  submit?: () => void;
-  wrong?: () => void;
-  modalRef?: React.RefObject<HTMLDivElement>;
-  handleModalOutsideClick?: (e: any) => void;
+  closeClick?: () => void;
+  onClick?: (e: any) => void;
+  title: string;
+  size?: 'lg' | 'md';
 }
-function ModalLayout({
-  title,
-  modalName,
-  children,
-  buttonText,
-  submit,
-  wrong,
-  modalRef,
-  // handleModalOutsideClick,
-}: ModalProps) {
+function ModalLayout({ children, closeClick, title, onClick, size = 'lg' }: ModalProps) {
+  const container = clsx({
+    'relative h-[109.3rem] w-[49.7rem] bg-white p-16': size === 'lg',
+    'relative h-[59.1rem] w-[49.7rem] bg-white p-16': size === 'md',
+  });
   return (
-    <div
-      className={clsx('flex size-full items-center justify-center bg-black bg-opacity-5')}
-      ref={modalRef}
-      //onClick={(e) => handleModalOutsideClick(e)}
-    >
-      <div className="relative h-[731px] w-[1326px] bg-white px-20 py-10">
-        <div className="flex justify-between">
-          <h3 className="text-2xl">{title}</h3>
-          <button onClick={wrong}>
-            <img src={CloseImg} alt="CloseImg" />
+    <div className="flex size-full items-center justify-center bg-black bg-opacity-5">
+      <div className={`${container}`} onClick={onClick}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4 text-[1.8rem] font-bold">
+            {title == '일정 추가' ? (
+              <img src={calendar} alt="캘린더" />
+            ) : (
+              <img src={people} alt="사람들" />
+            )}
+
+            {title}
+          </div>
+          <button onClick={closeClick}>
+            <img src={close} alt="closeButton" />
           </button>
         </div>
-        <div className="mb-14 mt-20 text-[2rem]">{modalName}</div>
         {children}
-        <div className="flex w-[100%] justify-end">
-          <button
-            className=" absolute bottom-[5.6rem] right-[5.5rem] cursor-pointer rounded-lg  border-[0.1rem] px-16 py-2 text-lg"
-            onClick={submit}
-          >
-            {buttonText}
-          </button>
-        </div>
       </div>
     </div>
   );
 }
-
 export default ModalLayout;
-
-// 모달창 사용 예시
-
-// 불러올때 state토글하고 props로 원하는 값 넣어주기
-// {test && (
-//   <ModalLayout
-//     title="일정생성"
-//     buttonText="수락"
-//     wrong={해당함수(모달창닫는X버튼함수입니다)}
-//     modalRef={해당함수(모달외부Ref입니다)}
-//     handleModalOutsideClick={해당함수(Ref로 외부창 판단하는함수입니다)}
-//   />
-// )}
-
-// modalRef = 모달창 외부 클릭시 필요한값
-// state값은 모달창 열고닫기
-
-// const modalRef = useRef(null);
-// const [test, setTest] = useState(false);
-// const handleClick = () => {
-//   setTest(!test);
-// };
-// const handleModalClick = (e: any) => {
-//   if (modalRef.current === e.target) {
-//     setTest(false);
-//   }
-// };
