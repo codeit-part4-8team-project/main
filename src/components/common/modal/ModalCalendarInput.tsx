@@ -4,7 +4,15 @@ import ModalCalendar from './ModalCalendar';
 import ModalInput from './ModalInput';
 import ModalLabel from './ModalLabel';
 
-export default function ModalCalendarInput() {
+interface ModalCalendarInputProps {
+  startHookform: any;
+  endHookform: any;
+}
+
+export default function ModalCalendarInput({
+  startHookform,
+  endHookform,
+}: ModalCalendarInputProps) {
   const startDateToggleRef = useRef<HTMLButtonElement | null>(null);
   const endDateToggleRef = useRef<HTMLButtonElement | null>(null);
 
@@ -52,7 +60,7 @@ export default function ModalCalendarInput() {
       <ModalLabel htmlFor="date" label="날짜 (시작-종료)" className={`${formTextSize}`} />
       <div className=" mb-12 mt-[0.9rem] flex items-center gap-2">
         <ModalInput
-          // hookform={register('startDate')}
+          hookform={startHookform}
           type="text"
           name="startDate"
           id="date"
@@ -75,7 +83,7 @@ export default function ModalCalendarInput() {
 
         <p className={`${formTextSize} text-[#5F5F5F]`}>-</p>
         <ModalInput
-          // hookform={register('endDate')}
+          hookform={endHookform}
           type="text"
           name="endDate"
           id="date"

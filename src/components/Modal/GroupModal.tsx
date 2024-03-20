@@ -2,11 +2,10 @@ import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import github from '../../../public/assets/Github.svg';
 import arrowDown from '../../../public/assets/arrow-down-dark.png';
-import calender from '../../../public/assets/calendar-dark.svg';
 import discord from '../../../public/assets/discord.svg';
 import figma from '../../../public/assets/figma.svg';
 import profile from '../../../public/profile.svg';
-import ModalCalendar from '../common/modal/ModalCalendar';
+import ModalCalendarInput from '../common/modal/ModalCalendarInput';
 import ModalFormBorder from '../common/modal/ModalFormBorder';
 import ModalLabel from '../common/modal/ModalLabel';
 import ModalMemberList from '../common/modal/ModalMemberList';
@@ -248,54 +247,10 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               {colorToggle && <ModalColorToggle handleColorClick={handleColorClick} />}
             </button>
           </div>
-          <ModalLabel htmlFor="date" label="날짜 (시작-종료)" className={`${formTextSize}`} />
-          <div className=" mb-12 mt-[0.9rem] flex items-center gap-2">
-            <ModalInput
-              hookform={register('startDate')}
-              type="text"
-              name="startDate"
-              id="date"
-              className={`${formTextSize} ${borderStyle}`}
-              placeholder="YYYY-MM-DD"
-            >
-              <button
-                className="absolute bottom-0 right-[1.8rem] top-0"
-                onClick={handleStartDateClick}
-                ref={startDateToggleRef}
-              >
-                <img src={calender} alt="캘린더" />
-              </button>
-              {startDateToggle && (
-                <div className="absolute top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem]">
-                  <ModalCalendar />
-                </div>
-              )}
-              {/* box-shadow: 0px 0px 10px 0px rgba(17, 17, 17, 0.05) */}
-            </ModalInput>
-
-            <p className={`${formTextSize} text-[#5F5F5F]`}>-</p>
-            <ModalInput
-              hookform={register('endDate')}
-              type="text"
-              name="endDate"
-              id="date"
-              className={`${formTextSize} ${borderStyle}`}
-              placeholder="YYYY-MM-DD"
-            >
-              <button
-                className="absolute bottom-0 right-[1.8rem] top-0"
-                onClick={handleEndDateClick}
-                ref={endDateToggleRef}
-              >
-                <img src={calender} alt="캘린더" />
-              </button>
-              {endDateToggle && (
-                <div className="absolute top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem]">
-                  <ModalCalendar />
-                </div>
-              )}
-            </ModalInput>
-          </div>
+          <ModalCalendarInput
+            startHookform={register('startDate')}
+            endHookform={register('endDate')}
+          />
           <ModalLabel htmlFor="link" label="외부 연결 링크" className={`${formTextSize}`} />
           <div className="mb-12 mt-[1.6rem] flex gap-[1.6rem]">
             <button
