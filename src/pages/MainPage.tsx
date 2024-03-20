@@ -10,7 +10,7 @@ export default function MainPage() {
       <div className="grid h-full w-full grid-cols-[107.4fr_37.8fr] grid-rows-[33.7fr_52.5fr] gap-[5.2rem]">
         <MainSchedules />
         <AnnouncementBoard />
-        <BoardSection title="Kanban board" content={<KanbanBoard />} />
+        <BoardSection title="Kanban board" content={<KanbanBoard page="main" />} />
       </div>
     </PageLayout>
   );

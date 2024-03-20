@@ -1,4 +1,3 @@
-import CheckIcon from '../../../public/assets/check-circle-dark.svg';
 import NoCard from '@/components/common/NoCard';
 import ProfileStack from '@/components/common/ProfileStack';
 import ColorChipIcon from '@/assets/ColorChipIcon';
@@ -37,9 +36,7 @@ function IssueItem() {
           프로젝트 시작전에 간단한 자기 소개부터 하려고 합니다. 장기자랑 준비해 오세요.
         </span>
       </div>
-      <button className="absolute right-8 top-8">
-        <img src={CheckIcon} alt="체크 아이콘" />
-      </button>
+      <button className="absolute right-8 top-8"></button>
       <button className="absolute bottom-8 left-8 flex items-center justify-center rounded-[4rem] border border-gray50 px-4 py-[0.6rem] text-body5-regular text-gray50">
         간단한 자기소개
       </button>

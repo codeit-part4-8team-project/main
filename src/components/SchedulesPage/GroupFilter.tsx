@@ -10,6 +10,10 @@ interface ChecklistItemProps {
   onCheck: () => void;
 }
 
+interface GroupFilterProps {
+  className?: string;
+}
+
 function ChecklistItem({ name, color, isChecked, onCheck }: ChecklistItemProps) {
   const nameStyle = 'text-body4-bold ml-4 text-[#292929]';
   return (
@@ -26,7 +30,7 @@ function ChecklistItem({ name, color, isChecked, onCheck }: ChecklistItemProps) 
     </div>
   );
 }
-function GroupFilter() {
+function GroupFilter({ className }: GroupFilterProps) {
   const items = [
     { name: '홍길동', color: '' },
     { name: '디자인 스터디', color: 'yellow' },
@@ -45,8 +49,8 @@ function GroupFilter() {
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="text-body3-bold mb-14 text-[#A1A1A1]">그룹 필터</div>
+    <div className={`flex flex-col ${className}`}>
+      <div className="mb-14 text-body3-bold text-[#A1A1A1]">그룹 필터</div>
       {items.map((item, index) => (
         <ChecklistItem
           key={index}
