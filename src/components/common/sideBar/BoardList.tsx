@@ -1,3 +1,4 @@
+import { ReactElement, cloneElement } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { BOARDS, Boards } from '@/components/common/SideBar/constants';
@@ -29,8 +30,10 @@ export default function BoardList() {
 }
 
 function BoardItem({ boardType, pathname }: BoardItemProps) {
-  const { boardName, iconOn, iconOff, link } = BOARDS[boardType as keyof Boards];
+  const { boardName, icon, link } = BOARDS[boardType as keyof Boards];
   const isCurrent = pathname === link ? true : false;
+
+  const boardItemIcon = icon as ReactElement;
 
   return (
     <Link to={link}>
@@ -40,11 +43,13 @@ function BoardItem({ boardType, pathname }: BoardItemProps) {
           isCurrent && 'bg-[#EDEEDC]/10',
         )}
       >
-        <img
-          className={clsx(!isCurrent && 'opacity-10')}
-          src={isCurrent ? iconOn : iconOff}
-          alt={`${boardName} 아이콘`}
-        />
+        {icon &&
+          cloneElement(boardItemIcon, {
+            ...boardItemIcon.props,
+            active: isCurrent,
+            fill: 'white',
+            className: clsx(isCurrent || 'opacity-10'),
+          })}
         <span className="text-body3-regular text-[#EDEEDC] opacity-100">{boardName}</span>
       </button>
     </Link>

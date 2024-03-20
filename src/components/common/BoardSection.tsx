@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
-import CalendarIcon from '../../../public/assets/calendar-dark.svg';
+import CalendarIcon from '@/assets/CalendarIcon';
+import ViewListIcon from '@/assets/ViewListIcon';
 
 interface BoardSection {
   title: string;
@@ -10,7 +11,8 @@ export default function BoardSection({ title, content }: BoardSection) {
   return (
     <div className="flex h-full flex-col gap-[1.6rem]">
       <div className="flex items-center gap-[0.9rem] font-rammetto text-body1-regular tracking-[-0.036rem] text-gray100">
-        <img src={CalendarIcon} alt="캘린더 아이콘" />
+        {/* <CalendarIcon fill="#292929" active /> */} {/* TODO 상황에 맞는 아이콘 */}
+        <ViewListIcon fill="#292929" active />
         <span>{title}</span>
       </div>
       <div className="h-full">{content}</div>

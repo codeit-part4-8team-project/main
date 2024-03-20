@@ -1,8 +1,8 @@
 import { ReactNode, useState } from 'react';
 import { Link } from 'react-router-dom';
-import GreenDot from '../../../../public/assets/green-dot.svg';
-import KebabIcon from '../../../../public/assets/kebab-light.svg';
 import DropDown from '@/components/common/sideBar/DropDown';
+import ColorChipIcon from '@/assets/ColorChipIcon';
+import MeatbollsIcon from '@/assets/MeatbollsIcon';
 
 interface GroupItemProps {
   children: ReactNode;
@@ -34,10 +34,10 @@ function GroupItem({ children }: GroupItemProps) {
   return (
     <Link to="/teams/1">
       <button className="grid h-16 w-[21.2rem] grid-cols-[2.4rem_1fr_2.4rem] gap-[1.6rem] rounded-[0.6rem] py-[0.8rem] pl-[1.6rem]">
-        <img src={GreenDot} alt={`초록색 점`} />
+        <ColorChipIcon />
         <span className="text-body3-bold text-[#EDEEDC]">{children}</span>
         <button onClick={handleOptionClick} className="relative justify-self-end">
-          <img src={KebabIcon} alt={`옵션 아이콘`} />
+          <MeatbollsIcon fill="white" />
           {isOpen && <DropDown />}
         </button>
       </button>

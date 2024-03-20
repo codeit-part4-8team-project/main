@@ -1,5 +1,7 @@
+import PageLayout from '@/components/common/PageLayout';
+
 const TeamsPostsPage = () => {
-  return <div>여기는 팀게시판페이지</div>;
+  return <PageLayout>{}</PageLayout>;
 };
 
 export default TeamsPostsPage;
