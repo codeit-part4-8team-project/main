@@ -8,6 +8,9 @@ import ModalInput from '../common/modal/ModalInput';
 import ModalLabel from '../common/modal/ModalLabel';
 import ModalLayout from '../common/modal/ModalLayout';
 
+// shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]
+// 이런식으로 커스텀
+
 interface ScheduleModalProps {
   closeClick?: () => void;
 }

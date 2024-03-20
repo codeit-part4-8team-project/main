@@ -13,7 +13,7 @@ interface ModalProps {
 }
 function ModalLayout({ children, closeClick, title, onClick, size = 'lg' }: ModalProps) {
   const container = clsx({
-    'relative h-[109.3rem] w-[49.7rem] bg-white p-16': size === 'lg',
+    'relative h-[119.9rem] w-[49.7rem] bg-white p-16': size === 'lg',
     'relative h-[74rem] w-[49.7rem] bg-white p-16 rounded-[2.4rem]': size === 'md',
     'relative h-[59.1rem] w-[49.7rem] bg-white p-16 rounded-[2.4rem]': size === 'sm',
   });
