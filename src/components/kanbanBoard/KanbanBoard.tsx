@@ -42,11 +42,12 @@ export default function KanbanBoard({ page, hasButton = false }: KanbanBoardProp
   );
 }
 
+// TODO 이 컴포넌트를 없애고 issue list와 합쳐도 되지 않을까...?
 function KanbanBoardItem({ title }: KanbanBoardItemProps) {
   return (
     <div className="flex h-full w-full max-w-[34.2rem] flex-col gap-[2.4rem] rounded-[2.4rem] bg-[#FCFCFC] px-12 pt-12 shadow-[0_0_1rem_0_rgba(17,17,17,0.05)]">
       <span className="text-body2-bold text-gray80">{title}</span>
-      <IssueList />
+      <IssueList status="todo" />
     </div>
   );
 }
