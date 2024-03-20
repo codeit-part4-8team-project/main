@@ -150,26 +150,6 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
   return (
     <>
       <ModalLayout title="그룹 편집" closeClick={closeClick}>
-        {/* <ModalForm
-          watch={watch('name')}
-          firstHookform={register('name')}
-          secondHookform={register('members')}
-          onSubmit={handleSubmit(onSubmit)}
-          hidden={true}
-          firstLabel="그룹 이름"
-          firstPlaceholder="그룹 이름을 입력해 주세요."
-          firstHtmlForId="groupName"
-          firstName="name"
-          firstType="text"
-          secondLabel="팀원초대"
-          secondPlaceholder="닉네임을 검색해 주세요."
-          secondHtmlForId="invite"
-          secondName="members"
-          secondType="text"
-          who="그룹 게시자"
-          profile={profile}
-          userNickName="#userNickName"
-        > */}
         <ModalFormBorder className="mt-16 h-[96.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5] px-12 pt-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>그룹 게시자</p>
           <div className="mb-16 flex items-center gap-4">
@@ -348,7 +328,6 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
             </div>
           </div>
           <ModalMemberList formTextSize={formTextSize} />
-          {/* </ModalForm> */}
         </ModalFormBorder>
       </ModalLayout>
     </>
