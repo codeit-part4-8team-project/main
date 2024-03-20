@@ -1,3 +1,5 @@
+import profile from '../../../../public/profile.svg';
+
 interface ModalMemberListProps {
   formTextSize?: string;
 }
@@ -9,8 +11,20 @@ export default function ModalMemberList({ formTextSize }: ModalMemberListProps) 
       <div
         className=" h-[10.6rem] w-full
 rounded-[0.6rem]
-bg-[#F7F7F7]"
-      ></div>
+bg-[#F7F7F7]
+pl-[1.6rem]
+pr-[2.8rem]
+pt-[1.6rem]
+"
+      >
+        <div className="flex items-center gap-[1.6rem] text-[1.2rem] font-normal">
+          <img src={profile} alt="profile" />
+          <div className="flex items-center gap-[17.1rem]">
+            <p>#userNickName</p>
+            <p className=" text-[#A1A1A1]">담당</p>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

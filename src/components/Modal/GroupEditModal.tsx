@@ -7,6 +7,8 @@ import discord from '../../../public/assets/discord.svg';
 import figma from '../../../public/assets/figma.svg';
 import profile from '../../../public/profile.svg';
 import ModalCalendar from '../common/modal/ModalCalendar';
+import ModalFormBorder from '../common/modal/ModalFormBorder';
+import ModalMemberList from '../common/modal/ModalMemberList';
 import ModalColorToggle from '@/components/common/modal/ModalColorToggle';
 import ModalForm from '@/components/common/modal/ModalForm';
 import ModalInput from '@/components/common/modal/ModalInput';
@@ -148,7 +150,7 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
   return (
     <>
       <ModalLayout title="그룹 편집" closeClick={closeClick}>
-        <ModalForm
+        {/* <ModalForm
           watch={watch('name')}
           firstHookform={register('name')}
           secondHookform={register('members')}
@@ -167,8 +169,33 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
           who="그룹 게시자"
           profile={profile}
           userNickName="#userNickName"
-        >
-          <div className="flex flex-col gap-[0.8rem]">
+        > */}
+        <ModalFormBorder className="mt-16 h-[96.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5] px-12 pt-12">
+          <p className={`${formTextSize} mb-[1.6rem]`}>그룹 게시자</p>
+          <div className="mb-16 flex items-center gap-4">
+            <img src={profile} alt="profile" />
+            {/* 데이터 받아지면 변경 예정구역 */}
+            <p className=" text-[1.4rem]">userNickName</p>
+            {/*  */}
+          </div>
+          <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
+            <ModalLabel htmlFor="name" label="그룹 이름" className={`${formTextSize}`} />
+            <ModalInput
+              name="name"
+              id="name"
+              hookform={register('name')}
+              placeholder="그룹 이름을 입력해 주세요."
+              className={`${formTextSize}${borderStyle}`}
+            />
+          </div>
+          {watch('name') ? (
+            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">
+              {watch('name')?.length}/20
+            </p>
+          ) : (
+            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">0/20</p>
+          )}
+          <div className="mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="description" label="그룹 설명" className={`${formTextSize}`} />
             <ModalInput
               id="description"
@@ -184,7 +211,7 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
               {watch('description')?.length}/40
             </p>
           ) : (
-            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">0/20</p>
+            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">0/40</p>
           )}
           <div className={`${formTextSize} `}>그룹 컬러 칩</div>
           <div className="mb-12 mt-8 flex items-center gap-12">
@@ -302,7 +329,27 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
               placeholder="URL을 입력해 주세요."
             />
           </div>
-        </ModalForm>
+          <div className=" flex flex-col gap-[0.8rem]">
+            <ModalLabel label="팀원 초대" className={`${formTextSize}`} htmlFor="members" />
+            <div className="flex items-center gap-[1.2rem]">
+              <ModalInput
+                name="members"
+                // hookform={register('members')}
+                type="text"
+                placeholder="닉네임을 검색해 주세요."
+                id="mebers"
+                className={`${formTextSize} ${borderStyle} `}
+              />
+              <button>
+                <div className="flex h-[4.6rem] w-[8.7rem] items-center justify-center rounded-[0.6rem] border bg-[#292929] font-bold text-[#FFF]">
+                  초대하기
+                </div>
+              </button>
+            </div>
+          </div>
+          <ModalMemberList formTextSize={formTextSize} />
+          {/* </ModalForm> */}
+        </ModalFormBorder>
       </ModalLayout>
     </>
   );
