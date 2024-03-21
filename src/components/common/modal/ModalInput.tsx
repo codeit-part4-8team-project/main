@@ -1,13 +1,14 @@
-import { ChangeEventHandler, ReactNode } from 'react';
+import { ReactNode } from 'react';
+import { UseFormRegister } from 'react-hook-form';
 
 interface ModalInputProps {
   placeholder?: string;
-  value?: ChangeEventHandler<HTMLInputElement>;
   className?: string;
   id: string;
   type?: string;
   name?: string;
   hookform?: any;
+  // hookform?: UseFormRegister<string> | undefined; 타입을 모르것네
   children?: ReactNode;
 }
 
@@ -20,7 +21,7 @@ export default function ModalInput({
   hookform,
   children,
 }: ModalInputProps) {
-  const inputSize = ' px-[1.8rem] py-[1.2rem] ${formTextSize} w-full';
+  const inputSize = ' px-[1.8rem] py-[1.2rem] w-full';
   return (
     <>
       <div className="relative w-full">

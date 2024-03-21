@@ -2,14 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import calender from '../../../public/assets/calendar-dark.svg';
 import profile from '../../../public/profile.svg';
-import ModalCalendar from '../common/modal/ModalCalendar';
-import ModalFormBorder from '../common/modal/ModalFormBorder';
-import ModalInput from '../common/modal/ModalInput';
-import ModalLabel from '../common/modal/ModalLabel';
-import ModalLayout from '../common/modal/ModalLayout';
-
-// shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]
-// 이런식으로 커스텀
+import ModalCalendar from '@/components/common/modal/ModalCalendar';
+import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
+import ModalInput from '@/components/common/modal/ModalInput';
+import ModalLabel from '@/components/common/modal/ModalLabel';
+import ModalLayout from '@/components/common/modal/ModalLayout';
 
 interface ScheduleModalProps {
   closeClick?: () => void;
@@ -21,8 +18,9 @@ type Inputs = {
 };
 
 function ScheduleModal({ closeClick }: ScheduleModalProps) {
-  const formTextSize = 'text-[1.4rem] font-medium';
-  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5]';
+  const formTextSize = 'text-body3-medium';
+  const inputTextSize = 'text-body3-regular';
+  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
   const {
     register,
     handleSubmit,
@@ -59,7 +57,7 @@ function ScheduleModal({ closeClick }: ScheduleModalProps) {
   return (
     <ModalLayout title="일정 추가" closeClick={closeClick} size="sm">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ModalFormBorder className="mt-16 h-[35.5rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5] px-12 pt-12">
+        <ModalFormBorder className="border-gray30 mt-16 h-[35.5rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] px-12 pt-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>게시자(나)</p>
           <div className="mb-16 flex items-center gap-4">
             <img src={profile} alt="profile" />
@@ -71,7 +69,7 @@ function ScheduleModal({ closeClick }: ScheduleModalProps) {
             <ModalLabel label="제목" className={`${formTextSize}`} htmlFor="name" />
             <ModalInput
               hookform={register('name')}
-              className={`${formTextSize} ${borderStyle}`}
+              className={`${inputTextSize} ${borderStyle}`}
               placeholder="일정 제목을 입력해 주세요."
               id="name"
               type="text"
@@ -79,17 +77,15 @@ function ScheduleModal({ closeClick }: ScheduleModalProps) {
             />
           </div>
           {watch('name') ? (
-            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">
-              {watch('name')?.length}/20
-            </p>
+            <p className=" text-gray50 mb-[0.9rem] flex justify-end">{watch('name')?.length}/20</p>
           ) : (
-            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">0/20</p>
+            <p className=" text-gray50 mb-[0.9rem] flex justify-end">0/20</p>
           )}
           <div className="flex flex-col gap-[0.8rem]">
             <ModalLabel label="날짜" className={`${formTextSize}`} htmlFor="date" />
             <ModalInput
               hookform={register('date')}
-              className={`${formTextSize} ${borderStyle}`}
+              className={`${inputTextSize} ${borderStyle}`}
               placeholder="YYYY-MM-DD 형식으로 입력해 주세요."
               name="date"
               id="date"
