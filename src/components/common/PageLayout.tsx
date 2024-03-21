@@ -6,10 +6,11 @@ import TeamBar from '@/components/TeamsPage/TeamBar';
 
 interface PageLayoutProp {
   page?: 'main' | 'team';
+  lnb?: ReactNode;
   children: ReactNode;
 }
 
-export default function PageLayout({ page, children }: PageLayoutProp) {
+export default function PageLayout({ page, lnb, children }: PageLayoutProp) {
   let paddingTop = 'pt-[8.6rem]';
   if (page === 'main') paddingTop = 'pt-[8.2rem]';
   if (page === 'team') paddingTop = 'pt-[14.2rem]';
@@ -20,7 +21,7 @@ export default function PageLayout({ page, children }: PageLayoutProp) {
     >
       <Nav />
       <SideBar />
-      {page === 'team' && <TeamBar />}
+      {lnb}
       <Board>{children}</Board>
     </div>
   );
