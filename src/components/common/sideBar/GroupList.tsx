@@ -1,3 +1,4 @@
+import { userTeamsInfo } from '@/mockdata/teamData';
 import { ReactNode, useState } from 'react';
 import { Link } from 'react-router-dom';
 import DropDown from '@/components/common/sideBar/DropDown';
@@ -11,15 +12,13 @@ interface GroupItemProps {
 export default function GroupList() {
   return (
     <ul className="absolute left-[2.4rem] top-[7.4rem] flex flex-col gap-[1.6rem]">
-      <li>
-        <GroupItem>코드잇 프로젝트</GroupItem>
-      </li>
-      <li>
-        <GroupItem>디자인 스터디</GroupItem>
-      </li>
-      <li>
-        <GroupItem>토익 공부 모임</GroupItem>
-      </li>
+      {userTeamsInfo.map(({ name }) => {
+        return (
+          <li>
+            <GroupItem>{name}</GroupItem>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -33,9 +32,9 @@ function GroupItem({ children }: GroupItemProps) {
 
   return (
     <Link to="/teams/1">
-      <button className="grid h-16 w-[21.2rem] grid-cols-[2.4rem_1fr_2.4rem] gap-[1.6rem] rounded-[0.6rem] py-[0.8rem] pl-[1.6rem]">
+      <button className="grid h-16 w-[21.2rem] grid-cols-[2.4rem_1fr_2.4rem] items-center gap-[1.6rem] rounded-[0.6rem] py-[0.8rem] pl-[1.6rem] hover:bg-[#EDEEDC]/10">
         <ColorChipIcon />
-        <span className="text-body3-bold text-[#EDEEDC]">{children}</span>
+        <span className="justify-self-start text-body3-bold text-[#EDEEDC]">{children}</span>
         <button onClick={handleOptionClick} className="relative justify-self-end">
           <MeatbollsIcon fill="white" />
           {isOpen && <DropDown />}
