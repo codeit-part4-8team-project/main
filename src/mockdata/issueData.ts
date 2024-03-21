@@ -140,7 +140,7 @@ export const kanbanBoardInfo = {
       dueDate: '2024-03-20',
       status: 'TODO',
       teamName: '디자인 스터디',
-      teamColor: 'string',
+      teamColor: '#F3FF00',
     },
   ],
   doneIssues: [
@@ -153,7 +153,7 @@ export const kanbanBoardInfo = {
         role: 'string',
         grade: 'string',
       },
-      content: 'string',
+      content: '3/1 디자인 회의 ',
       assignedMembers: [
         {
           name: '3/1 디자인 회의 ',
@@ -165,7 +165,7 @@ export const kanbanBoardInfo = {
       dueDate: '2024-03-20',
       status: 'TODO',
       teamName: '디자인 스터디',
-      teamColor: 'string',
+      teamColor: '#F3FF00',
     },
   ],
 };

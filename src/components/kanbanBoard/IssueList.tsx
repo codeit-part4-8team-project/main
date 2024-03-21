@@ -15,6 +15,12 @@ interface IssueItemProps {
   issue: Issue;
 }
 
+const TITLE = {
+  todo: '할 일',
+  progress: '진행 중',
+  done: '백로그',
+};
+
 export default function IssueList({ status }: IssueListProps) {
   const issues: Issue[] = kanbanBoardInfo[`${status}Issues`];
 
@@ -33,22 +39,22 @@ export default function IssueList({ status }: IssueListProps) {
 }
 
 function IssueItem({ issue }: IssueItemProps) {
-  const { title, content, teamName } = issue;
+  const { title, content, teamName, teamColor } = issue;
 
   return (
-    <div className="relative min-h-64 rounded-[2.4rem] border border-gray30 bg-white p-8">
+    <div className="relative min-h-64 w-[28.2rem] rounded-[2.4rem] border border-gray30 bg-white p-8">
       <div className="flex flex-col gap-[1.2rem]">
         <div className="flex items-center gap-4">
-          <ColorChipIcon />
+          <ColorChipIcon fill={teamColor} />
           <div className="text-body4-bold text-gray100">{title}</div>
         </div>
         <span className="text-body4-regular leading-[1.6rem] text-gray50">{content}</span>
       </div>
       <button className="absolute right-8 top-8"></button>
       <button
-        className={`absolute bottom-8 left-8 flex items-center justify-center rounded-[4rem] border px-4 py-[0.6rem] text-[1rem]`}
+        style={{ color: teamColor }} /* TODO 논의 필요 */
+        className="absolute bottom-8 left-8 flex items-center justify-center rounded-[4rem] border px-4 py-[0.6rem] text-[1rem]"
       >
-        {/* TODO 왜 색상 적용이 안 됨? */}
         {teamName}
       </button>
       <div className="absolute bottom-8 right-8">
