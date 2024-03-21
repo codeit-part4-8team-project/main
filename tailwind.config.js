@@ -32,6 +32,7 @@ export default {
       'body5-medium': ['1.0rem', { lineHeight: '1.8rem', fontWeight: 500 }],
       'body5-regular': ['1.0rem', { lineHeight: '1.8rem', fontWeight: 400 }],
     },
+    extend: {},
     fontFamily: {
       rammetto: ['"Rammetto One"'],
     },
