@@ -1,12 +1,26 @@
 import CheckboxInput from './CheckboxInput';
+import AllowDownIcon from '@/assets/AllowDownIcon';
+import BellIcon from '@/assets/BellIcon';
+import BoxIcon from '@/assets/BoxIcon';
+import CalendarIcon from '@/assets/CalendarIcon';
+import Chat4Icon from '@/assets/Chat4Icon';
+import Check2CircleIcon from '@/assets/Check2CircleIcon';
+import CheckCircleFill from '@/assets/CheckCircleFill';
+import FolderIcon from '@/assets/FolderIcon';
+import ListCheckIcon from '@/assets/ListCheckIcon';
+import MeatbollsIcon from '@/assets/MeatbollsIcon';
+import MegaphoneIcon from '@/assets/MegaphoneIcon';
+import PeopleIcon from '@/assets/PeopleIcon';
+import Sliders3Icon from '@/assets/Sliders3Icon';
+import ViewListIcon from '@/assets/ViewListIcon';
 
 function ToSStepContent() {
   return (
     <div className="flex w-[74rem] flex-col">
-      <div className="bg-gray10 mb-[1.6rem] h-[33.2rem] w-full shrink-0 rounded-[0.6rem] py-12 pl-[3.4rem] pr-[2.6rem]">
+      <div className="mb-[1.6rem] h-[33.2rem] w-full shrink-0 rounded-[0.6rem] bg-gray10 py-12 pl-[3.4rem] pr-[2.6rem]">
         <div className="flex items-center gap-[1.6rem]">
           <CheckboxInput id="service"></CheckboxInput>
-          <span className="text-gray100 flex items-center gap-4 text-[1.4rem] font-bold leading-[2.2rem]">
+          <span className="flex items-center gap-4 text-[1.4rem] font-bold leading-[2.2rem] text-gray100">
             <span className="text-[1.2rem] font-normal leading-8">(필수)</span>서비스 이용약관 동의
           </span>
         </div>
@@ -25,7 +39,7 @@ function ToSStepContent() {
         </p>
         <div className="flex items-center gap-[1.6rem]">
           <CheckboxInput id="privacy"></CheckboxInput>
-          <span className="text-gray100 flex items-center gap-4 text-[1.4rem] font-bold leading-[2.2rem]">
+          <span className="flex items-center gap-4 text-[1.4rem] font-bold leading-[2.2rem] text-gray100">
             <span className="text-[1.2rem] font-normal leading-8">(필수)</span>서비스 이용약관 동의
           </span>
         </div>
@@ -45,17 +59,48 @@ function ToSStepContent() {
       </div>
       <div className="ml-16 flex items-center gap-[1.6rem]">
         <CheckboxInput id="marketing"></CheckboxInput>
-        <span className="text-gray100 flex items-center gap-4 text-[1.4rem] font-bold leading-[2.2rem]">
+        <span className="flex items-center gap-4 text-[1.4rem] font-bold leading-[2.2rem] text-gray100">
           <span className="text-[1.2rem] font-normal leading-8">(필수)</span>개인정보 수집 및 이용
           동의
         </span>
       </div>
-      <div className="border-t-gray30 mb-[2.4rem] mt-[2.2rem] h-full border-t-[0.1rem] border-solid"></div>
+      <div className="mb-[2.4rem] mt-[2.2rem] h-full border-t-[0.1rem] border-solid border-t-gray30"></div>
       <div className="ml-16 flex items-center gap-[1.6rem]">
         <CheckboxInput id="agree-all"></CheckboxInput>
-        <span className="text-gray100 flex items-center gap-4 text-[1.4rem] font-bold leading-[2.2rem]">
+        <span className="flex items-center gap-4 text-[1.4rem] font-bold leading-[2.2rem] text-gray100">
           KEEPY-UPPY의 이용약관 및 개인정보 처리방침을 확인하였고, 이에 모두 동의합니다.
         </span>
+        <div>
+          <BellIcon></BellIcon>
+          <CalendarIcon active={true} />
+          <Chat4Icon />
+          <Check2CircleIcon></Check2CircleIcon>
+          <ListCheckIcon />
+          <MegaphoneIcon />
+          <PeopleIcon />
+          <Sliders3Icon />
+          <AllowDownIcon />
+          <MeatbollsIcon />
+        </div>
+        <div className="bg-black">
+          <BellIcon fill="white"></BellIcon>
+          <Chat4Icon fill="white" />
+          <Check2CircleIcon fill="white"></Check2CircleIcon>
+          <ListCheckIcon fill="white" />
+          <MegaphoneIcon fill="white" />
+          <PeopleIcon fill="white" />
+          <Sliders3Icon fill="white" />
+          <AllowDownIcon fill="white" />
+          <MeatbollsIcon fill="white" />
+          <BoxIcon active={true} />
+          <BoxIcon />
+          <CalendarIcon active={true} fill="white" />
+          <CalendarIcon fill="white" />
+          <ViewListIcon active={true} />
+          <ViewListIcon />
+          <FolderIcon active={true} />
+          <FolderIcon />
+        </div>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { CalendarProvider } from './contexts/CalenarProvider';
 import { ModalProvider } from './contexts/ModalProvider';
 import MyPage from './pages/MyPage';
+import OauthRedirectPage from './pages/OauthRedirectPage';
 import HomePage from '@/pages/HomePage';
 import MainPage from '@/pages/MainPage';
 import MyIssuesPage from '@/pages/MyIssuesPage';
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/signin" element={<SigninPage />} />
+            <Route path="/login/oauth2/code/:provider" element={<OauthRedirectPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/main" element={<MainPage />} />
             <Route path="/schedules/:userId" element={<SchedulesPage />} />
