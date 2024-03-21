@@ -17,7 +17,7 @@ type Inputs = {
   assignedMembersUsernames: string;
 };
 
-export default function IssuesModal({ closeClick }: IssuesModalProps) {
+export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
   const { register, watch, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const createIssue = {
@@ -103,7 +103,7 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
           <ModalMemberList formTextSize={formTextSize} />
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">
-          생성하기
+          수정하기
         </TextButton>
       </form>
     </ModalLayout>

@@ -5,13 +5,14 @@ import arrowDown from '../../../public/assets/arrow-down-dark.png';
 import discord from '../../../public/assets/discord.svg';
 import figma from '../../../public/assets/figma.svg';
 import profile from '../../../public/profile.svg';
-import ModalCalendarInput from '../common/modal/ModalCalendarInput';
-import ModalFormBorder from '../common/modal/ModalFormBorder';
-import ModalLabel from '../common/modal/ModalLabel';
-import ModalMemberList from '../common/modal/ModalMemberList';
+import TextButton from '@/components/common/TextButton';
+import ModalCalendarInput from '@/components/common/modal/ModalCalendarInput';
 import ModalColorToggle from '@/components/common/modal/ModalColorToggle';
+import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalInput from '@/components/common/modal/ModalInput';
+import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
+import ModalMemberList from '@/components/common/modal/ModalMemberList';
 import { useAxios } from '@/hooks/useAxios';
 
 // {
@@ -74,14 +75,15 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   const urlToggleRef = useRef<HTMLButtonElement | null>(null);
   const startDateToggleRef = useRef<HTMLButtonElement | null>(null);
   const endDateToggleRef = useRef<HTMLButtonElement | null>(null);
-  const [colorToggle, setColorToggle] = useState(false);
-  const [urlToggle, setUrlToggle] = useState(false);
-  const [startDateToggle, setStartDateToggle] = useState(false);
-  const [endDateToggle, setEndDateToggle] = useState(false);
+  const [colorToggle, setColorToggle] = useState<boolean>(false);
+  const [urlToggle, setUrlToggle] = useState<boolean>(false);
+  const [startDateToggle, setStartDateToggle] = useState<boolean>(false);
+  const [endDateToggle, setEndDateToggle] = useState<boolean>(false);
   const [urlImg, setUrlImg] = useState<string | null>(null);
 
-  const formTextSize = 'text-[1.4rem] font-medium';
-  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5]';
+  const formTextSize = 'body3-medium';
+  const inputTextSize = 'text-body3-regular';
+  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
 
   // const testTeamId = 1;
   // const { data, loading, error, fetchData } = useAxios({
@@ -176,9 +178,9 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   }, [endDateToggle]);
 
   return (
-    <ModalLayout closeClick={closeClick} title="그룹 생성" size="lg">
+    <ModalLayout closeClick={closeClick} title="그룹 생성" size="xl">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ModalFormBorder className="mt-16 h-[96.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5] px-12 pt-12">
+        <ModalFormBorder className="border-gray30 mt-16 h-[96.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] px-12 pt-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>그룹 게시자</p>
           <div className="mb-16 flex items-center gap-4">
             <img src={profile} alt="profile" />
@@ -193,15 +195,13 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               id="name"
               hookform={register('name')}
               placeholder="그룹 이름을 입력해 주세요."
-              className={`${formTextSize}${borderStyle}`}
+              className={`${inputTextSize} ${borderStyle}`}
             />
           </div>
           {watch('name') ? (
-            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">
-              {watch('name')?.length}/20
-            </p>
+            <p className=" text-gray50 mb-[0.9rem] flex justify-end">{watch('name')?.length}/20</p>
           ) : (
-            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">0/20</p>
+            <p className=" text-gray50 mb-[0.9rem] flex justify-end">0/20</p>
           )}
           <div className="mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="description" label="그룹 설명" className={`${formTextSize}`} />
@@ -209,17 +209,17 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               id="description"
               type="text"
               placeholder="그룹 설명을 입력해 주세요."
-              className={`${formTextSize}${borderStyle}`}
+              className={`${inputTextSize} ${borderStyle}`}
               name="description"
               hookform={register('description')}
             />
           </div>
           {watch('description') ? (
-            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">
+            <p className=" text-gray50 mb-[0.9rem] flex justify-end">
               {watch('description')?.length}/40
             </p>
           ) : (
-            <p className=" mb-[0.9rem] flex justify-end text-[#A1A1A1]">0/40</p>
+            <p className=" text-gray50 mb-[0.9rem] flex justify-end">0/40</p>
           )}
           <div className={`${formTextSize}`}>그룹 컬러 칩</div>
           <div className="mb-12 mt-8 flex items-center gap-12">
@@ -229,7 +229,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
                 style={{ backgroundColor: watch('color') }}
               />
             ) : (
-              <div className={`h-[4.7rem] w-[4.7rem] rounded-[50%] bg-[#F7F7F7]`} />
+              <div className={`bg-gray10 h-[4.7rem] w-[4.7rem] rounded-[50%]`} />
             )}
 
             <button
@@ -239,7 +239,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               ref={colorToggleRef}
             >
               <div
-                className={`${borderStyle} flex cursor-pointer items-center justify-center gap-[0.4rem] px-4 py-[1.2rem] text-xl font-bold`}
+                className={`${borderStyle} text-body4-bold flex cursor-pointer items-center justify-center gap-[0.4rem] px-4 py-[1.2rem]`}
               >
                 컬러 설정
                 <img alt="토글버튼" src={arrowDown} />
@@ -266,7 +266,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               <img src={arrowDown} alt="토글버튼" />
               {urlToggle && (
                 // 나중에 컴포넌트로 분리
-                <div className="absolute left-0 right-0 top-[5rem] z-50 h-[7.4rem] w-[7.5rem] rounded-[0.6rem] bg-[#FFF] py-[0.4rem] shadow-lg">
+                <div className="absolute left-0 right-0 top-[5rem] z-50 h-[7.4rem] w-[7.5rem] rounded-[0.6rem] bg-white py-[0.4rem] shadow-lg">
                   <div
                     className="hover:bg-gray10 flex justify-center py-[0.4rem]"
                     onClick={handleUrlImgClick}
@@ -296,7 +296,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               hookform={register('githubLink')}
               name="githubLink"
               id="link"
-              className={`${formTextSize} ${borderStyle}`}
+              className={`${inputTextSize} ${borderStyle}`}
               placeholder="URL을 입력해 주세요."
             />
           </div>
@@ -309,18 +309,16 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
                 type="text"
                 placeholder="닉네임을 검색해 주세요."
                 id="mebers"
-                className={`${formTextSize} ${borderStyle} `}
+                className={`${inputTextSize} ${borderStyle} `}
               />
-              <button>
-                <div className="flex h-[4.6rem] w-[8.7rem] items-center justify-center rounded-[0.6rem] border bg-[#292929] font-bold text-[#FFF]">
-                  초대하기
-                </div>
-              </button>
+              <TextButton buttonSize="sm">초대하기</TextButton>
             </div>
           </div>
           <ModalMemberList formTextSize={formTextSize} />
         </ModalFormBorder>
-        {/* <button></button> 채빈님 버튼 넣기 */}
+        <TextButton buttonSize="md" className="mt-16">
+          생성하기
+        </TextButton>
       </form>
     </ModalLayout>
   );

@@ -1,8 +1,10 @@
 import Nav from '@/components/common/Nav';
 import ModalLayout from '@/components/common/modal/ModalLayout';
-import AlertGroupModal from '@/components/Modal/AlertGroupModal';
 import GroupEditModal from '@/components/Modal/GroupEditModal';
 import GroupModal from '@/components/Modal/GroupModal';
+import InvitationGroupModal from '@/components/Modal/InvitationGroupModal';
+import IssuesModal from '@/components/Modal/IssuesModal';
+import MyIssuesModal from '@/components/Modal/MyIssuesModal';
 import ScheduleModal from '@/components/Modal/ScheduleModal';
 import { useModal } from '@/contexts/ModalProvider';
 // import { useAxios } from '@/hooks/useAxios';
@@ -14,8 +16,9 @@ const HomePage = () => {
     openModal(({ close }) => <GroupModal closeClick={close} />);
     // openModal(({ close }) => <ScheduleModal closeClick={close} />);
     // openModal(({ close }) => <GroupEditModal closeClick={close} />);
-    // openModal(({ close }) => <AlertGroupModal closeClick={close} />);
-    // openModal(({ close }) => <AlertGroupModal closeClick={close} />);
+    // openModal(({ close }) => <InvitationGroupModal closeClick={close} />);
+    // openModal(({ close }) => <IssuesModal closeClick={close} />);
+    // openModal(({ close }) => <MyIssuesModal closeClick={close} />);
   };
   // ScheduleModal
   // GroupEditModal
@@ -57,8 +60,6 @@ const HomePage = () => {
       <button className="h-[15rem] w-[15rem] bg-black text-white" onClick={handleLogout}>
         logout
       </button>
-
-      {/* <GroupModal/> */}
 
       {/* <div>홈페이지입니다.</div> */}
     </>
