@@ -6,13 +6,14 @@ interface circleType {
 }
 
 interface ModalToggleProps {
-  handleColorClick?: (color: string) => void | undefined;
+  handleColorClick?: ((color: string) => void | undefined) | undefined;
 }
 
 function ModalColorToggle({ handleColorClick }: ModalToggleProps) {
   return (
     <>
-      <div className="absolute left-0 right-0 top-[6rem] grid h-[16.2rem] w-[25.4rem] grid-cols-5 gap-[1.6rem] rounded-[0.6rem] border-[0.2rem] border-black bg-white p-8 shadow-2xl">
+      <div className="shadow-[0_0_10px_0_rgba(17, 17, 17, 0.05)] absolute left-0 right-0 top-[6rem] z-50 grid h-[16.2rem] w-[25.4rem] grid-cols-5 gap-[1.6rem] rounded-[0.6rem] bg-white p-8">
+        {/* box-shadow: 0px 0px 10px 0px rgba(17, 17, 17, 0.05); */}
         {Circles.map((circle: circleType) => (
           <div
             onClick={() => handleColorClick(circle?.color)}

@@ -1,5 +1,6 @@
-import ModalLayout from '@/components/common/ModalLayout';
 import Nav from '@/components/common/Nav';
+import ModalLayout from '@/components/common/modal/ModalLayout';
+import AlertGroupModal from '@/components/Modal/AlertGroupModal';
 import GroupEditModal from '@/components/Modal/GroupEditModal';
 import GroupModal from '@/components/Modal/GroupModal';
 import ScheduleModal from '@/components/Modal/ScheduleModal';
@@ -10,9 +11,11 @@ import axios from '@/hooks/testAxios';
 const HomePage = () => {
   const openModal = useModal();
   const handleClickOpenModal = () => {
-    // openModal(({ close }) => <GroupModal closeClick={close} />);
+    openModal(({ close }) => <GroupModal closeClick={close} />);
     // openModal(({ close }) => <ScheduleModal closeClick={close} />);
-    openModal(({ close }) => <GroupEditModal closeClick={close} />);
+    // openModal(({ close }) => <GroupEditModal closeClick={close} />);
+    // openModal(({ close }) => <AlertGroupModal closeClick={close} />);
+    // openModal(({ close }) => <AlertGroupModal closeClick={close} />);
   };
   // ScheduleModal
   // GroupEditModal
