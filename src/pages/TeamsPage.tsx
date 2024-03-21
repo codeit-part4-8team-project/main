@@ -1,19 +1,17 @@
-import Nav from '@/components/common/Nav';
-import SideBar from '@/components/common/sideBar/SideBar';
-import TeamBar from '@/components/TeamBar';
+import BoardSection from '@/components/common/BoardSection';
+import PageLayout from '@/components/common/PageLayout';
+import MainSchedules from '@/components/MainPage/MainSchedules';
 import AnnouncementBoard from '@/components/announcement/AnnouncementBoard';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
 
 export default function TeamsPage() {
   return (
-    <div className="relative ml-[26rem] mt-[4.3rem]">
-      <Nav />
-      <SideBar />
-      <div className="h-[28.4rem] w-full bg-[#E4E4E4]"></div>
-      <div className="mx-auto mt-[-3.2rem] flex w-fit gap-[2.4rem]">
-        <KanbanBoard />
+    <PageLayout>
+      <div className="grid h-full w-full grid-cols-[107.4fr_37.8fr] grid-rows-[33.7fr_52.5fr] gap-[5.2rem]">
+        <BoardSection title="My calendar" content={<MainSchedules />} />
         <AnnouncementBoard />
+        <BoardSection title="Kanban board" content={<KanbanBoard />} />
       </div>
-    </div>
+    </PageLayout>
   );
 }
