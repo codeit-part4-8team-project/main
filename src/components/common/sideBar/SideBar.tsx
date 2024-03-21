@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import ToolTip from '@/components/common/ToolTip';
+// import ToolTip from '@/components/common/ToolTip';
 import BoardList from '@/components/common/sideBar/BoardList';
 import GroupList from '@/components/common/sideBar/GroupList';
 import GroupModal from '@/components/Modal/GroupModal';
