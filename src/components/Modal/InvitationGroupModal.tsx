@@ -1,9 +1,9 @@
 import profile from '../../../public/profile.svg';
-import ModalCalendarInput from '../common/modal/ModalCalendarInput';
-import ModalFormBorder from '../common/modal/ModalFormBorder';
-import ModalInput from '../common/modal/ModalInput';
-import ModalLabel from '../common/modal/ModalLabel';
-import ModalLayout from '../common/modal/ModalLayout';
+import ModalCalendarInput from '@/components/common/modal/ModalCalendarInput';
+import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
+import ModalInput from '@/components/common/modal/ModalInput';
+import ModalLabel from '@/components/common/modal/ModalLabel';
+import ModalLayout from '@/components/common/modal/ModalLayout';
 
 interface AlertGroupModalProps {
   closeClick: () => void;
@@ -23,13 +23,14 @@ interface AlertGroupModalProps {
 //       }
 //     ]
 //   }
-export default function AlertGroupModal({ closeClick }: AlertGroupModalProps) {
-  const formTextSize = 'text-[1.4rem] font-medium';
-  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5]';
+export default function InvitationGroupModal({ closeClick }: AlertGroupModalProps) {
+  const formTextSize = 'text-body3-medium';
+  const inputTextSize = 'text-body3-regular';
+  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
   return (
     // <ModalLayout title={`${color} ${name}에 초대 되었습니다!`} closeClick={closeClick} size="md">
     <ModalLayout title="그룹 초대" closeClick={closeClick} size="md">
-      <ModalFormBorder className="mt-16 h-[51.4rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5] px-12 pt-12">
+      <ModalFormBorder className="border-gray30 mt-16 h-[51.4rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] px-12 pt-12">
         <div className="mb-20 flex items-center gap-4 text-[1.8rem] font-bold">
           그룹에 추가되었습니다!
         </div>
@@ -46,7 +47,7 @@ export default function AlertGroupModal({ closeClick }: AlertGroupModalProps) {
             name="name"
             type="text"
             id="name"
-            className={`${formTextSize} ${borderStyle} mb-12`}
+            className={`${inputTextSize} ${borderStyle} mb-12`}
           />
         </div>
         <div className="mb-12 flex flex-col gap-[0.8rem]">
@@ -55,7 +56,7 @@ export default function AlertGroupModal({ closeClick }: AlertGroupModalProps) {
             name="description"
             type="text"
             id="description"
-            className={`${formTextSize} ${borderStyle}`}
+            className={`${inputTextSize} ${borderStyle}`}
           />
         </div>
         <ModalCalendarInput />
