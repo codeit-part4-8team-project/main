@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import CreateIcon from '../../../../public/assets/plus-circle-light.svg';
-import ProfileImg from '../../../../public/assets/profile-small.svg';
 import ToolTip from '@/components/common/ToolTip';
 import BoardList from '@/components/common/sideBar/BoardList';
 import GroupList from '@/components/common/sideBar/GroupList';
 import GroupModal from '@/components/Modal/GroupModal';
 import { useModal } from '@/contexts/ModalProvider';
+import PlusCircleIcon from '@/assets/PlusCircleIcon';
+import ProfileIcon from '@/assets/ProfileIcon';
 
 export default function SideBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +18,7 @@ export default function SideBar() {
   return (
     <>
       {isOpen && <GroupModal closeClick={handleToggleModalClick} />}
-      <div className="bg-gray100 fixed bottom-0 left-0 top-[8.2rem] w-[26rem] rounded-tr-3xl">
+      <div className="fixed bottom-0 left-0 top-[8.2rem] w-[26rem] rounded-tr-3xl bg-gray100">
         <ProfileSection />
         <BoardList />
         <GroupSection />
@@ -31,7 +31,7 @@ function ProfileSection() {
   return (
     <Link to="/myPage/1">
       <div className="my-[3.3rem] ml-16 flex items-center gap-[1.6rem]">
-        <img src={ProfileImg} alt="프로필 이미지" />
+        <ProfileIcon size="sm" />
         <span className="text-body2-bold text-[#EDEEDC]">홍길동</span>
       </div>
     </Link>
@@ -48,7 +48,7 @@ function GroupSection() {
     <div className="relative mt-[47.8rem] flex items-center justify-between bg-black py-[1.8rem] pl-16 pr-[2.4rem]">
       <span className="text-body2-bold text-[#EDEEDC]">그룹</span>
       <button className="relative" onClick={handleClickOpenModal}>
-        <img src={CreateIcon} alt="그룹 생성 버튼" />
+        <PlusCircleIcon fill="#F0F0E2" />
         <div className="absolute -left-[7.4rem] -top-[5.1rem]">
           <ToolTip />
         </div>

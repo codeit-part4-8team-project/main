@@ -15,7 +15,3 @@ export default function MainPage() {
     </PageLayout>
   );
 }
-
-function Temp() {
-  return <div className="h-[29.1rem] w-full shrink-0 border border-black"></div>;
-}
