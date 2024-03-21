@@ -12,7 +12,7 @@ export default function Post({ post }: PostProps) {
   return (
     <div className="relative flex h-[23.3rem] w-[49.7rem] flex-col gap-[2.4rem] rounded-[2.4rem] border border-gray30 bg-white p-[2.4rem]">
       <MeatbollsIcon className="absolute right-[2.4rem] top-[2.4rem]" />
-      <div className="flex gap-[1.5rem]">
+      <div className="flex items-center gap-[1.5rem]">
         <ProfileIcon size="lg" className="row-span-2" />
         <div className="flex flex-col gap-[0.4rem]">
           <span className="text-body4-regular text-gray100">{author.name}</span>
