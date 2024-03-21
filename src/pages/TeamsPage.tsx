@@ -6,7 +6,7 @@ import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
 
 export default function TeamsPage() {
   return (
-    <PageLayout>
+    <PageLayout page="team">
       <div className="grid h-full w-full grid-cols-[107.4fr_37.8fr] grid-rows-[33.7fr_52.5fr] gap-[5.2rem]">
         <BoardSection title="My calendar" content={<MainSchedules />} />
         <AnnouncementBoard />
