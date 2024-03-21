@@ -49,7 +49,7 @@ function GroupSection() {
       <span className="text-body2-bold text-[#EDEEDC]">그룹</span>
       <button className="relative" onClick={handleClickOpenModal}>
         <PlusCircleIcon fill="#F0F0E2" />
-        <ToolTip />
+        {/* <ToolTip /> */}
       </button>
       <GroupList />
     </div>
