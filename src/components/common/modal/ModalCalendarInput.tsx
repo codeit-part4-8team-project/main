@@ -20,29 +20,30 @@ export default function ModalCalendarInput({
   const [endDateToggle, setEndDateToggle] = useState(false);
 
   const handleStartDateClick = () => {
-    setStartDateToggle(!startDateToggle);
+    setStartDateToggle(true);
+    // setStartDateToggle(!startDateToggle);
   };
   const handleEndDateClick = () => {
     setEndDateToggle(!endDateToggle);
   };
 
-  const handleStartDateClickOutside = (e: MouseEvent) => {
-    if (startDateToggleRef.current && !startDateToggleRef.current.contains(e.target as Node))
-      setStartDateToggle(false);
-  };
+  // const handleStartDateClickOutside = (e: MouseEvent) => {
+  //   if (startDateToggleRef.current && !startDateToggleRef.current.contains(e.target as Node))
+  //     setStartDateToggle(false);
+  // };
   const handleEndDateClickOutside = (e: MouseEvent) => {
     if (endDateToggleRef.current && !endDateToggleRef.current.contains(e.target as Node))
       setEndDateToggle(false);
   };
 
-  useEffect(() => {
-    if (startDateToggle) {
-      document.addEventListener('mousedown', handleStartDateClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleStartDateClickOutside);
-    };
-  }, [startDateToggle]);
+  // useEffect(() => {
+  //   if (startDateToggle) {
+  //     document.addEventListener('mousedown', handleStartDateClickOutside);
+  //   }
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleStartDateClickOutside);
+  //   };
+  // }, [startDateToggle]);
 
   useEffect(() => {
     if (endDateToggle) {

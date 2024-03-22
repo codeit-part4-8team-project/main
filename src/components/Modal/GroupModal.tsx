@@ -8,11 +8,14 @@ import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
 import ModalCalendarInput from '@/components/common/modal/ModalCalendarInput';
 import ModalColorToggle from '@/components/common/modal/ModalColorToggle';
+import ModalCreateLinkInput from '@/components/common/modal/ModalCreateLinkInput';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
+import ModalLinkInput from '@/components/Modal/ModalLinkInput';
+import ModalUrlToggle from '@/components/Modal/ModalUrlToggle';
 import { useAxios } from '@/hooks/useAxios';
 
 // {
@@ -40,7 +43,9 @@ type Inputs = {
   color: string;
   startDate: string;
   endDate: string;
-  githubLink: string;
+  githubLink?: string | null;
+  discordLink?: string | null;
+  figmaLink?: string | null;
 };
 
 interface GroupModalProps {
@@ -66,22 +71,42 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
       startDate: data.startDate,
       endDate: data.endDate,
       githubLink: data.githubLink,
+      discordLink: data.discordLink,
+      figmaLink: data.figmaLink,
       color: data.color,
     };
     console.log('createTema', createTeam);
   };
 
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
-  const urlToggleRef = useRef<HTMLButtonElement | null>(null);
+  const oneUrlToggleRef = useRef<HTMLButtonElement | null>(null);
+  const twoUrlToggleRef = useRef<HTMLButtonElement | null>(null);
+  const threeUrlToggleRef = useRef<HTMLButtonElement | null>(null);
   const startDateToggleRef = useRef<HTMLButtonElement | null>(null);
   const endDateToggleRef = useRef<HTMLButtonElement | null>(null);
+
   const [colorToggle, setColorToggle] = useState<boolean>(false);
-  const [urlToggle, setUrlToggle] = useState<boolean>(false);
+  const [oneUrlToggle, setOneUrlToggle] = useState<boolean>(false);
+  const [twoUrlToggle, setTwoUrlToggle] = useState<boolean>(false);
+  const [threeUrlToggle, setThreeUrlToggle] = useState<boolean>(false);
   const [startDateToggle, setStartDateToggle] = useState<boolean>(false);
   const [endDateToggle, setEndDateToggle] = useState<boolean>(false);
-  const [urlImg, setUrlImg] = useState<string | null>(null);
-
-  const formTextSize = 'body3-medium';
+  const [oneUrlImg, setOneUrlImg] = useState<string | null>(null);
+  const [twoUrlImg, setTwoUrlImg] = useState<string | null>(null);
+  const [threeUrlImg, setThreeUrlImg] = useState<string | null>(null);
+  const [createLinkInput, setCreateLinkInput] = useState<number>(1);
+  // 일단 이렇게라도 만들고 나중에 가능하면 수정
+  // 왜 어떨때 갑자기 null값이 들어가는지 모르겠음.
+  const [oneLinkId, setOneLinkId] = useState<'githubLink' | 'discordLink' | 'figmaLink'>(
+    'githubLink',
+  );
+  const [twoLinkId, setTwoLinkId] = useState<'githubLink' | 'discordLink' | 'figmaLink'>(
+    'githubLink',
+  );
+  const [threeLinkId, setThreeLinkId] = useState<'githubLink' | 'discordLink' | 'figmaLink'>(
+    'githubLink',
+  );
+  const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
 
@@ -99,8 +124,15 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     console.log('color test', color);
   };
 
-  const handleUrlClick = () => {
-    setUrlToggle(!urlToggle);
+  const handleOneUrlClick = () => {
+    setOneUrlToggle(!oneUrlToggle);
+  };
+
+  const handleTwoUrlClick = () => {
+    setTwoUrlToggle(!twoUrlToggle);
+  };
+  const handleThreeUrlClick = () => {
+    setThreeUrlToggle(!threeUrlToggle);
   };
   const handleStartDateClick = () => {
     setStartDateToggle(!startDateToggle);
@@ -109,11 +141,57 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     setEndDateToggle(!endDateToggle);
   };
 
-  const handleUrlImgClick: MouseEventHandler<HTMLDivElement> = (e) => {
-    const imgSrc = (e.target as HTMLDivElement).getAttribute('data-set');
-    console.log('tttt', imgSrc);
-    setUrlImg(imgSrc);
+  const handleCreateLinkInput = () => {
+    if (createLinkInput === 1) {
+      setCreateLinkInput(2);
+    } else if (createLinkInput === 2) {
+      setCreateLinkInput(3);
+    }
   };
+  console.log(createLinkInput);
+  // const handleOneUrlImgClick: MouseEventHandler<HTMLDivElement> = (e) => {
+  //   const imgSrc = (e.target as HTMLDivElement).getAttribute('data-set');
+  //   const linkId:  'githubLink' | 'discordLink' | 'figmaLink' = (e?.target as HTMLDivElement)?.getAttribute('data-id') ?? 'githubLink';
+  //   setOneUrlImg(imgSrc);
+  //   setOneLinkId(linkId);
+  // };
+
+  const handleOneUrlImgClick: MouseEventHandler<HTMLDivElement> = (e) => {
+    const imgSrc = (e.target as HTMLDivElement).getAttribute('data-set');
+    let linkId: 'githubLink' | 'discordLink' | 'figmaLink' = 'githubLink';
+    const id = (e?.target as HTMLDivElement)?.getAttribute('data-id');
+
+    if (id === 'githubLink' || id === 'discordLink' || id === 'figmaLink') {
+      linkId = id;
+    }
+    setOneUrlImg(imgSrc);
+    setOneLinkId(linkId);
+  };
+
+  console.log('1', oneLinkId);
+
+  const handleTwoUrlImgClick: MouseEventHandler<HTMLDivElement> = (e) => {
+    const imgSrc = (e.target as HTMLDivElement).getAttribute('data-set');
+    let linkId: 'githubLink' | 'discordLink' | 'figmaLink' = 'githubLink';
+    const id = (e.target as HTMLDivElement).getAttribute('data-id');
+    if (id === 'githubLink' || id === 'discordLink' || id === 'figmaLink') {
+      linkId = id;
+    }
+    setTwoUrlImg(imgSrc);
+    setTwoLinkId(linkId);
+  };
+  console.log('2', twoLinkId);
+  const handleThreeUrlImgClick: MouseEventHandler<HTMLDivElement> = (e) => {
+    const imgSrc = (e.target as HTMLDivElement).getAttribute('data-set');
+    let linkId: 'githubLink' | 'discordLink' | 'figmaLink' = 'githubLink';
+    const id = (e.target as HTMLDivElement).getAttribute('data-id');
+    if (id === 'githubLink' || id === 'discordLink' || id === 'figmaLink') {
+      linkId = id;
+    }
+    setThreeUrlImg(imgSrc);
+    setThreeLinkId(linkId);
+  };
+  console.log('3', threeLinkId);
 
   const handleColorToggle = () => {
     setColorToggle(!colorToggle);
@@ -126,8 +204,8 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   };
 
   const handleUrlClickOutside = (e: MouseEvent) => {
-    if (urlToggleRef.current && !urlToggleRef.current.contains(e.target as Node))
-      setUrlToggle(false);
+    if (oneUrlToggleRef.current && !oneUrlToggleRef.current.contains(e.target as Node))
+      setOneUrlToggle(false);
   };
 
   const handleStartDateClickOutside = (e: MouseEvent) => {
@@ -150,14 +228,14 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   }, [colorToggle]);
 
   useEffect(() => {
-    if (urlToggle) {
+    if (oneUrlToggle) {
       document.addEventListener('mousedown', handleUrlClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleUrlClickOutside);
     };
-  }, [urlToggle]);
+  }, [oneUrlToggle]);
 
   useEffect(() => {
     if (startDateToggle) {
@@ -180,7 +258,8 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   return (
     <ModalLayout closeClick={closeClick} title="그룹 생성" size="xl">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ModalFormBorder className="border-gray30 mt-16 h-[96.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] px-12 pt-12">
+        <ModalFormBorder className="mt-16 h-full w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 p-12">
+          {/* <ModalFormBorder className="border-gray30 mt-16 h-[96.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] px-12 pt-12"> */}
           <p className={`${formTextSize} mb-[1.6rem]`}>그룹 게시자</p>
           <div className="mb-16 flex items-center gap-4">
             <img src={profile} alt="profile" />
@@ -199,9 +278,9 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             />
           </div>
           {watch('name') ? (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">{watch('name')?.length}/20</p>
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">{watch('name')?.length}/20</p>
           ) : (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">0/20</p>
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">0/20</p>
           )}
           <div className="mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="description" label="그룹 설명" className={`${formTextSize}`} />
@@ -215,11 +294,11 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             />
           </div>
           {watch('description') ? (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">
               {watch('description')?.length}/40
             </p>
           ) : (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">0/40</p>
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">0/40</p>
           )}
           <div className={`${formTextSize}`}>그룹 컬러 칩</div>
           <div className="mb-12 mt-8 flex items-center gap-12">
@@ -229,7 +308,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
                 style={{ backgroundColor: watch('color') }}
               />
             ) : (
-              <div className={`bg-gray10 h-[4.7rem] w-[4.7rem] rounded-[50%]`} />
+              <div className={`h-[4.7rem] w-[4.7rem] rounded-[50%] bg-gray10`} />
             )}
 
             <button
@@ -239,7 +318,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               ref={colorToggleRef}
             >
               <div
-                className={`${borderStyle} text-body4-bold flex cursor-pointer items-center justify-center gap-[0.4rem] px-4 py-[1.2rem]`}
+                className={`${borderStyle} flex cursor-pointer items-center justify-center gap-[0.4rem] px-4 py-[1.2rem] text-body4-bold`}
               >
                 컬러 설정
                 <img alt="토글버튼" src={arrowDown} />
@@ -252,54 +331,64 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             endHookform={register('endDate')}
           />
           <ModalLabel htmlFor="link" label="외부 연결 링크" className={`${formTextSize}`} />
-          <div className="mb-12 mt-[1.6rem] flex gap-[1.6rem]">
-            <button
-              ref={urlToggleRef}
-              className={`${borderStyle} relative flex  items-center justify-center gap-[0.4rem] px-[1.8rem] py-[1.2rem]`}
-              onClick={handleUrlClick}
-            >
-              {urlImg === null ? (
-                <img src={github} alt="깃허브로고" />
-              ) : (
-                <img src={urlImg} alt="로고" />
-              )}
-              <img src={arrowDown} alt="토글버튼" />
-              {urlToggle && (
-                // 나중에 컴포넌트로 분리
-                <div className="absolute left-0 right-0 top-[5rem] z-50 h-[7.4rem] w-[7.5rem] rounded-[0.6rem] bg-white py-[0.4rem] shadow-lg">
-                  <div
-                    className="hover:bg-gray10 flex justify-center py-[0.4rem]"
-                    onClick={handleUrlImgClick}
-                    data-set={github}
-                  >
-                    <img src={github} alt="깃허브로고" className="px-3.5rem text-center" />
-                  </div>
-                  <div
-                    className="hover:bg-gray10 flex  justify-center py-[0.4rem]"
-                    onClick={handleUrlImgClick}
-                    data-set={discord}
-                  >
-                    <img src={discord} alt="디스코드로고" />
-                  </div>
-                  <div
-                    className="hover:bg-gray10 flex  justify-center py-[0.4rem]"
-                    onClick={handleUrlImgClick}
-                    data-set={figma}
-                  >
-                    <img src={figma} alt="피그마로고" />
-                  </div>
-                </div>
-                // 여기까지
-              )}
-            </button>
-            <ModalInput
-              hookform={register('githubLink')}
-              name="githubLink"
-              id="link"
-              className={`${inputTextSize} ${borderStyle}`}
-              placeholder="URL을 입력해 주세요."
+          <ModalLinkInput
+            name={`${oneLinkId}`}
+            hookform={register(`${oneLinkId}`)}
+            urlToggleRef={oneUrlToggleRef}
+            borderStyle={borderStyle}
+            inputTextSize={inputTextSize}
+            handleUrlClick={handleOneUrlClick}
+            urlImg={oneUrlImg}
+            github={github}
+            discord={discord}
+            figma={figma}
+            urlToggle={oneUrlToggle}
+            handleUrlImgClick={handleOneUrlImgClick}
+            arrowDown={arrowDown}
+          />
+          {createLinkInput >= 2 && (
+            <ModalLinkInput
+              name={`${twoLinkId}`}
+              hookform={register(`${twoLinkId}`)}
+              urlToggleRef={twoUrlToggleRef}
+              borderStyle={borderStyle}
+              inputTextSize={inputTextSize}
+              handleUrlClick={handleTwoUrlClick}
+              urlImg={twoUrlImg}
+              github={github}
+              discord={discord}
+              figma={figma}
+              urlToggle={twoUrlToggle}
+              handleUrlImgClick={handleTwoUrlImgClick}
+              arrowDown={arrowDown}
             />
-          </div>
+          )}
+          {createLinkInput === 3 && (
+            <>
+              <ModalLinkInput
+                name={threeLinkId}
+                hookform={register(`${threeLinkId}`)}
+                urlToggleRef={threeUrlToggleRef}
+                borderStyle={borderStyle}
+                inputTextSize={inputTextSize}
+                handleUrlClick={handleThreeUrlClick}
+                urlImg={threeUrlImg}
+                github={github}
+                discord={discord}
+                figma={figma}
+                urlToggle={threeUrlToggle}
+                handleUrlImgClick={handleThreeUrlImgClick}
+                arrowDown={arrowDown}
+              />
+            </>
+          )}
+
+          {createLinkInput < 3 ? (
+            <ModalCreateLinkInput onClick={handleCreateLinkInput} />
+          ) : (
+            <div>사라졌지롱</div>
+          )}
+
           <div className=" flex flex-col gap-[0.8rem]">
             <ModalLabel label="팀원 초대" className={`${formTextSize}`} htmlFor="members" />
             <div className="flex items-center gap-[1.2rem]">
