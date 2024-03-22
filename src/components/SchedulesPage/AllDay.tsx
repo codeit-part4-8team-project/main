@@ -1,15 +1,18 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import ScheduleModal from '../Modal/ScheduleModal';
+import { Schedules } from './Schedules';
 import { calendarContext } from '@/contexts/CalenarProvider';
 
 interface AllDayProp {
   day: Date;
   mode: 'month' | 'modal';
+  schedules?: Schedules[];
+  filteredSchedules?: Schedules[];
 }
-function AllDay({ day, mode }: AllDayProp) {
+function AllDay({ day, mode, schedules }: AllDayProp) {
   const { nowDate } = useContext(calendarContext);
-  const Container = 'w-full h-full flex justify-center items-center rounded-[2.4rem] border-none  ';
+  const Container = 'w-full h-full flex justify-center items-center rounded-[2.4rem] border-none ';
   const hover = 'hover:bg-[#F7F7F7]';
   const today = new Date();
 
@@ -31,14 +34,17 @@ function AllDay({ day, mode }: AllDayProp) {
   const numColumns = 7; // 그리드의 총 열 수 (일주일의 일수에 따라 달라질 수 있음)
   const columnIndex = day.getDay(); // 현재 요일의 열 인덱스 (0부터 시작)
   const isLastColumn = columnIndex === numColumns - 1;
-  const numRows = 6;
+  const numRows = 5;
   const daysInNextMonth = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 0).getDate(); //이전달의 첫번째 날
   const currentDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 1).getDate(); //현재 달의 일수
   const daysInPrevMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 0).getDate(); //다음 달의 마지막 날
   const rowIndex = (daysInNextMonth + currentDate + daysInPrevMonth) / 7;
 
-  const isLastRow = rowIndex === numRows; // 마지막 줄 여부 확인
+  const numDaysInMonth = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 0).getDate(); // 현재 월의 일수
+  const numWeeksInMonth = Math.ceil((numDaysInMonth + day.getDay()) / 7); // 현재 월의 주 수
 
+  const isLastRow = rowIndex === numWeeksInMonth;
+  const isLastOfType = rowIndex === numRows;
   const DateDay = clsx(
     'bg-[#FFF] w-full h-[16.2rem] text-body3-bold text-start py-4 px-[2.4rem] ',
 
@@ -50,7 +56,7 @@ function AllDay({ day, mode }: AllDayProp) {
       'border-r border-solid border-[#EFEFEF]': !isLastColumn,
       'border-b border-solid border-[#EFEFEF]': !isLastRow,
       'rounded-bl-[2.4rem]': columnIndex === 0 && isLastRow,
-      'rounded-br-[2.4rem]': isLastColumn && isLastRow,
+      'last: rounded-br-[2.4rem]': isLastOfType,
       'text-[#F74242]': day.getDay() === 0 && !notThisMonthClass,
     },
   );
@@ -70,12 +76,32 @@ function AllDay({ day, mode }: AllDayProp) {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const filteredSchedules = Array.isArray(schedules)
+    ? schedules.filter((schedule) => {
+        const scheduleStartDate = new Date(schedule.startDateTime); // schedules 대신 schedule로 수정
+        const scheduleEndDate = new Date(schedule.endDateTime); // schedules 대신 schedule로 수정
+        const dayStart = new Date(day.getFullYear(), day.getMonth(), day.getDate());
+        const dayEnd = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1);
+        return scheduleStartDate <= dayEnd && scheduleEndDate >= dayStart;
+      })
+    : [];
 
+  const renderSchedules = () => {
+    return (filteredSchedules ?? []).map((schedule, index) => (
+      <div key={index}>
+        <p>{schedule.title}</p>
+        <p>{schedule.content}</p>
+      </div>
+    ));
+  };
   return (
     <>
       {mode === 'month' && (
         <div className={Container}>
-          <p onClick={openModal} className={DateDay}>{` ${day.getDate()} `}</p>
+          <div onClick={openModal} className={clsx(DateDay)}>
+            {`${day.getDate()} `}
+            {renderSchedules()}
+          </div>
           {isModalOpen && <ScheduleModal />}
         </div>
       )}

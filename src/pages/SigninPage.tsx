@@ -1,30 +1,51 @@
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, useEffect } from 'react';
 import TextButton from '@/components/common/TextButton';
+import AlertModal from '@/components/Modal/AlertModal';
+import { useModal } from '@/contexts/ModalProvider';
 import { useAxios } from '@/hooks/useAxios';
+
+interface OauthURLResponse {
+  url: string;
+}
 
 const SigninPage = () => {
   console.log('컴포넌트 리렌더링됨');
-  const { data, loading, error, fetchData } = useAxios({
-    path: '/oauth2/authorization/google',
+
+  const openModal = useModal();
+  const { data, error, fetchData } = useAxios<OauthURLResponse>({
     method: 'GET',
-    data: {},
   });
 
   const handleClickSocialLogin: MouseEventHandler<HTMLButtonElement> = (e) => {
     const provider = e.currentTarget.name;
     fetchData({
-      newPath: `/oauth2/authorization/${provider}`,
+      newPath: `/oauth/url/${provider}`,
     });
     console.dir(provider);
   };
 
+  useEffect(() => {
+    console.log(data?.url);
+    if (data) {
+      console.log(data.url);
+      window.open(data.url, '_self');
+    }
+    if (error) {
+      openModal(({ close }) => (
+        <AlertModal buttonClick={close} buttonText="닫기">
+          {error.message}
+        </AlertModal>
+      ));
+    }
+  }, [data, error]);
+
   return (
-    <div className="bg-gray20 flex min-h-screen flex-col items-center">
-      <div className="bg-gray10 fixed top-0 flex h-[5.8rem] w-full justify-center">
+    <div className="flex min-h-screen flex-col items-center bg-gray20">
+      <div className="fixed top-0 flex h-[5.8rem] w-full justify-center bg-gray10">
         <img src="/public/assets/logo.svg" alt="Keepy-Uppy 로고" width={70} height={41}></img>
       </div>
       <div className="mt-[18.9rem] flex w-[112rem] basis-[67.7rem] rounded-[2.4rem]  bg-white">
-        <div className="bg-gray100 w-[48rem] rounded-l-[inherit]"></div>
+        <div className="w-[48rem] rounded-l-[inherit] bg-gray100"></div>
         <div className="flex flex-grow flex-col items-center rounded-r-[inherit]">
           <div className="mt-[10.3rem] flex w-[34.2rem] flex-col items-center">
             <img src="/public/assets/logo.svg" alt="Keepy-Uppy 로고" className="h-32"></img>
@@ -32,7 +53,7 @@ const SigninPage = () => {
             <div className="flex w-full flex-col items-center gap-16">
               <div className="mt-[12rem] flex h-8 w-full items-center justify-between gap-[1.35rem]">
                 <div className="black w-full border-t-[0.1rem] border-solid border-t-[#5F5F5F4D]" />
-                <span className="text-gray100 text-nowrap text-[1.2rem] font-medium leading-8">
+                <span className="text-nowrap text-[1.2rem] font-medium leading-8 text-gray100">
                   간편 로그인
                 </span>
                 <div className="black w-full border-t-[0.1rem] border-solid border-t-[#5F5F5F4D]" />

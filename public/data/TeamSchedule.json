@@ -1,0 +1,14 @@
+[
+  {
+    "title": "토익 공부 모임",
+    "content": "800점 돌파",
+    "startDateTime": "2024-03-31T07:10:40.211Z",
+    "endDateTime": "2024-04-15T07:10:40.211Z",
+    "memberResponse": {
+      "name": "전도도",
+      "imageUrl": "string",
+      "role": "string",
+      "grade": "string"
+    }
+  }
+]
