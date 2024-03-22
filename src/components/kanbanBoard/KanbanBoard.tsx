@@ -4,7 +4,7 @@ import GroupModal from '@/components/Modal/GroupModal';
 import IssueList from '@/components/kanbanBoard/IssueList';
 
 interface KanbanBoardProps {
-  page: 'main' | 'issue';
+  page: 'main' | 'issue' | 'team';
   hasButton?: boolean;
 }
 

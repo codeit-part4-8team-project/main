@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import Board from '@/components/common/Board';
 import Nav from '@/components/common/Nav';
 import SideBar from '@/components/common/sideBar/SideBar';
-import TeamBar from '@/components/TeamsPage/TeamBar';
 
 interface PageLayoutProp {
   page?: 'main' | 'team';
