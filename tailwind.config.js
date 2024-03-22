@@ -9,7 +9,7 @@ export default {
       gray20: '#EFEFEF',
       gray30: '#E5E5E5',
       gray50: '#A1A1A1',
-      gray80: '5F5F5F',
+      gray80: '#5F5F5F',
       gray100: '#292929',
       black: '#222222',
       point_yellow: '#F3FF00',

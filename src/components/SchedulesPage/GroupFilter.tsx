@@ -36,9 +36,10 @@ export interface Item {
 interface GroupFilterProps {
   items: Item[];
   onCheck: (checkedItem: string[]) => void;
+  className?: string;
 }
 
-function GroupFilter({ items, onCheck }: GroupFilterProps) {
+function GroupFilter({ items, onCheck, className }: GroupFilterProps) {
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
   const handleCheck = (title: string, isChecked: boolean) => {
@@ -50,20 +51,18 @@ function GroupFilter({ items, onCheck }: GroupFilterProps) {
   };
 
   return (
-    <>
-      <div className="flex flex-col">
-        <div className="mb-14 text-body3-bold text-[#A1A1A1]">그룹 필터</div>
-        {items.map((data, index) => (
-          <ChecklistItem
-            key={index}
-            title={data.title}
-            color={data.color}
-            isChecked={checkedItems.includes(data.title)}
-            onCheck={handleCheck}
-          />
-        ))}
-      </div>
-    </>
+    <div className={`flex flex-col ${className}`}>
+      <div className="mb-14 text-body3-bold text-[#A1A1A1]">그룹 필터</div>
+      {items.map((item, index) => (
+        <ChecklistItem
+          key={index}
+          name={item.name}
+          color={item.color}
+          isChecked={checkedItems[index]}
+          onCheck={() => handleCheck(index)}
+        />
+      ))}
+    </div>
   );
 }
 
