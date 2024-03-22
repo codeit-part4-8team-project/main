@@ -15,7 +15,7 @@ export default function BoardSection({ title, content }: BoardSection) {
         <ViewListIcon fill="#292929" active />
         <span>{title}</span>
       </div>
-      <div className="h-full">{content}</div>
+      <div className="h-full overflow-auto">{content}</div>
     </div>
   );
 }
