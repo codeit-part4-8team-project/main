@@ -4,7 +4,7 @@ import Nav from '@/components/common/Nav';
 import SideBar from '@/components/common/sideBar/SideBar';
 import TeamBar from '@/components/TeamsPage/TeamBar';
 
-export default function TeamLayout() {
+export default function TeamPageLayout() {
   return (
     <div className="h-screen w-screen bg-gray20 pb-[4.4rem] pl-[28.4rem] pr-[2.4rem] pt-[14.2rem]">
       <Nav />
