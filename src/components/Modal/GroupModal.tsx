@@ -16,6 +16,7 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
 import ModalLinkInput from '@/components/Modal/ModalLinkInput';
 import ModalUrlToggle from '@/components/Modal/ModalUrlToggle';
+import aixos from '@/hooks/testAxios';
 import { useAxios } from '@/hooks/useAxios';
 
 // {
@@ -39,7 +40,7 @@ import { useAxios } from '@/hooks/useAxios';
 type Inputs = {
   name: string;
   description: string;
-  // members: string[] | null;
+  members: string[] | null;
   color: string;
   startDate: string;
   endDate: string;
@@ -48,6 +49,18 @@ type Inputs = {
   figmaLink?: string | null;
 };
 
+interface dataType {
+  bio: string;
+  id: number;
+  imageUrl: string;
+  name: string;
+  provider: string;
+  username: string;
+}
+
+type UserCheck = {
+  User: string;
+};
 interface GroupModalProps {
   closeClick?: () => void;
 }
@@ -56,18 +69,24 @@ interface GroupModalProps {
 // date 클릭했을때 값 들어오게끔 + 년도를 계속 올릴수 있게끔
 // members 갈색div박스를 도대체 어떻게 해결할건지
 export default function GroupModal({ closeClick }: GroupModalProps) {
+  const { data, error, fetchData } = useAxios<dataType>({});
+  console.log('이값을 넣어야하나?', data);
+
+  const { fetchData: fetchData2 } = useAxios({});
+
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const createTeam = {
       name: data.name,
       description: data.description,
-      // members: [data?.members],
+      members: [data?.members],
       startDate: data.startDate,
       endDate: data.endDate,
       githubLink: data.githubLink,
@@ -75,9 +94,15 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
       figmaLink: data.figmaLink,
       color: data.color,
     };
-    console.log('createTema', createTeam);
+    handleGrooup(createTeam);
   };
 
+  // 이건 나중에 삭제
+  // const userOnSubmit: SubmitHandler<UserCheck> = (data) => {
+  //   const username = {
+  //     username: data.User,
+  //   };
+  // };
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
   const oneUrlToggleRef = useRef<HTMLButtonElement | null>(null);
   const twoUrlToggleRef = useRef<HTMLButtonElement | null>(null);
@@ -112,16 +137,32 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
 
   // const testTeamId = 1;
   // const { data, loading, error, fetchData } = useAxios({
-  //   path: `/api/member/${testTeamId}`,
-  //   method: 'GET',
+  //   path: '/api/team/',
+  //   method: 'POST',
   //   data: {},
   // });
-  // console.log('axiosFetchData', fetchData);
-  // console.log('axiosData', data);
+
+  // 왜 안되는거지?
+  const handleGrooup = (data: any) => {
+    fetchData2({
+      newPath: '/team',
+      newData: data,
+    });
+  };
+
+  const handleGetMembers = () => {
+    const userName = getValues('members');
+    fetchData({
+      newPath: `/user/search?username=${userName}`,
+    });
+    console.log(userName);
+  };
+  // console.log('fetchDataTest', fetchData);
+  // useAxios
 
   const handleColorClick = (color: string) => {
     setValue('color', color);
-    console.log('color test', color);
+    // console.log('color test', color);
   };
 
   const handleOneUrlClick = () => {
@@ -148,13 +189,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
       setCreateLinkInput(3);
     }
   };
-  console.log(createLinkInput);
-  // const handleOneUrlImgClick: MouseEventHandler<HTMLDivElement> = (e) => {
-  //   const imgSrc = (e.target as HTMLDivElement).getAttribute('data-set');
-  //   const linkId:  'githubLink' | 'discordLink' | 'figmaLink' = (e?.target as HTMLDivElement)?.getAttribute('data-id') ?? 'githubLink';
-  //   setOneUrlImg(imgSrc);
-  //   setOneLinkId(linkId);
-  // };
+  // console.log(createLinkInput);
 
   const handleOneUrlImgClick: MouseEventHandler<HTMLDivElement> = (e) => {
     const imgSrc = (e.target as HTMLDivElement).getAttribute('data-set');
@@ -168,7 +203,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     setOneLinkId(linkId);
   };
 
-  console.log('1', oneLinkId);
+  // console.log('1', oneLinkId);
 
   const handleTwoUrlImgClick: MouseEventHandler<HTMLDivElement> = (e) => {
     const imgSrc = (e.target as HTMLDivElement).getAttribute('data-set');
@@ -180,7 +215,9 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     setTwoUrlImg(imgSrc);
     setTwoLinkId(linkId);
   };
-  console.log('2', twoLinkId);
+
+  // console.log('2', twoLinkId);
+
   const handleThreeUrlImgClick: MouseEventHandler<HTMLDivElement> = (e) => {
     const imgSrc = (e.target as HTMLDivElement).getAttribute('data-set');
     let linkId: 'githubLink' | 'discordLink' | 'figmaLink' = 'githubLink';
@@ -191,7 +228,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     setThreeUrlImg(imgSrc);
     setThreeLinkId(linkId);
   };
-  console.log('3', threeLinkId);
+  // console.log('3', threeLinkId);
 
   const handleColorToggle = () => {
     setColorToggle(!colorToggle);
@@ -259,7 +296,6 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     <ModalLayout closeClick={closeClick} title="그룹 생성" size="xl">
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalFormBorder className="mt-16 h-full w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 p-12">
-          {/* <ModalFormBorder className="border-gray30 mt-16 h-[96.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] px-12 pt-12"> */}
           <p className={`${formTextSize} mb-[1.6rem]`}>그룹 게시자</p>
           <div className="mb-16 flex items-center gap-4">
             <img src={profile} alt="profile" />
@@ -328,7 +364,9 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
           </div>
           <ModalCalendarInput
             startHookform={register('startDate')}
+            startName="startDate"
             endHookform={register('endDate')}
+            endName="endDate"
           />
           <ModalLabel htmlFor="link" label="외부 연결 링크" className={`${formTextSize}`} />
           <ModalLinkInput
@@ -348,6 +386,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
           />
           {createLinkInput >= 2 && (
             <ModalLinkInput
+              // name값도 이미지가 바뀔때 되어야하는건데 그렇지 않음
               name={`${twoLinkId}`}
               hookform={register(`${twoLinkId}`)}
               urlToggleRef={twoUrlToggleRef}
@@ -394,16 +433,23 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             <div className="flex items-center gap-[1.2rem]">
               <ModalInput
                 name="members"
-                // hookform={register('members')}
+                hookform={register('members')}
                 type="text"
                 placeholder="닉네임을 검색해 주세요."
                 id="mebers"
                 className={`${inputTextSize} ${borderStyle} `}
               />
-              <TextButton buttonSize="sm">초대하기</TextButton>
+              <TextButton buttonSize="sm" onClick={handleGetMembers} type="button">
+                초대하기
+              </TextButton>
             </div>
           </div>
-          <ModalMemberList formTextSize={formTextSize} />
+
+          <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
+          <div className=" h-[10.6rem] w-full rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
+            {/* data map돌리고 싶은데 배열이 아닌것 같음. 얘기해서 배열로 바꿔줄수 있는지 여쭤보기 */}
+            <ModalMemberList formTextSize={formTextSize} data={data} />
+          </div>
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">
           생성하기

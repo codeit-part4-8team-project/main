@@ -3,15 +3,21 @@ import calender from '../../../../public/assets/calendar-dark.svg';
 import ModalCalendar from './ModalCalendar';
 import ModalInput from './ModalInput';
 import ModalLabel from './ModalLabel';
+import ControlDate from '@/components/SchedulesPage/ControlDate';
+import DateBox from '@/components/SchedulesPage/DateBox';
 
 interface ModalCalendarInputProps {
   startHookform: any;
+  startName: string;
   endHookform: any;
+  endName: string;
 }
 
 export default function ModalCalendarInput({
   startHookform,
+  startName,
   endHookform,
+  endName,
 }: ModalCalendarInputProps) {
   const startDateToggleRef = useRef<HTMLButtonElement | null>(null);
   const endDateToggleRef = useRef<HTMLButtonElement | null>(null);
@@ -63,7 +69,7 @@ export default function ModalCalendarInput({
         <ModalInput
           hookform={startHookform}
           type="text"
-          name="startDate"
+          name={startName}
           id="date"
           className={`${formTextSize} ${borderStyle}`}
           placeholder="YYYY-MM-DD"
@@ -78,6 +84,8 @@ export default function ModalCalendarInput({
           {startDateToggle && (
             <div className="absolute top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem]">
               <ModalCalendar />
+              {/* <ControlDate mode="modal" /> */}
+              {/* <DateBox mode="modal" /> */}
             </div>
           )}
         </ModalInput>
@@ -86,7 +94,7 @@ export default function ModalCalendarInput({
         <ModalInput
           hookform={endHookform}
           type="text"
-          name="endDate"
+          name={endName}
           id="date"
           className={`${formTextSize} ${borderStyle}`}
           placeholder="YYYY-MM-DD"

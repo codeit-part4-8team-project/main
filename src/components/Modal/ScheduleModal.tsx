@@ -2,25 +2,42 @@ import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import calender from '../../../public/assets/calendar-dark.svg';
 import profile from '../../../public/profile.svg';
+import TextButton from '@/components/common/TextButton';
 import ModalCalendar from '@/components/common/modal/ModalCalendar';
+import ModalCalendarInput from '@/components/common/modal/ModalCalendarInput';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
+import { useAxios } from '@/hooks/useAxios';
 
 interface ScheduleModalProps {
   closeClick?: () => void;
 }
 
 type Inputs = {
-  name: string;
-  date: string;
+  title: string;
+  startDateTime: string;
+  endDateTime: string;
 };
 
 function ScheduleModal({ closeClick }: ScheduleModalProps) {
+  const { data, error, fetchData } = useAxios({});
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
+
+  // ui 형식이 약간 다른거같음.
+  // 스타트데이트타임 엔드데이트타임 구분 안 되어있고, 타입 없고 컨텐츠 없고, 시간값 없음
+
+  // 'api/schedule/user' 이 api임
+  // {
+  //   "type": "string", // 얘 없음
+  //   "title": "string",
+  //   "content": "string", // 얘 없음
+  //   "startDateTime": "2024-03-24T09:44:59.469Z", // 시간값 없음
+  //   "endDateTime": "2024-03-24T09:44:59.469Z"
+  // }
   const {
     register,
     handleSubmit,
@@ -28,11 +45,13 @@ function ScheduleModal({ closeClick }: ScheduleModalProps) {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const createTeam = {
-      name: data.name,
-      date: data.date,
+    const createSchedlue = {
+      title: data.title,
+      startDateTime: data.startDateTime,
+      endDateTime: data.endDateTime,
     };
-    console.log('createTema', createTeam);
+    handleFetchData(createSchedlue);
+    console.log('createTema', createSchedlue);
   };
   const startDateToggleRef = useRef<HTMLButtonElement | null>(null);
   const [startDateToggle, setStartDateToggle] = useState(false);
@@ -54,10 +73,18 @@ function ScheduleModal({ closeClick }: ScheduleModalProps) {
     };
   }, [startDateToggle]);
 
+  const handleFetchData = (data: Inputs) => {
+    fetchData({
+      newPath: 'schedule/user',
+      newMethod: 'POST',
+      newData: data,
+    });
+  };
+
   return (
     <ModalLayout title="일정 추가" closeClick={closeClick} size="sm">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ModalFormBorder className="border-gray30 mt-16 h-[35.5rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] px-12 pt-12">
+        <ModalFormBorder className="mt-16 h-[35.5rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 px-12 pt-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>게시자(나)</p>
           <div className="mb-16 flex items-center gap-4">
             <img src={profile} alt="profile" />
@@ -66,24 +93,31 @@ function ScheduleModal({ closeClick }: ScheduleModalProps) {
             {/*  */}
           </div>
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
-            <ModalLabel label="제목" className={`${formTextSize}`} htmlFor="name" />
+            <ModalLabel label="제목" className={`${formTextSize}`} htmlFor="title" />
             <ModalInput
-              hookform={register('name')}
+              hookform={register('title')}
               className={`${inputTextSize} ${borderStyle}`}
               placeholder="일정 제목을 입력해 주세요."
-              id="name"
+              id="title"
               type="text"
-              name="name"
+              name="title"
             />
           </div>
-          {watch('name') ? (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">{watch('name')?.length}/20</p>
+          {watch('title') ? (
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">{watch('title')?.length}/20</p>
           ) : (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">0/20</p>
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">0/20</p>
           )}
           <div className="flex flex-col gap-[0.8rem]">
-            <ModalLabel label="날짜" className={`${formTextSize}`} htmlFor="date" />
-            <ModalInput
+            {/* <ModalLabel label="날짜" className={`${formTextSize}`} htmlFor="date" /> */}
+            {/* ui 형식이 약간 다른거같음. */}
+            <ModalCalendarInput
+              startHookform={register('startDateTime')}
+              startName="startDateTime"
+              endHookform={register('endDateTime')}
+              endName="endDateTime"
+            />
+            {/* <ModalInput
               hookform={register('date')}
               className={`${inputTextSize} ${borderStyle}`}
               placeholder="YYYY-MM-DD 형식으로 입력해 주세요."
@@ -102,10 +136,12 @@ function ScheduleModal({ closeClick }: ScheduleModalProps) {
                   <ModalCalendar />
                 </div>
               )}
-            </ModalInput>
+            </ModalInput> */}
           </div>
         </ModalFormBorder>
-        {/* <button></button> 채빈님 버튼 넣기 */}
+        <TextButton buttonSize="md" className="mt-16">
+          일정 추가하기
+        </TextButton>
       </form>
     </ModalLayout>
   );

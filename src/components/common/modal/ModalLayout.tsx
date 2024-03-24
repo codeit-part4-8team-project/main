@@ -20,25 +20,28 @@ function ModalLayout({ children, closeClick, title, size = 'lg' }: ModalProps) {
   });
   return (
     <>
-      {/* // <div className="flex size-full items-center justify-center bg-black bg-opacity-5"> */}
-      {/* // <div className={`${container}`}> */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4 text-[1.8rem] font-bold">
-          {title == '일정 추가' ? (
-            <img src={calendar} alt="캘린더" />
-          ) : (
-            <img src={people} alt="사람들" />
-          )}
+      {/* div하나 추가해서 패딩값 조절하기 */}
+      <div className="p-16">
+        {/* // <div className="flex size-full items-center justify-center bg-black bg-opacity-5"> */}
+        {/* // <div className={`${container}`}> */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4 text-[1.8rem] font-bold">
+            {title == '일정 추가' ? (
+              <img src={calendar} alt="캘린더" />
+            ) : (
+              <img src={people} alt="사람들" />
+            )}
 
-          {title}
+            {title}
+          </div>
+          <button onClick={closeClick}>
+            <img src={close} alt="closeButton" />
+          </button>
         </div>
-        <button onClick={closeClick}>
-          <img src={close} alt="closeButton" />
-        </button>
+        {children}
+        {/* </div> */}
+        {/* // </div> */}
       </div>
-      {children}
-      {/* </div> */}
-      {/* // </div> */}
     </>
   );
 }

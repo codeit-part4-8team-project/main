@@ -14,7 +14,6 @@ function ControlDate({ mode }: ControlDateProp) {
   const arrowButton = 'w-[2.4rem] h-[2.4rem] ';
   const DateText = clsx('text-body4-bold text-[#292929] mx-[1.6rem]');
   const { nowDate, setNowDate } = useContext(calendarContext);
-
   const changeYear = (change: number) => {
     const date = new Date(nowDate.getTime());
     date.setFullYear(date.getFullYear() + change);
@@ -24,6 +23,7 @@ function ControlDate({ mode }: ControlDateProp) {
     const date = new Date(nowDate.getTime());
     date.setMonth(date.getMonth() + change);
     setNowDate(date);
+    console.log('여기입니다!', date);
   };
 
   const getWeekRange = (date: Date): [Date, Date] => {
