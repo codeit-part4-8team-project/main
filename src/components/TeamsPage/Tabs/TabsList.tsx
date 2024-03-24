@@ -1,32 +1,27 @@
+import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
-import { TABS } from '@/components/TeamsPage/Tabs/constants';
-import useTab from '@/hooks/useTab';
+import { TEAM_PAGES } from '@/components/TeamsPage/Tabs/constants';
 import DividerIcon from '@/assets/DividerIcon';
 
-interface TabsListProps {
-  className: string;
-}
-
-export default function TabsList({ className }: TabsListProps) {
-  const { currentTab, setCurrentTab } = useTab();
+export default function TabsList() {
+  const { pathname } = useLocation();
+  const currentPage = pathname.split('/').reverse()[0];
 
   return (
-    <div className={`flex items-center gap-[2.4rem] ${className}`}>
-      {TABS.map((tab, idx) => {
-        const isCurrent = tab === currentTab ? true : false;
-
+    <div className="flex items-center gap-[2.4rem]">
+      {TEAM_PAGES.map(({ page, title }, idx) => {
+        const isCurrent = page === currentPage ? true : false;
         return (
           <>
             {idx !== 0 && <DividerIcon />}
-            <button
-              type="button"
-              onClick={() => setCurrentTab(tab)}
+            <Link
+              to={page}
               className={clsx(
-                isCurrent ? 'text-body3-bold text-gray100' : 'text-body3-medium text-gray50',
+                isCurrent ? 'stext-gray100 text-body3-bold' : 'text-body3-medium text-gray50',
               )}
             >
-              {tab}
-            </button>
+              {title}
+            </Link>
           </>
         );
       })}

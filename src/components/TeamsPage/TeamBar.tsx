@@ -8,7 +8,7 @@ export default function TeamBar() {
         <ColorChipIcon fill="#7187FE" />
         <span className="text-body1-bold text-gray100">토익 공부 모임</span>
       </div>
-      <TabsList className="" />
+      <TabsList />
     </div>
   );
 }
