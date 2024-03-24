@@ -32,7 +32,7 @@ function GroupItem({ color, children }: GroupItemProps) {
   };
 
   return (
-    <Link to="/teams/1">
+    <Link to="/teams/1/main">
       <button className="grid h-16 w-[21.2rem] grid-cols-[2.4rem_1fr_2.4rem] items-center gap-[1.6rem] rounded-[0.6rem] py-[0.8rem] pl-[1.6rem] hover:bg-[#EDEEDC]/10">
         <ColorChipIcon fill={color} />
         <span className="justify-self-start text-body3-bold text-[#EDEEDC]">{children}</span>
