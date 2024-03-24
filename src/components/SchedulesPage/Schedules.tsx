@@ -1,34 +1,34 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import ScheduleModal from '../Modal/ScheduleModal';
-import Button from '../common/Button';
+import TextButton from '../common/TextButton';
 import ControlDate from './ControlDate';
 import DateBox from './DateBox';
 import { Item } from './GroupFilter';
 import GroupFilter from './GroupFilter';
-import axios from 'axios';
+import { calendarContext } from '@/contexts/CalenarProvider';
+import { defaultInstance } from '@/hooks/useAxios';
 import CalendarIcon from '@/assets/CalendarIcon';
 
 interface SchedulesProps {
   calendarType: string;
-  schedules?: Schedules[];
 }
-export interface Schedules {
+export interface SchedulesData {
   title: string;
   content: string;
-  startDateTime: Date;
-  endDateTime: Date;
+  startDateTime: string;
+  endDateTime: string;
+  date: Date;
 }
 
 function Schedules({ calendarType }: SchedulesProps) {
+  const { schedules, setSchedules, setFilteredSchedules } = useContext(calendarContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const [groupData, setGroupData] = useState<Item[]>([]);
-  const [schedules, setSchedules] = useState<Schedules[]>([]);
-  const [filteredSchedules, setFilteredSchedules] = useState<Schedules[]>([]);
 
   const container =
-    'w-[161.2rem] bg-[#F7F7F7] mt-[8.6rem] ml-[28.4rem] mb-[2.4rem]  mr-[2.4rem] pb-[3rem] pt-12 pl-12 pr-[26.9rem] rounded-[2.4rem]';
+    'w-[161.2rem] bg-gray10 mt-[8.6rem] ml-[28.4rem] mb-[2.4rem]  mr-[2.4rem] pb-[3rem] pt-12 pl-12 pr-[26.9rem] rounded-[2.4rem]';
 
   const title = clsx('flex items-center ');
 
@@ -52,14 +52,13 @@ function Schedules({ calendarType }: SchedulesProps) {
       try {
         let endpoint = '';
         if (calendarType === '나의 캘린더') {
-          endpoint = '/public/data/GroupFilter.json';
+          endpoint = `http://ec2-43-203-69-64.ap-northeast-2.compute.amazonaws.com:8080/api/schedule/user/month/5?localDateTime=2024-03-20%2011%3A11%3A11`;
         } else {
           endpoint = '/public/data/GroupFilterTeam.json';
         }
 
-        // 상태(state)가 비어 있는 경우에만 데이터를 불러옴
         if (groupData.length === 0) {
-          const response = await axios.get(endpoint);
+          const response = await defaultInstance.get(endpoint);
           setGroupData(response.data);
         }
       } catch (error) {
@@ -68,22 +67,21 @@ function Schedules({ calendarType }: SchedulesProps) {
     };
 
     fetchData();
-  }, [calendarType, groupData]); // groupData 상태 추가
+  }, [calendarType]);
 
   useEffect(() => {
-    // calendarType에 따라 다른 엔드포인트를 호출하여 데이터를 가져옴
     const fetchSchedule = async () => {
       try {
         let endpoint = '';
         if (calendarType === '나의 캘린더') {
-          endpoint = '/public/data/IdSchedule.json';
+          endpoint =
+            'http://ec2-43-203-69-64.ap-northeast-2.compute.amazonaws.com:8080/api/schedule/user/month/5?localDateTime=2024-03-20%2011%3A11%3A11';
         } else {
           endpoint = '/public/data/TeamSchedule.json';
         }
 
-        // 상태(state)가 비어 있는 경우에만 데이터를 불러옴
-        if (schedules.length === 0) {
-          const response = await axios.get(endpoint);
+        if (!schedules || schedules.length === 0) {
+          const response = await defaultInstance.get(endpoint);
           setSchedules(response.data);
         }
       } catch (error) {
@@ -92,11 +90,12 @@ function Schedules({ calendarType }: SchedulesProps) {
     };
 
     fetchSchedule();
-  }, [calendarType, schedules]); // schedules 상태 추가
+  }, [calendarType]); // schedules 상태 추가
 
   const handleCheck = (checkedItems: string[]) => {
-    // 그룹 필터 아이템들의 타이틀들을 전달하여 필터링된 일정을 업데이트
-    setFilteredSchedules(schedules.filter((schedule) => checkedItems.includes(schedule.title)));
+    setFilteredSchedules(
+      schedules ? schedules.filter((schedule) => checkedItems.includes(schedule.title)) : [],
+    );
   };
 
   return (
@@ -110,12 +109,14 @@ function Schedules({ calendarType }: SchedulesProps) {
           <ControlDate mode="month" />
         </div>
 
-        <Button submit={openModal} text="일정생성" />
+        <TextButton buttonSize="sm" color="black">
+          일정생성
+        </TextButton>
         {isModalOpen && <ScheduleModal />}
       </div>
       <div className="mr-[0.1rem] mt-[3.9rem] flex gap-12">
         <GroupFilter items={groupData} onCheck={handleCheck} />
-        <DateBox schedules={filteredSchedules} mode="month" />
+        <DateBox mode="month" />
       </div>
     </div>
   );

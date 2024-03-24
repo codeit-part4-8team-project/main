@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios, { AxiosError, HttpStatusCode, Method } from 'axios';
 
-const defaultInstance = axios.create({
+export const defaultInstance = axios.create({
   baseURL: 'http://ec2-43-203-69-64.ap-northeast-2.compute.amazonaws.com:8080/api',
   timeout: 6000,
   withCredentials: true,
