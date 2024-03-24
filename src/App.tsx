@@ -19,37 +19,48 @@ import UserPageLayout from '@/components/common/UserPageLayout';
 import TeamPageLayout from '@/components/TeamsPage/TeamPageLayout';
 import { CalendarProvider } from '@/contexts/CalenarProvider';
 import { ModalProvider } from '@/contexts/ModalProvider';
+import { StepProvider } from '@/contexts/SignupStepProvider';
+import { UserProvider } from '@/contexts/UserProvider';
 
 function App() {
   return (
-    <ModalProvider>
-      <CalendarProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/signin" element={<SigninPage />} />
-            <Route path="/login/oauth2/code/:provider" element={<OauthRedirectPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/me" element={<UserPageLayout />}>
-              <Route path="main" element={<MainPage />} />
-              <Route path="schedules/:userId" element={<SchedulesPage />} />
-              <Route path="issues/:userId" element={<MyIssuesPage />} />
-              <Route path="posts/:userId" element={<MyPostsPage />} />
-              <Route path="myPage/:userId" element={<MyPage />} />
-            </Route>
-            <Route path="/teams/:teamsId" element={<TeamPageLayout />}>
-              <Route path="main" element={<TeamHome />} />
-              <Route path="schedules" element={<TeamCalendar />} />
-              <Route path="issues" element={<TeamKanban />} />
-              <Route path="notices" element={<TeamNotice />} />
-              <Route path="posts" element={<TeamBoard />} />
-              <Route path="members" element={<TeamMembers />} />
-              <Route path="contents" element={<TeamContents />} />
-            </Route>
-          </Routes>
-        </Router>
-      </CalendarProvider>
-    </ModalProvider>
+    <UserProvider>
+      <ModalProvider>
+        <CalendarProvider>
+          <Router>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/signin" element={<SigninPage />} />
+              <Route path="/login/oauth2/code/:provider" element={<OauthRedirectPage />} />
+              <Route
+                path="/signup"
+                element={
+                  <StepProvider>
+                    <SignupPage />
+                  </StepProvider>
+                }
+              />
+              <Route path="/me" element={<UserPageLayout />}>
+                <Route path="main" element={<MainPage />} />
+                <Route path="schedules/:userId" element={<SchedulesPage />} />
+                <Route path="issues/:userId" element={<MyIssuesPage />} />
+                <Route path="posts/:userId" element={<MyPostsPage />} />
+                <Route path="myPage/:userId" element={<MyPage />} />
+              </Route>
+              <Route path="/teams/:teamsId" element={<TeamPageLayout />}>
+                <Route path="main" element={<TeamHome />} />
+                <Route path="schedules" element={<TeamCalendar />} />
+                <Route path="issues" element={<TeamKanban />} />
+                <Route path="notices" element={<TeamNotice />} />
+                <Route path="posts" element={<TeamBoard />} />
+                <Route path="members" element={<TeamMembers />} />
+                <Route path="contents" element={<TeamContents />} />
+              </Route>
+            </Routes>
+          </Router>
+        </CalendarProvider>
+      </ModalProvider>
+    </UserProvider>
   );
 }
 

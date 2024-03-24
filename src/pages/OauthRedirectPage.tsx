@@ -33,7 +33,8 @@ const OauthRedirectPage = () => {
       if (!data.newAccount) {
         navigate('/main');
       } else {
-        navigate('/signup');
+        //navigate('/signup');
+        navigate('/main');
       }
     }
     if (error) {

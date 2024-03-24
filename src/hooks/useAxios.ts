@@ -1,7 +1,13 @@
-import { useEffect, useState } from 'react';
-import axios, { AxiosError, HttpStatusCode, Method, isAxiosError } from 'axios';
+import { useCallback, useEffect, useState } from 'react';
+import axios, { AxiosError, HttpStatusCode, Method } from 'axios';
 
 const defaultInstance = axios.create({
+  baseURL: 'http://ec2-43-203-69-64.ap-northeast-2.compute.amazonaws.com:8080/api',
+  timeout: 6000,
+  withCredentials: true,
+});
+
+const authInstance = axios.create({
   baseURL: 'http://ec2-43-203-69-64.ap-northeast-2.compute.amazonaws.com:8080/api',
   timeout: 6000,
   withCredentials: true,
@@ -21,17 +27,15 @@ defaultInstance.interceptors.request.use(
     }
     return req;
   },
-  (err) => {
-    console.log('axios request error config : ', err);
-    if (isAxiosError(err)) {
-      if (err.status === HttpStatusCode.BadRequest) {
-        throw new Error('400 Badrequest');
-      }
-      if (err.status === HttpStatusCode.NotFound) {
-        throw new Error('404 NotFound');
-      }
+  (error) => {
+    console.log('axios request error config : ', error);
+    if (error.response.status === HttpStatusCode.BadRequest) {
+      throw new Error('400 Badrequest');
     }
-    return Promise.reject(err);
+    if (error.response.status === HttpStatusCode.NotFound) {
+      throw new Error('404 NotFound');
+    }
+    return Promise.reject(error);
   },
 );
 
@@ -40,17 +44,38 @@ defaultInstance.interceptors.response.use(
     console.log('axios response config : ', res);
     return res;
   }, // 응답 일일이 체크하실 꺼 번거로울까봐 콘솔에 바로 찍히라고 적어놨습니다. 나중에 뺄게요.
-  (err) => {
-    console.log('axios response error config : ', err);
-    if (isAxiosError(err)) {
-      if (err.status === HttpStatusCode.Unauthorized) {
-        //일단 accessToken 직접 지우시고 새로 로그인 하시면 됩니다.
-      }
-      if (err.status === HttpStatusCode.InternalServerError) {
-        throw Error('서버 이상');
+  async (error) => {
+    console.log('axios response error config : ', error);
+
+    const originalRequest = error.config;
+
+    if (error.response.status === HttpStatusCode.Unauthorized && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const refreshToken = localStorage.getItem('refreshToken');
+        const { data } = await authInstance.post(
+          '/auth/refresh',
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${refreshToken}`,
+            },
+          },
+        );
+        //리스폰스 키 accessToken 아니고 token임.
+        localStorage.setItem('accessToken', data.token);
+        originalRequest.headers['Authorization'] = `Bearer ${data.token}`;
+
+        return defaultInstance(originalRequest);
+      } catch (refreshError) {
+        window.location.href = '/Signin';
+        return Promise.reject(refreshError);
       }
     }
-    return Promise.reject(err);
+    if (error === HttpStatusCode.InternalServerError) {
+      throw new Error('서버 이상');
+    }
+    return Promise.reject(error);
   },
 );
 
@@ -69,37 +94,41 @@ export const useAxios = <T = unknown, P = unknown, E = unknown>(
     error: AxiosError<E> | null;
     data: T | null;
   }>({
-    loading: true,
+    loading: false,
     error: null,
     data: null,
   });
 
-  const fetchData = async ({ newPath = path, newMethod = method, newData = data } = {}) => {
-    try {
-      setState((prev) => ({
-        ...prev,
-        loading: true,
-      }));
+  const fetchData = useCallback(
+    async ({ newPath = path, newMethod = method, newData = data } = {}) => {
+      try {
+        setState((prev) => ({
+          ...prev,
+          loading: true,
+        }));
 
-      const response = await defaultInstance({
-        method: newMethod,
-        url: newPath,
-        data: newData,
-      });
+        const response = await defaultInstance({
+          method: newMethod,
+          url: newPath,
+          data: newData,
+        });
 
-      setState((prev) => ({
-        ...prev,
-        loading: false,
-        data: response?.data ?? null,
-      }));
-    } catch (error) {
-      setState((prev) => ({
-        ...prev,
-        loading: false,
-        error: error instanceof AxiosError ? error : null,
-      }));
-    }
-  };
+        setState((prev) => ({
+          ...prev,
+          loading: false,
+          data: response?.data ?? null,
+        }));
+        console.log(`data변경됨`, response.data);
+      } catch (error) {
+        setState((prev) => ({
+          ...prev,
+          loading: false,
+          error: error instanceof AxiosError ? error : null,
+        }));
+      }
+    },
+    [path, method, data],
+  );
 
   useEffect(() => {
     if (shouldFetch) {
