@@ -7,7 +7,7 @@ const TeamsPostsPage = () => {
   return (
     <PageLayout>
       <BoardSection
-        title="Bulletin Board"
+        title="Bulletin board"
         content={<BulletinBoard posts={teamPosts.posts.content} />}
       />
     </PageLayout>

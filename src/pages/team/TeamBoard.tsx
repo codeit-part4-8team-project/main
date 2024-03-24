@@ -1,3 +1,12 @@
+import { teamPosts } from '@/mockdata/postData';
+import BoardSection from '@/components/common/BoardSection';
+import BulletinBoard from '@/components/posts/BulletinBoard';
+
 export default function TeamBoard() {
-  return <div>자유게시판</div>;
+  return (
+    <BoardSection
+      title="Bulletin board"
+      content={<BulletinBoard posts={teamPosts.posts.content} />}
+    />
+  );
 }

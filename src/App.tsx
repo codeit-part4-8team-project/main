@@ -31,6 +31,7 @@ function App() {
             <Route path="/main" element={<MainPage />} />
             <Route path="/schedules/:userId" element={<SchedulesPage />} />
             <Route path="/myIssues/:userId" element={<MyIssuesPage />} />
+            <Route path="/myPage/:userId" element={<MyPage />} />
             <Route path="/teams/:teamsId" element={<TeamLayout />}>
               <Route path="main" element={<TeamHome />} />
               <Route path="schedules" element={<TeamCalendar />} />
@@ -40,7 +41,6 @@ function App() {
               <Route path="members" element={<TeamMembers />} />
               <Route path="contents" element={<TeamContents />} />
             </Route>
-            <Route path="/myPage/:userId" element={<MyPage />} />
           </Routes>
         </Router>
       </CalendarProvider>

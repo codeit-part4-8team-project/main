@@ -1,3 +1,9 @@
+import SchedulesPage from '@/pages/SchedulesPage';
+
 export default function TeamCalendar() {
-  return <div>팀 캘린더</div>;
+  return (
+    <div>
+      <SchedulesPage />
+    </div>
+  );
 }
