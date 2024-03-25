@@ -18,14 +18,14 @@ import axios from '@/hooks/testAxios';
 const HomePage = () => {
   const openModal = useModal();
   const handleClickOpenModal = () => {
-    // openModal(({ close }) => <GroupModal closeClick={close} />);
+    openModal(({ close }) => <GroupModal closeClick={close} />);
     // openModal(({ close }) => <ScheduleModal closeClick={close} />);
     // openModal(({ close }) => <GroupEditModal closeClick={close} />);
     // openModal(({ close }) => <InvitationGroupModal closeClick={close} />);
     // openModal(({ close }) => <IssuesModal closeClick={close} />);
     // openModal(({ close }) => <MyIssuesModal closeClick={close} />);
     // openModal(({ close }) => <NotMeIssuesModal closeClick={close} />);
-    openModal(({ close }) => <FreeBoardModal closeClick={close} />);
+    // openModal(({ close }) => <FreeBoardModal closeClick={close} />);
   };
   // ScheduleModal
   // GroupEditModal

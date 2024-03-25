@@ -16,7 +16,6 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
 import ModalLinkInput from '@/components/Modal/ModalLinkInput';
 import ModalUrlToggle from '@/components/Modal/ModalUrlToggle';
-import aixos from '@/hooks/testAxios';
 import { useAxios } from '@/hooks/useAxios';
 
 // {
@@ -97,12 +96,6 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     handleGrooup(createTeam);
   };
 
-  // 이건 나중에 삭제
-  // const userOnSubmit: SubmitHandler<UserCheck> = (data) => {
-  //   const username = {
-  //     username: data.User,
-  //   };
-  // };
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
   const oneUrlToggleRef = useRef<HTMLButtonElement | null>(null);
   const twoUrlToggleRef = useRef<HTMLButtonElement | null>(null);
@@ -174,12 +167,6 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   };
   const handleThreeUrlClick = () => {
     setThreeUrlToggle(!threeUrlToggle);
-  };
-  const handleStartDateClick = () => {
-    setStartDateToggle(!startDateToggle);
-  };
-  const handleEndDateClick = () => {
-    setEndDateToggle(!endDateToggle);
   };
 
   const handleCreateLinkInput = () => {

@@ -23,7 +23,8 @@ type Inputs = {
 //   "title": "string",
 //   "content": "string",
 //   "dueDate": "2024-03-24", // 동일하게 없음
-//   "status": "TODO", // 없음
+// -> default value로 TODO 넣어주기
+//   "status": "TODO", // 없음 -> 기본값 TODO 혹은, 드래그앤드롭에 해당하는 값이 알아서 들어옴
 //   "assignedMembersUsernames": [
 //     "string"
 //   ]

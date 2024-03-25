@@ -19,7 +19,7 @@ export default function ModalCalendarInput({
   endHookform,
   endName,
 }: ModalCalendarInputProps) {
-  const startDateToggleRef = useRef<HTMLButtonElement | null>(null);
+  const startDateToggleRef = useRef<HTMLDivElement | null>(null);
   const endDateToggleRef = useRef<HTMLButtonElement | null>(null);
 
   const [startDateToggle, setStartDateToggle] = useState(false);
@@ -33,23 +33,22 @@ export default function ModalCalendarInput({
     setEndDateToggle(!endDateToggle);
   };
 
-  // const handleStartDateClickOutside = (e: MouseEvent) => {
-  //   if (startDateToggleRef.current && !startDateToggleRef.current.contains(e.target as Node))
-  //     setStartDateToggle(false);
-  // };
+  const handleStartDateClickOutside = (e: MouseEvent) => {
+    if (!startDateToggleRef.current?.contains(e.target as Node)) setStartDateToggle(false);
+  };
   const handleEndDateClickOutside = (e: MouseEvent) => {
     if (endDateToggleRef.current && !endDateToggleRef.current.contains(e.target as Node))
       setEndDateToggle(false);
   };
 
-  // useEffect(() => {
-  //   if (startDateToggle) {
-  //     document.addEventListener('mousedown', handleStartDateClickOutside);
-  //   }
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleStartDateClickOutside);
-  //   };
-  // }, [startDateToggle]);
+  useEffect(() => {
+    if (startDateToggle) {
+      document.addEventListener('mousedown', handleStartDateClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleStartDateClickOutside);
+    };
+  }, [startDateToggle]);
 
   useEffect(() => {
     if (endDateToggle) {
@@ -65,7 +64,7 @@ export default function ModalCalendarInput({
   return (
     <>
       <ModalLabel htmlFor="date" label="날짜 (시작-종료)" className={`${formTextSize}`} />
-      <div className=" mb-12 mt-[0.9rem] flex items-center gap-2">
+      <div className=" mb-12 mt-[0.9rem] flex items-center gap-2" ref={startDateToggleRef}>
         <ModalInput
           hookform={startHookform}
           type="text"
@@ -74,11 +73,7 @@ export default function ModalCalendarInput({
           className={`${formTextSize} ${borderStyle}`}
           placeholder="YYYY-MM-DD"
         >
-          <button
-            className="absolute bottom-0 right-[1.8rem] top-0"
-            onClick={handleStartDateClick}
-            ref={startDateToggleRef}
-          >
+          <button className="absolute bottom-0 right-[1.8rem] top-0" onClick={handleStartDateClick}>
             <img src={calender} alt="캘린더" />
           </button>
           {startDateToggle && (

@@ -25,7 +25,7 @@ type Inputs = {
 //   "title": "string",
 //   "content": "string",
 //   "dueDate": "2024-03-24",
-//   "status": "TODO",
+//   "status": "TODO", -> 기본값 TODO고정 값 안 보내도됨.
 // 이슈 생성 제목은 ‘할 일'만 생성가능
 // : 드레그로 칸반보드 움직일 수 있기 때문에
 // ‘진행중'과 '백로그'는 무의미합니다! 이게 상태 얘기하는것 같다
@@ -144,6 +144,7 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
           <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
           <div className=" h-[10.6rem] w-full rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
             {/* data map돌리고 싶은데 배열이 아닌것 같음. 얘기해서 배열로 바꿔줄수 있는지 여쭤보기 */}
+            {/* 값이 only 1개이니까 배열 안 만들고 그냥 초대하기 눌렸을때 하나, 검색시 === 값 하나 */}
             <ModalMemberList formTextSize={formTextSize} />
           </div>
         </ModalFormBorder>

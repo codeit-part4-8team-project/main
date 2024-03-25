@@ -30,13 +30,18 @@ function ScheduleModal({ closeClick }: ScheduleModalProps) {
   // ui 형식이 약간 다른거같음.
   // 스타트데이트타임 엔드데이트타임 구분 안 되어있고, 타입 없고 컨텐츠 없고, 시간값 없음
 
+  // - 필드 이름이 date면 날짜만, dateTime이면 시간 포함
+  // - Swagger에 있는 날짜 포맷말고  yyyy-MM-dd HH:mm:ss / yyyy-MM-dd 사용
+
   // 'api/schedule/user' 이 api임
+  // type 보낼때 대문자로 지정
   // {
-  //   "type": "string", // 얘 없음
+  //   "type": "string", // 얘 없음 -> TEAM인지 USER인지 구분 defaule value로 처리
+  // 나중에 물어보기 위에 type;
   //   "title": "string",
   //   "content": "string", // 얘 없음
-  //   "startDateTime": "2024-03-24T09:44:59.469Z", // 시간값 없음
-  //   "endDateTime": "2024-03-24T09:44:59.469Z"
+  //   "startDateTime": "yyyy-MM-dd HH:mm:ss",
+  //   "endDateTime": "yyyy-MM-dd HH:mm:ss"
   // }
   const {
     register,

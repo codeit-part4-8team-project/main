@@ -15,8 +15,8 @@ import TeamsPostsPage from '@/pages/TeamsPostsPage';
 
 function App() {
   return (
-    <ModalProvider>
-      <CalendarProvider>
+    <CalendarProvider>
+      <ModalProvider>
         <Router>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -34,8 +34,8 @@ function App() {
             <Route path="/myPage/:userId" element={<MyPage />} />
           </Routes>
         </Router>
-      </CalendarProvider>
-    </ModalProvider>
+      </ModalProvider>
+    </CalendarProvider>
   );
 }
 

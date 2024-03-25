@@ -13,6 +13,8 @@ interface ModalMemberListProps {
   formTextSize?: string;
   data?: dataType | null;
 }
+// -> 값이 다름
+// ->
 // bio: null
 // id: 3
 // imageUrl: "http://k.kakaocdn.net/dn/OlB0F/btsCywvxhyP/OkfbKViJeYEeDmImgIpcb0/img_640x640.jpg"
@@ -20,6 +22,28 @@ interface ModalMemberListProps {
 // oauthId: "3403899247"
 // provider: "KAKAO"
 // username: "user-GCTfTuL3Te"
+
+// -> 그룹 member 형식 값 같음
+// "members": [
+//   {
+//     "name": "string",
+//     "imageUrl": "string",
+//     "role": "string",
+//     "grade": "string",
+//     "username": "string"
+//   }
+// ]
+
+// -> 이슈 member 형식
+// "assignedMembers": [
+//   {
+//     "name": "string",
+//     "imageUrl": "string",
+//     "role": "string",
+//     "grade": "string",
+//     "username": "string"
+//   }
+// ],
 export default function ModalMemberList({ formTextSize, data }: ModalMemberListProps) {
   const { bio, imageUrl, name } = data || {};
   return (

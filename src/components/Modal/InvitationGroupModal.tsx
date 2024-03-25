@@ -22,10 +22,6 @@ interface InvitationGroupModalProps {
 //     ]
 //   }
 
-// /member/invite/${teamId} 여기가 초대수락이라고 적혀있는데 put메서드이던데
-// post가 아닌가?
-// PUT으로 세팅 해놓은게 그 역할을 넣어야해서 그런건가? 그럼...음... 최종 역할을 고를때 PUT메서드로
-// 값을 그대로 보내주면 되는건지..? 이건 의논 해보고 결정
 export default function InvitationGroupModal({ closeClick }: InvitationGroupModalProps) {
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';

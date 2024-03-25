@@ -47,7 +47,6 @@ export default function NotMeIssuesModal({ closeClick }: NotMeLssuesModalProps) 
     'rounded-[0.6rem] border-[0.1rem] border-gray30  px-[1.8rem] py-[1.2rem] w-full';
 
   // 이건 생각해보니깐 안에서 axios를 부르는게 아니고 밖에서 불러야겠는데..?
-  // 너무 오래해서 머리가 안 돌아간다ㅠ
   const handleGetNotMeIssue = () => {
     fetchData({
       newPath: `${teamId}/issue/${issueId}`,

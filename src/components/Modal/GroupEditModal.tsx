@@ -40,6 +40,7 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
 
   const { fetchData } = useAxios({}); // 얘는 put 메서드용
 
+  // 편집창에서 member 추가할때는 member/${teamId}로 POST 보내기.
   // {
   //   "name": "string",
   //   "description": "string",
