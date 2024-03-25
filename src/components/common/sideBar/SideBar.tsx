@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import ToolTip from '@/components/common/ToolTip';
+// import ToolTip from '@/components/common/ToolTip';
 import BoardList from '@/components/common/sideBar/BoardList';
 import GroupList from '@/components/common/sideBar/GroupList';
 import GroupModal from '@/components/Modal/GroupModal';
@@ -29,7 +29,7 @@ export default function SideBar() {
 
 function ProfileSection() {
   return (
-    <Link to="/myPage/1">
+    <Link to="/user/myPage/1">
       <div className="my-[3.3rem] ml-16 flex items-center gap-[1.6rem]">
         <ProfileIcon size="sm" />
         <span className="text-body2-bold text-[#EDEEDC]">홍길동</span>
@@ -49,9 +49,7 @@ function GroupSection() {
       <span className="text-body2-bold text-[#EDEEDC]">그룹</span>
       <button className="relative" onClick={handleClickOpenModal}>
         <PlusCircleIcon fill="#F0F0E2" />
-        <div className="absolute -left-[7.4rem] -top-[5.1rem]">
-          <ToolTip />
-        </div>
+        {/* <ToolTip /> */}
       </button>
       <GroupList />
     </div>

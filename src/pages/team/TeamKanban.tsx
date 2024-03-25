@@ -1,9 +1,12 @@
 import BoardSection from '@/components/common/BoardSection';
-// import GroupFilter from '@/components/SchedulesPage/GroupFilter';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
 
-export default function MyIssuesPage() {
-  return <BoardSection title="Kanban board" content={<IssuePageContent />} />;
+export default function TeamKanban() {
+  return (
+    <div>
+      <BoardSection title="Kanban board" content={<IssuePageContent />} />
+    </div>
+  );
 }
 
 function IssuePageContent() {

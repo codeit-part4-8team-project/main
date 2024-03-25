@@ -21,21 +21,21 @@ export const BOARDS: Boards = {
   dashboard: {
     boardName: '대시보드',
     icon: <BoxIcon />,
-    link: '/main',
+    link: '/me/main',
   },
   calendar: {
     boardName: '나의 캘린더',
     icon: <CalendarIcon />,
-    link: '/schedules/1',
+    link: '/me/schedules/1',
   },
   kanbanboard: {
     boardName: '칸반보드',
     icon: <ViewListIcon />,
-    link: '/myIssues/1',
+    link: '/me/issues/1',
   },
   board: {
     boardName: '자유게시판',
     icon: <FolderIcon />,
-    link: '/teams/1/posts',
+    link: '/me/posts/1',
   },
 };
