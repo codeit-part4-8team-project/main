@@ -2,11 +2,7 @@ import BoardSection from '@/components/common/BoardSection';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
 
 export default function TeamKanban() {
-  return (
-    <div>
-      <BoardSection title="Kanban board" content={<IssuePageContent />} />
-    </div>
-  );
+  return <BoardSection title="Kanban board" content={<IssuePageContent />} />;
 }
 
 function IssuePageContent() {
