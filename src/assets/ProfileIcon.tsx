@@ -4,7 +4,7 @@ export interface ProfileIconProps extends IconProps {
   size: 'sm' | 'lg';
 }
 
-function ProfileIcon({ className, size, ...props }: ProfileIconProps) {
+function ProfileIcon({ className, size, fill, ...props }: ProfileIconProps) {
   return size === 'sm' ? (
     <svg
       xmlns="http://www.w3.org/2000/svg"

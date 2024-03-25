@@ -180,7 +180,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   return (
     <ModalLayout closeClick={closeClick} title="그룹 생성" size="xl">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ModalFormBorder className="border-gray30 mt-16 h-[96.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] px-12 pt-12">
+        <ModalFormBorder className="mt-16 h-[96.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 px-12 pt-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>그룹 게시자</p>
           <div className="mb-16 flex items-center gap-4">
             <img src={profile} alt="profile" />
@@ -199,9 +199,9 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             />
           </div>
           {watch('name') ? (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">{watch('name')?.length}/20</p>
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">{watch('name')?.length}/20</p>
           ) : (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">0/20</p>
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">0/20</p>
           )}
           <div className="mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="description" label="그룹 설명" className={`${formTextSize}`} />
@@ -215,11 +215,11 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             />
           </div>
           {watch('description') ? (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">
               {watch('description')?.length}/40
             </p>
           ) : (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">0/40</p>
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">0/40</p>
           )}
           <div className={`${formTextSize}`}>그룹 컬러 칩</div>
           <div className="mb-12 mt-8 flex items-center gap-12">
@@ -229,7 +229,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
                 style={{ backgroundColor: watch('color') }}
               />
             ) : (
-              <div className={`bg-gray10 h-[4.7rem] w-[4.7rem] rounded-[50%]`} />
+              <div className={`h-[4.7rem] w-[4.7rem] rounded-[50%] bg-gray10`} />
             )}
 
             <button
@@ -239,7 +239,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               ref={colorToggleRef}
             >
               <div
-                className={`${borderStyle} text-body4-bold flex cursor-pointer items-center justify-center gap-[0.4rem] px-4 py-[1.2rem]`}
+                className={`${borderStyle} flex cursor-pointer items-center justify-center gap-[0.4rem] px-4 py-[1.2rem] text-body4-bold`}
               >
                 컬러 설정
                 <img alt="토글버튼" src={arrowDown} />
@@ -268,21 +268,21 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
                 // 나중에 컴포넌트로 분리
                 <div className="absolute left-0 right-0 top-[5rem] z-50 h-[7.4rem] w-[7.5rem] rounded-[0.6rem] bg-white py-[0.4rem] shadow-lg">
                   <div
-                    className="hover:bg-gray10 flex justify-center py-[0.4rem]"
+                    className="flex justify-center py-[0.4rem] hover:bg-gray10"
                     onClick={handleUrlImgClick}
                     data-set={github}
                   >
                     <img src={github} alt="깃허브로고" className="px-3.5rem text-center" />
                   </div>
                   <div
-                    className="hover:bg-gray10 flex  justify-center py-[0.4rem]"
+                    className="flex justify-center  py-[0.4rem] hover:bg-gray10"
                     onClick={handleUrlImgClick}
                     data-set={discord}
                   >
                     <img src={discord} alt="디스코드로고" />
                   </div>
                   <div
-                    className="hover:bg-gray10 flex  justify-center py-[0.4rem]"
+                    className="flex justify-center  py-[0.4rem] hover:bg-gray10"
                     onClick={handleUrlImgClick}
                     data-set={figma}
                   >

@@ -4,6 +4,7 @@ import CalendarIcon from '@/assets/CalendarIcon';
 
 function MainSchedules() {
   const Container = 'w-full mt-[1.6rem] rounded-[2.4rem]';
+
   return (
     <>
       <div className="ml-[0.3rem] mr-[5.2rem] mt-[0.3rem] bg-[#F7F7F7]">

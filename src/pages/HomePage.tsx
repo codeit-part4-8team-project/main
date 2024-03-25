@@ -1,4 +1,5 @@
 import Nav from '@/components/common/Nav';
+import ModalCalendar from '@/components/common/modal/ModalCalendar';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import GroupEditModal from '@/components/Modal/GroupEditModal';
 import GroupModal from '@/components/Modal/GroupModal';
@@ -60,8 +61,7 @@ const HomePage = () => {
       <button className="h-[15rem] w-[15rem] bg-black text-white" onClick={handleLogout}>
         logout
       </button>
-
-      {/* <div>홈페이지입니다.</div> */}
+      <ModalCalendar />
     </>
   );
 };

@@ -2,25 +2,25 @@
   {
     "title": "디자인 스터디",
     "content": "함께 공부하기",
-    "startDateTime": "2024-03-19T07:10:40.211Z",
-    "endDateTime": "2024-03-29T07:10:40.211Z"
+    "startDateTime": "2024-03-19 11:11:11",
+    "endDateTime": "2024-03-29 11:11:11"
   },
   {
     "title": "홍길동",
     "content": "뭘봐!",
-    "startDateTime": "2024-03-25T07:10:40.211Z",
-    "endDateTime": "2024-03-30T07:10:40.211Z"
+    "startDateTime": "2024-03-25 12:12:12",
+    "endDateTime": "2024-03-30 12:12:12"
   },
   {
     "title": "코드잇 프로젝트",
     "content": "하루에 5장씩 읽기",
-    "startDateTime": "2024-03-01T07:10:40.211Z",
-    "endDateTime": "2024-03-15T07:10:40.211Z"
+    "startDateTime": "2024-03-01 13:13:13",
+    "endDateTime": "2024-03-15 13:13:13"
   },
   {
     "title": "토익 공부 모임",
     "content": "800점 돌파",
-    "startDateTime": "2024-03-31T07:10:40.211Z",
-    "endDateTime": "2024-04-15T07:10:40.211Z"
+    "startDateTime": "2024-03-31 15:15:15",
+    "endDateTime": "2024-04-15 15:15:15"
   }
 ]

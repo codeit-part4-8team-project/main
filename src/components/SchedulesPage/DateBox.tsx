@@ -2,21 +2,17 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { makeWeekArr } from '../MainPage/WeekArr';
 import { WeekDisplay } from '../MainPage/WeekDisplay';
 import AllDay from './AllDay';
-// import { Schedule } from './AllDay';
-import { Schedules } from './Schedules';
 import WeekBox from './WeekBox';
 import { calendarContext } from '@/contexts/CalenarProvider';
 
 interface DateBoxProp {
   mode: 'week' | 'month' | 'modal';
-  schedules?: Schedules[];
-  filteredSchedules?: Schedules[];
 }
-function DateBox({ mode, filteredSchedules, schedules }: DateBoxProp) {
+function DateBox({ mode }: DateBoxProp) {
   const [week, setWeek] = useState<Array<[number, Date]>>([]);
   const [allDay, setAllDay] = useState<Date[]>([]);
   const { nowDate } = useContext(calendarContext);
-  const weeksStyle = ' text-center text-[#FFF] text-body3-bold bg-[#292929] p-4 ';
+  const weeksStyle = ' text-center text-white text-body3-bold bg-gray100 p-4 ';
 
   const monthList = useCallback((nowDate: Date) => {
     const nowYear = nowDate.getFullYear();
@@ -56,44 +52,39 @@ function DateBox({ mode, filteredSchedules, schedules }: DateBoxProp) {
 
   useEffect(() => {
     updateDateList();
-  }, [nowDate]);
+  }, [nowDate, mode]);
 
   const days = ['일', '월', '화', '수', '목', '금', '토'];
 
   return (
     <>
       {mode === 'month' && (
-        <div className="grid h-full w-full grid-cols-7 rounded-[2.4rem] ">
+        <div className=" grid h-full w-full grid-cols-7  rounded-[2.4rem] ">
           {days.map((day: string, index: number) => (
             <div
               key={index}
-              className={`${weeksStyle} ${index === 0 ? 'rounded-tl-[2.4rem] bg-[#F74242]' : ''} ${
+              className={`${weeksStyle} ${index === 0 ? 'rounded-tl-[2.4rem] bg-point_red' : ''} ${
                 index === 6 ? 'rounded-tr-[2.4rem]' : ''
               }`}
             >
               <WeekBox weekName={day} />
             </div>
           ))}
+
           {allDay.map((day: Date) => (
-            <AllDay
-              schedules={schedules}
-              filteredSchedules={filteredSchedules}
-              mode="month"
-              key={day.getTime()}
-              day={day}
-            />
+            <AllDay mode="month" key={day.getTime()} day={day} />
           ))}
         </div>
       )}
       {mode === 'week' && (
-        <div className="grid h-[29.1rem] w-full grid-cols-7 rounded-[2.4rem] bg-[#FCFCFC] shadow-sm">
+        <div className="grid h-[29.1rem] w-full grid-cols-7 rounded-[2.4rem] bg-white shadow-sm">
           <WeekDisplay week={week} />
         </div>
       )}
       {mode === 'modal' && (
         <div className="grid h-full w-full grid-cols-7 rounded-[2.4rem]">
           {allDay.map((day: Date) => (
-            <AllDay mode="modal" key={day.getTime()} day={day} />
+            <AllDay key={day.getTime()} mode="modal" day={day} />
           ))}
         </div>
       )}
