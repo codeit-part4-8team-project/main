@@ -40,7 +40,7 @@ function App() {
                   </StepProvider>
                 }
               />
-              <Route path="/me" element={<UserPageLayout />}>
+              <Route path="/user" element={<UserPageLayout />}>
                 <Route path="main" element={<MainPage />} />
                 <Route path="schedules/:userId" element={<SchedulesPage />} />
                 <Route path="issues/:userId" element={<MyIssuesPage />} />

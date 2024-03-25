@@ -29,7 +29,7 @@ export default function SideBar() {
 
 function ProfileSection() {
   return (
-    <Link to="/me/myPage/1">
+    <Link to="/user/myPage/1">
       <div className="my-[3.3rem] ml-16 flex items-center gap-[1.6rem]">
         <ProfileIcon size="sm" />
         <span className="text-body2-bold text-[#EDEEDC]">홍길동</span>
