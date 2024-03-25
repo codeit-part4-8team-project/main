@@ -2,35 +2,33 @@ import { ReactElement, cloneElement } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { BOARDS, Boards } from '@/components/common/sideBar/constants';
+import { useUserContext } from '@/contexts/UserProvider';
 
 interface BoardItemProps {
-  boardType: string;
+  board: string;
   pathname: string;
 }
 
 export default function BoardList() {
   const { pathname } = useLocation();
 
+  const boards = Object.keys(BOARDS);
+
   return (
     <ul className="absolute left-[2.4rem] top-40 flex flex-col gap-[1.6rem]">
-      <li>
-        <BoardItem boardType="dashboard" pathname={pathname} />
-      </li>
-      <li>
-        <BoardItem boardType="calendar" pathname={pathname} />
-      </li>
-      <li>
-        <BoardItem boardType="kanbanboard" pathname={pathname} />
-      </li>
-      <li>
-        <BoardItem boardType="board" pathname={pathname} />
-      </li>
+      {boards.map((board) => (
+        <li>
+          <BoardItem board={board} pathname={pathname} />
+        </li>
+      ))}
     </ul>
   );
 }
 
-function BoardItem({ boardType, pathname }: BoardItemProps) {
-  const { boardName, icon, link } = BOARDS[boardType as keyof Boards];
+function BoardItem({ board, pathname }: BoardItemProps) {
+  const { boardName, icon } = BOARDS[board as keyof Boards];
+  const { user } = useUserContext();
+  const link = board === 'main' ? `/user/${board}` : `/user/${board}/${user?.id}`;
   const isCurrent = pathname === link ? true : false;
 
   const boardItemIcon = icon as ReactElement;
