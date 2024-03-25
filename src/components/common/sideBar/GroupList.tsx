@@ -1,4 +1,3 @@
-// import { userTeamsInfo } from '@/mockdata/teamData';
 import { ReactNode, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import DropDown from '@/components/common/sideBar/DropDown';
@@ -30,7 +29,6 @@ export default function GroupList() {
     if (error) {
       console.log('오류');
     }
-    console.log('teams', teams);
   }, [data, loading, error]);
 
   return (

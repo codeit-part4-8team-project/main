@@ -44,10 +44,8 @@ export function TeamProvider({ children }: { children: ReactNode }) {
 export function useTeam() {
   const teamInfo = useContext(TeamContext);
 
-  if (!teamInfo) {
-    throw Error('TeamProvider 안에서 사용해야 합니다.');
-  }
-  const { team } = teamInfo;
+  if (!teamInfo) return;
 
+  const { team } = teamInfo;
   return { team };
 }
