@@ -2,7 +2,15 @@ import { IconProps } from '@/types/iconProps';
 
 function GroupIcon({ className, ...props }: IconProps) {
   return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="36"
+      height="36"
+      viewBox="0 0 36 36"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      {...props}
+    >
       <g clip-path="url(#clip0_921_1222)">
         <circle cx="18" cy="18" r="18" fill="#5F5F5F" fill-opacity="0.1" />
         <path
