@@ -41,12 +41,9 @@ export function TeamProvider({ children, id }: TeamProviderProps) {
   const currentPage = pathname.split('/').reverse()[0];
   const teamId = id || Number(pathname.split('/')[2]);
 
-  const { loading, error, data } = useAxios<Team>(
-    {
-      path: `/team/${teamId}`,
-    },
-    true,
-  );
+  const { loading, error, data, fetchData } = useAxios<Team>({
+    path: `/team/${teamId}`,
+  });
 
   useEffect(() => {
     if (data && !loading) {
@@ -56,6 +53,10 @@ export function TeamProvider({ children, id }: TeamProviderProps) {
       console.log('팀 데이터 오류');
     }
   }, [teamId, data, error, loading]);
+
+  useEffect(() => {
+    fetchData();
+  }, [teamId]);
 
   return (
     <TeamContext.Provider value={{ currentTeam, currentPage }}>{children}</TeamContext.Provider>
