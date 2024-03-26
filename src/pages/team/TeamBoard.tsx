@@ -1,6 +1,6 @@
 import { teamPosts } from '@/mockdata/postData';
 import BoardSection from '@/components/common/BoardSection';
-import BulletinBoard from '@/components/posts/BulletinBoard';
+import BulletinBoard from '@/components/Post/PostList';
 
 export default function TeamBoard() {
   return (

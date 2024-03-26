@@ -1,4 +1,4 @@
-export interface PostType {
+export interface Post {
   id: number;
   title: string;
   author: {
@@ -13,12 +13,12 @@ export interface PostType {
   edited: boolean;
 }
 
-export interface PostsType {
+export interface Posts {
   posts: {
     totalPages: number;
     totalElements: number;
     size: number;
-    content: PostType[];
+    content: Post[];
     number: number;
     sort: {
       empty: boolean;
