@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import axios, { AxiosError, HttpStatusCode, Method } from 'axios';
 
-const defaultInstance = axios.create({
+export const defaultInstance = axios.create({
   baseURL: 'http://ec2-43-203-69-64.ap-northeast-2.compute.amazonaws.com:8080/api',
   timeout: 6000,
   withCredentials: true,
@@ -94,38 +94,41 @@ export const useAxios = <T = unknown, P = unknown, E = unknown>(
     error: AxiosError<E> | null;
     data: T | null;
   }>({
-    loading: true,
+    loading: false,
     error: null,
     data: null,
   });
 
-  const fetchData = async ({ newPath = path, newMethod = method, newData = data } = {}) => {
-    try {
-      setState((prev) => ({
-        ...prev,
-        loading: true,
-      }));
+  const fetchData = useCallback(
+    async ({ newPath = path, newMethod = method, newData = data } = {}) => {
+      try {
+        setState((prev) => ({
+          ...prev,
+          loading: true,
+        }));
 
-      const response = await defaultInstance({
-        method: newMethod,
-        url: newPath,
-        data: newData,
-      });
+        const response = await defaultInstance({
+          method: newMethod,
+          url: newPath,
+          data: newData,
+        });
 
-      setState((prev) => ({
-        ...prev,
-        loading: false,
-        data: response?.data ?? null,
-      }));
-      console.log(`data변경됨`, response.data);
-    } catch (error) {
-      setState((prev) => ({
-        ...prev,
-        loading: false,
-        error: error instanceof AxiosError ? error : null,
-      }));
-    }
-  };
+        setState((prev) => ({
+          ...prev,
+          loading: false,
+          data: response?.data ?? null,
+        }));
+        console.log(`data변경됨`, response.data);
+      } catch (error) {
+        setState((prev) => ({
+          ...prev,
+          loading: false,
+          error: error instanceof AxiosError ? error : null,
+        }));
+      }
+    },
+    [path, method, data],
+  );
 
   useEffect(() => {
     if (shouldFetch) {

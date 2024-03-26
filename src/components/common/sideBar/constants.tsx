@@ -7,35 +7,30 @@ import ViewListIcon from '@/assets/ViewListIcon';
 interface Board {
   boardName: string;
   icon: ReactNode;
-  link: string;
 }
 
 export interface Boards {
-  dashboard: Board;
-  calendar: Board;
-  kanbanboard: Board;
-  board: Board;
+  main: Board;
+  schedules: Board;
+  issues: Board;
+  posts: Board;
 }
 
 export const BOARDS: Boards = {
-  dashboard: {
+  main: {
     boardName: '대시보드',
     icon: <BoxIcon />,
-    link: '/main',
   },
-  calendar: {
+  schedules: {
     boardName: '나의 캘린더',
     icon: <CalendarIcon />,
-    link: '/schedules/1',
   },
-  kanbanboard: {
+  issues: {
     boardName: '칸반보드',
     icon: <ViewListIcon />,
-    link: '/myIssues/1',
   },
-  board: {
+  posts: {
     boardName: '자유게시판',
     icon: <FolderIcon />,
-    link: '/teams/1/posts',
   },
 };

@@ -70,7 +70,6 @@ const HomePage = () => {
         logout
       </button>
       <ModalCalendar />
-      {/* <div>홈페이지입니다.</div> */}
     </>
   );
 };

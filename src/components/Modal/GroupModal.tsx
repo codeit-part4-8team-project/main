@@ -211,8 +211,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             endName="endDate"
           />
           <ModalLabel htmlFor="link" label="외부 연결 링크" className={`${formTextSize}`} />
-          <div className="mb-[0.8rem] mt-[1.6rem] flex gap-[1.2rem]">
-            <img src={github} className={`${borderStyle} px-[1.8rem] py-[1.2rem]`} alt="github" />
+
             <ModalInput
               hookform={register('githubLink')}
               placeholder="URL을 입력해 주세요."

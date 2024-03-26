@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import ToolTip from '@/components/common/ToolTip';
+import ProfileImg from '../../../../public/assets/profile-small.svg';
+// import ToolTip from '@/components/common/ToolTip';
 import BoardList from '@/components/common/sideBar/BoardList';
 import GroupList from '@/components/common/sideBar/GroupList';
 import GroupModal from '@/components/Modal/GroupModal';
 import { useModal } from '@/contexts/ModalProvider';
+import { useUserContext } from '@/contexts/UserProvider';
 import PlusCircleIcon from '@/assets/PlusCircleIcon';
-import ProfileIcon from '@/assets/ProfileIcon';
 
 export default function SideBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,11 +29,17 @@ export default function SideBar() {
 }
 
 function ProfileSection() {
+  const { user } = useUserContext();
+
   return (
-    <Link to="/myPage/1">
+    <Link to="/user/myPage/1">
       <div className="my-[3.3rem] ml-16 flex items-center gap-[1.6rem]">
-        <ProfileIcon size="sm" />
-        <span className="text-body2-bold text-[#EDEEDC]">홍길동</span>
+        <img
+          src={user ? user.imageUrl : ProfileImg}
+          alt="유저 프로필 이미지"
+          className="h-[2.4rem] w-[2.4rem] rounded-full"
+        />
+        <span className="text-body2-bold text-[#EDEEDC]">{user?.name}</span>
       </div>
     </Link>
   );
@@ -49,9 +56,7 @@ function GroupSection() {
       <span className="text-body2-bold text-[#EDEEDC]">그룹</span>
       <button className="relative" onClick={handleClickOpenModal}>
         <PlusCircleIcon fill="#F0F0E2" />
-        <div className="absolute -left-[7.4rem] -top-[5.1rem]">
-          <ToolTip />
-        </div>
+        {/* <ToolTip /> */}
       </button>
       <GroupList />
     </div>
