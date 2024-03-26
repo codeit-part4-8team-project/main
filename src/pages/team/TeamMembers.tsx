@@ -1,3 +1,6 @@
+import BoardSection from '@/components/common/BoardSection';
+import AnnouncementBoard from '@/components/announcement/AnnouncementBoard';
+
 export default function TeamMembers() {
-  return <div>멤버</div>;
+  return <BoardSection title="Notice" content={<AnnouncementBoard />} />;
 }
