@@ -11,5 +11,5 @@ export interface Team {
   name: string;
   description: string;
   color: string;
-  members: Member[] | [];
+  members?: Member[] | [];
 }
