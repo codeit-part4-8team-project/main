@@ -1,11 +1,11 @@
 import MegaphoneIcon from '../../../public/assets/megaphone-dark.svg';
-import AnnouncementCards from '@/components/announcement/AnnouncementCards';
+import AnnouncementList from '@/components/announcement/AnnouncementList';
 
 export default function AnnouncementBoard() {
   return (
     <div className="row-span-2 mt-[3.6rem] flex h-full w-full flex-col gap-[2.6rem]">
       <AnnouncememntNotification />
-      <AnnouncementCards />
+      <AnnouncementList />
     </div>
   );
 }
