@@ -60,7 +60,6 @@ export default function usePost({ type, page = 1, teamId, postId }: UsePostParam
 
   useEffect(() => {
     if (data && !loading) {
-      console.log('나오냐');
       setPostData(data);
     }
     if (error) {

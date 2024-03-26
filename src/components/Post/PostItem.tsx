@@ -1,7 +1,8 @@
+import ProfileImg from '../../../public/assets/profile-large.svg';
+import { toDateFormat } from '@/lib/formatDate';
 import { Post } from '@/types/postTypes';
 import HeartIcon from '@/assets/HeartIcon';
 import MeatbollsIcon from '@/assets/MeatbollsIcon';
-import ProfileIcon from '@/assets/ProfileIcon';
 
 interface PostItemProps {
   post: Post;
@@ -16,10 +17,14 @@ export default function PostItem({ post }: PostItemProps) {
         <MeatbollsIcon />
       </button>
       <div className="flex items-center gap-[1.5rem]">
-        <ProfileIcon size="lg" className="row-span-2" />
+        <img
+          src={author.imageUrl || ProfileImg}
+          alt="유저 프로필 이미지"
+          className="h-[3.6rem] w-[3.6rem] rounded-full"
+        />
         <div className="flex flex-col gap-[0.4rem]">
-          <span className="text-body4-regular text-gray100">{author.name}</span>
-          <span className="text-body4-regular text-gray50">{createdDate}</span>
+          <span className="text-body4-regular text-gray100">#{author.name}</span>
+          <span className="text-body4-regular text-gray50">{toDateFormat(createdDate)}</span>{' '}
         </div>
       </div>
       <span className="inline-block h-[7.7rem] w-full max-w-[44.9rem] overflow-auto text-body4-regular text-gray100">
