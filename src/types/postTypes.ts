@@ -14,32 +14,30 @@ export interface Post {
 }
 
 export interface Posts {
-  posts: {
-    totalPages: number;
-    totalElements: number;
-    size: number;
-    content: Post[];
-    number: number;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  content: Post[] | null;
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  numberOfElements: number;
+  pageable: {
+    offset: number;
     sort: {
       empty: boolean;
       sorted: boolean;
       unsorted: boolean;
     };
-    numberOfElements: number;
-    pageable: {
-      offset: number;
-      sort: {
-        empty: boolean;
-        sorted: boolean;
-        unsorted: boolean;
-      };
-      pageNumber: number;
-      pageSize: number;
-      paged: boolean;
-      unpaged: boolean;
-    };
-    first: boolean;
-    last: boolean;
-    empty: boolean;
+    pageNumber: number;
+    pageSize: number;
+    paged: boolean;
+    unpaged: boolean;
   };
+  first: boolean;
+  last: boolean;
+  empty: boolean;
 }
