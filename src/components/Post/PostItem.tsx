@@ -3,11 +3,11 @@ import HeartIcon from '@/assets/HeartIcon';
 import MeatbollsIcon from '@/assets/MeatbollsIcon';
 import ProfileIcon from '@/assets/ProfileIcon';
 
-interface PostProps {
+interface PostItemProps {
   post: Post;
 }
 
-export default function PostItem({ post }: PostProps) {
+export default function PostItem({ post }: PostItemProps) {
   const { author, content, createdDate } = post;
 
   return (

@@ -1,6 +1,6 @@
-import { PostsType } from '@/types/postTypes';
+import { Posts } from '@/types/postTypes';
 
-export const teamPosts: PostsType = {
+export const teamPosts: Posts = {
   posts: {
     totalPages: 0,
     totalElements: 12,
