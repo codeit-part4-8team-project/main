@@ -16,7 +16,7 @@ const authInstance = axios.create({
 defaultInstance.interceptors.request.use(
   (req) => {
     console.log('axios request config : ', req);
-    if (req.data && req.data instanceof Object) {
+    if (req.data && !(req.data instanceof FormData) && req.data instanceof Object) {
       req.headers['Content-Type'] = 'application/json';
     }
     if (typeof window !== 'undefined') {
@@ -118,7 +118,6 @@ export const useAxios = <T = unknown, P = unknown, E = unknown>(
           loading: false,
           data: response?.data ?? null,
         }));
-        console.log(`data변경됨`, response.data);
       } catch (error) {
         setState((prev) => ({
           ...prev,

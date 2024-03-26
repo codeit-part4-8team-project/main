@@ -1,17 +1,24 @@
 import { InputHTMLAttributes } from 'react';
+import { Control, UseFormRegisterReturn, useWatch } from 'react-hook-form';
+import CheckCircleIcon from '@/assets/CheckCircleFill';
 
-interface CheckboxInputProps extends InputHTMLAttributes<HTMLInputElement> {}
+interface CheckboxInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  id: string;
+  register?: UseFormRegisterReturn;
+  control: Control;
+}
 
-function CheckboxInput({ id }: CheckboxInputProps) {
+function CheckboxInput({ id, register, control }: CheckboxInputProps) {
+  const checked = useWatch({
+    control: control,
+    name: id, // 관찰하고자 하는 필드 이름
+    defaultValue: false, // 기본값
+  });
   return (
     <>
-      <label
-        htmlFor={id}
-        className="h-9 w-9 before:block before:h-[2.4rem] before:w-[2.4rem]
-        before:bg-[url('/public/assets/check-circle-fill-light.svg')]
-        has-[:checked]:before:bg-[url('/public/assets/check-circle-fill-dark.svg')]"
-      >
-        <input id={id} type="checkbox" className="appearance-none"></input>
+      <label htmlFor={id} className="flex place-items-center">
+        <CheckCircleIcon active={checked}></CheckCircleIcon>
+        <input id={id} {...register} type="checkbox" className="appearance-none"></input>
       </label>
     </>
   );

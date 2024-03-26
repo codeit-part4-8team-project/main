@@ -31,10 +31,10 @@ const OauthRedirectPage = () => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       if (!data.newAccount) {
-        navigate('/main');
+        navigate('/user/main');
       } else {
         //navigate('/signup');
-        navigate('/main');
+        navigate('/user/main');
       }
     }
     if (error) {
