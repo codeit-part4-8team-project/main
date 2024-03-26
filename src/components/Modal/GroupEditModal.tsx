@@ -1,4 +1,4 @@
-import { MouseEventHandler, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import github from '../../../public/assets/Github.svg';
 import arrowDown from '../../../public/assets/arrow-down-dark.png';
@@ -15,29 +15,62 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
 import { useAxios } from '@/hooks/useAxios';
 
+// default value 형식
+// {
+//   "id": 0,
+//   "name": "string",
+//   "description": "string",
+//   "color": "string",
+//   "members": [
+//     {
+//       "name": "string",
+//       "imageUrl": "string",
+//       "role": "string",
+//       "grade": "string",
+//       "username": "string"
+//     }
+//   ]
+// }
+
 type Inputs = {
   name: string;
-  description: string;
   members: [string];
+  description: string;
   color: string;
   startDate: string;
   endDate: string;
-  github: string;
+  githubLink?: string;
+  discordLink?: string;
+  figmaLink?: string;
 };
 
 interface GroupEditModalProps {
   closeClick: () => void;
 }
 
-export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
-  // 여기 defaultValue 값 가져와야하는데 api가 어느건지 모르겠음.
-  // PUT 메서드 전에 GET으로 해당 값을 defaultValue 가져와야함
-  // PUT path = /team/${teamId}
-  // GET path = 안보임 pending랑 my-team 두개밖에 안보여요 ㅠ
-  const { data } = useAxios({
-    path: '',
-  }); // 이 useAxios = GET으로 해당 값 가져오는 코드
+// color: "#000000"
+// description: "description 테스트"
+// id: 22
+// members: [,…]
+// 0: {name: "필겸", imageUrl: "http://t1.kakaocdn.net/account_images/default_profile.jpeg.twg.thumb.R640x640",…}
+// grade: "OWNER"
+// imageUrl: "http://t1.kakaocdn.net/account_images/default_profile.jpeg.twg.thumb.R640x640"
+// name: "필겸"
+// role: null
+// username: "user-rjWrbIMhhi"
+// name: "name"
 
+export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
+  // PUT path = /team/${teamId}
+  const teamId = 22;
+  const { data } = useAxios(
+    {
+      path: `team/${teamId}`,
+    },
+    true,
+  );
+  console.log('teamId22', data);
+  const { color, description, name, members }: any = data || {};
   const { fetchData } = useAxios({}); // 얘는 put 메서드용
 
   // 편집창에서 member 추가할때는 member/${teamId}로 POST 보내기.
@@ -68,21 +101,20 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
       members: data?.members, // 멤버가 안보임 나중에 배열안에 담는 타입에러 해결하기
       startDate: data.startDate,
       endDate: data.endDate,
-      github: data.github,
+      githubLink: data.githubLink,
+      discordLink: data.discordLink,
+      figmaLink: data.figmaLink,
     };
     handlePutGroup(createTeam);
     console.log('createTema', createTeam);
   };
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
-  const urlToggleRef = useRef<HTMLButtonElement | null>(null);
   const startDateToggleRef = useRef<HTMLButtonElement | null>(null);
   const endDateToggleRef = useRef<HTMLButtonElement | null>(null);
 
   const [colorToggle, setColorToggle] = useState<boolean>(false);
-  const [urlToggle, setUrlToggle] = useState<boolean>(false);
   const [startDateToggle, setStartDateToggle] = useState<boolean>(false);
   const [endDateToggle, setEndDateToggle] = useState<boolean>(false);
-  const [urlImg, setUrlImg] = useState<string | null>(null);
 
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
@@ -94,30 +126,10 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
   const handleColorToggle = () => {
     setColorToggle(!colorToggle);
   };
-  const handleUrlClick = () => {
-    setUrlToggle(!urlToggle);
-  };
-  const handleStartDateClick = () => {
-    setStartDateToggle(!startDateToggle);
-  };
-  const handleEndDateClick = () => {
-    setEndDateToggle(!endDateToggle);
-  };
-
-  const handleUrlImgClick: MouseEventHandler<HTMLImageElement> = (e) => {
-    console.log('tttt', e.currentTarget);
-    setUrlImg(e.currentTarget.src);
-  };
 
   const handleColorClickOutside = (e: MouseEvent) => {
     if (colorToggleRef.current && !colorToggleRef.current.contains(e.target as Node)) {
       setColorToggle(false);
-    }
-  };
-
-  const handleUrlClickOutside = (e: MouseEvent) => {
-    if (urlToggleRef.current && !urlToggleRef.current.contains(e.target as Node)) {
-      setUrlToggle(false);
     }
   };
 
@@ -154,16 +166,6 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
   }, [colorToggle]);
 
   useEffect(() => {
-    if (urlToggle) {
-      document.addEventListener('mousedown', handleUrlClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleUrlClickOutside);
-    };
-  }, [urlToggle]);
-
-  useEffect(() => {
     if (startDateToggle) {
       document.addEventListener('mousedown', handleStartDateClickOutside);
     }
@@ -185,7 +187,7 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
     <>
       <ModalLayout title="그룹 편집" closeClick={closeClick} size="lg">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <ModalFormBorder className="mt-16 h-[96.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 px-12 pt-12">
+          <ModalFormBorder className="mt-16 h-full w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 p-12">
             <p className={`${formTextSize} mb-[1.6rem]`}>그룹 게시자</p>
             <div className="mb-16 flex items-center gap-4">
               <img src={profile} alt="profile" />
@@ -196,6 +198,7 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
             <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
               <ModalLabel htmlFor="name" label="그룹 이름" className={`${formTextSize}`} />
               <ModalInput
+                defaultValue={name}
                 name="name"
                 id="name"
                 hookform={register('name')}
@@ -213,6 +216,7 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
             <div className="mb-[0.8rem] flex flex-col gap-[0.8rem]">
               <ModalLabel htmlFor="description" label="그룹 설명" className={`${formTextSize}`} />
               <ModalInput
+                defaultValue={description}
                 id="description"
                 type="text"
                 placeholder="그룹 설명을 입력해 주세요."
@@ -237,7 +241,10 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
                   style={{ backgroundColor: watch('color') }}
                 />
               ) : (
-                <div className={`h-[4.7rem] w-[4.7rem] rounded-[50%] bg-gray10`} />
+                <div
+                  className={`h-[4.7rem] w-[4.7rem] rounded-[50%]`}
+                  style={{ backgroundColor: color }}
+                />
               )}
 
               <button
@@ -262,44 +269,38 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
               endName="endDate"
             />
             <ModalLabel htmlFor="link" label="외부 연결 링크" className={`${formTextSize}`} />
-            <div className="mb-12 mt-[1.6rem] flex gap-[1.6rem]">
-              <button
-                ref={urlToggleRef}
-                className={`${borderStyle} relative flex  items-center justify-center gap-[0.4rem] px-[1.8rem] py-[1.2rem]`}
-                onClick={handleUrlClick}
-              >
-                {urlImg === null ? (
-                  <img src={github} alt="깃허브로고" />
-                ) : (
-                  <img src={urlImg} alt="깃허브로고" />
-                )}
-                <img src={arrowDown} alt="토글버튼" />
-                {urlToggle && (
-                  // 나중에 컴포넌트로 분리
-                  <div className="absolute left-0 right-0 top-[5rem] h-[7.4rem] w-[7.5rem] rounded-[0.6rem] bg-white py-[0.4rem] shadow-lg">
-                    <div className="flex justify-center py-[0.4rem]">
-                      <img
-                        src={github}
-                        alt="깃허브로고"
-                        onClick={handleUrlImgClick}
-                        className="px-3.5rem text-center"
-                      />
-                    </div>
-                    <div className="flex justify-center  py-[0.4rem]">
-                      <img src={discord} alt="디스코드로고" onClick={handleUrlImgClick} />
-                    </div>
-                    <div className="flex justify-center  py-[0.4rem]">
-                      <img src={figma} alt="피그마로고" onClick={handleUrlImgClick} />
-                    </div>
-                  </div>
-                  // 여기까지
-                )}
-              </button>
-
+            <div className="mb-[0.8rem] mt-[1.6rem] flex gap-[1.2rem]">
+              <img src={github} className={`${borderStyle} px-[1.8rem] py-[1.2rem]`} alt="github" />
               <ModalInput
-                id="link"
-                className={`${inputTextSize} ${borderStyle}`}
+                hookform={register('githubLink')}
                 placeholder="URL을 입력해 주세요."
+                className={`${inputTextSize} ${borderStyle}`}
+                id="link"
+                name="githubLink"
+              />
+            </div>
+            <div className="mb-[0.8rem] mt-[1.6rem] flex gap-[1.2rem]">
+              <img
+                src={discord}
+                className={`${borderStyle} px-[1.8rem] py-[1.2rem]`}
+                alt="discord"
+              />
+              <ModalInput
+                hookform={register('discordLink')}
+                placeholder="URL을 입력해 주세요."
+                className={`${inputTextSize} ${borderStyle}`}
+                id="link"
+                name="discordLink"
+              />
+            </div>
+            <div className="mb-[0.8rem] mt-[1.6rem] flex gap-[1.2rem]">
+              <img src={figma} className={`${borderStyle} px-[1.8rem] py-[1.2rem]`} alt="figma" />
+              <ModalInput
+                hookform={register('figmaLink')}
+                placeholder="URL을 입력해 주세요."
+                className={`${inputTextSize} ${borderStyle}`}
+                id="link"
+                name="figmaLink"
               />
             </div>
             <div className=" flex flex-col gap-[0.8rem]">
@@ -320,8 +321,7 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
             </div>
             <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
             <div className=" h-[10.6rem] w-full rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
-              {/* data map돌리고 싶은데 배열이 아닌것 같음. 얘기해서 배열로 바꿔줄수 있는지 여쭤보기 */}
-              <ModalMemberList formTextSize={formTextSize} />
+              <ModalMemberList formTextSize={formTextSize} data={members} />
             </div>
           </ModalFormBorder>
           <TextButton buttonSize="md" className="mt-16">

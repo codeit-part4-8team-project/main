@@ -10,6 +10,7 @@ interface ModalInputProps {
   hookform?: any;
   // hookform?: UseFormRegister<string> | undefined; 타입을 모르것네
   children?: ReactNode;
+  defaultValue?: string;
 }
 
 export default function ModalInput({
@@ -20,12 +21,14 @@ export default function ModalInput({
   name,
   hookform,
   children,
+  defaultValue,
 }: ModalInputProps) {
   const inputSize = ' px-[1.8rem] py-[1.2rem] w-full';
   return (
     <>
       <div className="relative w-full">
         <input
+          defaultValue={defaultValue}
           {...hookform}
           name={name}
           className={`${className} ${inputSize} `}

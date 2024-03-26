@@ -1,7 +1,9 @@
 import calender from '../../../public/assets/calendar-dark.svg';
 import profile from '../../../public/profile.svg';
+import TextButton from '@/components/common/TextButton';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalLayout from '@/components/common/modal/ModalLayout';
+import { useAxios } from '@/hooks/useAxios';
 
 interface InvitationGroupModalProps {
   closeClick: () => void;
@@ -22,7 +24,20 @@ interface InvitationGroupModalProps {
 //     ]
 //   }
 
+// 2024/03/27
+// 승인을 클릭 했을때 어떤 api로 통신을 해야할지?
+// put으로 팀 초대 수락이 있고 그 이후의 모달에서 정보수정 put을 보내면 되는건가?
+
 export default function InvitationGroupModal({ closeClick }: InvitationGroupModalProps) {
+  const { fetchData } = useAxios({});
+
+  // 여기 teamId는 프롭으로 useParms를 못 받을것 같은데 어떻게 가져오지?
+  const handleDeleteClick = () => {
+    fetchData({
+      newPath: `member/invite/${teamId}`,
+      newMethod: 'DELETE',
+    });
+  };
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle =
@@ -52,21 +67,26 @@ export default function InvitationGroupModal({ closeClick }: InvitationGroupModa
         <p className={`${formTextSize}`}>날짜 (시작-종료)</p>
         <div className=" mb-12 mt-[0.9rem] flex items-center gap-2">
           <div
-            className={`${formTextSize} w-full rounded-[0.6rem] border-[0.1rem] border-gray30 px-[1.8rem] py-[1.2rem]`}
+            className={`${formTextSize} flex w-full items-center  justify-between rounded-[0.6rem] border-[0.1rem] border-gray30 px-[1.8rem] py-[1.2rem]`}
           >
-            해당하는 end날짜값
-            <img src={calender} alt="캘린더" className="absolute bottom-0 right-[1.8rem] top-0" />
+            <p>2025년 3월 30일 </p>
+            <img src={calender} alt="캘린더" />
           </div>
-
           <p className={`${formTextSize} text-[#5F5F5F]`}>-</p>
           <div
-            className={`${formTextSize} w-full rounded-[0.6rem] border-[0.1rem]  border-gray30 px-[1.8rem] py-[1.2rem]`}
+            className={`${formTextSize} flex w-full items-center  justify-between rounded-[0.6rem] border-[0.1rem] border-gray30 px-[1.8rem] py-[1.2rem]`}
           >
-            해당하는 end날짜값
-            <img src={calender} alt="캘린더" className="absolute bottom-0 right-[1.8rem] top-0" />
+            <p>2025년 3월 30일 </p>
+            <img src={calender} alt="캘린더" />
           </div>
         </div>
       </ModalFormBorder>
+      <div className="mt-12 flex gap-[1.7rem]">
+        <TextButton buttonSize="md" color="white" onClick={handleDeleteClick}>
+          거부
+        </TextButton>
+        <TextButton buttonSize="md">승인</TextButton>
+      </div>
     </ModalLayout>
   );
 }

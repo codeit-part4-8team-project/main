@@ -1,7 +1,10 @@
+import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import arrowDown from '../../../public/assets/arrow-down-dark.png';
+import calender from '../../../public/assets/calendar-dark.svg';
 import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
-import ModalCalendarInput from '@/components/common/modal/ModalCalendarInput';
+import ModalCalendar from '@/components/common/modal/ModalCalendar';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
@@ -16,6 +19,7 @@ interface IssuesModalProps {
 type Inputs = {
   title: string;
   content: string;
+  dueDate: string;
   assignedMembersUsernames: string[];
 };
 // 여기 이슈모달에 시간값 있던데 이건 어떻게 할건지? 의논 필요
@@ -36,25 +40,33 @@ type Inputs = {
 export default function IssuesModal({ closeClick }: IssuesModalProps) {
   const { fetchData: memberFetchData } = useAxios({}); // member tag GET axios
   const { fetchData } = useAxios({}); // POST axios
+
+  const dueDateToggleRef = useRef<HTMLDivElement | null>(null);
+  const [dueDateToggle, setDueDateToggle] = useState(false);
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const createIssue = {
       title: data.title,
       content: data.content,
+      dueDate: data.dueDate,
       assignedMembersUsernames: data.assignedMembersUsernames, // 나중에 배열 타입문제 해결하기
     };
-
     handlePostIssues(createIssue);
     console.log(createIssue);
   };
-
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
 
+  const handleDueDateClick = () => {
+    setDueDateToggle(true);
+  };
+
+  const teamsId = 22;
+
   const handlePostIssues = (data: Inputs) => {
     fetchData({
-      newPath: `${teamsId}/issue`,
+      newPath: `${teamsId}/issue/`,
       newMethod: 'POST',
       newData: data,
     });
@@ -66,8 +78,19 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
       newPath: `member/${teamsId}/search?username=${userName}`,
     });
   };
-  // member/12/search?username=12
 
+  const handleDueDateClickOutside = (e: MouseEvent) => {
+    if (!dueDateToggleRef.current?.contains(e.target as Node)) setDueDateToggle(false);
+  };
+  // member/12/search?username=12
+  useEffect(() => {
+    if (dueDateToggleRef) {
+      document.addEventListener('mousedown', handleDueDateClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleDueDateClickOutside);
+    };
+  }, [dueDateToggle]);
   // {
   //   "title": "string",
   //   "content": "string",
@@ -120,11 +143,53 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
           ) : (
             <p className=" mb-[0.9rem] flex justify-end text-gray50">0/40</p>
           )}
-          <ModalCalendarInput />
+          <div className="mb-[3.8rem] flex flex-col gap-[0.8rem]">
+            <ModalLabel htmlFor="dueDate" label="날짜 (마감일)" className={`${formTextSize}`} />
+            <ModalInput
+              hookform={register('dueDate')}
+              type="text"
+              name="dueDate"
+              id="dueDate"
+              className={`${formTextSize} ${borderStyle}`}
+              placeholder="날짜를 설정해 주세요."
+            >
+              <button
+                className="absolute bottom-0 right-[1.8rem] top-0"
+                onClick={handleDueDateClick}
+                type="button"
+              >
+                <img src={calender} alt="캘린더" />
+              </button>
+              {dueDateToggle && (
+                <div
+                  className=" absolute right-0 top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem] shadow-[0_0_10px_0_rgba(17,17,17,0.05)]"
+                  ref={dueDateToggleRef}
+                >
+                  <ModalCalendar />
+                </div>
+              )}
+            </ModalInput>
+          </div>
+
+          <ModalLabel htmlFor="group" label="그룹" className={`${formTextSize}`} />
+          <ModalInput
+            id="group"
+            name="group"
+            placeholder="그룹을 선택해 주세요"
+            className={`${formTextSize} ${borderStyle} `}
+          >
+            <button
+              className="absolute bottom-0 right-[1.8rem] top-0"
+              // onClick={handleStartDateClick}
+              type="button"
+            >
+              <img src={arrowDown} alt="arrowDown" />
+            </button>
+          </ModalInput>
           <div className=" flex flex-col gap-[0.8rem]">
             <ModalLabel
               label="팀원 태그"
-              className={`${formTextSize}`}
+              className={`${formTextSize} mt-[3.8rem]`}
               htmlFor="assignedMembersUsernames"
             />
             <div className="flex items-center gap-[1.2rem]">

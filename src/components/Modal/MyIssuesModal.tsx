@@ -30,6 +30,10 @@ type Inputs = {
 //   ]
 // }
 export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
+  const { data } = useAxios({
+    path: `${teamId}/issue/${issueId}`,
+  }); // console.log(data); // => 나중에 연동하고 ui 만들기
+
   const { fetchData: memberFetchData } = useAxios({}); // member tag GET axios
   const { fetchData } = useAxios({});
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
