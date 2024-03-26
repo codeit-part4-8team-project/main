@@ -8,13 +8,13 @@ import OauthRedirectPage from '@/pages/OauthRedirectPage';
 import SchedulesPage from '@/pages/SchedulesPage';
 import SigninPage from '@/pages/SigninPage';
 import SignupPage from '@/pages/SignupPage';
-import TeamBoard from '@/pages/team/TeamBoard';
 import TeamCalendar from '@/pages/team/TeamCalendar';
 import TeamContents from '@/pages/team/TeamContents';
 import TeamHome from '@/pages/team/TeamHome';
 import TeamKanban from '@/pages/team/TeamKanban';
 import TeamMembers from '@/pages/team/TeamMembers';
 import TeamNotice from '@/pages/team/TeamNotice';
+import TeamPostsPage from '@/pages/team/TeamPostsPage';
 import UserPageLayout from '@/components/common/UserPageLayout';
 import TeamPageLayout from '@/components/TeamsPage/TeamPageLayout';
 import { CalendarProvider } from '@/contexts/CalenarProvider';
@@ -52,7 +52,7 @@ function App() {
                 <Route path="schedules" element={<TeamCalendar />} />
                 <Route path="issues" element={<TeamKanban />} />
                 <Route path="notices" element={<TeamNotice />} />
-                <Route path="posts" element={<TeamBoard />} />
+                <Route path="posts" element={<TeamPostsPage />} />
                 <Route path="members" element={<TeamMembers />} />
                 <Route path="contents" element={<TeamContents />} />
               </Route>

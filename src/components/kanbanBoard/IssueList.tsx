@@ -1,5 +1,4 @@
 import NoCard from '@/components/common/NoCard';
-import { useTeam } from '@/contexts/TeamProvider';
 import { Issue, Team } from '@/types/issueTypes';
 // import ProfileStack from '@/components/common/ProfileStack';
 import ColorChipIcon from '@/assets/ColorChipIcon';

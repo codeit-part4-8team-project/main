@@ -50,7 +50,7 @@ export default function usePost({ type, page = 1, teamId, postId }: UsePostParam
     path = `/${teamId}/post/${postId}`; // 팀의 특정 게시물 조회
   }
 
-  const { loading, error, data } = useAxios<Posts>(
+  const { loading, error, data, fetchData } = useAxios<Posts>(
     {
       path,
       method: 'GET', // TODO 가능하면 다른 요청들도 가능하도록
@@ -67,5 +67,5 @@ export default function usePost({ type, page = 1, teamId, postId }: UsePostParam
     }
   }, [loading, error, data]);
 
-  return { postData };
+  return { postData, fetchPostData: fetchData };
 }

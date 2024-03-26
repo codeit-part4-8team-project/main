@@ -19,8 +19,8 @@ export default function KanbanBoard({ page, hasButton = false }: KanbanBoardProp
   });
   const [isOpen, setIsOpen] = useState(false);
 
-  const teamData = useTeam();
-  const path = teamData ? `/${teamData.team.id}/issue/` : '/user/my-issue';
+  const { currentTeam } = useTeam();
+  const path = currentTeam ? `/${currentTeam.id}/issue/` : '/user/my-issue';
 
   const {
     loading: issueBoardLoading,
@@ -54,9 +54,9 @@ export default function KanbanBoard({ page, hasButton = false }: KanbanBoardProp
     <>
       {isOpen && <GroupModal closeClick={handleToggleModalClick} />}
       <div className={`w-content relative flex h-full ${justifyContent} gap-[2.4rem]`}>
-        <IssueList status="todo" issues={issues.todoIssues} team={teamData?.team} />
-        <IssueList status="progress" issues={issues.progressIssues} team={teamData?.team} />
-        <IssueList status="done" issues={issues.doneIssues} team={teamData?.team} />
+        <IssueList status="todo" issues={issues.todoIssues} team={currentTeam} />
+        <IssueList status="progress" issues={issues.progressIssues} team={currentTeam} />
+        <IssueList status="done" issues={issues.doneIssues} team={currentTeam} />
         {hasButton && (
           <TextButton
             buttonSize="sm"
