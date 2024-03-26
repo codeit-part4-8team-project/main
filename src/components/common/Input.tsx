@@ -11,7 +11,16 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   register?: UseFormRegisterReturn;
 }
 
-export default function Input({ id, name, label, placeholder, className, ...props }: InputProps) {
+export default function Input({
+  id,
+  name,
+  label,
+  placeholder,
+  className,
+  register,
+  children,
+  ...props
+}: InputProps) {
   return (
     <div className="flex w-full flex-col items-start gap-[0.8rem]">
       {label && (
@@ -19,22 +28,19 @@ export default function Input({ id, name, label, placeholder, className, ...prop
           {label}
         </label>
       )}
-      <div className="flex h-[4.6rem] w-full">
+      <div className="flex h-[4.6rem] w-full flex-col">
         <input
           id={id}
           name={name}
           placeholder={placeholder}
+          {...register}
           className={clsx(
             'w-full items-center rounded-[0.6rem] border-[0.1rem] border-solid border-gray30 px-[1.8rem] py-[1.2rem] text-body3-regular text-gray100 placeholder:text-[#D2D2D]',
             className,
           )}
           {...props}
         />
-        {/* {watcher && (
-          <span className="hidden text-body5-regular leading-[2.2rem] peer-data-[invalid]:block">
-            {watcher}
-          </span>
-        )} */}
+        {children}
       </div>
     </div>
   );

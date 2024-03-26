@@ -30,7 +30,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useUserContext() {
+export function useUserContext(forceUpdate: boolean = false) {
   const { user, setUser } = useContext(UserContext);
   const openModal = useModal();
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ export function useUserContext() {
     {
       path: '/user/',
     },
-    !user,
+    !user || forceUpdate,
   );
 
   useEffect(() => {

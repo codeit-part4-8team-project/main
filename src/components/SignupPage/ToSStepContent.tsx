@@ -1,25 +1,47 @@
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import CheckboxInput from './CheckboxInput';
-import AllowDownIcon from '@/assets/AllowDownIcon';
-import BellIcon from '@/assets/BellIcon';
-import BoxIcon from '@/assets/BoxIcon';
-import CalendarIcon from '@/assets/CalendarIcon';
-import Chat4Icon from '@/assets/Chat4Icon';
-import Check2CircleIcon from '@/assets/Check2CircleIcon';
-import CheckCircleFill from '@/assets/CheckCircleFill';
-import FolderIcon from '@/assets/FolderIcon';
-import ListCheckIcon from '@/assets/ListCheckIcon';
-import MeatbollsIcon from '@/assets/MeatbollsIcon';
-import MegaphoneIcon from '@/assets/MegaphoneIcon';
-import PeopleIcon from '@/assets/PeopleIcon';
-import Sliders3Icon from '@/assets/Sliders3Icon';
-import ViewListIcon from '@/assets/ViewListIcon';
+import { useStepContext } from '@/contexts/SignupStepProvider';
 
 function ToSStepContent() {
+  const { setStep, setFormValidity } = useStepContext();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    setValue,
+    formState: { isValid },
+  } = useForm({
+    mode: 'onChange',
+  });
+
+  const agreeAll = watch('agreeAll');
+
+  const onSubmit = () => {
+    setStep(2);
+  };
+
+  useEffect(() => {
+    setValue('service', agreeAll);
+    setValue('privacy', agreeAll);
+  }, [agreeAll, setValue]);
+
+  useEffect(() => {
+    setFormValidity(isValid);
+  }, [isValid, setFormValidity]);
+
   return (
-    <div className="flex w-[74rem] flex-col">
+    <form id="ToSForm" onSubmit={handleSubmit(onSubmit)} className="flex w-[74rem] flex-col">
       <div className="mb-[1.6rem] h-[33.2rem] w-full shrink-0 rounded-[0.6rem] bg-gray10 py-12 pl-[3.4rem] pr-[2.6rem]">
         <div className="flex items-center gap-[1.6rem]">
-          <CheckboxInput id="service"></CheckboxInput>
+          <CheckboxInput
+            id="service"
+            control={control}
+            register={register('service', {
+              required: true,
+            })}
+          ></CheckboxInput>
           <span className="flex items-center gap-4 text-[1.4rem] font-bold leading-[2.2rem] text-gray100">
             <span className="text-[1.2rem] font-normal leading-8">(필수)</span>서비스 이용약관 동의
           </span>
@@ -38,9 +60,16 @@ function ToSStepContent() {
           덮어 까닭입니다.
         </p>
         <div className="flex items-center gap-[1.6rem]">
-          <CheckboxInput id="privacy"></CheckboxInput>
+          <CheckboxInput
+            id="privacy"
+            control={control}
+            register={register('privacy', {
+              required: true,
+            })}
+          ></CheckboxInput>
           <span className="flex items-center gap-4 text-[1.4rem] font-bold leading-[2.2rem] text-gray100">
-            <span className="text-[1.2rem] font-normal leading-8">(필수)</span>서비스 이용약관 동의
+            <span className="text-[1.2rem] font-normal leading-8">(필수)</span>개인정보 수집 및
+            이용동의
           </span>
         </div>
         <p className="mt-8 h-[8.6rem] w-full overflow-auto bg-white p-[1.6rem] ">
@@ -58,51 +87,29 @@ function ToSStepContent() {
         </p>
       </div>
       <div className="ml-16 flex items-center gap-[1.6rem]">
-        <CheckboxInput id="marketing"></CheckboxInput>
+        <CheckboxInput
+          id="marketing"
+          register={register('marketing')}
+          control={control}
+        ></CheckboxInput>
         <span className="flex items-center gap-4 text-[1.4rem] font-bold leading-[2.2rem] text-gray100">
-          <span className="text-[1.2rem] font-normal leading-8">(필수)</span>개인정보 수집 및 이용
-          동의
+          <span className="text-[1.2rem] font-normal leading-8">(선택)</span>광고성 정보 수신 동의
         </span>
       </div>
       <div className="mb-[2.4rem] mt-[2.2rem] h-full border-t-[0.1rem] border-solid border-t-gray30"></div>
       <div className="ml-16 flex items-center gap-[1.6rem]">
-        <CheckboxInput id="agree-all"></CheckboxInput>
+        <CheckboxInput
+          id="agreeAll"
+          control={control}
+          register={register('agreeAll', {
+            required: true,
+          })}
+        ></CheckboxInput>
         <span className="flex items-center gap-4 text-[1.4rem] font-bold leading-[2.2rem] text-gray100">
           KEEPY-UPPY의 이용약관 및 개인정보 처리방침을 확인하였고, 이에 모두 동의합니다.
         </span>
-        <div>
-          <BellIcon></BellIcon>
-          <CalendarIcon active={true} />
-          <Chat4Icon />
-          <Check2CircleIcon></Check2CircleIcon>
-          <ListCheckIcon />
-          <MegaphoneIcon />
-          <PeopleIcon />
-          <Sliders3Icon />
-          <AllowDownIcon />
-          <MeatbollsIcon />
-        </div>
-        <div className="bg-black">
-          <BellIcon fill="white"></BellIcon>
-          <Chat4Icon fill="white" />
-          <Check2CircleIcon fill="white"></Check2CircleIcon>
-          <ListCheckIcon fill="white" />
-          <MegaphoneIcon fill="white" />
-          <PeopleIcon fill="white" />
-          <Sliders3Icon fill="white" />
-          <AllowDownIcon fill="white" />
-          <MeatbollsIcon fill="white" />
-          <BoxIcon active={true} />
-          <BoxIcon />
-          <CalendarIcon active={true} fill="white" />
-          <CalendarIcon fill="white" />
-          <ViewListIcon active={true} />
-          <ViewListIcon />
-          <FolderIcon active={true} />
-          <FolderIcon />
-        </div>
       </div>
-    </div>
+    </form>
   );
 }
 

@@ -5,21 +5,28 @@ type Step = number;
 interface StepContextValue {
   step: Step;
   setStep: React.Dispatch<React.SetStateAction<Step>>;
+  formValidity: boolean;
+  setFormValidity: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const StepContext = createContext<StepContextValue>({
   step: 1,
   setStep: () => {},
+  formValidity: false,
+  setFormValidity: () => {},
 });
 
 export function StepProvider({ children }: { children: ReactNode }) {
   const [step, setStep] = useState<Step>(1);
+  const [formValidity, setFormValidity] = useState<boolean>(false);
 
   return (
     <StepContext.Provider
       value={{
         step,
         setStep,
+        formValidity,
+        setFormValidity,
       }}
     >
       {children}
