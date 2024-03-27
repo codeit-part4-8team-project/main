@@ -4,48 +4,70 @@ import { useAxios } from '@/hooks/useAxios';
 import { Team } from '@/types/teamTypes';
 
 interface TeamContextValue {
-  team: Team;
+  currentTeam: Team;
+  currentPage: string;
 }
 
-const TeamContext = createContext<TeamContextValue | null>(null);
+interface TeamProviderProps {
+  children: ReactNode;
+  id?: number;
+}
 
-export function TeamProvider({ children }: { children: ReactNode }) {
+const defaultTeamValue: Team = {
+  id: 0,
+  name: '',
+  description: '',
+  color: '',
+  members: [],
+};
+
+const TeamContext = createContext<TeamContextValue>({
+  currentTeam: defaultTeamValue,
+  currentPage: '',
+});
+
+/* 
+  TeamContext에서 가져올 수 있는 것:
+    1. 현재 경로의 팀 정보
+    2. 현재 경로의 페이지 정보
+    3. (파라미터로 id 전달 시) 해당하는 팀 정보 (id, title, description, color, members)
+*/
+
+export function TeamProvider({ children, id }: TeamProviderProps) {
+  const [currentTeam, setCurrentTeam] = useState<Team>(defaultTeamValue);
+
   const { pathname } = useLocation();
-  const teamId = Number(pathname.split('/')[2]);
 
-  const [team, setTeam] = useState<Team>({
-    id: teamId,
-    name: '',
-    description: '',
-    color: '',
-    members: [],
-  });
+  const currentPage = pathname.split('/').reverse()[0];
+  const teamId = id || Number(pathname.split('/')[2]);
 
-  const { loading, error, data } = useAxios<Team[]>(
+  const { loading, error, data } = useAxios<Team>(
     {
-      path: '/team/my-team',
+      path: `/team/${teamId}`,
     },
     true,
   );
 
   useEffect(() => {
     if (data && !loading) {
-      const currentTeam = data.filter((team) => team.id === teamId);
-      setTeam(currentTeam[0]);
+      setCurrentTeam(data);
     }
     if (error) {
-      console.log('오류');
+      console.log('팀 데이터 오류');
     }
   }, [teamId, data, error, loading]);
 
-  return <TeamContext.Provider value={{ team }}>{children}</TeamContext.Provider>;
+  return (
+    <TeamContext.Provider value={{ currentTeam, currentPage }}>{children}</TeamContext.Provider>
+  );
 }
 
 export function useTeam() {
   const teamInfo = useContext(TeamContext);
 
-  if (!teamInfo) return;
+  if (!teamInfo) {
+    throw Error('반드시 TeamProvider 안에서 호출해야 합니다.');
+  }
 
-  const { team } = teamInfo;
-  return { team };
+  return teamInfo;
 }

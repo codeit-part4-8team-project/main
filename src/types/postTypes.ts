@@ -1,4 +1,4 @@
-export interface PostType {
+export interface Post {
   id: number;
   title: string;
   author: {
@@ -13,33 +13,31 @@ export interface PostType {
   edited: boolean;
 }
 
-export interface PostsType {
-  posts: {
-    totalPages: number;
-    totalElements: number;
-    size: number;
-    content: PostType[];
-    number: number;
+export interface Posts {
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  content: Post[] | null;
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  numberOfElements: number;
+  pageable: {
+    offset: number;
     sort: {
       empty: boolean;
       sorted: boolean;
       unsorted: boolean;
     };
-    numberOfElements: number;
-    pageable: {
-      offset: number;
-      sort: {
-        empty: boolean;
-        sorted: boolean;
-        unsorted: boolean;
-      };
-      pageNumber: number;
-      pageSize: number;
-      paged: boolean;
-      unpaged: boolean;
-    };
-    first: boolean;
-    last: boolean;
-    empty: boolean;
+    pageNumber: number;
+    pageSize: number;
+    paged: boolean;
+    unpaged: boolean;
   };
+  first: boolean;
+  last: boolean;
+  empty: boolean;
 }

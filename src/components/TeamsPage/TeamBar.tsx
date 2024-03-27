@@ -3,8 +3,9 @@ import { useTeam } from '@/contexts/TeamProvider';
 import ColorChipIcon from '@/assets/ColorChipIcon';
 
 export default function TeamBar() {
-  const { team } = useTeam();
-  const { name, color } = team;
+  const {
+    currentTeam: { color, name },
+  } = useTeam();
 
   return (
     <div className="fixed top-[8.8rem] mb-12 flex items-center gap-[6.2rem]">

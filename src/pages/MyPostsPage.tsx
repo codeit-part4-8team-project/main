@@ -1,12 +1,11 @@
-import { teamPosts } from '@/mockdata/postData';
 import BoardSection from '@/components/common/BoardSection';
-import BulletinBoard from '@/components/posts/BulletinBoard';
+import PostList from '@/components/Post/PostList';
+import usePost from '@/hooks/usePost';
 
 export default function MyPostsPage() {
-  return (
-    <BoardSection
-      title="Bulletin board"
-      content={<BulletinBoard posts={teamPosts.posts.content} />}
-    />
-  );
+  const { postData } = usePost({ type: 'user' });
+
+  const { content } = postData;
+
+  return <BoardSection title="Bulletin board" content={<PostList posts={content} />} />;
 }
