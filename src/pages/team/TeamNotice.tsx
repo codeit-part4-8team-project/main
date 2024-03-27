@@ -1,6 +1,14 @@
 import BoardSection from '@/components/common/BoardSection';
-import AnnouncementBoard from '@/components/announcement/AnnouncementBoard';
+import AnnouncementPageList from '@/components/announcement/AnnouncementPageList';
+import useAnnouncement from '@/hooks/useAnnouncement';
 
 export default function TeamNotice() {
-  return <BoardSection title="Notice" content={<AnnouncementBoard />} />;
+  const { announcementPageData } = useAnnouncement();
+
+  return (
+    <BoardSection
+      title="Notice"
+      content={<AnnouncementPageList announcements={announcementPageData} />}
+    />
+  );
 }
