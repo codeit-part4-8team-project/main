@@ -1,5 +1,5 @@
+import { PAGES } from '@/constants/constants';
 import { useParams } from 'react-router-dom';
-import { PAGES } from '@/pages/constants';
 
 export default function UserPage() {
   const { pageContent } = useParams();

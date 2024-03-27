@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   buttonSize: 'sm' | 'md' | 'lg';
-  color?: 'black' | 'white';
+  color?: 'black' | 'white' | 'red';
   children: ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
@@ -23,14 +23,15 @@ const TextButton = ({
   ...props
 }: ButtonProps) => {
   const buttonSizeClasses = clsx({
-    'px-[1.8rem] py-[1.2rem] text-[1.2rem] leading-[2.2rem] min-w-[8.7rem]': buttonSize === 'sm',
-    'px-[2.4rem] py-[1.2rem] text-[1.2rem] leading-[2.2rem] w-full ': buttonSize === 'md',
+    'px-[1.8rem] py-[1.2rem] text-body4-bold leading-[2.2rem] min-w-[8.7rem]': buttonSize === 'sm',
+    'px-[2.4rem] py-[1.2rem] text-body4-bold leading-[2.2rem] w-full ': buttonSize === 'md',
     'px-[2.4rem] py-[1.2rem] text-[1.6rem] leading-[2.2rem] w-full ': buttonSize === 'lg',
   });
 
   const colorClasses = clsx({
     'bg-gray100 text-white': color === 'black',
     'bg-white text-gray100 border-solid border-[0.1rem] border-gray30': color === 'white',
+    'bg-white text-point_red border-solid border-[0.1rem] border-point_red': color === 'red',
   });
 
   return (
@@ -38,7 +39,7 @@ const TextButton = ({
       disabled={disabled}
       onClick={onClick}
       className={clsx(
-        'disabled:bg-gray30 flex h-[4.6rem] items-center justify-center rounded-[0.6rem] font-bold',
+        'flex max-h-[4.6rem] items-center justify-center rounded-[0.6rem] font-bold disabled:bg-gray30',
         colorClasses,
         buttonSizeClasses,
         className,
