@@ -33,7 +33,7 @@ function App() {
               <Route path="/user/:userId" element={<UserPageLayout />}>
                 <Route path=":pageContent" element={<UserPage />} />
               </Route>
-              <Route path="/teams/:teamsId" element={<TeamPageLayout />}>
+              <Route path="/team/:teamId" element={<TeamPageLayout />}>
                 <Route path=":pageContent" element={<TeamPage />} />
               </Route>
             </Routes>
