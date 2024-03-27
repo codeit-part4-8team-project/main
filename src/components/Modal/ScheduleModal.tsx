@@ -1,63 +1,90 @@
-import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import calender from '../../../public/assets/calendar-dark.svg';
 import profile from '../../../public/profile.svg';
-import ModalCalendar from '@/components/common/modal/ModalCalendar';
+import TextButton from '@/components/common/TextButton';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
+import ModalScheduleCalendarInput from '@/components/common/modal/ModalScheduleCalendarInput';
+import { useAxios } from '@/hooks/useAxios';
 
 interface ScheduleModalProps {
   closeClick?: () => void;
+  user?: boolean;
+  team?: boolean;
 }
-
+// 논의 결과 type은 제외해서 api 쏘기로 결정
 type Inputs = {
-  name: string;
-  date: string;
+  title: string;
+  type?: 'TEAM' | 'USER' | string; // 나중에 프롭으로 TEAM,USER 받기.
+  startDateTime: string;
+  endDateTime: string;
+  content: string;
 };
-
-function ScheduleModal({ closeClick }: ScheduleModalProps) {
+// 여기는 user인지 team인지 구분이 필요함
+function ScheduleModal({ closeClick, user = false, team = false }: ScheduleModalProps) {
+  const { fetchData } = useAxios({});
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
+  const InputValueLength = 'mb-[0.9rem] flex justify-end text-gray50';
+
+  // - 필드 이름이 date면 날짜만, dateTime이면 시간 포함
+  // - Swagger에 있는 날짜 포맷말고  yyyy-MM-dd HH:mm:ss 사용
+  // {
+  //   "type": "string", // 얘 없음 -> TEAM인지 USER인지 구분 defaule value로 처리
+  // 나중에 물어보기 위에 type;
+  //   "title": "string",
+  //   "content": "string", // 얘 없음
+  //   "startDateTime": "yyyy-MM-dd HH:mm:ss",
+  //   "endDateTime": "yyyy-MM-dd HH:mm:ss"
+  // }
+
+  // type = USER 인 경우의 리스폰스 값
+  //   content: "내용"
+  // endDateTime: "2024-03-22 00:00:00"
+  // id: 3
+  // startDateTime: "2024-03-12 00:00:00"
+  // title: "제목"
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<Inputs>();
+  const type = 'USER';
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const createTeam = {
-      name: data.name,
-      date: data.date,
+    const createSchedlue = {
+      title: data.title,
+      startDateTime: data.startDateTime,
+      endDateTime: data.endDateTime,
+      content: data.content,
+      type: type, // 얘는 협의 후 빼기로 결정 추후 패치되면 삭제 하기
     };
-    console.log('createTema', createTeam);
-  };
-  const startDateToggleRef = useRef<HTMLButtonElement | null>(null);
-  const [startDateToggle, setStartDateToggle] = useState(false);
-
-  const handleStartDateClick = () => {
-    setStartDateToggle(!startDateToggle);
+    handleScheduleFetch(createSchedlue);
+    console.log('createTema', createSchedlue);
   };
 
-  const handleStartDateClickOutside = (e: MouseEvent) => {
-    if (startDateToggleRef.current && !startDateToggleRef.current.contains(e.target as Node))
-      setStartDateToggle(false);
-  };
-  useEffect(() => {
-    if (startDateToggle) {
-      document.addEventListener('mousedown', handleStartDateClickOutside);
+  const handleScheduleFetch = (data: Inputs) => {
+    if (user) {
+      fetchData({
+        newPath: 'schedule/user',
+        newMethod: 'POST',
+        newData: data,
+      });
+    } else if (team) {
+      fetchData({
+        newPath: `schedule/team/${teamId}`,
+        newMethod: 'POST',
+        newData: data,
+      });
     }
-    return () => {
-      document.removeEventListener('mousedown', handleStartDateClickOutside);
-    };
-  }, [startDateToggle]);
+  };
 
   return (
     <ModalLayout title="일정 추가" closeClick={closeClick} size="sm">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ModalFormBorder className="border-gray30 mt-16 h-[35.5rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] px-12 pt-12">
+        <ModalFormBorder className="mt-16 h-full w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 p-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>게시자(나)</p>
           <div className="mb-16 flex items-center gap-4">
             <img src={profile} alt="profile" />
@@ -66,46 +93,47 @@ function ScheduleModal({ closeClick }: ScheduleModalProps) {
             {/*  */}
           </div>
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
-            <ModalLabel label="제목" className={`${formTextSize}`} htmlFor="name" />
+            <ModalLabel label="제목" className={`${formTextSize}`} htmlFor="title" />
             <ModalInput
-              hookform={register('name')}
+              hookform={register('title')}
               className={`${inputTextSize} ${borderStyle}`}
               placeholder="일정 제목을 입력해 주세요."
-              id="name"
+              id="title"
               type="text"
-              name="name"
+              name="title"
             />
           </div>
-          {watch('name') ? (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">{watch('name')?.length}/20</p>
+          {watch('title') ? (
+            <p className={`${InputValueLength}`}>{watch('title')?.length}/20</p>
           ) : (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">0/20</p>
+            <p className={`${InputValueLength}`}>0/20</p>
           )}
-          <div className="flex flex-col gap-[0.8rem]">
-            <ModalLabel label="날짜" className={`${formTextSize}`} htmlFor="date" />
+          <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
+            <ModalLabel label="내용" className={`${formTextSize}`} htmlFor="content" />
             <ModalInput
-              hookform={register('date')}
+              hookform={register('content')}
               className={`${inputTextSize} ${borderStyle}`}
-              placeholder="YYYY-MM-DD 형식으로 입력해 주세요."
-              name="date"
-              id="date"
-            >
-              <button
-                className="absolute bottom-0 right-[1.8rem] top-0"
-                onClick={handleStartDateClick}
-                ref={startDateToggleRef}
-              >
-                <img src={calender} alt="캘린더" />
-              </button>
-              {startDateToggle && (
-                <div className="absolute top-20 z-[9999] h-[20.1rem] w-[25.5rem] bg-white px-[1.4rem] py-[1.3rem]">
-                  <ModalCalendar />
-                </div>
-              )}
-            </ModalInput>
+              placeholder="내용을 입력해 주세요."
+              id="content"
+              type="text"
+              name="content"
+            />
+            {watch('content') ? (
+              <p className={`${InputValueLength}`}>{watch('content')?.length}/40</p>
+            ) : (
+              <p className={`${InputValueLength}`}>0/40</p>
+            )}
           </div>
+          <ModalScheduleCalendarInput
+            startHookform={register('startDateTime')}
+            startName="startDateTime"
+            endHookform={register('endDateTime')}
+            endName="endDateTime"
+          />
         </ModalFormBorder>
-        {/* <button></button> 채빈님 버튼 넣기 */}
+        <TextButton buttonSize="md" className="mt-16">
+          일정 추가하기
+        </TextButton>
       </form>
     </ModalLayout>
   );

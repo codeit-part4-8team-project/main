@@ -6,6 +6,7 @@ import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
+import { useAxios } from '@/hooks/useAxios';
 
 interface IssuesModalProps {
   closeClick: () => void;
@@ -14,22 +15,55 @@ interface IssuesModalProps {
 type Inputs = {
   title: string;
   content: string;
-  assignedMembersUsernames: string;
+  assignedMembersUsernames: string[];
 };
 
+// put 메서드 형식
+// {
+//   "title": "string",
+//   "content": "string",
+//   "dueDate": "2024-03-24", // 동일하게 없음
+// -> default value로 TODO 넣어주기
+//   "status": "TODO", // 없음 -> 기본값 TODO 혹은, 드래그앤드롭에 해당하는 값이 알아서 들어옴
+//   "assignedMembersUsernames": [
+//     "string"
+//   ]
+// }
 export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
-  const { register, watch, handleSubmit } = useForm<Inputs>();
+  const { data } = useAxios({
+    path: `${teamId}/issue/${issueId}`,
+  }); // console.log(data); // => 나중에 연동하고 ui 만들기
+
+  const { fetchData: memberFetchData } = useAxios({}); // member tag GET axios
+  const { fetchData } = useAxios({});
+  const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const createIssue = {
+    const putIssue = {
       title: data.title,
       content: data.content,
-      assignedMembersUsernames: [data.assignedMembersUsernames],
+      assignedMembersUsernames: data.assignedMembersUsernames, // 배열 타입에러 자꾸남
     };
-    console.log(createIssue);
+    handlePutIssues(putIssue);
+    console.log(putIssue);
   };
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
+
+  const handleGetTeamMemberList = () => {
+    const userName = getValues('assignedMembersUsernames');
+    memberFetchData({
+      newPath: `member/${teamsId}/search?username=${userName}`,
+    });
+  };
+
+  const handlePutIssues = (data: Inputs) => {
+    fetchData({
+      newPath: `${teamsId}/issue/${issueId}`,
+      newMethod: 'PUT',
+      newData: data,
+    });
+  };
   // {
   //   "title": "string",
   //   "content": "string",
@@ -42,7 +76,7 @@ export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
   return (
     <ModalLayout title="할 일" closeClick={closeClick} size="lg">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ModalFormBorder className="border-gray30 mt-16 h-[64rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] px-12 pt-12">
+        <ModalFormBorder className="mt-16 h-[64rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 px-12 pt-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>게시자 (나)</p>
           <div className="mb-16 flex items-center gap-4">
             <img src={profile} alt="profile" />
@@ -61,9 +95,9 @@ export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
             />
           </div>
           {watch('title') ? (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">{watch('title')?.length}/20</p>
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">{watch('title')?.length}/20</p>
           ) : (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">0/20</p>
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">0/20</p>
           )}
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="content" label="내용*" className={`${formTextSize}`} />
@@ -76,11 +110,11 @@ export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
             />
           </div>
           {watch('content') ? (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">
               {watch('content')?.length}/40
             </p>
           ) : (
-            <p className=" text-gray50 mb-[0.9rem] flex justify-end">0/40</p>
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">0/40</p>
           )}
           <div className=" flex flex-col gap-[0.8rem]">
             <ModalLabel
@@ -97,10 +131,16 @@ export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
                 id="assignedMembersUsernames"
                 className={`${inputTextSize} ${borderStyle} `}
               />
-              <TextButton buttonSize="sm">태그하기</TextButton>
+              <TextButton buttonSize="sm" onClick={handleGetTeamMemberList} type="button">
+                태그하기
+              </TextButton>
             </div>
           </div>
-          <ModalMemberList formTextSize={formTextSize} />
+          <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
+          <div className=" h-[10.6rem] w-full rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
+            {/* data map돌리고 싶은데 배열이 아닌것 같음. 얘기해서 배열로 바꿔줄수 있는지 여쭤보기 */}
+            <ModalMemberList formTextSize={formTextSize} />
+          </div>
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">
           수정하기

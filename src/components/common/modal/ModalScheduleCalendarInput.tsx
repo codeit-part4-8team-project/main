@@ -13,7 +13,7 @@ interface ModalCalendarInputProps {
   endName: string;
 }
 
-export default function ModalCalendarInput({
+export default function ModalScheduleCalendarInput({
   startHookform,
   startName,
   endHookform,
@@ -63,15 +63,15 @@ export default function ModalCalendarInput({
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5]';
   return (
     <>
-      <ModalLabel htmlFor="date" label="날짜 (시작-종료)*" className={`${formTextSize}`} />
-      <div className=" mb-12 mt-[0.9rem] flex items-center gap-2">
+      <div className=" flex flex-col gap-[0.8rem]">
+        <ModalLabel htmlFor={startName} label="날짜 시작" className={`${formTextSize}`} />
         <ModalInput
           hookform={startHookform}
           type="text"
           name={startName}
-          id="date"
+          id={startName}
           className={`${formTextSize} ${borderStyle}`}
-          placeholder="YYYY-MM-DD"
+          placeholder="날짜를 설정해 주세요."
         >
           <button
             className="absolute bottom-0 right-[1.8rem] top-0"
@@ -82,23 +82,23 @@ export default function ModalCalendarInput({
           </button>
           {startDateToggle && (
             <div
-              className="absolute top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem]"
+              className=" absolute right-0 top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem] shadow-[0_0_10px_0_rgba(17,17,17,0.05)]"
               ref={startDateToggleRef}
             >
               <ModalCalendar />
             </div>
           )}
         </ModalInput>
-
-        <p className={`${formTextSize} text-[#5F5F5F]`}>-</p>
-        {/* <div ref={endDateToggleRef}> */}
+      </div>
+      <div className="mt-[3.8rem] flex flex-col gap-[0.8rem]">
+        <ModalLabel htmlFor={endName} label="날짜 종료" className={`${formTextSize}`} />
         <ModalInput
           hookform={endHookform}
           type="text"
           name={endName}
-          id="date"
+          id={endName}
           className={`${formTextSize} ${borderStyle}`}
-          placeholder="YYYY-MM-DD"
+          placeholder="날짜를 설정해 주세요."
         >
           <button
             className="absolute bottom-0 right-[1.8rem] top-0"
@@ -109,7 +109,7 @@ export default function ModalCalendarInput({
           </button>
           {endDateToggle && (
             <div
-              className="absolute top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem]"
+              className=" absolute right-0 top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem] shadow-[0_0_10px_0_rgba(17,17,17,0.05)]"
               ref={endDateToggleRef}
             >
               <ModalCalendar />
@@ -117,7 +117,6 @@ export default function ModalCalendarInput({
           )}
         </ModalInput>
       </div>
-      {/* </div> */}
     </>
   );
 }
