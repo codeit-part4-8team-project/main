@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import { useTeam } from '@/contexts/TeamProvider';
 import { Issue } from '@/types/issueTypes';
 import DragHandleIcon from '@/assets/DragHandleIcon';
@@ -8,11 +9,14 @@ interface IssueItemProps {
 }
 
 export default function IssueItem({ issue: { title, content, team } }: IssueItemProps) {
-  const pageTeam = useTeam();
+  const { teamId } = useParams();
+
+  if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
+
+  const { team: currentTeam } = useTeam(teamId);
 
   if (!team) {
     // 데이터에 team 정보가 없는 경우 = 현재 팀 페이지인 경우
-    const { currentTeam } = pageTeam;
     team = currentTeam;
   }
 

@@ -1,16 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import { TEAM_PAGES } from '@/components/TeamsPage/Tabs/constants';
-import { useTeam } from '@/contexts/TeamProvider';
 import DividerIcon from '@/assets/DividerIcon';
 
 export default function TabsList() {
-  const { currentPage } = useTeam();
+  const { pageContent } = useParams();
 
   return (
     <div className="flex items-center gap-[2.4rem]">
       {TEAM_PAGES.map(({ page, title }, idx) => {
-        const isCurrent = page === currentPage ? true : false;
+        const isCurrent = page === pageContent ? true : false;
         return (
           <>
             {idx !== 0 && <DividerIcon />}

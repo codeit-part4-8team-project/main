@@ -28,7 +28,7 @@ export default function BoardList() {
 function BoardItem({ board, pathname }: BoardItemProps) {
   const { boardName, icon } = BOARDS[board as keyof Boards];
   const { user } = useUserContext();
-  const link = board === 'main' ? `/user/${board}` : `/user/${board}/${user?.id}`;
+  const link = `/user/${user?.id}/${board}`;
   const isCurrent = pathname === link ? true : false;
 
   const boardItemIcon = icon as ReactElement;

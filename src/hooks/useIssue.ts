@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAxios } from '@/hooks/useAxios';
 import { Issues } from '@/types/issueTypes';
 
-export default function useIssue(teamId?: number, issueId?: number) {
+export default function useIssue(teamId?: number | string, issueId?: number) {
   const [issueData, setIssueData] = useState<Issues>({
     todoIssues: [],
     progressIssues: [],

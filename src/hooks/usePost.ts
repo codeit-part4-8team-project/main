@@ -4,7 +4,7 @@ import { Posts } from '@/types/postTypes';
 
 interface UsePostParams {
   page?: number;
-  teamId?: number;
+  teamId?: number | string;
   postId?: number;
 }
 

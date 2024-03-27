@@ -1,11 +1,16 @@
+import { useParams } from 'react-router-dom';
 import TabsList from '@/components/TeamsPage/Tabs/TabsList';
 import { useTeam } from '@/contexts/TeamProvider';
 import ColorChipIcon from '@/assets/ColorChipIcon';
 
 export default function TeamBar() {
+  const { teamId } = useParams();
+
+  if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
+
   const {
-    currentTeam: { color, name },
-  } = useTeam();
+    team: { color, name },
+  } = useTeam(teamId);
 
   return (
     <div className="fixed top-[8.8rem] mb-12 flex items-center gap-[6.2rem]">

@@ -1,6 +1,6 @@
+import { useParams } from 'react-router-dom';
 import BoardSection from '@/components/common/BoardSection';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
-import { useTeam } from '@/contexts/TeamProvider';
 import useIssue from '@/hooks/useIssue';
 
 export default function TeamIssuesPage() {
@@ -8,10 +8,11 @@ export default function TeamIssuesPage() {
 }
 
 function IssuePageContent() {
-  const {
-    currentTeam: { id },
-  } = useTeam();
-  const { issueData: teamIssues } = useIssue(id);
+  const { teamId } = useParams();
+
+  if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
+
+  const { issueData: teamIssues } = useIssue(teamId);
 
   return (
     <div className="mt-[1.7rem] flex h-full gap-[7.4rem]">
