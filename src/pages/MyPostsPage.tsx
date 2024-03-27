@@ -3,7 +3,7 @@ import PostList from '@/components/Post/PostList';
 import usePost from '@/hooks/usePost';
 
 export default function MyPostsPage() {
-  const { postData } = usePost({ type: 'user' });
+  const { postData } = usePost({});
 
   const { content } = postData;
 

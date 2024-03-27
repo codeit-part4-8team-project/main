@@ -32,7 +32,7 @@ function ProfileSection() {
   const { user } = useUserContext();
 
   return (
-    <Link to="/user/myPage/1">
+    <Link to={`/user/${user?.id}/myPage`}>
       <div className="my-[3.3rem] ml-16 flex items-center gap-[1.6rem]">
         <img
           src={user ? user.imageUrl : ProfileImg}

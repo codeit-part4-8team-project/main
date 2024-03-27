@@ -1,11 +1,10 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useAxios } from '@/hooks/useAxios';
 import { Team } from '@/types/teamTypes';
 
 interface TeamContextValue {
-  currentTeam: Team;
-  currentPage: string;
+  team: Team;
+  setTeam: (team: Team) => void;
 }
 
 interface TeamProviderProps {
@@ -21,53 +20,39 @@ const defaultTeamValue: Team = {
   members: [],
 };
 
-const TeamContext = createContext<TeamContextValue>({
-  currentTeam: defaultTeamValue,
-  currentPage: '',
-});
+const TeamContext = createContext<TeamContextValue | null>(null);
 
-/* 
-  TeamContext에서 가져올 수 있는 것:
-    1. 현재 경로의 팀 정보
-    2. 현재 경로의 페이지 정보
-    3. (파라미터로 id 전달 시) 해당하는 팀 정보 (id, title, description, color, members)
-*/
+export function TeamProvider({ children }: TeamProviderProps) {
+  const [team, setTeam] = useState<Team>(defaultTeamValue);
 
-export function TeamProvider({ children, id }: TeamProviderProps) {
-  const [currentTeam, setCurrentTeam] = useState<Team>(defaultTeamValue);
-
-  const { pathname } = useLocation();
-
-  const currentPage = pathname.split('/').reverse()[0];
-  const teamId = id || Number(pathname.split('/')[2]);
-
-  const { loading, error, data } = useAxios<Team>(
-    {
-      path: `/team/${teamId}`,
-    },
-    true,
-  );
-
-  useEffect(() => {
-    if (data && !loading) {
-      setCurrentTeam(data);
-    }
-    if (error) {
-      console.log('팀 데이터 오류');
-    }
-  }, [teamId, data, error, loading]);
-
-  return (
-    <TeamContext.Provider value={{ currentTeam, currentPage }}>{children}</TeamContext.Provider>
-  );
+  return <TeamContext.Provider value={{ team, setTeam }}>{children}</TeamContext.Provider>;
 }
 
-export function useTeam() {
+/* (파라미터로 id 전달 시) 해당하는 팀 정보 조회 (id, title, description, color, members) */
+export function useTeam(id: number | string) {
   const teamInfo = useContext(TeamContext);
 
   if (!teamInfo) {
     throw Error('반드시 TeamProvider 안에서 호출해야 합니다.');
   }
+
+  const { setTeam } = teamInfo;
+  const { loading, error, data, fetchData } = useAxios<Team>({
+    path: `/team/${id}`,
+  });
+
+  useEffect(() => {
+    if (data && !loading) {
+      setTeam(data);
+    }
+    if (error) {
+      console.log('팀 데이터 오류');
+    }
+  }, [id, data, error, loading]);
+
+  useEffect(() => {
+    fetchData();
+  }, [id]);
 
   return teamInfo;
 }

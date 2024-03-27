@@ -1,9 +1,4 @@
-export interface Team {
-  id: number;
-  name: string;
-  description: string;
-  color: string;
-}
+import { Team } from '@/types/teamTypes';
 
 export interface Issue {
   id: number;
@@ -29,9 +24,9 @@ export interface Issue {
   status: 'TODO';
   team?: Team;
 }
-export interface IssueBoard {
-  todoIssues: Issue[];
-  progressIssues: Issue[];
-  doneIssues: Issue[];
+export interface Issues {
+  todoIssues: Issue[] | [];
+  progressIssues: Issue[] | [];
+  doneIssues: Issue[] | [];
   team?: Team;
 }

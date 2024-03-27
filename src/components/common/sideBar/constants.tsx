@@ -12,7 +12,7 @@ interface Board {
 export interface Boards {
   main: Board;
   schedules: Board;
-  issues: Board;
+  announcements: Board;
   posts: Board;
 }
 
@@ -25,7 +25,7 @@ export const BOARDS: Boards = {
     boardName: '나의 캘린더',
     icon: <CalendarIcon />,
   },
-  issues: {
+  announcements: {
     boardName: '칸반보드',
     icon: <ViewListIcon />,
   },

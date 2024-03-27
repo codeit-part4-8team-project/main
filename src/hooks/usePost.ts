@@ -3,9 +3,8 @@ import { useAxios } from '@/hooks/useAxios';
 import { Posts } from '@/types/postTypes';
 
 interface UsePostParams {
-  type: 'user' | 'team';
   page?: number;
-  teamId?: number;
+  teamId?: number | string;
   postId?: number;
 }
 
@@ -38,11 +37,11 @@ const defaultPostData: Posts = {
   empty: true,
 };
 
-export default function usePost({ type, page = 1, teamId, postId }: UsePostParams) {
+export default function usePost({ page = 1, teamId, postId }: UsePostParams) {
   const [postData, setPostData] = useState<Posts>(defaultPostData);
 
   let path = '';
-  if (type === 'user') {
+  if (!teamId) {
     path = `/user/all-post?page=${page}`; // 유저의 자유게시판 게시물 목록 조회
   } else if (!postId) {
     path = `/${teamId}/post/?page=${page}`; // 팀의 자유게시판 게시물 목록 조회
