@@ -15,7 +15,7 @@ const ICON = {
   'Kanban board': <ViewListIcon fill="#292929" active />,
   Notice: <MegaphoneIcon fill="#292929" active />,
   'Bulletin board': <FolderIcon fill="#292929" active />,
-  팀원: <FolderIcon fill="#292929" active />,
+  Members: <FolderIcon fill="#292929" active />,
   콘텐츠: <FolderIcon fill="#292929" active />,
 };
 
