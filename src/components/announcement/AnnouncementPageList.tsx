@@ -1,5 +1,7 @@
+import { useParams } from 'react-router-dom';
 import NoCard from '@/components/common/NoCard';
 import AnnouncementItem from '@/components/announcement/AnnouncementItem';
+import { useTeam } from '@/contexts/TeamProvider';
 import { Announcements } from '@/types/announcementTypes';
 
 interface AnnouncementPageListProps {
@@ -10,6 +12,12 @@ interface AnnouncementPageListProps {
 export default function AnnouncementPageList({
   announcements: { content },
 }: AnnouncementPageListProps) {
+  const { teamId } = useParams();
+
+  if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
+
+  const { team } = useTeam(teamId);
+
   return (
     <div className="w-[132.6rem]">
       {content.length !== 0 ? (
@@ -17,7 +25,7 @@ export default function AnnouncementPageList({
           {content.map((announcement) => {
             return (
               <ul>
-                <AnnouncementItem announcement={announcement} />
+                <AnnouncementItem announcement={announcement} team={team} />
               </ul>
             );
           })}
