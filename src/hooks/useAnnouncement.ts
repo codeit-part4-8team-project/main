@@ -1,43 +1,15 @@
+import { DEFAULT_PAGE_DATA } from '@/constants/defaultPageData';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAxios } from '@/hooks/useAxios';
 import { Announcement, Announcements } from '@/types/announcementTypes';
 
-const defaultAnnouncementPageData: Announcements = {
-  totalPages: 0,
-  totalElements: 0,
-  size: 0,
-  content: [],
-  number: 0,
-  sort: {
-    empty: true,
-    sorted: false,
-    unsorted: true,
-  },
-  numberOfElements: 0,
-  pageable: {
-    offset: 0,
-    sort: {
-      empty: true,
-      sorted: false,
-      unsorted: true,
-    },
-    pageNumber: 0,
-    pageSize: 0,
-    paged: false,
-    unpaged: true,
-  },
-  first: true,
-  last: false,
-  empty: true,
-};
-
-/* 특정 게시글 조회 용도로 사용하는 경우에만 파라미터로 announcemnetId를 전달해주면 됩니다. */
+/* 특정 공지글 조회 용도로 사용하는 경우에만 아규먼트로 announcemnetId를 전달해주면 됩니다. */
 export default function useAnnouncement(announcementId?: number) {
-  const [announcementPageData, setAnnouncementPageData] = useState<Announcements>(
-    defaultAnnouncementPageData,
-  );
+  const [announcementPageData, setAnnouncementPageData] =
+    useState<Announcements>(DEFAULT_PAGE_DATA);
   const [announcementData, setAnnouncementData] = useState<Announcement[] | []>([]);
+
   const { userId, teamId, pageContent } = useParams();
 
   let path = '';
