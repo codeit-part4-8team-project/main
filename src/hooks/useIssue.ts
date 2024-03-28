@@ -1,21 +1,28 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useAxios } from '@/hooks/useAxios';
 import { Issues } from '@/types/issueTypes';
 
-export default function useIssue(teamId?: number | string, issueId?: number) {
+export default function useIssue(issueId?: number) {
   const [issueData, setIssueData] = useState<Issues>({
     todoIssues: [],
     progressIssues: [],
     doneIssues: [],
   });
 
+  const { userId, teamId } = useParams();
+
   let path = '';
-  if (!teamId) {
-    path = `/user/my-issue`; // 유저의 이슈 목록 조회
-  } else if (!issueId) {
-    path = `/${teamId}/issue/`; // 팀의 이슈 목록 조회
+  if (issueId) {
+    path = `/issue/${issueId}`; // 특정 이슈 조회
   } else {
-    path = `/${teamId}/issue/${issueId}`; // 팀의 특정 이슈 조회
+    if (userId) {
+      path = `/issue/user`; // 유저의 통합 이슈 보드 조회 @ UserIssuesPage
+    } else if (teamId) {
+      path = `/issue/team/${teamId}`; // 팀의 이슈 보드 조회 @ TeamIssuesPage
+    } else {
+      throw Error('이슈 데이터를 가져올 수 있는 페이지가 아닙니다.');
+    }
   }
 
   const { loading, error, data, fetchData } = useAxios<Issues>(
@@ -31,7 +38,7 @@ export default function useIssue(teamId?: number | string, issueId?: number) {
       setIssueData(data);
     }
     if (error) {
-      console.log('issue get 요청 에러');
+      throw Error('이슈를 불러오지 못했습니다.');
     }
   }, [loading, error, data]);
 

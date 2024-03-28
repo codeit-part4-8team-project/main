@@ -24,7 +24,7 @@ export default function PostItem({ post }: PostItemProps) {
         />
         <div className="flex flex-col gap-[0.4rem]">
           <span className="text-body4-regular text-gray100">#{author.name}</span>
-          <span className="text-body4-regular text-gray50">{toDateFormat(createdDate)}</span>{' '}
+          <span className="text-body4-regular text-gray50">{toDateFormat(createdDate)}</span>
         </div>
       </div>
       <span className="inline-block h-[7.7rem] w-full max-w-[44.9rem] overflow-auto text-body4-regular text-gray100">

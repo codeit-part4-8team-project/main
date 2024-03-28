@@ -1,27 +1,15 @@
-import { Team } from '@/types/teamTypes';
+import { Author } from '@/types/commonTypes';
+import { Member, Team } from '@/types/teamTypes';
 
+export type IssueStatus = 'TODO' | 'PROGRESS' | 'DONE';
 export interface Issue {
   id: number;
   title: string;
-  author: {
-    name: string;
-    imageUrl: string;
-    role: string;
-    grade: string;
-    username: string;
-  };
+  author: Author;
   content: string;
-  assignedMembers: [
-    {
-      name: string;
-      imageUrl: string;
-      role: string;
-      grade: string;
-      username: string;
-    },
-  ];
-  dueDate: '2024-03-25';
-  status: 'TODO';
+  assignedMembers: Member[];
+  dueDate: string;
+  status: IssueStatus;
   team?: Team;
 }
 export interface Issues {

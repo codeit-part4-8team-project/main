@@ -9,6 +9,7 @@ interface IssueItemProps {
 }
 
 export default function IssueItem({ issue: { title, content, team } }: IssueItemProps) {
+  // TODO 메모이제이션이 필요한 부분인지?
   const { teamId } = useParams();
 
   if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');

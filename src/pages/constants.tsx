@@ -4,11 +4,11 @@ import MyIssuesPage from '@/pages/MyIssuesPage';
 import MyPage from '@/pages/MyPage';
 import MyPostsPage from '@/pages/MyPostsPage';
 import SchedulesPage from '@/pages/SchedulesPage';
+import TeamAnnouncementPage from '@/pages/team/TeamAnnouncementPage';
 import TeamCalendar from '@/pages/team/TeamCalendar';
 import TeamHome from '@/pages/team/TeamHome';
 import TeamIssuesPage from '@/pages/team/TeamIssuesPage';
 import TeamMembers from '@/pages/team/TeamMembers';
-import TeamNotice from '@/pages/team/TeamNotice';
 import TeamPostsPage from '@/pages/team/TeamPostsPage';
 
 export interface Pages {
@@ -30,7 +30,7 @@ export const PAGES: {
     main: <TeamHome />,
     schedules: <TeamCalendar />,
     issues: <TeamIssuesPage />,
-    announcements: <TeamNotice />,
+    announcements: <TeamAnnouncementPage />,
     posts: <TeamPostsPage />,
     members: <TeamMembers />,
   },
