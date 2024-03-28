@@ -13,7 +13,7 @@ export default function TeamHome() {
   if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
 
   const { team } = useTeam(teamId);
-  const { issueData } = useIssue(teamId);
+  const { issueData } = useIssue();
   const { announcementData } = useAnnouncement();
 
   return (

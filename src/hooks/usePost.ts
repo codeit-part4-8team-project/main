@@ -16,9 +16,9 @@ export default function usePost(postId?: number) {
     path = `/post/${postId}`; // 특정 게시글 조회
   } else {
     if (userId) {
-      path = `/post/user`; // 유저의 팀 통합 자유게시판 조회 @ UserPostPage
+      path = `/post/user`; // 유저의 팀 통합 자유게시판 조회 @ UserPostsPage
     } else if (teamId) {
-      path = `/post/team/${teamId}`; // 팀의 자유게시판 조회 @ TeamPostPage
+      path = `/post/team/${teamId}`; // 팀의 자유게시판 조회 @ TeamPostsPage
     } else {
       throw Error('게시글 데이터를 가져올 수 있는 페이지가 아닙니다.');
     }
