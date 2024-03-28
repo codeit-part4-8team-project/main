@@ -32,6 +32,6 @@ export const PAGES: {
     issues: <TeamIssuesPage />,
     announcements: <TeamAnnouncementPage />,
     posts: <TeamPostsPage />,
-    members: <TeamMembers />,
+    // members: <TeamMembers />,
   },
 };
