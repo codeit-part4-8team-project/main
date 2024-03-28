@@ -1,9 +1,6 @@
-import SchedulesPage from '@/pages/SchedulesPage';
+import BoardSection from '@/components/common/BoardSection';
+import Schedules from '@/components/SchedulesPage/Schedules';
 
 export default function TeamCalendar() {
-  return (
-    <div>
-      <SchedulesPage />
-    </div>
-  );
+  return <BoardSection title="Team calendar" content={<Schedules calendarType="팀 캘린더" />} />;
 }
