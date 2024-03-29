@@ -21,7 +21,11 @@ interface FreeBoardModalProps {
 // }
 
 export default function FreeBoardModal({ closeClick }: FreeBoardModalProps) {
-  const { fetchData } = useAxios({});
+  // 기본 디폴트벨류 값이 있을경우에 이것을 실행시켜 디폴트밸류 + 옵셔널로 만들기
+  // const {data} = useAxios({
+  // path: ``
+  // })
+  const { fetchData: freeBoardFetchData } = useAxios({});
   const { register, watch, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const createFreeBoard = {
@@ -31,10 +35,10 @@ export default function FreeBoardModal({ closeClick }: FreeBoardModalProps) {
     handlePostFreeBoard(createFreeBoard);
     console.log(createFreeBoard);
   };
-
+  const teamId = 10;
   const handlePostFreeBoard = (data: Inputs) => {
-    fetchData({
-      newPath: `${teamsId}/post`,
+    freeBoardFetchData({
+      newPath: `${teamId}/post`,
       newMethod: 'POST',
       newData: data,
     });

@@ -27,7 +27,7 @@ export default function AnnouncementModal({ closeClick }: AnnouncementModalProps
     handlePostAnnoucement(createFreeBoard);
     console.log(createFreeBoard);
   };
-  const teamId = 22;
+  const teamId = 10;
 
   const handlePostAnnoucement = (data: Inputs) => {
     fetchData({
@@ -38,6 +38,7 @@ export default function AnnouncementModal({ closeClick }: AnnouncementModalProps
 
   const formTextSize = 'text-body3-medium';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
+  const inputTextSize = 'text-body3-regular';
   return (
     <ModalLayout title="공지사항 게시하기" closeClick={closeClick}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -47,10 +48,18 @@ export default function AnnouncementModal({ closeClick }: AnnouncementModalProps
           <p className=" text-[1.4rem]">userNickName</p>
           {/*  */}
         </div>
-        <p>{title}</p>
-        <div></div>
+        <div>
+          <ModalLabel htmlFor="title" label="제목" className={`${formTextSize}`} />
+          <ModalInput
+            hookform={register('title')}
+            id="title"
+            name="title"
+            className={`${inputTextSize} ${borderStyle}`}
+            placeholder="제목을 입력해 주세요."
+          />
+        </div>
         <div className="flex flex-col gap-[0.8rem]">
-          <ModalLabel htmlFor="content" label="내용*" className={`${formTextSize}`} />
+          <ModalLabel htmlFor="content" label="내용" className={`${formTextSize}`} />
           <textarea
             {...register('content')}
             placeholder="내용을 입력해 주세요."

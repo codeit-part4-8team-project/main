@@ -50,7 +50,9 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
 
   const dueDateToggleRef = useRef<HTMLDivElement | null>(null);
   const [dueDateToggle, setDueDateToggle] = useState(false);
+  // 여기 작업 조금 남았음
   const [membersList, setMembersList] = useState<memberDataType[]>([]);
+  console.log('membersList Test', membersList);
   const [memberCheck, setMemberCheck] = useState(false);
 
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
@@ -62,7 +64,7 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
       assignedMembersUsernames: [data.assignedMembersUsernames], // 나중에 배열 타입문제 해결하기
     };
     handlePostIssues(createIssue);
-    console.log(createIssue);
+    // console.log(createIssue);
   };
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
@@ -72,11 +74,11 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
     setDueDateToggle(true);
   };
 
-  const teamId = 3;
+  const teamId = 10;
 
   const handlePostIssues = (data: Inputs) => {
     fetchData({
-      newPath: `${teamId}/issue/`,
+      newPath: `issue/${teamId}`,
       newMethod: 'POST',
       newData: data,
     });
@@ -85,7 +87,7 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
   const handleGetTeamMemberList = async () => {
     const userName = getValues('assignedMembersUsernames');
     const res = await defaultInstance.get(`member/${teamId}/search?username=${userName}`);
-    console.log('여여', typeof res);
+    // console.log('여여', typeof res);
     if (res.data !== '') {
       const newMember = res.data;
       setMemberCheck(false);

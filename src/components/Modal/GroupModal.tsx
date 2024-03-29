@@ -267,7 +267,9 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
 
           <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
           <div className=" h-[10.6rem] w-full overflow-scroll rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
-            {membersList && <ModalMemberList onClick={handleRemoveMember} data={membersList} />}
+            {membersList && (
+              <ModalMemberList onClick={handleRemoveMember} memberData={membersList} />
+            )}
           </div>
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">

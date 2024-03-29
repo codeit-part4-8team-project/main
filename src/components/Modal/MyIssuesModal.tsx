@@ -37,10 +37,11 @@ interface defaultValue {
 // }
 export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
   const teamId = 10;
-  const issueId = 1;
+  const issueId = -31;
   const { data: defaultValue } = useAxios(
     {
-      path: `${teamId}/issue/${issueId}`,
+      // path: `${teamId}/issue/${issueId}`,
+      path: `issue/user`,
     },
     true,
   );
