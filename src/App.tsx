@@ -1,4 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import PrivateRoutes from './routes/PrivateRoutes';
 import HomePage from '@/pages/HomePage';
 import OauthRedirectPage from '@/pages/OauthRedirectPage';
 import SigninPage from '@/pages/SigninPage';
@@ -30,11 +31,13 @@ function App() {
                   </StepProvider>
                 }
               />
-              <Route path="/user/:userId" element={<UserPageLayout />}>
-                <Route path=":pageContent" element={<UserPage />} />
-              </Route>
-              <Route path="/team/:teamId" element={<TeamPageLayout />}>
-                <Route path=":pageContent" element={<TeamPage />} />
+              <Route element={<PrivateRoutes />}>
+                <Route path="/user/:userId" element={<UserPageLayout />}>
+                  <Route path=":pageContent" element={<UserPage />} />
+                </Route>
+                <Route path="/team/:teamId" element={<TeamPageLayout />}>
+                  <Route path=":pageContent" element={<TeamPage />} />
+                </Route>
               </Route>
             </Routes>
           </Router>
