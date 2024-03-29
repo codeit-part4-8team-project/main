@@ -3,7 +3,7 @@ import BoardSection from '@/components/common/BoardSection';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
 import useIssue from '@/hooks/useIssue';
 
-export default function MyIssuesPage() {
+export default function UserIssuesPage() {
   return <BoardSection title="Kanban board" content={<IssuePageContent />} />;
 }
 

@@ -2,7 +2,7 @@ import BoardSection from '@/components/common/BoardSection';
 import AnnouncementPageList from '@/components/announcement/AnnouncementPageList';
 import useAnnouncement from '@/hooks/useAnnouncement';
 
-export default function TeamAnnouncementPage() {
+export default function TeamAnnouncementsPage() {
   const { announcementPageData } = useAnnouncement();
 
   return (
