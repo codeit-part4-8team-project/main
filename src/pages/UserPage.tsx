@@ -1,4 +1,4 @@
-import { PAGES } from '@/constants/constants';
+import { PAGES, Page, UserPageType } from '@/constants/constants';
 import { useParams } from 'react-router-dom';
 
 export default function UserPage() {
@@ -8,5 +8,7 @@ export default function UserPage() {
     throw Error('존재하지 않는 페이지입니다.');
   }
 
-  return PAGES.user[pageContent];
+  const { page } = PAGES.user[pageContent as UserPageType] as Page;
+
+  return page;
 }
