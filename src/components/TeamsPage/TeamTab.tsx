@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import DividerIcon from '@/assets/DividerIcon';
 
-export default function TabsList() {
+export default function TeamTab() {
   const { pageContent } = useParams();
   const teamPageList = Object.keys(PAGES.team) as TeamPageType[];
 

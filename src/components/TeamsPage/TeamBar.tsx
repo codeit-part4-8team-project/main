@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import TabsList from '@/components/TeamsPage/Tabs/TabsList';
+import TeamTab from '@/components/TeamsPage/TeamTab';
 import { useTeam } from '@/contexts/TeamProvider';
 import ColorChipIcon from '@/assets/ColorChipIcon';
 
@@ -18,7 +18,7 @@ export default function TeamBar() {
         <ColorChipIcon fill={color} />
         <span className="text-body1-bold text-gray100">{name}</span>
       </div>
-      <TabsList />
+      <TeamTab />
     </div>
   );
 }
