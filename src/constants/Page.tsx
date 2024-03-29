@@ -26,17 +26,13 @@ export interface Page {
   page: ReactNode;
   icon: ReactNode;
 }
-export type UserPage = {
-  [page in UserPageType]: Page;
-};
-
-export type TeamPage = {
-  [page in TeamPageType]: Page;
+export type PageByType<T extends string | number | symbol> = {
+  [page in T]: Page;
 };
 
 export interface Pages {
-  user: UserPage;
-  team: TeamPage;
+  user: PageByType<UserPageType>;
+  team: PageByType<TeamPageType>;
 }
 
 export const PAGES: Pages = {
