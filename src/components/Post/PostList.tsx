@@ -8,18 +8,18 @@ interface PostListProps {
 
 export default function PostList({ posts }: PostListProps) {
   return (
-    <li className="mt-[1.4rem] grid w-fit grid-cols-2 gap-12">
+    <ul className="mt-[1.4rem] grid w-fit grid-cols-2 gap-12">
       {posts.length !== 0 ? (
         posts.map((post) => {
           return (
-            <ul key={post.id}>
+            <li key={post.id}>
               <PostItem post={post} />
-            </ul>
+            </li>
           );
         })
       ) : (
         <NoCard backgroundColor="bg-white">게시글이 없습니다.</NoCard>
       )}
-    </li>
+    </ul>
   );
 }
