@@ -49,13 +49,10 @@ export function usePostPage(page?: number) {
     path = `/post/team/${teamId}${query}`; // 팀의 자유게시판 조회 @ TeamPostsPage 자유게시판 조회 @ TeamPostsPage
   }
 
-  const { loading, error, data, fetchData } = useAxios<Posts>(
-    {
-      path,
-      method: 'GET', // TODO 가능하면 다른 요청들도 가능하도록
-    },
-    true,
-  );
+  const { loading, error, data, fetchData } = useAxios<Posts>({
+    path,
+    method: 'GET', // TODO 가능하면 다른 요청들도 가능하도록
+  });
 
   useEffect(() => {
     if (data && !loading) {

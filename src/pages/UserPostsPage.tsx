@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BoardSection from '@/components/common/BoardSection';
 import Pagenation from '@/components/common/pagenation/Pagenation';
 import PostList from '@/components/Post/PostList';
@@ -6,11 +6,15 @@ import { usePostPage } from '@/hooks/usePost';
 
 export default function UserPostsPage() {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  console.log('currentPage', currentPage);
 
   const {
     postPageData: { content },
-  } = usePostPage(1);
+    fetchPostPageData,
+  } = usePostPage(currentPage);
+
+  useEffect(() => {
+    fetchPostPageData({ newPath: `/post/user?page=${currentPage}` });
+  }, [currentPage]);
 
   return (
     <BoardSection title="Bulletin board">
