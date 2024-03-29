@@ -8,12 +8,12 @@ export default function MyIssuesPage() {
 }
 
 function IssuePageContent() {
-  const { issueData: myIssues } = useIssue();
+  const { issueData } = useIssue();
 
   return (
     <div className="mt-[1.7rem] flex h-full gap-[7.4rem]">
       {/* <GroupFilter className="mt-[3.7rem]" /> */}
-      <KanbanBoard issues={myIssues} page="issue" hasButton />
+      <KanbanBoard issues={issueData} page="issue" hasButton />
     </div>
   );
 }

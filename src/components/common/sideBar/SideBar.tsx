@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfileImg from '../../../../public/assets/profile-small.svg';
-// import ToolTip from '@/components/common/ToolTip';
+import ToolTip from '@/components/common/ToolTip';
 import BoardList from '@/components/common/sideBar/BoardList';
 import GroupList from '@/components/common/sideBar/GroupList';
 import GroupModal from '@/components/Modal/GroupModal';
 import { useModal } from '@/contexts/ModalProvider';
 import { useUserContext } from '@/contexts/UserProvider';
+import { useAxios } from '@/hooks/useAxios';
+import { Team } from '@/types/teamTypes';
 import PlusCircleIcon from '@/assets/PlusCircleIcon';
 
 export default function SideBar() {
@@ -46,6 +48,24 @@ function ProfileSection() {
 }
 
 function GroupSection() {
+  const [teams, setTeams] = useState<Team[]>([]);
+
+  const { loading, error, data } = useAxios<Team[]>(
+    {
+      path: '/team/my-team',
+      method: 'GET',
+    },
+    true,
+  );
+  useEffect(() => {
+    if (data && !loading) {
+      setTeams(data);
+    }
+    if (error) {
+      throw Error('내가 속한 팀을 불러올 수 없습니다.');
+    }
+  }, [data, loading, error]);
+
   const openModal = useModal();
   const handleClickOpenModal = () => {
     openModal(({ close }) => <GroupModal closeClick={close}></GroupModal>);
@@ -56,9 +76,9 @@ function GroupSection() {
       <span className="text-body2-bold text-[#EDEEDC]">그룹</span>
       <button className="relative" onClick={handleClickOpenModal}>
         <PlusCircleIcon fill="#F0F0E2" />
-        {/* <ToolTip /> */}
+        {teams.length === 0 && <ToolTip />}
       </button>
-      <GroupList />
+      <GroupList teams={teams} />
     </div>
   );
 }

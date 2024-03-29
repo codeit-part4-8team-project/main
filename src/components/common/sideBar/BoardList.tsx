@@ -17,7 +17,7 @@ export default function BoardList() {
   return (
     <ul className="absolute left-[2.4rem] top-40 flex flex-col gap-[1.6rem]">
       {boards.map((board) => (
-        <li>
+        <li key={board}>
           <BoardItem board={board} pathname={pathname} />
         </li>
       ))}

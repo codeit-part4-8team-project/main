@@ -1,52 +1,27 @@
+import { DEFAULT_PAGE_DATA } from '@/constants/defaultPageData';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useAxios } from '@/hooks/useAxios';
-import { Posts } from '@/types/postTypes';
+import { Post, Posts } from '@/types/postTypes';
 
-interface UsePostParams {
-  page?: number;
-  teamId?: number | string;
-  postId?: number;
-}
+/* 특정 게시글 조회 용도로 사용하는 경우에만 아규먼트로 postId를 전달해주면 됩니다. */
+export default function usePost(postId?: number) {
+  const [postPageData, setPostPageData] = useState<Posts>(DEFAULT_PAGE_DATA);
+  const [postData, setPostData] = useState<Post[] | []>([]);
 
-const defaultPostData: Posts = {
-  totalPages: 0,
-  totalElements: 0,
-  size: 0,
-  content: null,
-  number: 0,
-  sort: {
-    empty: true,
-    sorted: false,
-    unsorted: true,
-  },
-  numberOfElements: 0,
-  pageable: {
-    offset: 0,
-    sort: {
-      empty: true,
-      sorted: false,
-      unsorted: false,
-    },
-    pageNumber: 0,
-    pageSize: 0,
-    paged: false,
-    unpaged: true,
-  },
-  first: true,
-  last: false,
-  empty: true,
-};
-
-export default function usePost({ page = 1, teamId, postId }: UsePostParams) {
-  const [postData, setPostData] = useState<Posts>(defaultPostData);
+  const { userId, teamId } = useParams();
 
   let path = '';
-  if (!teamId) {
-    path = `/user/all-post?page=${page}`; // 유저의 자유게시판 게시물 목록 조회
-  } else if (!postId) {
-    path = `/${teamId}/post/?page=${page}`; // 팀의 자유게시판 게시물 목록 조회
+  if (postId) {
+    path = `/post/${postId}`; // 특정 게시글 조회
   } else {
-    path = `/${teamId}/post/${postId}`; // 팀의 특정 게시물 조회
+    if (userId) {
+      path = `/post/user`; // 유저의 팀 통합 자유게시판 조회 @ UserPostsPage
+    } else if (teamId) {
+      path = `/post/team/${teamId}`; // 팀의 자유게시판 조회 @ TeamPostsPage
+    } else {
+      throw Error('게시글 데이터를 가져올 수 있는 페이지가 아닙니다.');
+    }
   }
 
   const { loading, error, data, fetchData } = useAxios<Posts>(
@@ -59,12 +34,16 @@ export default function usePost({ page = 1, teamId, postId }: UsePostParams) {
 
   useEffect(() => {
     if (data && !loading) {
-      setPostData(data);
+      if (Array.isArray(data)) {
+        setPostData(data);
+      } else {
+        setPostPageData(data);
+      }
     }
     if (error) {
-      console.log('post get 요청 에러');
+      throw Error('게시글을 불러오지 못했습니다.');
     }
   }, [loading, error, data]);
 
-  return { postData, fetchPostData: fetchData };
+  return { postPageData, postData, fetchPostData: fetchData };
 }
