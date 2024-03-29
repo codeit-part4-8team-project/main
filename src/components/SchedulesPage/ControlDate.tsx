@@ -8,6 +8,7 @@ import { calendarContext } from '@/contexts/CalenarProvider';
 
 interface ControlDateProp {
   mode: 'month' | 'week' | 'modal';
+  className?: string;
 }
 function ControlDate({ mode }: ControlDateProp) {
   const Container = clsx('w-full', 'flex', 'items-center');
