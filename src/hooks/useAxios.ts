@@ -94,7 +94,7 @@ export const useAxios = <T = unknown, P = unknown, E = unknown>(
     error: AxiosError<E> | null;
     data: T | null;
   }>({
-    loading: false,
+    loading: shouldFetch,
     error: null,
     data: null,
   });

@@ -5,6 +5,7 @@ export default {
   theme: {
     colors: {
       white: '#FFFFFF',
+      'white-light': '#E0E6ED',
       gray10: '#F7F7F7',
       gray20: '#EFEFEF',
       gray30: '#E5E5E5',

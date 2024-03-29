@@ -12,7 +12,7 @@ export const TEAM_PAGES = [
     title: '칸반보드',
   },
   {
-    page: 'notices',
+    page: 'announcements',
     title: '공지사항',
   },
   {

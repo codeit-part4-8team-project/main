@@ -1,16 +1,15 @@
 import { Author, PageableData } from '@/types/commonTypes';
 
-export interface Post {
+export interface Announcement {
   id: number;
   title: string;
   author: Author;
   content: string;
   createdDate: string;
-  likeCount: number;
+  pinned: boolean;
   edited: boolean;
-  liked: boolean;
 }
 
-export interface Posts extends PageableData {
-  content: Post[] | [];
+export interface Announcements extends PageableData {
+  content: Announcement[] | [];
 }

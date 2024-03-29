@@ -3,9 +3,9 @@ import PostList from '@/components/Post/PostList';
 import usePost from '@/hooks/usePost';
 
 export default function MyPostsPage() {
-  const { postData } = usePost({ type: 'user' });
+  const {
+    postPageData: { content },
+  } = usePost();
 
-  const { content } = postData;
-
-  return <BoardSection title="Bulletin board" content={<PostList posts={content} />} />;
+  return <BoardSection title="Bulletin board" content={<PostList posts={content || []} />} />;
 }

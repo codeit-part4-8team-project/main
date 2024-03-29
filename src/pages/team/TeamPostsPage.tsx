@@ -1,11 +1,11 @@
 import BoardSection from '@/components/common/BoardSection';
 import PostList from '@/components/Post/PostList';
-import { useTeam } from '@/contexts/TeamProvider';
 import usePost from '@/hooks/usePost';
 
 export default function TeamPostsPage() {
-  const { currentTeam } = useTeam();
-  const { postData: teamPosts } = usePost({ type: 'team', teamId: currentTeam.id });
+  const {
+    postPageData: { content },
+  } = usePost();
 
-  return <BoardSection title="Bulletin board" content={<PostList posts={teamPosts.content} />} />;
+  return <BoardSection title="Bulletin board" content={<PostList posts={content || []} />} />;
 }

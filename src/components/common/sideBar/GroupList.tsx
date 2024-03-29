@@ -1,36 +1,20 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Link } from 'react-router-dom';
 import DropDown from '@/components/common/sideBar/DropDown';
-import { useAxios } from '@/hooks/useAxios';
 import { Team } from '@/types/teamTypes';
 import ColorChipIcon from '@/assets/ColorChipIcon';
 import MeatbollsIcon from '@/assets/MeatbollsIcon';
 
+interface GroupListProps {
+  teams: Team[];
+}
 interface GroupItemProps {
   color: string;
   teamId: number;
   children: ReactNode;
 }
 
-export default function GroupList() {
-  const [teams, setTeams] = useState<Team[]>([]);
-
-  const { loading, error, data } = useAxios<Team[]>(
-    {
-      path: '/team/my-team',
-      method: 'GET',
-    },
-    true,
-  );
-  useEffect(() => {
-    if (data && !loading) {
-      setTeams(data);
-    }
-    if (error) {
-      console.log('오류');
-    }
-  }, [data, loading, error]);
-
+export default function GroupList({ teams }: GroupListProps) {
   return (
     <ul className="absolute left-[2.4rem] top-[7.4rem] flex flex-col gap-[1.6rem]">
       {teams.map(({ id, name, color }) => {
@@ -54,7 +38,7 @@ function GroupItem({ color, teamId, children }: GroupItemProps) {
   };
 
   return (
-    <Link to={`/teams/${teamId}/main`}>
+    <Link to={`/team/${teamId}/main`}>
       <button className="grid h-16 w-[21.2rem] grid-cols-[2.4rem_1fr_2.4rem] items-center gap-[1.6rem] rounded-[0.6rem] py-[0.8rem] pl-[1.6rem] hover:bg-[#EDEEDC]/10">
         <ColorChipIcon fill={color} />
         <span className="justify-self-start text-body3-bold text-[#EDEEDC]">{children}</span>

@@ -1,6 +1,7 @@
 import { useContext, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import ScheduleModal from '../Modal/ScheduleModal';
+import { SchedulesData } from '@/contexts/CalenarProvider';
 import { calendarContext } from '@/contexts/CalenarProvider';
 
 interface AllDayProp {
@@ -8,7 +9,7 @@ interface AllDayProp {
   mode: 'month' | 'modal';
 }
 function AllDay({ day, mode }: AllDayProp) {
-  const { nowDate, filteredSchedules } = useContext(calendarContext);
+  const { nowDate, filteredSchedules, calendarType } = useContext(calendarContext);
   const Container =
     "w-full h-full flex justify-center items-center border-none 'last-of-type:rounded-bl-[2.4rem]'";
   const hover = 'hover:bg-gray10';
@@ -66,6 +67,7 @@ function AllDay({ day, mode }: AllDayProp) {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
   const convertToISODate = (dateTimeString: string): string => {
     const [date, time] = dateTimeString.split(' ');
     const [year, month, day] = date.split('-');
@@ -75,11 +77,9 @@ function AllDay({ day, mode }: AllDayProp) {
 
   const filterData = useMemo(() => {
     return Array.isArray(filteredSchedules)
-      ? filteredSchedules.filter((schedule) => {
-          // startDateTime 및 endDateTime를 ISO 8601 형식으로 변환
+      ? filteredSchedules.filter((schedule: SchedulesData) => {
           const scheduleStartDate = new Date(convertToISODate(schedule.startDateTime));
           const scheduleEndDate = new Date(convertToISODate(schedule.endDateTime));
-          // 일정의 시작일과 종료일이 현재 날짜(day)의 범위에 속하는지 확인
           const dayStart = new Date(day.getFullYear(), day.getMonth(), day.getDate());
           const dayEnd = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1);
           return scheduleStartDate <= dayEnd && scheduleEndDate >= dayStart;
@@ -88,12 +88,33 @@ function AllDay({ day, mode }: AllDayProp) {
   }, [filteredSchedules, day]);
 
   const renderSchedules = () => {
-    return filterData.map((schedule, index) => (
-      <div key={index}>
-        <p>{schedule.title}</p>
-        <p>{schedule.content}</p>
-      </div>
-    ));
+    if (filterData.length > 0) {
+      return filterData.map((schedule: SchedulesData, index: number) => (
+        <div key={index}>
+          <div className="flex gap-1">
+            <div className="h-6 w-6">
+              <div
+                className="h-full w-full rounded-full"
+                style={{
+                  backgroundColor: schedule.teamResponse?.color || 'black',
+                }}
+              ></div>
+            </div>
+            {calendarType === '나의 캘린더' ? (
+              <>
+                <p>{schedule.title}</p>
+                <p>{schedule.author?.name}</p>
+              </>
+            ) : (
+              <>
+                <p>{schedule.teamResponse?.name}</p>
+                <p>{schedule.title}</p>
+              </>
+            )}
+          </div>
+        </div>
+      ));
+    }
   };
 
   return (
@@ -107,7 +128,6 @@ function AllDay({ day, mode }: AllDayProp) {
           {isModalOpen && <ScheduleModal />}
         </div>
       )}
-
       {mode === 'modal' && (
         <div>
           <p className={modalCell}>{` ${day.getDate()} `}</p>
