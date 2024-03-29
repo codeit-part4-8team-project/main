@@ -1,7 +1,7 @@
 import ProfileImg from '../../../public/assets/profile-large.svg';
+import PostLike from '@/components/Post/PostLike';
 import { toDateFormat } from '@/lib/formatDate';
 import { Post } from '@/types/postTypes';
-import HeartIcon from '@/assets/HeartIcon';
 import MeatbollsIcon from '@/assets/MeatbollsIcon';
 
 interface PostItemProps {
@@ -9,7 +9,7 @@ interface PostItemProps {
 }
 
 export default function PostItem({ post }: PostItemProps) {
-  const { author, content, createdDate } = post;
+  const { id, author, content, createdDate, liked, likeCount } = post;
 
   return (
     <div className="relative flex h-[23.3rem] max-w-[58rem] flex-col gap-[2.4rem] rounded-[2.4rem] border border-gray30 bg-white p-[2.4rem]">
@@ -30,11 +30,8 @@ export default function PostItem({ post }: PostItemProps) {
       <span className="inline-block h-[7.7rem] w-full max-w-[44.9rem] overflow-auto text-body4-regular text-gray100">
         {content}
       </span>
-      <div className="absolute bottom-[2.4rem] left-[2.7rem] flex items-center gap-[0.2rem]">
-        <button type="button">
-          <HeartIcon active={true} />
-        </button>
-        <span className="text-[1.2rem] leading-[1.6rem] text-gray50">1</span>
+      <div className="absolute bottom-[2.4rem] left-[2.7rem]">
+        <PostLike postId={id} liked={liked} likeCount={likeCount} />
       </div>
     </div>
   );
