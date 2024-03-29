@@ -18,6 +18,12 @@ type Inputs = {
   assignedMembersUsernames: string[];
 };
 
+interface defaultValue {
+  content?: string;
+  title?: string;
+  assignedMembersUsernames?: [];
+}
+
 // put 메서드 형식
 // {
 //   "title": "string",
@@ -30,18 +36,24 @@ type Inputs = {
 //   ]
 // }
 export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
-  const { data } = useAxios({
-    path: `${teamId}/issue/${issueId}`,
-  }); // console.log(data); // => 나중에 연동하고 ui 만들기
-
+  const teamId = 10;
+  const issueId = 1;
+  const { data: defaultValue } = useAxios(
+    {
+      path: `${teamId}/issue/${issueId}`,
+    },
+    true,
+  );
+  console.log(defaultValue);
+  const { content, title, assignedMembersUsernames }: defaultValue = defaultValue;
   const { fetchData: memberFetchData } = useAxios({}); // member tag GET axios
   const { fetchData } = useAxios({});
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content, assignedMembersUsernames }) => {
     const putIssue = {
-      title: data.title,
-      content: data.content,
-      assignedMembersUsernames: data.assignedMembersUsernames, // 배열 타입에러 자꾸남
+      title: title,
+      content: content,
+      assignedMembersUsernames: assignedMembersUsernames, // 배열 타입에러 자꾸남
     };
     handlePutIssues(putIssue);
     console.log(putIssue);
@@ -53,13 +65,13 @@ export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
   const handleGetTeamMemberList = () => {
     const userName = getValues('assignedMembersUsernames');
     memberFetchData({
-      newPath: `member/${teamsId}/search?username=${userName}`,
+      newPath: `member/${teamId}/search?username=${userName}`,
     });
   };
 
   const handlePutIssues = (data: Inputs) => {
     fetchData({
-      newPath: `${teamsId}/issue/${issueId}`,
+      newPath: `${teamId}/issue/${issueId}`,
       newMethod: 'PUT',
       newData: data,
     });
@@ -87,6 +99,7 @@ export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="title" label="이슈*" className={`${formTextSize}`} />
             <ModalInput
+              defaultValue={title}
               name="title"
               id="title"
               hookform={register('title')}
@@ -102,6 +115,7 @@ export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="content" label="내용*" className={`${formTextSize}`} />
             <ModalInput
+              defaultValue={content}
               name="content"
               id="content"
               hookform={register('content')}
@@ -139,7 +153,7 @@ export default function MyIssuesModal({ closeClick }: IssuesModalProps) {
           <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
           <div className=" h-[10.6rem] w-full rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
             {/* data map돌리고 싶은데 배열이 아닌것 같음. 얘기해서 배열로 바꿔줄수 있는지 여쭤보기 */}
-            <ModalMemberList formTextSize={formTextSize} />
+            <ModalMemberList formTextSize={formTextSize} data={assignedMembersUsernames} />
           </div>
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">

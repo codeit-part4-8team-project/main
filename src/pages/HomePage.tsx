@@ -24,7 +24,7 @@ const HomePage = () => {
     // openModal(({ close }) => <InvitationGroupModal closeClick={close} />);
     // openModal(({ close }) => <ScheduleModal closeClick={close} />);
     // openModal(({ close }) => <DetailScheduleModal closeClick={close} />);
-    // openModal(({ close }) => <IssuesModal closeClick={close} />);
+    openModal(({ close }) => <IssuesModal closeClick={close} />);
     // openModal(({ close }) => <NotMeIssuesModal closeClick={close} />);
     // openModal(({ close }) => <MyIssuesModal closeClick={close} />);
     // openModal(({ close }) => <FreeBoardModal closeClick={close} />);
@@ -70,6 +70,7 @@ const HomePage = () => {
         logout
       </button>
       <ModalCalendar />
+      {/* <div>홈페이지입니다.</div> */}
     </>
   );
 };

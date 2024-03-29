@@ -13,7 +13,21 @@ import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
-import { useAxios } from '@/hooks/useAxios';
+import { defaultInstance, useAxios } from '@/hooks/useAxios';
+
+// 편집창에서 member 추가할때는 member/${teamId}로 POST 보내기.
+// {
+//   "name": "string",
+//   "description": "string",
+//   "color": "string",
+//   "startDate": "2024-03-24",
+//   "endDate": "2024-03-24",
+//   "figma": "string",
+//   "github": "string",
+//   "discord": "string"
+// }
+// api 그룹 생성이랑 그룹 편집 코드가 다른데 말씀은 드려야 할것 같다.
+// ex) 그룹 생성은 figmaLink: 'string' 인데 수정은 figma:'string'이다.
 
 // default value 형식
 // {
@@ -34,7 +48,7 @@ import { useAxios } from '@/hooks/useAxios';
 
 type Inputs = {
   name: string;
-  members: [string];
+  members: string[] | string;
   description: string;
   color: string;
   startDate: string;
@@ -43,6 +57,23 @@ type Inputs = {
   discordLink?: string;
   figmaLink?: string;
 };
+
+interface dataType {
+  Grade?: string;
+  bio: string;
+  id: number;
+  imageUrl: string;
+  name: string;
+  provider: string;
+  username: string;
+}
+
+interface DefaultValue {
+  color?: string;
+  description?: string;
+  name?: string;
+  members?: dataType[];
+}
 
 interface GroupEditModalProps {
   closeClick: () => void;
@@ -62,35 +93,30 @@ interface GroupEditModalProps {
 
 export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
   // PUT path = /team/${teamId}
-  const teamId = 22;
-  const { data } = useAxios(
+  const teamId = 3;
+  const { data: defaultValue } = useAxios(
     {
       path: `team/${teamId}`,
     },
     true,
   );
-  console.log('teamId22', data);
-  const { color, description, name, members }: any = data || {};
-  const { fetchData } = useAxios({}); // 얘는 put 메서드용
+  console.log('teamId15', defaultValue);
+  const { color, description, name, members }: DefaultValue = defaultValue || {};
+  const { data: putData, fetchData: putDataFetch } = useAxios<Inputs>({}); // put
+  // const { data: datas, error, fetchData: newMembersFetch } = useAxios<dataType>({}); // member POST
+  const { fetchData: deleteMembersFetch } = useAxios<dataType>({}); // member POST
 
-  // 편집창에서 member 추가할때는 member/${teamId}로 POST 보내기.
-  // {
-  //   "name": "string",
-  //   "description": "string",
-  //   "color": "string",
-  //   "startDate": "2024-03-24",
-  //   "endDate": "2024-03-24",
-  //   "figma": "string",
-  //   "github": "string",
-  //   "discord": "string"
-  // }
-  // api 그룹 생성이랑 그룹 편집 코드가 다른데 말씀은 드려야 할것 같다.
-  // ex) 그룹 생성은 figmaLink: 'string' 인데 수정은 figma:'string'이다.
+  const colorToggleRef = useRef<HTMLButtonElement | null>(null);
+
+  const [colorToggle, setColorToggle] = useState<boolean>(false);
+  const [newMembers, setNewMembers] = useState<string[] | string>([]);
+
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -98,7 +124,7 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
       name: data.name,
       description: data.description,
       color: data.color,
-      members: data?.members, // 멤버가 안보임 나중에 배열안에 담는 타입에러 해결하기
+      members: newMembers,
       startDate: data.startDate,
       endDate: data.endDate,
       githubLink: data.githubLink,
@@ -108,13 +134,6 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
     handlePutGroup(createTeam);
     console.log('createTema', createTeam);
   };
-  const colorToggleRef = useRef<HTMLButtonElement | null>(null);
-  const startDateToggleRef = useRef<HTMLButtonElement | null>(null);
-  const endDateToggleRef = useRef<HTMLButtonElement | null>(null);
-
-  const [colorToggle, setColorToggle] = useState<boolean>(false);
-  const [startDateToggle, setStartDateToggle] = useState<boolean>(false);
-  const [endDateToggle, setEndDateToggle] = useState<boolean>(false);
 
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
@@ -133,27 +152,42 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
     }
   };
 
-  const handleStartDateClickOutside = (e: MouseEvent) => {
-    if (startDateToggleRef.current && !startDateToggleRef.current.contains(e.target as Node))
-      setStartDateToggle(false);
-  };
-  const handleEndDateClickOutside = (e: MouseEvent) => {
-    if (endDateToggleRef.current && !endDateToggleRef.current.contains(e.target as Node))
-      setEndDateToggle(false);
-  };
-
   const handlePutGroup = (data: Inputs) => {
-    fetchData({
+    putDataFetch({
       newPath: `team/${teamId}`, // 나중에 GET하면 구조분해해서 temaId 가져오기
       newMethod: 'PUT',
       newData: data,
     });
   };
-
-  // const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault(); // 폼 기본 동작 방지
-  //   // 나머지 로직 추가
-  // };
+  // 지선님
+  // jishanshan
+  const handleGetMembers = async () => {
+    const userName = getValues('members');
+    const newMember = {
+      username: userName,
+    };
+    // newMembersFetch({
+    //   newPath: `/member/${teamId}`,
+    //   newMethod: 'POST',
+    //   newData: newMember,
+    // });
+    const res = await defaultInstance.post(`/member/${teamId}`, newMember);
+    if (res) {
+      console.log(res);
+      const newMember = res.data;
+      setNewMembers((prevMembers) => [...prevMembers, newMember]);
+      // if (!error && datas) {
+      // setNewMembers(datas.username);
+      // }
+    }
+  };
+  // 이거 보니깐 useId를 보내줘야 하던데 클릭으로 하는거니깐 useId없이 그냥 api쏘면 실행되게끔 건의
+  const handleDELETMember = () => {
+    deleteMembersFetch({
+      newPath: `member/${teamId}`,
+      newMethod: 'DELETE',
+    });
+  };
 
   useEffect(() => {
     if (colorToggle) {
@@ -164,24 +198,6 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
       document.removeEventListener('mousedown', handleColorClickOutside);
     };
   }, [colorToggle]);
-
-  useEffect(() => {
-    if (startDateToggle) {
-      document.addEventListener('mousedown', handleStartDateClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleStartDateClickOutside);
-    };
-  }, [startDateToggle]);
-
-  useEffect(() => {
-    if (endDateToggle) {
-      document.addEventListener('mousedown', handleEndDateClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleEndDateClickOutside);
-    };
-  }, [endDateToggle]);
 
   return (
     <>
@@ -308,13 +324,13 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
               <div className="flex items-center gap-[1.2rem]">
                 <ModalInput
                   name="members"
-                  // hookform={register('members')}
+                  hookform={register('members')}
                   type="text"
                   placeholder="닉네임을 검색해 주세요."
                   id="mebers"
                   className={`${inputTextSize} ${borderStyle} `}
                 />
-                <TextButton buttonSize="sm" type="button">
+                <TextButton buttonSize="sm" type="button" onClick={handleGetMembers}>
                   초대하기
                 </TextButton>
               </div>

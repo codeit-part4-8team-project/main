@@ -1,3 +1,4 @@
+import close from '../../../../public/assets/close.svg';
 import profile from '../../../../public/profile.svg';
 
 interface dataType {
@@ -12,7 +13,8 @@ interface dataType {
 
 interface ModalMemberListProps {
   formTextSize?: string;
-  data?: dataType[] | null;
+  data?: dataType[];
+  onClick: (userName: string | undefined) => void;
 }
 // -> 값이 다름
 // -> 이거는 그룹 생성할때임
@@ -59,13 +61,20 @@ interface ModalMemberListProps {
 //     "username": "string"
 //   }
 // ],
-export default function ModalMemberList({ formTextSize, data }: ModalMemberListProps) {
+
+// bio: "하이"
+// id: 2
+// imageUrl: "https://lh3.googleusercontent.com/a/ACg8ocKAkjsP8-sxX03y5NBRrvdnX3db_LgN82rjrp5bqGfn=s96-c"
+// name: "지선"
+// oauthId: "116721616327443781715"
+// provider: "GOOGLE"
+// username: "jishanshan"
+export default function ModalMemberList({ data, onClick }: ModalMemberListProps) {
   console.log(data);
-  // const { Grade, imageUrl, name } = data || {};
   return (
     <>
       {data?.map((item: dataType, index: number) => (
-        <div key={index} className="flex items-center gap-[1.6rem] text-body4-regular">
+        <div key={index} className="mb-[0.8rem] flex items-center gap-[1.6rem]  text-body4-regular">
           {item.imageUrl ? (
             <img src={item.imageUrl} alt="profile" className="h-[2.4rem] w-[2.4rem] rounded-full" />
           ) : (
@@ -74,11 +83,9 @@ export default function ModalMemberList({ formTextSize, data }: ModalMemberListP
 
           <div className="flex w-full items-center justify-between">
             <p>{item.name}</p>
-            {item.Grade ? (
-              <p className=" text-[#A1A1A1]">{item.Grade}</p>
-            ) : (
-              <p className=" text-[#A1A1A1]">담당</p>
-            )}
+            <button type="button" onClick={() => onClick(item.username)}>
+              <img alt="close" src={close} />
+            </button>
           </div>
         </div>
       ))}
