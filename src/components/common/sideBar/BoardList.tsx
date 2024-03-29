@@ -1,4 +1,4 @@
-import { PAGES, UserPageType } from '@/constants/constants';
+import { PAGES, UserPageType } from '@/constants/Page';
 import { ReactElement, cloneElement } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';

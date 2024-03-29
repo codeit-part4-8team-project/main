@@ -1,4 +1,4 @@
-import { PAGES, Page, UserPageType } from '@/constants/constants';
+import { PAGES, Page, UserPageType } from '@/constants/Page';
 import { useParams } from 'react-router-dom';
 
 export default function UserPage() {

@@ -1,4 +1,4 @@
-import { PAGES, Page, TeamPageType } from '@/constants/constants';
+import { PAGES, Page, TeamPageType } from '@/constants/Page';
 import { useParams } from 'react-router-dom';
 
 export default function TeamPage() {

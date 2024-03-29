@@ -1,4 +1,4 @@
-import { PAGES, Page, TeamPageType } from '@/constants/constants';
+import { PAGES, Page, TeamPageType } from '@/constants/Page';
 import { Link, useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import DividerIcon from '@/assets/DividerIcon';
