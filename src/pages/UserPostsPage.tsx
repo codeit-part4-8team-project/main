@@ -5,12 +5,13 @@ import PostList from '@/components/Post/PostList';
 import { usePostPage } from '@/hooks/usePost';
 
 export default function UserPostsPage() {
+  /* TODO 받아온 데이터의 pageNumber로 알 수 있을 것 같기도? */
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const {
-    postPageData: { content },
-    fetchPostPageData,
-  } = usePostPage(currentPage);
+  const { postPageData, fetchPostPageData } = usePostPage(currentPage);
+
+  const { totalPages, totalElements, content } = postPageData;
+  console.log(totalPages, totalElements);
 
   useEffect(() => {
     fetchPostPageData({ newPath: `/post/user?page=${currentPage}` });
@@ -20,7 +21,11 @@ export default function UserPostsPage() {
     <BoardSection title="Bulletin board">
       <div className="flex flex-col items-center gap-[4.6rem]">
         <PostList posts={content} />
-        <Pagenation currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <Pagenation
+          totalPages={totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
     </BoardSection>
   );

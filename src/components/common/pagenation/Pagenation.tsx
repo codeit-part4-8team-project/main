@@ -3,22 +3,30 @@ import PageArrowLeftIcon from '@/assets/PageArrowLeftIcon';
 import PageArrowRightIcon from '@/assets/PageArrowRightIcon';
 
 interface PagenationProps {
+  totalPages: number;
   currentPage: number;
   setCurrentPage: (page: number) => void;
 }
 
-const PAGE_NUMS = [1, 2, 3];
+const createNumArray = (num: number) => {
+  const newArray = Array.from({ length: num }, (_, idx) => idx + 1);
+  return newArray;
+};
 
-export default function Pagenation({ currentPage, setCurrentPage }: PagenationProps) {
+export default function Pagenation({ totalPages, currentPage, setCurrentPage }: PagenationProps) {
+  const pageNums = createNumArray(totalPages);
+
   const handlePageNumberClick = (page: number) => {
     setCurrentPage(page);
   };
 
   return (
     <div className="flex gap-[2.4rem]">
-      <PageArrowLeftIcon />
+      <button type="button">
+        <PageArrowLeftIcon />
+      </button>
       <ul className="flex gap-[2.4rem]">
-        {PAGE_NUMS.map((page) => {
+        {pageNums.map((page) => {
           return (
             <li key={page}>
               <PageNumber isCurrent={currentPage === page} onClick={handlePageNumberClick}>
@@ -28,7 +36,9 @@ export default function Pagenation({ currentPage, setCurrentPage }: PagenationPr
           );
         })}
       </ul>
-      <PageArrowRightIcon />
+      <button type="button">
+        <PageArrowRightIcon />
+      </button>
     </div>
   );
 }
