@@ -7,7 +7,7 @@ interface MemberListProps {
 
 export default function MemberList({ members }: MemberListProps) {
   return (
-    <div className="pt-[1.2rem]">
+    <div className="h-full pt-[1.2rem]">
       <div className=" h-full overflow-auto rounded-[0.6rem] bg-white">
         <table className="w-full table-fixed border-collapse">
           <thead className="sticky top-0 h-[4.4rem] bg-[#F6F8FA] text-left text-body3-bold text-black">
@@ -22,13 +22,10 @@ export default function MemberList({ members }: MemberListProps) {
             </tr>
           </thead>
           <tbody className="text-left text-body3-bold text-black">
-            {members ? (
+            {members &&
               members.map((member) => {
-                return <MemberRow member={member} />;
-              })
-            ) : (
-              <span>게시물이 없습니다</span>
-            )}
+                return <MemberRow key={member.username} member={member} />;
+              })}
           </tbody>
         </table>
       </div>
