@@ -10,8 +10,7 @@ export default function UserPostsPage() {
 
   const { postPageData, fetchPostPageData } = usePostPage(currentPage);
 
-  const { totalPages, totalElements, content } = postPageData;
-  console.log(totalPages, totalElements);
+  const { totalPages, content } = postPageData;
 
   useEffect(() => {
     fetchPostPageData({ newPath: `/post/user?page=${currentPage}` });
