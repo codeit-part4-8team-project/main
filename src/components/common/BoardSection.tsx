@@ -33,7 +33,7 @@ export default function BoardSection({ title, content, children }: BoardSection)
           <ControlDate className={`text-body4-bold text-gray100`} mode="month" />
         )}
       </div>
-      <div className="h-full overflow-auto">{content || children}</div>{' '}
+      <div className="flex-auto">{content || children}</div>
       {/* content안에 단일 컴포넌트로 넣기 불편한 페이지가 있어서 chilren으로 받을 수 있도록 했습니다.*/}
     </div>
   );

@@ -11,7 +11,7 @@ function IssuePageContent() {
   const { issueData } = useIssue();
 
   return (
-    <div className="mt-[1.7rem] flex h-full gap-[7.4rem]">
+    <div className="flex h-full gap-[7.4rem]">
       {/* <GroupFilter className="mt-[3.7rem]" /> */}
       <KanbanBoard issues={issueData} page="issue" hasButton />
     </div>

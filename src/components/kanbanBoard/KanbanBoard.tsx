@@ -22,7 +22,7 @@ export default function KanbanBoard({ issues, page, hasButton = false }: KanbanB
   return (
     <>
       {isOpen && <GroupModal closeClick={handleToggleModalClick} />}
-      <div className={`w-content relative flex h-full ${justifyContent} gap-[2.4rem]`}>
+      <div className={`w-content relative flex ${justifyContent} gap-[2.4rem]`}>
         <IssueList status="todo" issues={issues.todoIssues} />
         <IssueList status="progress" issues={issues.progressIssues} />
         <IssueList status="done" issues={issues.doneIssues} />
