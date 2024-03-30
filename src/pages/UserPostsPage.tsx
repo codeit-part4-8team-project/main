@@ -2,6 +2,7 @@ import BoardSection from '@/components/common/BoardSection';
 import Pagenation from '@/components/common/pagenation/Pagenation';
 import PostList from '@/components/Post/PostList';
 import { usePagenation } from '@/contexts/PageProvider';
+import { Post } from '@/types/postTypes';
 
 export default function UserPostsPage() {
   const { dataContent } = usePagenation();
@@ -9,7 +10,7 @@ export default function UserPostsPage() {
   return (
     <BoardSection title="Bulletin board">
       <div className="flex flex-col items-center gap-[4.6rem]">
-        <PostList posts={dataContent} />
+        <PostList posts={dataContent as Post[]} />
         <Pagenation />
       </div>
     </BoardSection>

@@ -3,11 +3,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAnnouncementPage } from '@/hooks/useAnnouncement';
 import { usePostPage } from '@/hooks/usePost';
+import { Announcement } from '@/types/announcementTypes';
 import { Post } from '@/types/postTypes';
 
 interface PageContextValue {
-  dataContent: Post[] | [] /* TODO 타입 수정 */;
+  dataContent: Announcement[] | Post[] | [];
   pageNumsArray: number[];
   currentPage: number;
   isFirst: boolean;
@@ -46,20 +48,42 @@ export function PageProvider({ children }: PageProviderProps) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [startPage, setStartPage] = useState(1);
 
-  const { teamId } = useParams();
+  const { teamId, pageContent } = useParams();
+
   const isTeam = teamId ? true : false;
 
-  /* TODO 수정 */
   const { postPageData, fetchPostPageData } = usePostPage(currentPage);
+  const { announcementPageData, fetchAnnouncementPageData } = useAnnouncementPage(currentPage);
 
-  const { size, totalPages, content } = postPageData;
+  let size: number, totalPages: number, content;
 
-  const query = `?page=${currentPage}`;
-  const newPath = isTeam ? `/post/team/${teamId}${query}` : `/post/user${query}`;
+  if (pageContent === 'posts') {
+    size = postPageData.size;
+    totalPages = postPageData.totalPages;
+    content = postPageData.content;
+  } else {
+    size = announcementPageData.size;
+    totalPages = announcementPageData.totalPages;
+    content = announcementPageData.content;
+  }
 
-  /* TODO 여기 부분 path 수정 */
+  const query = `?page=${currentPage || 1}`;
+
+  let newPath: string;
+  switch (pageContent) {
+    case 'posts':
+      newPath = isTeam ? `/post/team/${teamId}${query}` : `/post/user${query}`;
+      break;
+    case 'announcements':
+      newPath = `/announcement/team/${teamId}${query}`;
+      break;
+    default:
+      throw Error('페이지네이션을 사용할 수 없는 페이지입니다.');
+  }
+
   useEffect(() => {
-    fetchPostPageData({ newPath });
+    if (pageContent === 'posts') fetchPostPageData({ newPath });
+    else fetchAnnouncementPageData({ newPath });
   }, [currentPage]);
 
   let pageNumsArray = createNumArray(startPage, size);
@@ -84,6 +108,8 @@ export function PageProvider({ children }: PageProviderProps) {
   const handlePrevClick = () => {
     setStartPage(startPage - size);
   };
+
+  console.log('content', content);
 
   return (
     <PageContext.Provider

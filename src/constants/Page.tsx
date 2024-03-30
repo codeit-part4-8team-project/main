@@ -86,7 +86,11 @@ export const PAGES: Pages = {
     },
     announcements: {
       title: '공지사항',
-      page: <TeamAnnouncementsPage />,
+      page: (
+        <PageProvider>
+          <TeamAnnouncementsPage />
+        </PageProvider>
+      ),
       icon: <MegaphoneIcon />,
     },
     posts: {

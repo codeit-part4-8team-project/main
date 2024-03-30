@@ -17,7 +17,7 @@ export function useAnnouncement(announcementId?: number) {
     if (userId) {
       path = `/announcement/user/unread`; // 유저가 읽지 않은 공지글 조회 @ UserMainPage
     } else if (pageContent === 'announcements') {
-      path = `/announcement/team/${teamId}`; // 팀 공지 게시판 조회 @ TeamAnnouncementPage
+      path = `/announcement/team/unread/${teamId}`; // 유저가 읽지 않은 팀 게시글 조회 @ TeamMainPage;
     } else {
       throw Error('공지글 데이터를 가져올 수 있는 페이지가 아닙니다.');
     }
@@ -50,7 +50,7 @@ export function useAnnouncementPage(page?: number) {
   const { teamId } = useParams();
 
   const query = `?page=${page || 1}`;
-  const path = `/announcement/team/unread/${teamId}${query}`; // 유저가 읽지 않은 팀 게시글 조회 @ TeamMainPage;
+  const path = `/announcement/team/${teamId}${query}`; // 팀 공지 게시판 조회 @ TeamAnnouncementPage
 
   const { loading, error, data, fetchData } = useAxios<Announcements>({
     path,
