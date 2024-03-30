@@ -17,8 +17,8 @@ import MegaphoneIcon from '@/assets/MegaphoneIcon';
 import PeopleIcon from '@/assets/PeopleIcon';
 import ViewListIcon from '@/assets/ViewListIcon';
 
-export type UserPageType = 'main' | 'schedules' | 'issues' | 'posts' | 'myPage';
-export type TeamPageType = 'main' | 'schedules' | 'issues' | 'posts' | 'announcements' | 'members';
+export type UserPageType = 'main' | 'schedule' | 'issue' | 'post' | 'myPage';
+export type TeamPageType = 'main' | 'schedule' | 'issue' | 'post' | 'announcement' | 'member';
 // type PageType = UserPageType | TeamPageType; /* 필요할 때 주석 해제 */
 
 export interface Page {
@@ -42,17 +42,17 @@ export const PAGES: Pages = {
       page: <UserMainPage />,
       icon: <BoxIcon />,
     },
-    schedules: {
+    schedule: {
       title: '나의 캘린더',
       page: <SchedulesPage />,
       icon: <CalendarIcon />,
     },
-    issues: {
+    issue: {
       title: '칸반보드',
       page: <UserIssuesPage />,
       icon: <ViewListIcon />,
     },
-    posts: {
+    post: {
       title: '자유게시판',
       page: <UserPostsPage />,
       icon: <FolderIcon />,
@@ -69,27 +69,27 @@ export const PAGES: Pages = {
       page: <TeamMainPage />,
       icon: <BoxIcon />,
     },
-    schedules: {
+    schedule: {
       title: '팀 캘린더',
       page: <TeamCalendar />,
       icon: <CalendarIcon />,
     },
-    issues: {
+    issue: {
       title: '칸반보드',
       page: <TeamIssuesPage />,
       icon: <ViewListIcon />,
     },
-    announcements: {
+    announcement: {
       title: '공지사항',
       page: <TeamAnnouncementsPage />,
       icon: <MegaphoneIcon />,
     },
-    posts: {
+    post: {
       title: '자유게시판',
       page: <TeamPostsPage />,
       icon: <FolderIcon />,
     },
-    members: {
+    member: {
       title: '팀원',
       page: <TeamMembers />,
       icon: <PeopleIcon />,
