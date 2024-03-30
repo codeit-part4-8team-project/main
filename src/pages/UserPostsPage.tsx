@@ -1,30 +1,17 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
 import BoardSection from '@/components/common/BoardSection';
 import Pagenation from '@/components/common/pagenation/Pagenation';
 import PostList from '@/components/Post/PostList';
-import { usePostPage } from '@/hooks/usePost';
+import { usePagenation } from '@/contexts/PageProvider';
 
 export default function UserPostsPage() {
-  /* TODO 받아온 데이터의 pageNumber로 알 수 있을 것 같기도? */
-  const [currentPage, setCurrentPage] = useState<number>(1);
-
-  const { postPageData, fetchPostPageData } = usePostPage(currentPage);
-
-  const { totalPages, content } = postPageData;
-
-  useEffect(() => {
-    fetchPostPageData({ newPath: `/post/user?page=${currentPage}` });
-  }, [currentPage]);
+  const { dataContent } = usePagenation();
 
   return (
     <BoardSection title="Bulletin board">
       <div className="flex flex-col items-center gap-[4.6rem]">
-        <PostList posts={content} />
-        <Pagenation
-          totalPages={totalPages}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        <PostList posts={dataContent} />
+        <Pagenation />
       </div>
     </BoardSection>
   );

@@ -10,6 +10,7 @@ import TeamIssuesPage from '@/pages/team/TeamIssuesPage';
 import TeamMainPage from '@/pages/team/TeamMainPage';
 import TeamMembers from '@/pages/team/TeamMembers';
 import TeamPostsPage from '@/pages/team/TeamPostsPage';
+import { PageProvider } from '@/contexts/PageProvider';
 import BoxIcon from '@/assets/BoxIcon';
 import CalendarIcon from '@/assets/CalendarIcon';
 import FolderIcon from '@/assets/FolderIcon';
@@ -54,7 +55,11 @@ export const PAGES: Pages = {
     },
     posts: {
       title: '자유게시판',
-      page: <UserPostsPage />,
+      page: (
+        <PageProvider>
+          <UserPostsPage />
+        </PageProvider>
+      ),
       icon: <FolderIcon />,
     },
     myPage: {
@@ -84,11 +89,11 @@ export const PAGES: Pages = {
       page: <TeamAnnouncementsPage />,
       icon: <MegaphoneIcon />,
     },
-    posts: {
-      title: '자유게시판',
-      page: <TeamPostsPage />,
-      icon: <FolderIcon />,
-    },
+    // posts: {
+    //   title: '자유게시판',
+    //   page: <TeamPostsPage />,
+    //   icon: <FolderIcon />,
+    // }, /* TODO 잠시만.. */
     members: {
       title: '팀원',
       page: <TeamMembers />,

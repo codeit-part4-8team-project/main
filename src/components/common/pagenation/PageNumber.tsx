@@ -1,13 +1,15 @@
 import clsx from 'clsx';
+import { usePagenation } from '@/contexts/PageProvider';
 
 interface PageNumberProps {
   isCurrent: boolean;
   children: number;
-  onClick: (page: number) => void;
 }
 
-export default function PageNumber({ isCurrent, children, onClick }: PageNumberProps) {
-  const handleClick = () => onClick(children);
+export default function PageNumber({ isCurrent, children }: PageNumberProps) {
+  const { setCurrentPage } = usePagenation();
+  const handleClick = () => setCurrentPage(children);
+
   return (
     <button
       onClick={handleClick}
