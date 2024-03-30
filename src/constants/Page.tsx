@@ -89,11 +89,15 @@ export const PAGES: Pages = {
       page: <TeamAnnouncementsPage />,
       icon: <MegaphoneIcon />,
     },
-    // posts: {
-    //   title: '자유게시판',
-    //   page: <TeamPostsPage />,
-    //   icon: <FolderIcon />,
-    // }, /* TODO 잠시만.. */
+    posts: {
+      title: '자유게시판',
+      page: (
+        <PageProvider>
+          <TeamPostsPage />
+        </PageProvider>
+      ),
+      icon: <FolderIcon />,
+    },
     members: {
       title: '팀원',
       page: <TeamMembers />,

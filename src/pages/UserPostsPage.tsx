@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import BoardSection from '@/components/common/BoardSection';
 import Pagenation from '@/components/common/pagenation/Pagenation';
 import PostList from '@/components/Post/PostList';

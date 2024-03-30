@@ -2,11 +2,12 @@
 
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { usePostPage } from '@/hooks/usePost';
 import { Post } from '@/types/postTypes';
 
 interface PageContextValue {
-  dataContent: Post[] | [];
+  dataContent: Post[] | [] /* TODO 타입 수정 */;
   pageNumsArray: number[];
   currentPage: number;
   isFirst: boolean;
@@ -45,12 +46,20 @@ export function PageProvider({ children }: PageProviderProps) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [startPage, setStartPage] = useState(1);
 
+  const { teamId } = useParams();
+  const isTeam = teamId ? true : false;
+
+  /* TODO 수정 */
   const { postPageData, fetchPostPageData } = usePostPage(currentPage);
 
   const { size, totalPages, content } = postPageData;
 
+  const query = `?page=${currentPage}`;
+  const newPath = isTeam ? `/post/team/${teamId}${query}` : `/post/user${query}`;
+
+  /* TODO 여기 부분 path 수정 */
   useEffect(() => {
-    fetchPostPageData({ newPath: `/post/user?page=${currentPage}` });
+    fetchPostPageData({ newPath });
   }, [currentPage]);
 
   let pageNumsArray = createNumArray(startPage, size);
