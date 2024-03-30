@@ -5,7 +5,7 @@ import userImgNull from '../../public/images/userImgNull.svg';
 import Nav from '@/components/common/Nav';
 import TeamsHistory from '@/components/TeamsHistory';
 
-function MyPage() {
+function UserMyPage() {
   const { userData } = Mock;
   const [{ userId, profileImg, nickName, birth }] = userData;
   const [nickNameChange, setNickNameChange] = useState(false);
@@ -38,7 +38,7 @@ function MyPage() {
                 </p>
               </button>
             </div>
-            <div className=" flex flex-col  items-center gap-6 text-2xl text-[#AAAAAA]">
+            <div className=" text-2xl flex  flex-col items-center gap-6 text-[#AAAAAA]">
               <p className=" mt-[5.2rem]">프론트 개발자</p>
               <p>{birth}</p>
               <p>{userId}</p>
@@ -59,4 +59,4 @@ function MyPage() {
     </>
   );
 }
-export default MyPage;
+export default UserMyPage;

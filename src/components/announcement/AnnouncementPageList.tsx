@@ -21,15 +21,15 @@ export default function AnnouncementPageList({
   return (
     <div className="w-[132.6rem]">
       {content.length !== 0 ? (
-        <li className="grid w-fit list-none grid-cols-3 gap-[2.4rem]">
+        <ul className="grid w-fit list-none grid-cols-3 gap-[2.4rem]">
           {content.map((announcement) => {
             return (
-              <ul>
+              <li key={announcement.id}>
                 <AnnouncementItem announcement={announcement} team={team} />
-              </ul>
+              </li>
             );
           })}
-        </li>
+        </ul>
       ) : (
         <NoCard backgroundColor="bg-white">공지사항이 없습니다.</NoCard>
       )}

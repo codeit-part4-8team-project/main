@@ -1,4 +1,4 @@
-import { PAGES } from '@/constants/constants';
+import { PAGES, Page, TeamPageType } from '@/constants/Page';
 import { useParams } from 'react-router-dom';
 
 export default function TeamPage() {
@@ -8,5 +8,7 @@ export default function TeamPage() {
     throw Error('존재하지 않는 페이지입니다.');
   }
 
-  return PAGES.team[pageContent];
+  const { page } = PAGES.team[pageContent as TeamPageType] as Page;
+
+  return page;
 }

@@ -1,23 +1,24 @@
+import { PAGES, UserPageType } from '@/constants/Page';
 import { ReactElement, cloneElement } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
-import { BOARDS, Boards } from '@/components/common/sideBar/constants';
 import { useUserContext } from '@/contexts/UserProvider';
 
 interface BoardItemProps {
-  board: string;
+  board: UserPageType;
   pathname: string;
 }
 
 export default function BoardList() {
   const { pathname } = useLocation();
 
-  const boards = Object.keys(BOARDS);
+  const boards = Object.keys(PAGES.user) as UserPageType[];
+  boards.pop(); // 마이페이지는 제외하기 위한 코드
 
   return (
     <ul className="absolute left-[2.4rem] top-40 flex flex-col gap-[1.6rem]">
-      {boards.map((board) => (
-        <li key={board}>
+      {boards.map((board, idx) => (
+        <li key={idx}>
           <BoardItem board={board} pathname={pathname} />
         </li>
       ))}
@@ -26,7 +27,7 @@ export default function BoardList() {
 }
 
 function BoardItem({ board, pathname }: BoardItemProps) {
-  const { boardName, icon } = BOARDS[board as keyof Boards];
+  const { title: boardName, icon } = PAGES.user[board as UserPageType];
   const { user } = useUserContext();
   const link = `/user/${user?.id}/${board}`;
   const isCurrent = pathname === link ? true : false;

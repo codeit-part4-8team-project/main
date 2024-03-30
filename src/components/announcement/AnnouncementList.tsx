@@ -99,15 +99,15 @@ export default function AnnouncementList({ announcements, team }: AnnouncementLi
       </div>
       <div className="h-full w-full overflow-scroll">
         {announcements.length !== 0 ? (
-          <li className="flex list-none flex-col gap-[2.4rem]">
+          <ul className="flex list-none flex-col gap-[2.4rem]">
             {announcements.map((announcement) => {
               return (
-                <ul>
+                <li key={announcement.id}>
                   <AnnouncementItem announcement={announcement} team={team} />
-                </ul>
+                </li>
               );
             })}
-          </li>
+          </ul>
         ) : (
           <NoCard backgroundColor="bg-white">공지사항이 없습니다.</NoCard>
         )}
