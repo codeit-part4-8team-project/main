@@ -1,9 +1,9 @@
 import BoardSection from '@/components/common/BoardSection';
 import AnnouncementPageList from '@/components/announcement/AnnouncementPageList';
-import useAnnouncement from '@/hooks/useAnnouncement';
+import { useAnnouncementPage } from '@/hooks/useAnnouncement';
 
 export default function TeamAnnouncementsPage() {
-  const { announcementPageData } = useAnnouncement();
+  const { announcementPageData } = useAnnouncementPage();
 
   return (
     <BoardSection

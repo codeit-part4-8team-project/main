@@ -2,7 +2,7 @@ import BoardSection from '@/components/common/BoardSection';
 import MainSchedules from '@/components/MainPage/MainSchedules';
 import AnnouncementList from '@/components/announcement/AnnouncementList';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
-import useAnnouncement from '@/hooks/useAnnouncement';
+import { useAnnouncement } from '@/hooks/useAnnouncement';
 import useIssue from '@/hooks/useIssue';
 
 export default function UserMainPage() {
