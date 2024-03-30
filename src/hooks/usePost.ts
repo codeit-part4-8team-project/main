@@ -18,7 +18,7 @@ export function usePost(postId?: number) {
   const { loading, error, data, fetchData } = useAxios<Post[] | []>(
     {
       path,
-      method: 'GET', // TODO 가능하면 다른 요청들도 가능하도록
+      method: 'GET',
     },
     true,
   );
@@ -51,7 +51,7 @@ export function usePostPage(page?: number) {
 
   const { loading, error, data, fetchData } = useAxios<Posts>({
     path,
-    method: 'GET', // TODO 가능하면 다른 요청들도 가능하도록
+    method: 'GET',
   });
 
   useEffect(() => {
