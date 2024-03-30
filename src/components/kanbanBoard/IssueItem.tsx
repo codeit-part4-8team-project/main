@@ -23,7 +23,7 @@ export default function IssueItem({ issue: { title, content, team } }: IssueItem
   const { color, name } = team;
 
   return (
-    <div className="relative min-h-64 w-[28.2rem] rounded-[2.4rem] border border-gray30 bg-white p-8">
+    <div className="relative min-h-64 w-full rounded-[2.4rem] border border-gray30 bg-white p-8">
       <div className="flex flex-col gap-[2.2rem]">
         <div className="text-body4-bold text-gray100">{title}</div>
         <span className="text-body4-regular leading-[1.6rem] text-gray50">{content}</span>

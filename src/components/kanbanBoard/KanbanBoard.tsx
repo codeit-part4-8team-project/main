@@ -18,14 +18,14 @@ export default function KanbanBoard({ issues, type }: KanbanBoardProps) {
   };
 
   const kanbanBoardClasses = clsx({
-    'justify-between h-full': type === 'main',
+    'justify-between h-full w-content': type === 'main',
     'justify-center absolute top-[3.7rem] bottom-[2.4rem] left-0 right-0': type === 'page',
   });
 
   return (
     <>
       {isOpen && <GroupModal closeClick={handleToggleModalClick} />}
-      <div className={clsx('w-content flex gap-[2.4rem]', kanbanBoardClasses)}>
+      <div className={clsx('flex gap-[2.4rem]', kanbanBoardClasses)}>
         <IssueList status="todo" issues={issues.todoIssues} />
         <IssueList status="progress" issues={issues.progressIssues} />
         <IssueList status="done" issues={issues.doneIssues} />
