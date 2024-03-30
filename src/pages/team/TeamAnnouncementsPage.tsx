@@ -7,8 +7,6 @@ import { Announcement } from '@/types/announcementTypes';
 export default function TeamAnnouncementsPage() {
   const { dataContent } = usePagenation();
 
-  // console.log('dataContent', dataContent);
-
   return (
     <BoardSection title="Notice">
       <div className="flex flex-col items-center gap-[4.6rem]">

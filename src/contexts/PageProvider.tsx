@@ -113,8 +113,6 @@ export function PageProvider({ children }: PageProviderProps) {
     setStartPage(startPage - size);
   };
 
-  console.log('content', content);
-
   return (
     <PageContext.Provider
       value={{
