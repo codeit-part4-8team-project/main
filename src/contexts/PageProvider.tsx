@@ -57,7 +57,7 @@ export function PageProvider({ children }: PageProviderProps) {
 
   let size: number, totalPages: number, content;
 
-  if (pageContent === 'posts') {
+  if (pageContent === 'post') {
     size = postPageData.size;
     totalPages = postPageData.totalPages;
     content = postPageData.content;
@@ -75,10 +75,10 @@ export function PageProvider({ children }: PageProviderProps) {
 
   let newPath: string;
   switch (pageContent) {
-    case 'posts':
+    case 'post':
       newPath = isTeam ? `/post/team/${teamId}${query}` : `/post/user${query}`;
       break;
-    case 'announcements':
+    case 'announcement':
       newPath = `/announcement/team/${teamId}${query}`;
       break;
     default:
@@ -86,7 +86,7 @@ export function PageProvider({ children }: PageProviderProps) {
   }
 
   useEffect(() => {
-    if (pageContent === 'posts') fetchPostPageData({ newPath });
+    if (pageContent === 'post') fetchPostPageData({ newPath });
     else fetchAnnouncementPageData({ newPath });
   }, [currentPage]);
 
