@@ -67,6 +67,10 @@ export function PageProvider({ children }: PageProviderProps) {
     content = announcementPageData.content;
   }
 
+  if (totalPages === 0) {
+    totalPages = 1;
+  }
+
   const query = `?page=${currentPage || 1}`;
 
   let newPath: string;
