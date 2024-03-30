@@ -29,16 +29,16 @@ export default function KanbanBoard({ issues, type }: KanbanBoardProps) {
         <IssueList status="todo" issues={issues.todoIssues} />
         <IssueList status="progress" issues={issues.progressIssues} />
         <IssueList status="done" issues={issues.doneIssues} />
-        {type === 'page' && (
-          <TextButton
-            buttonSize="sm"
-            onClick={handleToggleModalClick}
-            className="absolute right-12"
-          >
-            게시하기
-          </TextButton>
-        )}
       </div>
+      {type === 'page' && (
+        <TextButton
+          buttonSize="sm"
+          onClick={handleToggleModalClick}
+          className="absolute right-12 top-[3.6rem]"
+        >
+          게시하기
+        </TextButton>
+      )}
     </>
   );
 }
