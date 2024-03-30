@@ -11,8 +11,8 @@ export default function TeamPageLayout() {
       <div className="h-screen w-screen bg-gray20 pb-[2.4rem] pl-[28.4rem] pr-[2.4rem] pt-[14.2rem]">
         <Nav />
         <SideBar />
+        <TeamBar />
         <Board>
-          <TeamBar />
           <Outlet />
         </Board>
       </div>
