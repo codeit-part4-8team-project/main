@@ -13,30 +13,12 @@ import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
-import { useAxios } from '@/hooks/useAxios';
-
-// {
-//   "name": "string",
-//   "description": "string", 이건 뭐지?? 물어봐야할듯
-//   "color": "string",
-//   "startDate": "string",
-//   "endDate": "string",
-//   "members": [
-//     "string"
-//   ],
-// 여기 굳이 세개로 나눈 이유는? 세개의 데이터가 다 필요한게 아니라는데
-// 그렇다면 그냥 "link": 'string'; 하나랑
-// linkImg를 따로 받으면 안되나?
-// 그리고 만약 3개를 한번에 다 넣고 싶다면 현재 ui가 인풋창이1개인데 3개로 만들어야하나..?
-//   "figmaLink": "string", // 이 부분 작업이 좀 헷갈리네
-//   "githubLink": "string",
-//   "discordLink": "string"
-// }
+import { defaultInstance, useAxios } from '@/hooks/useAxios';
 
 type Inputs = {
   name: string;
   description: string;
-  // members: string[];
+  members?: string[] | string;
   color: string;
   startDate: string;
   endDate: string;
@@ -58,12 +40,13 @@ interface GroupModalProps {
   closeClick?: () => void;
 }
 
-// 남은 작업 members 해결
-// date 클릭했을때 값 들어오게끔 + 년도를 계속 올릴수 있게끔
-// members 갈색div박스를 도대체 어떻게 해결할건지
 export default function GroupModal({ closeClick }: GroupModalProps) {
-  const { data: datas, error, fetchData } = useAxios<dataType>({});
-  const { fetchData: fetchData2 } = useAxios({});
+  const { fetchData: groupFetch } = useAxios({});
+
+  const colorToggleRef = useRef<HTMLButtonElement | null>(null);
+  const [colorToggle, setColorToggle] = useState<boolean>(false);
+  const [membersList, setMembersList] = useState<dataType[]>([]);
+  const [memberCheck, setMemberCheck] = useState(false);
 
   const {
     register,
@@ -73,43 +56,61 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     getValues,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = ({
+    name,
+    description,
+    startDate,
+    endDate,
+    githubLink,
+    discordLink,
+    figmaLink,
+    color,
+  }) => {
     const createTeam = {
-      name: data.name,
-      description: data.description,
-      // members: [datas],
-      startDate: data.startDate,
-      endDate: data.endDate,
-      githubLink: data.githubLink,
-      discordLink: data.discordLink,
-      figmaLink: data.figmaLink,
-      color: data.color,
+      name: name,
+      description: description,
+      members: membersList.map((member) => member.username),
+      // map 이후 필터로 중복된 값을 걸러줘야함 내가
+      startDate: startDate,
+      endDate: endDate,
+      githubLink: githubLink,
+      discordLink: discordLink,
+      figmaLink: figmaLink,
+      color: color,
     };
-    handleGrooup(createTeam);
+    handleGroup(createTeam);
   };
-
-  const colorToggleRef = useRef<HTMLButtonElement | null>(null);
-  const [colorToggle, setColorToggle] = useState<boolean>(false);
 
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
 
-  // 왜 안되는거지?
-  const handleGrooup = (data: Inputs) => {
-    fetchData2({
+  const handleGroup = (data: Inputs) => {
+    groupFetch({
       newPath: '/team/',
       newMethod: 'POST',
       newData: data,
     });
   };
+  // 지선님
+  // user-aKXY00sJtx
 
-  // const handleGetMembers = () => {
-  //   const userName = getValues('members');
-  //   fetchData({
-  //     newPath: `/user/search?username=${userName}`,
-  //   });
-  // };
+  const handleGetMembers = async () => {
+    const userName = getValues('members');
+    const res = await defaultInstance.get(`/user/search?username=${userName}`);
+    if (res.data !== '') {
+      const newMember = res.data;
+      // 새로운 팀원을 기존 팀원 목록에 추가
+      setMemberCheck(false);
+      setMembersList((prevMembers) => [...prevMembers, newMember]);
+    } else if (res.data === '') {
+      setMemberCheck(true);
+    }
+  };
+
+  const handleRemoveMember = (userName: string | undefined) => {
+    setMembersList((prevMembers) => prevMembers.filter((member) => member.username !== userName));
+  };
 
   const handleColorClick = (color: string) => {
     setValue('color', color);
@@ -150,7 +151,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             <ModalInput
               name="name"
               id="name"
-              hookform={register('name')}
+              hookform={register('name', { required: true, maxLength: 20 })}
               placeholder="그룹 이름을 입력해 주세요."
               className={`${inputTextSize} ${borderStyle}`}
             />
@@ -211,14 +212,16 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             endName="endDate"
           />
           <ModalLabel htmlFor="link" label="외부 연결 링크" className={`${formTextSize}`} />
-
-          <ModalInput
-            hookform={register('githubLink')}
-            placeholder="URL을 입력해 주세요."
-            className={`${inputTextSize} ${borderStyle}`}
-            id="link"
-            name="githubLink"
-          />
+          <div className="mb-[0.8rem] mt-[1.6rem] flex gap-[1.2rem]">
+            <img src={github} className={`${borderStyle} px-[1.8rem] py-[1.2rem]`} alt="github" />
+            <ModalInput
+              hookform={register('githubLink')}
+              placeholder="URL을 입력해 주세요."
+              className={`${inputTextSize} ${borderStyle}`}
+              id="link"
+              name="githubLink"
+            />
+          </div>
           <div className="mb-[0.8rem] mt-[1.6rem] flex gap-[1.2rem]">
             <img src={discord} className={`${borderStyle} px-[1.8rem] py-[1.2rem]`} alt="discord" />
             <ModalInput
@@ -244,22 +247,29 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             <div className="flex items-center gap-[1.2rem]">
               <ModalInput
                 name="members"
-                // hookform={register('members')}
+                hookform={register('members')}
                 type="text"
                 placeholder="닉네임을 검색해 주세요."
                 id="mebers"
                 className={`${inputTextSize} ${borderStyle} `}
-              />
-              {/* <TextButton buttonSize="sm" onClick={handleGetMembers} type="button"> */}
-              초대하기
-              {/* </TextButton> */}
+              >
+                {memberCheck && (
+                  <p className="absolute mt-[0.5rem] text-body5-medium text-point_red">
+                    검색하신유저가없습니다.
+                  </p>
+                )}
+              </ModalInput>
+              <TextButton buttonSize="sm" onClick={handleGetMembers} type="button">
+                검색하기
+              </TextButton>
             </div>
           </div>
 
           <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
-          <div className=" h-[10.6rem] w-full rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
-            {/* 검색했을때의 값을 하나씩 가져옮. 그렇다면 어떻게 만들어야 계속해서 추가가 가능하지? */}
-            {datas && <ModalMemberList formTextSize={formTextSize} data={datas} />}
+          <div className=" h-[10.6rem] w-full overflow-scroll rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
+            {membersList && (
+              <ModalMemberList onClick={handleRemoveMember} memberData={membersList} />
+            )}
           </div>
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">

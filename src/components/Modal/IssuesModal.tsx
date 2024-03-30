@@ -10,7 +10,7 @@ import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
-import { useAxios } from '@/hooks/useAxios';
+import { defaultInstance, useAxios } from '@/hooks/useAxios';
 
 interface IssuesModalProps {
   closeClick: () => void;
@@ -22,8 +22,15 @@ type Inputs = {
   dueDate: string;
   assignedMembersUsernames: string[];
 };
-// 여기 이슈모달에 시간값 있던데 이건 어떻게 할건지? 의논 필요
-// api는 dueDate만 있는데 ui에는 start,due(end) 두개가 있음 의논 필요
+
+interface memberDataType {
+  name: string;
+  imageUrl: string;
+  role: string;
+  grade: string;
+  username: string;
+  createDate: string;
+}
 
 // {
 //   "title": "string",
@@ -43,16 +50,21 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
 
   const dueDateToggleRef = useRef<HTMLDivElement | null>(null);
   const [dueDateToggle, setDueDateToggle] = useState(false);
+  // 여기 작업 조금 남았음
+  const [membersList, setMembersList] = useState<memberDataType[]>([]);
+  console.log('membersList Test', membersList);
+  const [memberCheck, setMemberCheck] = useState(false);
+
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const createIssue = {
       title: data.title,
       content: data.content,
       dueDate: data.dueDate,
-      assignedMembersUsernames: data.assignedMembersUsernames, // 나중에 배열 타입문제 해결하기
+      assignedMembersUsernames: [data.assignedMembersUsernames], // 나중에 배열 타입문제 해결하기
     };
     handlePostIssues(createIssue);
-    console.log(createIssue);
+    // console.log(createIssue);
   };
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
@@ -62,27 +74,36 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
     setDueDateToggle(true);
   };
 
-  const teamsId = 22;
+  const teamId = 10;
 
   const handlePostIssues = (data: Inputs) => {
     fetchData({
-      newPath: `${teamsId}/issue/`,
+      newPath: `issue/${teamId}`,
       newMethod: 'POST',
       newData: data,
     });
   };
 
-  const handleGetTeamMemberList = () => {
+  const handleGetTeamMemberList = async () => {
     const userName = getValues('assignedMembersUsernames');
-    memberFetchData({
-      newPath: `member/${teamsId}/search?username=${userName}`,
-    });
+    const res = await defaultInstance.get(`member/${teamId}/search?username=${userName}`);
+    // console.log('여여', typeof res);
+    if (res.data !== '') {
+      const newMember = res.data;
+      setMemberCheck(false);
+      setMembersList((prevMembers) => [...prevMembers, newMember]);
+    } else if (res.data === '') {
+      setMemberCheck(true);
+    }
+  };
+
+  const handleRemoveMember = (userName: string | undefined) => {
+    setMembersList((prevMembers) => prevMembers.filter((member) => member.username !== userName));
   };
 
   const handleDueDateClickOutside = (e: MouseEvent) => {
     if (!dueDateToggleRef.current?.contains(e.target as Node)) setDueDateToggle(false);
   };
-  // member/12/search?username=12
   useEffect(() => {
     if (dueDateToggleRef) {
       document.addEventListener('mousedown', handleDueDateClickOutside);
@@ -210,7 +231,7 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
           <div className=" h-[10.6rem] w-full rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
             {/* data map돌리고 싶은데 배열이 아닌것 같음. 얘기해서 배열로 바꿔줄수 있는지 여쭤보기 */}
             {/* 값이 only 1개이니까 배열 안 만들고 그냥 초대하기 눌렸을때 하나, 검색시 === 값 하나 */}
-            <ModalMemberList formTextSize={formTextSize} />
+            <ModalMemberList formTextSize={formTextSize} onClick={handleRemoveMember} />
           </div>
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">

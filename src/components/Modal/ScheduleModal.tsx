@@ -13,67 +13,50 @@ interface ScheduleModalProps {
   user?: boolean;
   team?: boolean;
 }
-// 논의 결과 type은 제외해서 api 쏘기로 결정
 type Inputs = {
   title: string;
-  type?: 'TEAM' | 'USER' | string; // 나중에 프롭으로 TEAM,USER 받기.
   startDateTime: string;
   endDateTime: string;
   content: string;
 };
 // 여기는 user인지 team인지 구분이 필요함
-function ScheduleModal({ closeClick, user = false, team = false }: ScheduleModalProps) {
-  const { fetchData } = useAxios({});
+function ScheduleModal({ closeClick, user = true, team = false }: ScheduleModalProps) {
+  const { fetchData: userFetchData } = useAxios({});
+  const { fetchData: teamFetchData } = useAxios({});
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
   const InputValueLength = 'mb-[0.9rem] flex justify-end text-gray50';
 
-  // - 필드 이름이 date면 날짜만, dateTime이면 시간 포함
   // - Swagger에 있는 날짜 포맷말고  yyyy-MM-dd HH:mm:ss 사용
-  // {
-  //   "type": "string", // 얘 없음 -> TEAM인지 USER인지 구분 defaule value로 처리
-  // 나중에 물어보기 위에 type;
-  //   "title": "string",
-  //   "content": "string", // 얘 없음
-  //   "startDateTime": "yyyy-MM-dd HH:mm:ss",
-  //   "endDateTime": "yyyy-MM-dd HH:mm:ss"
-  // }
 
-  // type = USER 인 경우의 리스폰스 값
-  //   content: "내용"
-  // endDateTime: "2024-03-22 00:00:00"
-  // id: 3
-  // startDateTime: "2024-03-12 00:00:00"
-  // title: "제목"
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const type = 'USER';
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const createSchedlue = {
       title: data.title,
       startDateTime: data.startDateTime,
       endDateTime: data.endDateTime,
       content: data.content,
-      type: type, // 얘는 협의 후 빼기로 결정 추후 패치되면 삭제 하기
     };
-    handleScheduleFetch(createSchedlue);
+    handleScheduleUserFetch(createSchedlue);
     console.log('createTema', createSchedlue);
   };
-
-  const handleScheduleFetch = (data: Inputs) => {
+  const teamId = 3;
+  const handleScheduleUserFetch = (data: Inputs) => {
     if (user) {
-      fetchData({
+      userFetchData({
         newPath: 'schedule/user',
         newMethod: 'POST',
         newData: data,
       });
     } else if (team) {
-      fetchData({
+      teamFetchData({
         newPath: `schedule/team/${teamId}`,
         newMethod: 'POST',
         newData: data,
@@ -95,7 +78,7 @@ function ScheduleModal({ closeClick, user = false, team = false }: ScheduleModal
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel label="제목" className={`${formTextSize}`} htmlFor="title" />
             <ModalInput
-              hookform={register('title')}
+              hookform={register('title', { required: true, maxLength: 20 })}
               className={`${inputTextSize} ${borderStyle}`}
               placeholder="일정 제목을 입력해 주세요."
               id="title"
@@ -111,7 +94,7 @@ function ScheduleModal({ closeClick, user = false, team = false }: ScheduleModal
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel label="내용" className={`${formTextSize}`} htmlFor="content" />
             <ModalInput
-              hookform={register('content')}
+              hookform={register('content', { required: true, maxLength: 40 })}
               className={`${inputTextSize} ${borderStyle}`}
               placeholder="내용을 입력해 주세요."
               id="content"

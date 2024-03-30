@@ -1,6 +1,7 @@
 import Nav from '@/components/common/Nav';
 import ModalCalendar from '@/components/common/modal/ModalCalendar';
 import ModalLayout from '@/components/common/modal/ModalLayout';
+import AnnouncementModal from '@/components/Modal/AnnouncementModal';
 import DetailScheduleModal from '@/components/Modal/DetailsScheduleModal';
 import FreeBoardModal from '@/components/Modal/FreeBoardModal';
 import GroupEditModal from '@/components/Modal/GroupEditModal';
@@ -28,6 +29,7 @@ const HomePage = () => {
     // openModal(({ close }) => <NotMeIssuesModal closeClick={close} />);
     // openModal(({ close }) => <MyIssuesModal closeClick={close} />);
     // openModal(({ close }) => <FreeBoardModal closeClick={close} />);
+    openModal(({ close }) => <AnnouncementModal closeClick={close} />);
   };
   // ScheduleModal
   // GroupEditModal
@@ -70,6 +72,7 @@ const HomePage = () => {
         logout
       </button>
       <ModalCalendar />
+      {/* <div>홈페이지입니다.</div> */}
     </>
   );
 };

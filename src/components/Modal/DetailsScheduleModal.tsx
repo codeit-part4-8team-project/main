@@ -8,29 +8,51 @@ interface DetailScheduleModalProps {
   closeClick: () => void;
 }
 
+interface defaultValue {
+  content?: string;
+  endDateTime?: string;
+  startDateTime?: string;
+  title?: string;
+  author?: authorType;
+}
+
+interface authorType {
+  name: string;
+  imageUrl: string;
+  role: string | null;
+  grade: string;
+  userName: string;
+  createDate: string;
+}
+// "name": "필겸",
+// "imageUrl": "http://t1.kakaocdn.net/account_images/default_profile.jpeg.twg.thumb.R640x640",
+// "role": null,
+// "grade": "OWNER",
+// "username": "user-PUESAx6JqD",
+// "createdDate": "2024-03-29"
 export default function DetailScheduleModal({ closeClick }: DetailScheduleModalProps) {
-  // id = 3은 TEAM type
+  // id = 9은 TEAM type
   //   content: "내용"
   // endDateTime: "2024-03-22 00:00:00"
   // id: 3
   // startDateTime: "2024-03-12 00:00:00"
   // title: "제목"
 
-  // id = 2는 USER type
+  // id = 10는 USER type
   //content: "user 내용"
   // endDateTime: "2024-03-22 00:00:00"
   // id: 2
   // startDateTime: "2024-03-12 00:00:00"
   // title: "user 제목"
-  const scheduleId = 2;
-  const { data } = useAxios(
+  const scheduleId = 8;
+  const { data: defaultValue } = useAxios(
     {
       path: `schedule/${scheduleId}`,
     },
     true,
   );
-  const { content, endDateTime, startDateTime, title }: any = data || {};
-  console.log('data', data);
+  const { content, endDateTime, startDateTime, title, author }: defaultValue = defaultValue || {};
+  console.log('data', defaultValue);
   const TextSize = 'text-body3-medium';
   const divTextSize = 'text-body3-regular';
   const borderStyle =
@@ -40,9 +62,13 @@ export default function DetailScheduleModal({ closeClick }: DetailScheduleModalP
       <ModalFormBorder className="mt-16 h-full w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 p-12">
         <p className={`${TextSize} mb-[1.6rem]`}>게시자 (나)</p>
         <div className="mb-16 flex items-center gap-4">
-          <img src={profile} alt="profile" />
+          <img
+            src={author?.imageUrl}
+            alt="profile"
+            className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
+          />
           {/* 데이터 받아지면 변경 예정구역 */}
-          <p className=" text-[1.4rem]">userNickName</p>
+          <p className=" text-[1.4rem]">{author?.name}</p>
           {/*  */}
         </div>
 
