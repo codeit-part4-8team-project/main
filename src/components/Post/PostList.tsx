@@ -18,7 +18,9 @@ export default function PostList({ posts }: PostListProps) {
           );
         })
       ) : (
-        <NoCard backgroundColor="bg-white">게시글이 없습니다.</NoCard>
+        <NoCard type="post" backgroundColor="bg-white">
+          게시글이 없습니다.
+        </NoCard>
       )}
     </ul>
   );

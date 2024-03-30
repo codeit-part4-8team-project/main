@@ -29,7 +29,9 @@ export default function AnnouncementPageList({ announcements }: AnnouncementPage
           })}
         </ul>
       ) : (
-        <NoCard backgroundColor="bg-white">공지사항이 없습니다.</NoCard>
+        <NoCard type="announcement-page" backgroundColor="bg-white">
+          공지사항이 없습니다.
+        </NoCard>
       )}
     </div>
   );
