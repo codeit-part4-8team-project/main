@@ -7,7 +7,8 @@ import ViewListIcon from '@/assets/ViewListIcon';
 
 interface BoardSection {
   title: keyof typeof ICON;
-  content: ReactNode;
+  content?: ReactNode;
+  children?: ReactNode;
 }
 
 const ICON = {
@@ -20,7 +21,7 @@ const ICON = {
   콘텐츠: <FolderIcon fill="#292929" active />,
 };
 
-export default function BoardSection({ title, content }: BoardSection) {
+export default function BoardSection({ title, content, children }: BoardSection) {
   const shouldDisplayControlDate = title === 'My calendar' || title === 'Team calendar';
   const controlDateMargin = title === 'My calendar' ? 'mr-[6.8rem]' : 'ml-[6.8rem] ';
   return (
@@ -32,7 +33,8 @@ export default function BoardSection({ title, content }: BoardSection) {
           <ControlDate className={`text-body4-bold text-gray100`} mode="month" />
         )}
       </div>
-      <div className="h-full overflow-auto">{content}</div>
+      <div className="h-full overflow-auto">{content || children}</div>{' '}
+      {/* content안에 단일 컴포넌트로 넣기 불편한 페이지가 있어서 chilren으로 받을 수 있도록 했습니다.*/}
     </div>
   );
 }

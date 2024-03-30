@@ -4,7 +4,7 @@ import MainSchedules from '@/components/MainPage/MainSchedules';
 import AnnouncementList from '@/components/announcement/AnnouncementList';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
 import { useTeam } from '@/contexts/TeamProvider';
-import useAnnouncement from '@/hooks/useAnnouncement';
+import { useAnnouncement } from '@/hooks/useAnnouncement';
 import useIssue from '@/hooks/useIssue';
 
 export default function TeamMainPage() {
