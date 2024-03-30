@@ -12,10 +12,7 @@ export default function TeamIssuesPage() {
 
   return (
     <BoardSection title="Kanban board">
-      <div className="flex gap-[7.4rem]">
-        {/* <GroupFilter className="mt-[3.7rem]" /> */}
-        <KanbanBoard issues={issueData} page="issue" hasButton={true} />
-      </div>
+      <KanbanBoard issues={issueData} type="page" />
     </BoardSection>
   );
 }

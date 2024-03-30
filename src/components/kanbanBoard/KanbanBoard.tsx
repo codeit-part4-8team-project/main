@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import clsx from 'clsx';
 import TextButton from '@/components/common/TextButton';
 import GroupModal from '@/components/Modal/GroupModal';
 import IssueList from '@/components/kanbanBoard/IssueList';
@@ -6,33 +7,35 @@ import { Issues } from '@/types/issueTypes';
 
 interface KanbanBoardProps {
   issues: Issues;
-  page: 'main' | 'issue' | 'team';
-  hasButton?: boolean;
+  type: 'main' | 'page';
 }
 
-export default function KanbanBoard({ issues, page, hasButton = false }: KanbanBoardProps) {
+export default function KanbanBoard({ issues, type }: KanbanBoardProps) {
   const [isOpen, setIsOpen] = useState(false);
-
-  const justifyContent = page === 'issue' ? 'justify-start' : 'justify-between';
 
   const handleToggleModalClick = () => {
     setIsOpen(!isOpen);
   };
 
+  const kanbanBoardClasses = clsx({
+    'justify-between h-full': type === 'main',
+    'justify-center absolute top-[3.7rem] bottom-[2.4rem] left-0 right-0': type === 'page',
+  });
+
   return (
     <>
       {isOpen && <GroupModal closeClick={handleToggleModalClick} />}
-      <div className={`w-content relative flex ${justifyContent} gap-[2.4rem]`}>
+      <div className={clsx('w-content flex gap-[2.4rem]', kanbanBoardClasses)}>
         <IssueList status="todo" issues={issues.todoIssues} />
         <IssueList status="progress" issues={issues.progressIssues} />
         <IssueList status="done" issues={issues.doneIssues} />
-        {hasButton && (
+        {type === 'page' && (
           <TextButton
             buttonSize="sm"
             onClick={handleToggleModalClick}
-            className="absolute -top-[6.3rem] right-0"
+            className="absolute right-12"
           >
-            생성하기
+            게시하기
           </TextButton>
         )}
       </div>

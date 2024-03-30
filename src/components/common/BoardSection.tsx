@@ -26,7 +26,7 @@ export default function BoardSection({ title, content, children }: BoardSection)
   const controlDateMargin = title === 'My calendar' ? 'mr-[6.8rem]' : 'ml-[6.8rem] ';
   return (
     <div className="flex h-full flex-col gap-[1.6rem]">
-      <div className="flex items-center gap-[0.9rem] whitespace-nowrap text-body1-regular tracking-[-0.036rem] text-gray100">
+      <div className="relative flex  items-center gap-[0.9rem] whitespace-nowrap text-body1-regular tracking-[-0.036rem] text-gray100">
         {ICON[title]}
         <span className={`font-rammetto ${controlDateMargin}`}>{title}</span>
         {shouldDisplayControlDate && (

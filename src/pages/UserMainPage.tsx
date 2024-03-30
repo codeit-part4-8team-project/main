@@ -13,7 +13,7 @@ export default function UserMainPage() {
     <div className="grid h-full w-full grid-cols-[107.4fr_37.8fr] grid-rows-[33.7fr_52.5fr] gap-[5.2rem]">
       <MainSchedules />
       <AnnouncementList announcements={announcementData} />
-      <BoardSection title="Kanban board" content={<KanbanBoard issues={issueData} page="main" />} />
+      <BoardSection title="Kanban board" content={<KanbanBoard issues={issueData} type="main" />} />
     </div>
   );
 }
