@@ -72,7 +72,7 @@ function GroupSection() {
   };
 
   return (
-    <div className="relative mt-[47.8rem] flex items-center justify-between bg-black py-[1.8rem] pl-16 pr-[2.4rem]">
+    <div className="relative mt-[120%] flex items-center justify-between bg-black py-[1.8rem] pl-16 pr-[2.4rem]">
       <span className="text-body2-bold text-[#EDEEDC]">그룹</span>
       <button className="relative" onClick={handleClickOpenModal}>
         <PlusCircleIcon fill="#F0F0E2" />
