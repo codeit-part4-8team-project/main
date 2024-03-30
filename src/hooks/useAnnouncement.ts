@@ -16,7 +16,7 @@ export function useAnnouncement(announcementId?: number) {
   } else {
     if (userId) {
       path = `/announcement/user/unread`; // 유저가 읽지 않은 공지글 조회 @ UserMainPage
-    } else if (pageContent === 'announcements') {
+    } else if (pageContent === 'main') {
       path = `/announcement/team/unread/${teamId}`; // 유저가 읽지 않은 팀 게시글 조회 @ TeamMainPage;
     } else {
       throw Error('공지글 데이터를 가져올 수 있는 페이지가 아닙니다.');
