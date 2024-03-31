@@ -34,7 +34,7 @@ export default function AnnouncementPageList({ announcements }: AnnouncementPage
             {announcements.map((announcement) => {
               return (
                 <li key={announcement.id}>
-                  <AnnouncementItem announcement={announcement} team={team} />
+                  <AnnouncementItem announcement={announcement} type="page" team={team} />
                 </li>
               );
             })}
