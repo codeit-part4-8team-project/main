@@ -26,14 +26,14 @@ export default function BoardSection({ title, content, children }: BoardSection)
   const controlDateMargin = title === 'My calendar' ? 'mr-[6.8rem]' : 'ml-[6.8rem] ';
   return (
     <div className="flex h-full flex-col gap-[1.6rem]">
-      <div className="flex items-center gap-[0.9rem] whitespace-nowrap text-body1-regular tracking-[-0.036rem] text-gray100">
+      <div className="relative flex  items-center gap-[0.9rem] whitespace-nowrap text-body1-regular tracking-[-0.036rem] text-gray100">
         {ICON[title]}
         <span className={`font-rammetto ${controlDateMargin}`}>{title}</span>
         {shouldDisplayControlDate && (
           <ControlDate className={`text-body4-bold text-gray100`} mode="month" />
         )}
       </div>
-      <div className="h-full overflow-auto">{content || children}</div>{' '}
+      <div className="flex-auto">{content || children}</div>
       {/* content안에 단일 컴포넌트로 넣기 불편한 페이지가 있어서 chilren으로 받을 수 있도록 했습니다.*/}
     </div>
   );

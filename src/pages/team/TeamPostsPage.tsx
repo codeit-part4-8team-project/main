@@ -10,7 +10,7 @@ export default function TeamPostsPage() {
 
   return (
     <BoardSection title="Bulletin board">
-      <div className="flex flex-col items-center gap-[4.6rem]">
+      <div className="flex h-full flex-col items-center justify-between gap-[4.6rem]">
         <PostList posts={dataContent as Post[]} />
         <Pagenation />
       </div>

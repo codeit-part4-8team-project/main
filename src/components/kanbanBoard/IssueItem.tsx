@@ -1,15 +1,17 @@
 import { useParams } from 'react-router-dom';
+import ProfileStack from '@/components/common/ProfileStack';
 import { useTeam } from '@/contexts/TeamProvider';
+import { getProfilesImgs } from '@/lib/getProfileImgs';
 import { Issue } from '@/types/issueTypes';
 import DragHandleIcon from '@/assets/DragHandleIcon';
-import ProfileIcon from '@/assets/ProfileIcon';
 
 interface IssueItemProps {
   issue: Issue;
 }
 
-export default function IssueItem({ issue: { title, content, team } }: IssueItemProps) {
-  // TODO 메모이제이션이 필요한 부분인지?
+export default function IssueItem({
+  issue: { title, content, team, assignedMembers },
+}: IssueItemProps) {
   const { teamId } = useParams();
 
   if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
@@ -23,8 +25,10 @@ export default function IssueItem({ issue: { title, content, team } }: IssueItem
 
   const { color, name } = team;
 
+  const profileImgs = assignedMembers ? getProfilesImgs(assignedMembers) : [];
+
   return (
-    <div className="relative min-h-64 w-[28.2rem] rounded-[2.4rem] border border-gray30 bg-white p-8">
+    <div className="relative min-h-64 w-full rounded-[2.4rem] border border-gray30 bg-white p-8">
       <div className="flex flex-col gap-[2.2rem]">
         <div className="text-body4-bold text-gray100">{title}</div>
         <span className="text-body4-regular leading-[1.6rem] text-gray50">{content}</span>
@@ -39,8 +43,7 @@ export default function IssueItem({ issue: { title, content, team } }: IssueItem
         {name}
       </button>
       <div className="absolute bottom-8 right-8">
-        <ProfileIcon size="sm" />
-        {/* <ProfileStack profileImgs={profiles} /> */}
+        <ProfileStack profileImgs={profileImgs} size="sm" />
       </div>
     </div>
   );

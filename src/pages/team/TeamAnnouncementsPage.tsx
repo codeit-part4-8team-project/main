@@ -9,7 +9,7 @@ export default function TeamAnnouncementsPage() {
 
   return (
     <BoardSection title="Notice">
-      <div className="flex flex-col items-center gap-[4.6rem]">
+      <div className="flex h-full flex-col items-center justify-between gap-[4.6rem]">
         <AnnouncementPageList announcements={dataContent as Announcement[]} />
         <Pagenation />
       </div>
