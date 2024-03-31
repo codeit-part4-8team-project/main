@@ -1,14 +1,17 @@
 import { useParams } from 'react-router-dom';
+import ProfileStack from '@/components/common/ProfileStack';
 import { useTeam } from '@/contexts/TeamProvider';
+import { getProfilesImgs } from '@/lib/getProfileImgs';
 import { Issue } from '@/types/issueTypes';
 import DragHandleIcon from '@/assets/DragHandleIcon';
-import ProfileIcon from '@/assets/ProfileIcon';
 
 interface IssueItemProps {
   issue: Issue;
 }
 
-export default function IssueItem({ issue: { title, content, team } }: IssueItemProps) {
+export default function IssueItem({
+  issue: { title, content, team, assignedMembers },
+}: IssueItemProps) {
   const { teamId } = useParams();
 
   if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
@@ -21,6 +24,8 @@ export default function IssueItem({ issue: { title, content, team } }: IssueItem
   }
 
   const { color, name } = team;
+
+  const profileImgs = assignedMembers ? getProfilesImgs(assignedMembers) : [];
 
   return (
     <div className="relative min-h-64 w-full rounded-[2.4rem] border border-gray30 bg-white p-8">
@@ -38,8 +43,7 @@ export default function IssueItem({ issue: { title, content, team } }: IssueItem
         {name}
       </button>
       <div className="absolute bottom-8 right-8">
-        <ProfileIcon size="sm" />
-        {/* <ProfileStack profileImgs={profiles} /> */}
+        <ProfileStack profileImgs={profileImgs} size="sm" />
       </div>
     </div>
   );
