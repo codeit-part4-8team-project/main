@@ -1,13 +1,13 @@
 import BoardSection from '@/components/common/BoardSection';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
-import useIssue from '@/hooks/useIssue';
+import { useIssueBoard } from '@/hooks/useIssue';
 
 export default function UserIssuesPage() {
-  const { issueData } = useIssue();
+  const { issueBoardData } = useIssueBoard();
 
   return (
     <BoardSection title="Kanban board">
-      <KanbanBoard issues={issueData} type="page" />
+      <KanbanBoard issues={issueBoardData} type="page" />
     </BoardSection>
   );
 }
