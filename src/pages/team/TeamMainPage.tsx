@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import BoardSection from '@/components/common/BoardSection';
+import FloatingButton from '@/components/common/FloatingButton';
 import MainSchedules from '@/components/MainPage/MainSchedules';
 import AnnouncementList from '@/components/announcement/AnnouncementList';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
@@ -21,6 +22,7 @@ export default function TeamMainPage() {
       <BoardSection title="My calendar" content={<MainSchedules />} />
       <AnnouncementList announcements={announcementData} team={team} />
       <BoardSection title="Kanban board" content={<KanbanBoard issues={issueData} type="main" />} />
+      <FloatingButton />
     </div>
   );
 }
