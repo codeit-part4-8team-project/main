@@ -6,39 +6,27 @@ interface IssueProviderProps {
 }
 
 interface IssueContextValues {
-  issueList: {
-    todoList: Issue[] | [];
-    progressList: Issue[] | [];
-    doneList: Issue[] | [];
-  };
-  setIssueList: {
-    setTodoList: (issues: Issue[] | []) => void;
-    setProgressList: (issues: Issue[] | []) => void;
-    setDoneList: (issues: Issue[] | []) => void;
-  };
-  dragHandlers: {
-    handleOnDrag: (e: DragEvent, issueId: number) => void;
-    handleOnDrop: (e: DragEvent) => void;
-    handleDragOver: (e: DragEvent) => void;
-  };
+  todoList: Issue[] | [];
+  progressList: Issue[] | [];
+  doneList: Issue[] | [];
+  setTodoList: (issues: Issue[] | []) => void;
+  setProgressList: (issues: Issue[] | []) => void;
+  setDoneList: (issues: Issue[] | []) => void;
+  handleOnDrag: (e: React.DragEvent<HTMLDivElement>, issueId: number) => void;
+  handleOnDrop: (e: React.DragEvent<HTMLDivElement>) => void;
+  handleDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
 const defaultValue = {
-  issueList: {
-    todoList: [],
-    progressList: [],
-    doneList: [],
-  },
-  setIssueList: {
-    setTodoList: () => {},
-    setProgressList: () => {},
-    setDoneList: () => {},
-  },
-  dragHandlers: {
-    handleOnDrag: () => {},
-    handleOnDrop: () => {},
-    handleDragOver: () => {},
-  },
+  todoList: [],
+  progressList: [],
+  doneList: [],
+  setTodoList: () => {},
+  setProgressList: () => {},
+  setDoneList: () => {},
+  handleOnDrag: () => {},
+  handleOnDrop: () => {},
+  handleDragOver: () => {},
 };
 
 const IssueContext = createContext<IssueContextValues>(defaultValue);
@@ -48,23 +36,29 @@ export function IssueProvider({ children }: IssueProviderProps) {
   const [progressList, setProgressList] = useState<Issue[] | []>([]);
   const [doneList, setDoneList] = useState<Issue[] | []>([]);
 
-  const handleOnDrag = (e: DragEvent, issueId: number) => {
+  const handleOnDrag = (e: React.DragEvent<HTMLDivElement>, issueId: number) => {
     e.dataTransfer?.setData('issueId', String(issueId));
   };
 
-  const handleOnDrop = (e: DragEvent) => {
+  const handleOnDrop = (e: React.DragEvent<HTMLDivElement>) => {
     const issueId = e.dataTransfer?.getData('issueId');
     console.log('issueId', issueId);
   };
 
-  const handleDragOver = (e: DragEvent) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
 
   const value: IssueContextValues = {
-    issueList: { todoList, progressList, doneList },
-    setIssueList: { setTodoList, setProgressList, setDoneList },
-    dragHandlers: { handleOnDrag, handleOnDrop, handleDragOver },
+    todoList,
+    progressList,
+    doneList,
+    setTodoList,
+    setProgressList,
+    setDoneList,
+    handleOnDrag,
+    handleOnDrop,
+    handleDragOver,
   };
 
   return <IssueContext.Provider value={value}>{children}</IssueContext.Provider>;
@@ -77,7 +71,5 @@ export function useIssueContext() {
     throw Error('반드시 IssueProvider 안에서 사용해야 합니다.');
   }
 
-  const { issueList, setIssueList, dragHandlers } = context;
-
-  return { issueList, setIssueList, dragHandlers };
+  return context;
 }

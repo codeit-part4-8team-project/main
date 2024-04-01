@@ -4,7 +4,7 @@ import FloatingButton from '@/components/common/FloatingButton';
 // import MainSchedules from '@/components/MainPage/MainSchedules';
 import AnnouncementList from '@/components/announcement/AnnouncementList';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
-import IssueProvider from '@/contexts/IssueProvider';
+import { IssueProvider } from '@/contexts/IssueProvider';
 import { useAnnouncement } from '@/hooks/useAnnouncement';
 import { useIssueBoard } from '@/hooks/useIssue';
 
