@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import NoCard from '@/components/common/NoCard';
 import TextButton from '@/components/common/TextButton';
 import FreeBoardModal from '@/components/Modal/FreeBoardModal';
 import PostItem from '@/components/Post/PostItem';
+import { useModal } from '@/contexts/ModalProvider';
 import { Post } from '@/types/postTypes';
 
 interface PostListProps {
@@ -10,15 +10,14 @@ interface PostListProps {
 }
 
 export default function PostList({ posts }: PostListProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const openModal = useModal();
 
-  const handleToggleModalClick = () => {
-    setIsOpen(!isOpen);
+  const handleModalClick = () => {
+    openModal(({ close }) => <FreeBoardModal closeClick={close} />);
   };
 
   return (
     <>
-      {isOpen && <FreeBoardModal closeClick={handleToggleModalClick} />}
       <ul className="mt-[1.4rem] grid w-fit grid-cols-2 gap-12">
         {posts.length !== 0 ? (
           posts.map((post) => {
@@ -36,7 +35,7 @@ export default function PostList({ posts }: PostListProps) {
       </ul>
       <TextButton
         buttonSize="sm"
-        onClick={handleToggleModalClick}
+        onClick={handleModalClick}
         className="absolute right-12 top-[3.6rem]"
       >
         작성하기

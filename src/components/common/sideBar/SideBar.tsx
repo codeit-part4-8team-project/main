@@ -8,25 +8,16 @@ import GroupModal from '@/components/Modal/GroupModal';
 import { useModal } from '@/contexts/ModalProvider';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
-import { Team } from '@/types/teamTypes';
+import { Team, Teams } from '@/types/teamTypes';
 import PlusCircleIcon from '@/assets/PlusCircleIcon';
 
 export default function SideBar() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleToggleModalClick = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
-    <>
-      {isOpen && <GroupModal closeClick={handleToggleModalClick} />}
-      <div className="fixed bottom-0 left-0 top-[8.2rem] w-[26rem] rounded-tr-3xl bg-gray100">
-        <ProfileSection />
-        <BoardList />
-        <GroupSection />
-      </div>
-    </>
+    <div className="fixed bottom-0 left-0 top-[8.2rem] w-[26rem] rounded-tr-3xl bg-gray100">
+      <ProfileSection />
+      <BoardList />
+      <GroupSection />
+    </div>
   );
 }
 
@@ -50,7 +41,7 @@ function ProfileSection() {
 function GroupSection() {
   const [teams, setTeams] = useState<Team[]>([]);
 
-  const { loading, error, data } = useAxios<Team[]>(
+  const { loading, error, data } = useAxios<Teams>(
     {
       path: '/team/my-team',
       method: 'GET',
@@ -59,7 +50,7 @@ function GroupSection() {
   );
   useEffect(() => {
     if (data && !loading) {
-      setTeams(data);
+      setTeams(data.content);
     }
     if (error) {
       throw Error('내가 속한 팀을 불러올 수 없습니다.');
@@ -67,14 +58,15 @@ function GroupSection() {
   }, [data, loading, error]);
 
   const openModal = useModal();
-  const handleClickOpenModal = () => {
-    openModal(({ close }) => <GroupModal closeClick={close}></GroupModal>);
+
+  const handleModalClick = () => {
+    openModal(({ close }) => <GroupModal closeClick={close} />);
   };
 
   return (
     <div className="relative mt-[120%] flex items-center justify-between bg-black py-[1.8rem] pl-16 pr-[2.4rem]">
       <span className="text-body2-bold text-[#EDEEDC]">그룹</span>
-      <button className="relative" onClick={handleClickOpenModal}>
+      <button className="relative" onClick={handleModalClick}>
         <PlusCircleIcon fill="#F0F0E2" />
         {teams.length === 0 && <ToolTip />}
       </button>
