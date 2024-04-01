@@ -4,12 +4,14 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAnnouncementPage } from '@/hooks/useAnnouncement';
+import { useMyTeamPage } from '@/hooks/useMyTeam';
 import { usePostPage } from '@/hooks/usePost';
 import { Announcement } from '@/types/announcementTypes';
 import { Post } from '@/types/postTypes';
+import { Team } from '@/types/teamTypes';
 
 interface PageContextValue {
-  dataContent: Announcement[] | Post[] | [];
+  dataContent: Announcement[] | Post[] | Team[] | [];
   pageNumsArray: number[];
   currentPage: number;
   isFirst: boolean;
@@ -49,22 +51,31 @@ export function PageProvider({ children }: PageProviderProps) {
   const [startPage, setStartPage] = useState(1);
 
   const { teamId, pageContent } = useParams();
-
   const isTeam = teamId ? true : false;
 
   const { postPageData, fetchPostPageData } = usePostPage(currentPage);
   const { announcementPageData, fetchAnnouncementPageData } = useAnnouncementPage(currentPage);
-
+  const { myTeamPageData, fetchMyTeamPageData } = useMyTeamPage(currentPage);
   let size: number, totalPages: number, content;
 
-  if (pageContent === 'post') {
-    size = postPageData.size;
-    totalPages = postPageData.totalPages;
-    content = postPageData.content;
-  } else {
-    size = announcementPageData.size;
-    totalPages = announcementPageData.totalPages;
-    content = announcementPageData.content;
+  switch (pageContent) {
+    case 'post':
+      size = postPageData.size;
+      totalPages = postPageData.totalPages;
+      content = postPageData.content;
+      break;
+    case 'announcement':
+      size = announcementPageData.size;
+      totalPages = announcementPageData.totalPages;
+      content = announcementPageData.content;
+      break;
+    case 'mypage':
+      size = myTeamPageData.size;
+      totalPages = myTeamPageData.totalPages;
+      content = myTeamPageData.content;
+      break;
+    default:
+      throw Error('페이지네이션을 사용할 수 없는 페이지입니다.');
   }
 
   if (totalPages === 0) {
@@ -81,13 +92,24 @@ export function PageProvider({ children }: PageProviderProps) {
     case 'announcement':
       newPath = `/announcement/team/${teamId}${query}`;
       break;
+    case 'mypage':
+      newPath = `/team/my-team${query}`;
+      break;
     default:
       throw Error('페이지네이션을 사용할 수 없는 페이지입니다.');
   }
 
   useEffect(() => {
-    if (pageContent === 'post') fetchPostPageData({ newPath });
-    else fetchAnnouncementPageData({ newPath });
+    switch (pageContent) {
+      case 'post':
+        fetchPostPageData({ newPath });
+        break;
+      case 'announcement':
+        fetchAnnouncementPageData({ newPath });
+        break;
+      case 'mypage':
+        fetchMyTeamPageData({ newPath });
+    }
   }, [currentPage]);
 
   let pageNumsArray = createNumArray(startPage, size);
@@ -134,7 +156,6 @@ export function PageProvider({ children }: PageProviderProps) {
 
 export function usePagenation() {
   const pageInfo = useContext(PageContext);
-
   if (!pageInfo) {
     throw Error('반드시 PageProvider 안에서 호출해야 합니다.');
   }

@@ -1,11 +1,8 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { User } from '../types/user';
-import { useModal } from './ModalProvider';
-import AlertModal from '@/components/Modal/AlertModal';
 import { useAxios } from '@/hooks/useAxios';
 
-interface UserContextValue {
+export interface UserContextValue {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
@@ -30,15 +27,18 @@ export function UserProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useUserContext(forceUpdate: boolean = false) {
-  const { user, setUser } = useContext(UserContext);
-  const openModal = useModal();
-  const navigate = useNavigate();
+export function useUserContext(update: boolean = false) {
+  const context = useContext(UserContext);
+  const { setUser } = context;
+  if (context === null) {
+    throw new Error('UserProvider 외부입니다.');
+  }
+
   const { data, loading, error } = useAxios<User>(
     {
       path: '/user/',
     },
-    !user || forceUpdate,
+    update,
   );
 
   useEffect(() => {
@@ -47,19 +47,9 @@ export function useUserContext(forceUpdate: boolean = false) {
       console.log(data);
     }
     if (error) {
-      openModal(({ close }) => (
-        <AlertModal
-          buttonClick={() => {
-            close();
-            navigate('/Signin');
-          }}
-          buttonText="로그인 페이지로"
-        >
-          유저 정보를 불러오는 데에 실패하였습니다.
-        </AlertModal>
-      ));
+      console.error(error);
     }
   }, [data, loading, error, setUser]);
 
-  return { user, setUser };
+  return context;
 }

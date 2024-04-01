@@ -1,7 +1,7 @@
 import { PageableData } from '@/types/commonTypes';
 
 export type Grade = 'OWNER' | 'MANAGER' | 'TEAM_MEMBER';
-export type Role = 'BACKEND' | 'FRONTEND' | 'DESIGNER';
+export type Role = 'BACKEND' | 'FRONTEND' | 'DESIGNER' | 'PRODUCT_MANEGER';
 
 export interface Member {
   name: string;

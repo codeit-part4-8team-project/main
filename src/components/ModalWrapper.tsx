@@ -12,6 +12,12 @@ interface Props {
 function ModalWrapper({ children, id, onRemove }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
 
+  const handleClose = (e: Event) => {
+    if (ref.current && ref.current === e.target) {
+      onRemove(id);
+    }
+  };
+
   const handleClickOutside = (e: MouseEvent) => {
     if (ref.current && ref.current === e.target) {
       onRemove(id);
@@ -30,12 +36,14 @@ function ModalWrapper({ children, id, onRemove }: Props) {
       ref.current.showModal();
       document.addEventListener('keydown', handleKeydownEsc);
       document.addEventListener('click', handleClickOutside);
+      document.addEventListener('close', handleClose);
       document.body.style.overflow = 'hidden';
     }
 
     return () => {
       document.removeEventListener('keydown', handleKeydownEsc);
       document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('close', handleClose);
       document.body.style.overflow = ' auto';
       if (ref.current) {
         ref.current.close();
