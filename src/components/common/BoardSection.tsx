@@ -25,8 +25,8 @@ const ICON = {
 
 export default function BoardSection({ title, content, children }: BoardSection) {
   const { pageContent } = useParams();
+
   const shouldDisplayControlDate = title === 'My calendar' || title === 'Team calendar';
-  const controlDateMargin = title === 'My calendar' && 'mr-[6.8rem]';
   const gapBetweenTitleAndContent = clsx({
     'gap-[1.6rem]': pageContent === ('main' || 'issue'),
     'gap-12': pageContent === 'schedule',
@@ -36,10 +36,15 @@ export default function BoardSection({ title, content, children }: BoardSection)
 
   return (
     <div className={clsx('flex h-full flex-col gap-[1.6rem]', gapBetweenTitleAndContent)}>
-      <div className="relative flex items-center gap-[0.9rem] whitespace-nowrap text-body1-regular tracking-[-0.036rem] text-gray100">
+      <div
+        className={clsx(
+          'relative flex w-full items-center gap-16 whitespace-nowrap text-body1-regular tracking-[-0.036rem] text-gray100',
+          title === 'My calendar' && 'justify-between',
+        )}
+      >
         <div className="flex gap-4">
           {ICON[title]}
-          <span className={`font-rammetto ${controlDateMargin}`}>{title}</span>
+          <span className="font-rammetto">{title}</span>
         </div>
         {shouldDisplayControlDate && (
           <ControlDate className={`text-body4-bold text-gray100`} mode="month" />
