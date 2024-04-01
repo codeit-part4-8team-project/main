@@ -1,9 +1,10 @@
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import TextButton from '@/components/common/TextButton';
 import IssuesModal from '@/components/Modal/IssuesModal';
 import IssueList from '@/components/kanbanBoard/IssueList';
 import { useModal } from '@/contexts/ModalProvider';
-import { Issues } from '@/types/issueTypes';
+import { Issue, Issues } from '@/types/issueTypes';
 import { Team } from '@/types/teamTypes';
 
 interface KanbanBoardProps {
@@ -12,12 +13,26 @@ interface KanbanBoardProps {
   team?: Team;
 }
 
-export default function KanbanBoard({ issues, type, team }: KanbanBoardProps) {
+export default function KanbanBoard({
+  issues: { todoIssues, progressIssues, doneIssues },
+  type,
+  team,
+}: KanbanBoardProps) {
+  const [todoList, setTodoList] = useState<Issue[] | []>([]);
+  const [progressList, setProgressList] = useState<Issue[] | []>([]);
+  const [doneList, setDoneList] = useState<Issue[] | []>([]);
+
   const openModal = useModal();
 
   const handleModalClick = () => {
     openModal(({ close }) => <IssuesModal closeClick={close} />);
   };
+
+  useEffect(() => {
+    setTodoList(todoIssues);
+    setProgressList(progressIssues);
+    setDoneList(doneIssues);
+  }, [todoIssues, progressIssues, doneIssues]);
 
   const kanbanBoardClasses = clsx({
     'justify-between h-full w-content': type === 'main',
@@ -27,9 +42,9 @@ export default function KanbanBoard({ issues, type, team }: KanbanBoardProps) {
   return (
     <>
       <div className={clsx('flex gap-[2.4rem]', kanbanBoardClasses)}>
-        <IssueList status="todo" issues={issues.todoIssues} team={team} />
-        <IssueList status="progress" issues={issues.progressIssues} team={team} />
-        <IssueList status="done" issues={issues.doneIssues} team={team} />
+        <IssueList status="todo" issues={todoList} team={team} />
+        <IssueList status="progress" issues={progressList} team={team} />
+        <IssueList status="done" issues={doneList} team={team} />
       </div>
       {type === 'page' && (
         <TextButton
