@@ -3,14 +3,16 @@ import { Member, Team } from '@/types/teamTypes';
 
 export type IssueStatus = 'TODO' | 'PROGRESS' | 'DONE';
 export interface Issue {
-  id: number;
+  id: 0;
   title: string;
   author: Author;
   content: string;
-  assignedMembers: Member[];
+  assignedMembers: Member[] | [];
   dueDate: string;
   status: IssueStatus;
   team?: Team;
+  editable: boolean;
+  deletable: boolean;
 }
 export interface Issues {
   todoIssues: Issue[] | [];

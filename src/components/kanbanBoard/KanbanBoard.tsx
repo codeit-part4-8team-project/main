@@ -4,13 +4,15 @@ import IssuesModal from '@/components/Modal/IssuesModal';
 import IssueList from '@/components/kanbanBoard/IssueList';
 import { useModal } from '@/contexts/ModalProvider';
 import { Issues } from '@/types/issueTypes';
+import { Team } from '@/types/teamTypes';
 
 interface KanbanBoardProps {
   issues: Issues;
   type: 'main' | 'page';
+  team?: Team;
 }
 
-export default function KanbanBoard({ issues, type }: KanbanBoardProps) {
+export default function KanbanBoard({ issues, type, team }: KanbanBoardProps) {
   const openModal = useModal();
 
   const handleModalClick = () => {
@@ -25,9 +27,9 @@ export default function KanbanBoard({ issues, type }: KanbanBoardProps) {
   return (
     <>
       <div className={clsx('flex gap-[2.4rem]', kanbanBoardClasses)}>
-        <IssueList status="todo" issues={issues.todoIssues} />
-        <IssueList status="progress" issues={issues.progressIssues} />
-        <IssueList status="done" issues={issues.doneIssues} />
+        <IssueList status="todo" issues={issues.todoIssues} team={team} />
+        <IssueList status="progress" issues={issues.progressIssues} team={team} />
+        <IssueList status="done" issues={issues.doneIssues} team={team} />
       </div>
       {type === 'page' && (
         <TextButton

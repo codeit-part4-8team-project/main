@@ -28,7 +28,7 @@ export default function TeamBar() {
 
   return (
     <div className="absolute left-[28.4rem] right-[2.4rem] top-[8.5rem] grid grid-cols-[14rem_auto_auto] items-center gap-[6.2rem]">
-      <div className="flex w-[14rem] gap-4">
+      <div className="flex w-[20rem] gap-4">
         <ColorChipIcon fill={color} />
         <span className="text-body1-bold text-gray100">{name}</span>
       </div>
