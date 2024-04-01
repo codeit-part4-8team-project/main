@@ -7,8 +7,9 @@ import ViewListIcon from '@/assets/ViewListIcon';
 
 interface BoardSection {
   title: keyof typeof ICON;
-  content: ReactNode;
   mode?: 'month' | 'week';
+  content?: ReactNode;
+  children?: ReactNode;
 }
 
 const ICON = {
@@ -21,7 +22,7 @@ const ICON = {
   콘텐츠: <FolderIcon fill="#292929" active />,
 };
 
-export default function BoardSection({ title, content, mode }: BoardSection) {
+export default function BoardSection({ title, content, mode, children }: BoardSection) {
   const shouldDisplayControlDate = title === 'My calendar' || title === 'Team calendar';
   const controlDateMode = mode === 'week' ? 'week' : 'month';
   const controlDateStyle = mode === 'week' ? 'mr-[111.5rem]' : 'mr-[6.8rem]';
@@ -34,7 +35,7 @@ export default function BoardSection({ title, content, mode }: BoardSection) {
           <ControlDate className={`text-body4-bold text-gray100`} mode={controlDateMode} />
         )}
       </div>
-      <div className="h-full overflow-auto">{content}</div>
+      <div className="flex-auto">{content || children}</div>
     </div>
   );
 }
