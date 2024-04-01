@@ -222,6 +222,15 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               name="githubLink"
             />
           </div>
+
+          <ModalInput
+            hookform={register('githubLink')}
+            placeholder="URL을 입력해 주세요."
+            className={`${inputTextSize} ${borderStyle}`}
+            id="link"
+            name="githubLink"
+          />
+
           <div className="mb-[0.8rem] mt-[1.6rem] flex gap-[1.2rem]">
             <img src={discord} className={`${borderStyle} px-[1.8rem] py-[1.2rem]`} alt="discord" />
             <ModalInput

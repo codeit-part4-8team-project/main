@@ -1,24 +1,76 @@
-import ControlDate from '@/components/SchedulesPage/ControlDate';
+import { useEffect } from 'react';
+import { useContext } from 'react';
 import DateBox from '@/components/SchedulesPage/DateBox';
-import CalendarIcon from '@/assets/CalendarIcon';
+import { Schedule } from '@/contexts/CalenarProvider';
+import { calendarContext } from '@/contexts/CalenarProvider';
+import { useAxios } from '@/hooks/useAxios';
 
-function MainSchedules() {
-  const Container = 'w-full mt-[1.6rem] rounded-[2.4rem]';
+interface MainSchedulesProps {
+  calendarType: '나' | '팀';
+  teamId?: string;
+}
+
+function MainSchedules({ calendarType, teamId }: MainSchedulesProps) {
+  const { schedules, setSchedules, nowDate } = useContext(calendarContext);
+  const localDate = nowDate.toISOString().substring(0, 10);
+  const Container = {
+    width: '100%',
+    marginTop: '1.6rem',
+    borderRadius: '2.4rem',
+  };
+
+  const {
+    loading,
+    error,
+    data: responseData,
+    fetchData,
+  } = useAxios<{
+    userSchedules: Schedule[];
+    teamSchedules: Schedule[];
+  }>({
+    path:
+      calendarType === '나'
+        ? `/schedule/user/week?showUser=true&localDate=${localDate}`
+        : `/schedule/team/week/${teamId}?localDate=${localDate}`,
+    method: 'GET',
+  });
+  useEffect(() => {
+    if (!loading && !error && responseData) {
+      const combinedSchedules: Schedule[] = [
+        ...responseData.userSchedules.map((schedule) => ({ ...schedule })),
+        ...responseData.teamSchedules?.map((schedule) => ({ ...schedule })),
+      ];
+
+      const standardizedData = combinedSchedules.map((item: Schedule) => ({
+        ...item,
+        startDateTime: convertToISODate(item.startDateTime),
+        endDateTime: convertToISODate(item.endDateTime),
+      }));
+
+      setSchedules(standardizedData);
+    }
+  }, [loading, error, responseData]);
+  const convertToISODate = (dateTimeString: string): string => {
+    const [date, time] = dateTimeString.split(' ');
+    const [year, month, day] = date.split('-');
+    const [hour, minute, second] = time.split(':');
+    return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [schedules]);
 
   return (
     <>
-      <div className="ml-[0.3rem] mr-[5.2rem] mt-[0.3rem] bg-[#F7F7F7]">
-        <div className="content flex justify-between gap-[120rem]  whitespace-nowrap">
-          {/* <div className="flex items-center  gap-[0.9rem] font-rammetto text-[1.8rem] text-[#292929]">
-            <CalendarIcon active={true}></CalendarIcon>
-            <span> My calendar </span>
-          </div> */}
-          <ControlDate mode="week" />
+      <div className="ml-0.3 mr-5.2 mt-0.3 bg-gray-200">
+        <div className="content flex justify-between gap-12 whitespace-nowrap">
+          {/* <ControlDate mode="week" /> */}
         </div>
 
-        <div className={Container}>
+        <div style={Container}>
           <div>
-            <DateBox mode="week" />
+            <DateBox mode="week" calendarType={calendarType} />
           </div>
         </div>
       </div>
