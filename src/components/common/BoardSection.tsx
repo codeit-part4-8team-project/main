@@ -24,9 +24,9 @@ const ICON = {
   콘텐츠: <FolderIcon fill="#292929" active />,
 };
 
-export default function BoardSection({ title, content, children }: BoardSection) {
+export default function BoardSection({ title, content, mode, children }: BoardSection) {
   const { pageContent } = useParams();
-
+  const controlDateMode = mode === 'week' ? 'week' : 'month';
   const shouldDisplayControlDate = title === 'My calendar' || title === 'Team calendar';
   const gapBetweenTitleAndContent = clsx({
     'gap-[1.6rem]': pageContent === ('main' || 'issue'),
