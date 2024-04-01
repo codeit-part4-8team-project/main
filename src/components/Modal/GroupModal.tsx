@@ -18,7 +18,7 @@ import { defaultInstance, useAxios } from '@/hooks/useAxios';
 type Inputs = {
   name: string;
   description: string;
-  members?: string[] | string;
+  members?: string[];
   color: string;
   startDate: string;
   endDate: string;
@@ -47,6 +47,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   const [colorToggle, setColorToggle] = useState<boolean>(false);
   const [membersList, setMembersList] = useState<dataType[]>([]);
   const [memberCheck, setMemberCheck] = useState(false);
+  // const [disabled, setDisabled] = useState<boolean>(false)
 
   const {
     register,
@@ -76,10 +77,12 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
       githubLink: githubLink,
       discordLink: discordLink,
       figmaLink: figmaLink,
-      color: color,
+      color: color || '#292929',
     };
     handleGroup(createTeam);
   };
+  // const name = watch('name');
+  // const description = watch('description');
 
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
@@ -126,6 +129,12 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     }
   };
 
+  // const disabledButton = () => {
+  //   if (name.length < 20 && description.length < 40) {
+  //     setDisabled(true)
+  //   }
+  // };
+
   useEffect(() => {
     if (colorToggle) {
       document.addEventListener('mousedown', handleColorClickOutside);
@@ -137,7 +146,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   }, [colorToggle]);
 
   return (
-    <ModalLayout closeClick={closeClick} title="그룹 생성" size="xl">
+    <ModalLayout closeClick={closeClick} title="그룹 생성">
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalFormBorder className="mt-16 h-full w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 p-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>그룹 게시자</p>
@@ -156,6 +165,11 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               className={`${inputTextSize} ${borderStyle}`}
             />
           </div>
+          {watch('name')?.length > 20 && (
+            <div className="absolute text-point_red">
+              <p>20자 이하로 입력해 주세요.</p>
+            </div>
+          )}
           {watch('name') ? (
             <p className=" mb-[0.9rem] flex justify-end text-gray50">{watch('name')?.length}/20</p>
           ) : (
@@ -172,6 +186,11 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               hookform={register('description')}
             />
           </div>
+          {watch('description')?.length > 40 && (
+            <div className="absolute text-point_red">
+              <p>40자 이하로 입력해 주세요.</p>
+            </div>
+          )}
           {watch('description') ? (
             <p className=" mb-[0.9rem] flex justify-end text-gray50">
               {watch('description')?.length}/40
@@ -272,7 +291,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             )}
           </div>
         </ModalFormBorder>
-        <TextButton buttonSize="md" className="mt-16">
+        <TextButton buttonSize="md" className="mt-16" disabled={false}>
           생성하기
         </TextButton>
       </form>

@@ -6,18 +6,8 @@ import { useAxios } from '@/hooks/useAxios';
 
 interface NotMeLssuesModalProps {
   closeClick: () => void;
+  issueId: number;
 }
-
-// "assignedMembers": [
-//   {
-//     "name": "string",
-//     "imageUrl": "string",
-//     "role": "string",
-//     "grade": "string",
-//     "username": "string",
-//     "createdDate": "2024-03-29"
-//   }
-// ],
 
 interface UserType {
   name: string;
@@ -35,18 +25,14 @@ interface DefaultValueType {
   author?: UserType;
 }
 
-export default function NotMeIssuesModal({ closeClick }: NotMeLssuesModalProps) {
-  // 빨리 연동해서 프롭으로 받아야지 ㅠㅠ
+export default function NotMeIssuesModal({ closeClick, issueId = 2 }: NotMeLssuesModalProps) {
   const teamId = 10;
-  const issueId = -31;
   const { data: defaultValue } = useAxios(
     {
       path: `issue/${issueId}`,
     },
     true,
   );
-
-  console.log(defaultValue);
 
   const { title, author, content, assignedMembers }: DefaultValueType = defaultValue || {};
   const TextSize = 'text-body3-medium';
@@ -64,8 +50,6 @@ export default function NotMeIssuesModal({ closeClick }: NotMeLssuesModalProps) 
             alt="profile"
             className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
           />
-          {/* 데이터 받아지면 변경 예정구역 */}
-          {/* <p className=" text-[1.4rem]">userNickName</p> */}
           <p className=" text-[1.4rem]">{author?.username}</p>
         </div>
 

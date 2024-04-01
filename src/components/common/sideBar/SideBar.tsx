@@ -59,7 +59,7 @@ function GroupSection() {
   );
   useEffect(() => {
     if (data && !loading) {
-      setTeams(data);
+      setTeams(data.content);
     }
     if (error) {
       throw Error('내가 속한 팀을 불러올 수 없습니다.');

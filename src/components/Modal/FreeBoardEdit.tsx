@@ -5,32 +5,48 @@ import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import { useAxios } from '@/hooks/useAxios';
+import { Author } from '@/types/commonTypes';
 
 interface Inputs {
   title: string;
   content: string;
 }
 
+interface defaultValue {
+  author?: Author;
+  title?: string;
+  content?: string;
+}
+
 interface FreeBoardModalProps {
   closeClick: () => void;
 }
 
-export default function FreeBoardModal({ closeClick }: FreeBoardModalProps) {
-  const { fetchData: freeBoardFetchData } = useAxios({});
+export default function FreeBoardEditModal({ closeClick }: FreeBoardModalProps) {
+  const teamId = 6;
+  const postId = 1;
+  const { data: defaultValue } = useAxios<defaultValue>(
+    {
+      path: `post/${postId}`,
+    },
+    true,
+  );
+  const { title, content, author }: defaultValue = defaultValue || {};
+  const { fetchData: freeBoardEditData } = useAxios({});
   const { register, watch, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = ({ content, title }) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content }) => {
     const createFreeBoard = {
       content: content,
       title: title,
     };
-    handlePostFreeBoard(createFreeBoard);
+    handlePatchFreeBoard(createFreeBoard);
     console.log(createFreeBoard);
   };
-  const teamId = 6;
-  const handlePostFreeBoard = (data: Inputs) => {
-    freeBoardFetchData({
-      newPath: `post/${teamId}`,
-      newMethod: 'POST',
+
+  const handlePatchFreeBoard = (data: Inputs) => {
+    freeBoardEditData({
+      newPath: `post/${postId}`,
+      newMethod: 'PATCH',
       newData: data,
     });
   };
@@ -41,14 +57,17 @@ export default function FreeBoardModal({ closeClick }: FreeBoardModalProps) {
     <ModalLayout title="작성하기" closeClick={closeClick}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="my-16 flex items-center gap-4">
-          <img src={profile} alt="profile" />
-          {/* 데이터 받아지면 변경 예정구역 */}
-          <p className=" text-[1.4rem]">userNickName</p>
-          {/*  */}
+          <img
+            src={author?.imageUrl}
+            alt="profile"
+            className="h-[2.4rem] w-[2.4rem] rounded-[99rem]"
+          />
+          <p className=" text-[1.4rem]">{author?.username}</p>
         </div>
         <div className="mb-[0.8rem] flex flex-col gap-[0.8rem]">
           <ModalLabel htmlFor="title" label="제목" className={`${formTextSize}`} />
           <ModalInput
+            defaultValue={title}
             placeholder="제목을 작성해 주세요."
             id="title"
             name="title"
@@ -62,8 +81,9 @@ export default function FreeBoardModal({ closeClick }: FreeBoardModalProps) {
           <p className=" mb-[0.9rem] flex justify-end text-gray50">0/20</p>
         )}
         <div className="flex flex-col gap-[0.8rem]">
-          <ModalLabel htmlFor="content" label="내용*" className={`${formTextSize}`} />
+          <ModalLabel htmlFor="content" label="내용" className={`${formTextSize}`} />
           <textarea
+            defaultValue={content}
             {...register('content')}
             placeholder="내용을 입력해 주세요."
             id="content"
@@ -77,8 +97,8 @@ export default function FreeBoardModal({ closeClick }: FreeBoardModalProps) {
         ) : (
           <p className=" mb-[0.9rem] flex justify-end text-gray50">0/200</p>
         )}
-        <TextButton buttonSize="md" className="mt-16">
-          작성하기
+        <TextButton buttonSize="md" className="">
+          편집하기
         </TextButton>
       </form>
     </ModalLayout>

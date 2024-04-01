@@ -12,6 +12,7 @@ interface ScheduleModalProps {
   closeClick?: () => void;
   user?: boolean;
   team?: boolean;
+  teamId: number;
 }
 type Inputs = {
   title: string;
@@ -20,15 +21,9 @@ type Inputs = {
   content: string;
 };
 // 여기는 user인지 team인지 구분이 필요함
-function ScheduleModal({ closeClick, user = true, team = false }: ScheduleModalProps) {
+function ScheduleModal({ closeClick, team = false, user = false, teamId = 6 }: ScheduleModalProps) {
   const { fetchData: userFetchData } = useAxios({});
   const { fetchData: teamFetchData } = useAxios({});
-  const formTextSize = 'text-body3-medium';
-  const inputTextSize = 'text-body3-regular';
-  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
-  const InputValueLength = 'mb-[0.9rem] flex justify-end text-gray50';
-
-  // - Swagger에 있는 날짜 포맷말고  yyyy-MM-dd HH:mm:ss 사용
 
   const {
     register,
@@ -37,17 +32,24 @@ function ScheduleModal({ closeClick, user = true, team = false }: ScheduleModalP
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ title, startDateTime, endDateTime, content }) => {
     const createSchedlue = {
-      title: data.title,
-      startDateTime: data.startDateTime,
-      endDateTime: data.endDateTime,
-      content: data.content,
+      title: title,
+      startDateTime: startDateTime,
+      endDateTime: endDateTime,
+      content: content,
     };
     handleScheduleUserFetch(createSchedlue);
     console.log('createTema', createSchedlue);
   };
-  const teamId = 3;
+  const titleWatch = watch('title');
+  const contentWatch = watch('content');
+
+  const formTextSize = 'text-body3-medium';
+  const inputTextSize = 'text-body3-regular';
+  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
+  const InputValueLength = 'mb-[0.9rem] flex justify-end text-gray50';
+
   const handleScheduleUserFetch = (data: Inputs) => {
     if (user) {
       userFetchData({
@@ -86,8 +88,14 @@ function ScheduleModal({ closeClick, user = true, team = false }: ScheduleModalP
               name="title"
             />
           </div>
-          {watch('title') ? (
-            <p className={`${InputValueLength}`}>{watch('title')?.length}/20</p>
+          {titleWatch?.length > 20 && (
+            <div className="absolute text-point_red">
+              <p>20자 이하로 입력해 주세요.</p>
+            </div>
+          )}
+
+          {titleWatch ? (
+            <p className={`${InputValueLength}`}>{titleWatch?.length}/20</p>
           ) : (
             <p className={`${InputValueLength}`}>0/20</p>
           )}
@@ -101,12 +109,18 @@ function ScheduleModal({ closeClick, user = true, team = false }: ScheduleModalP
               type="text"
               name="content"
             />
-            {watch('content') ? (
-              <p className={`${InputValueLength}`}>{watch('content')?.length}/40</p>
-            ) : (
-              <p className={`${InputValueLength}`}>0/40</p>
-            )}
           </div>
+          {contentWatch?.length > 40 && (
+            <div className="absolute text-point_red">
+              <p>40자 이하로 입력해 주세요.</p>
+            </div>
+          )}
+          {contentWatch ? (
+            <p className={`${InputValueLength}`}>{contentWatch?.length}/40</p>
+          ) : (
+            <p className={`${InputValueLength}`}>0/40</p>
+          )}
+
           <ModalScheduleCalendarInput
             startHookform={register('startDateTime')}
             startName="startDateTime"

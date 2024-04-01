@@ -6,32 +6,33 @@ import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import { useAxios } from '@/hooks/useAxios';
 
-type Inputs = {
+interface Inputs {
   title: string;
   content: string;
-};
+}
 
 interface AnnouncementModalProps {
   closeClick: () => void;
+  teamId?: number;
 }
-// 나중에 title 프롭으로 받기
+// 나중에 group 프롭으로 받기
 
-export default function AnnouncementModal({ closeClick }: AnnouncementModalProps) {
+export default function AnnouncementModal({ closeClick, teamId = 6 }: AnnouncementModalProps) {
   const { fetchData } = useAxios({});
   const { register, watch, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ content, title }) => {
     const createFreeBoard = {
-      content: data.content,
-      title: data.title,
+      content: content,
+      title: title,
     };
-    handlePostAnnoucement(createFreeBoard);
+    handlePostAnnouncement(createFreeBoard);
     console.log(createFreeBoard);
   };
-  const teamId = 10;
 
-  const handlePostAnnoucement = (data: Inputs) => {
+  const handlePostAnnouncement = (data: Inputs) => {
     fetchData({
-      newPath: `${teamId}/annoucement/`,
+      newPath: `announcement/${teamId}`,
+      newMethod: 'POST',
       newData: data,
     });
   };
@@ -65,7 +66,7 @@ export default function AnnouncementModal({ closeClick }: AnnouncementModalProps
             placeholder="내용을 입력해 주세요."
             id="content"
             name="content"
-            className={`h-[23.8rem] w-[38.1rem] px-[1.8rem] pb-[1.2rem] pt-[1.8rem] ${borderStyle} mb-[0.8rem] text-body4-regular`}
+            className={`h-[23.8rem] w-[38.1rem] px-[1.8rem] pb-[1.2rem] pt-[1.8rem] ${borderStyle} mb-[0.8rem] text-body3-regular`}
             maxLength={200}
           />
         </div>
