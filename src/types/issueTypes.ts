@@ -3,7 +3,7 @@ import { Member, Team } from '@/types/teamTypes';
 
 export type IssueStatus = 'TODO' | 'PROGRESS' | 'DONE';
 export interface Issue {
-  id: 0;
+  id: number;
   title: string;
   author: Author;
   content: string;
