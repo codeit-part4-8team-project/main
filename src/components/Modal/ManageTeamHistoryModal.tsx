@@ -5,10 +5,7 @@ import Dropdown from '../common/Dropdown';
 import Input from '../common/Input';
 import TextButton from '../common/TextButton';
 import ModalLayout from '../common/modal/ModalLayout';
-import AlertModal from './AlertModal';
-import { AxiosError, HttpStatusCode } from 'axios';
 import { useModal } from '@/contexts/ModalProvider';
-import { defaultInstance } from '@/hooks/useAxios';
 import { Grade, Role } from '@/types/teamTypes';
 
 interface ManageTeamHistoryModalProps {

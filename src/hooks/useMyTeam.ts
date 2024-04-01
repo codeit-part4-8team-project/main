@@ -1,12 +1,12 @@
 import { DEFAULT_PAGE_DATA } from '@/constants/defaultPageData';
 import { useEffect } from 'react';
 import { useAxios } from './useAxios';
-import { MyTeams } from '@/types/teamTypes';
+import { Teams } from '@/types/teamTypes';
 
 export function useMyTeamPage(page?: number) {
   const query = `?page=${page || 1}`;
 
-  const { error, data, fetchData } = useAxios<MyTeams>({
+  const { error, data, fetchData } = useAxios<Teams>({
     path: `/team/my-team${query}`,
   });
 

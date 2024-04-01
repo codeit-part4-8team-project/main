@@ -1,8 +1,8 @@
 import { Announcements } from '@/types/announcementTypes';
 import { Posts } from '@/types/postTypes';
-import { MyTeams } from '@/types/teamTypes';
+import { Teams } from '@/types/teamTypes';
 
-export const DEFAULT_PAGE_DATA: Posts & Announcements & MyTeams = {
+export const DEFAULT_PAGE_DATA: Posts & Announcements & Teams = {
   content: [],
   pageable: {
     pageNumber: 0,

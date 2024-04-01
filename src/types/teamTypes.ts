@@ -25,6 +25,8 @@ export interface Team {
   members?: Member[] | [];
 }
 
+export type RequiredTeam = Required<Team>;
+
 export interface Teams extends PageableData {
   content: Team[] | [];
 }
