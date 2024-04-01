@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import BoardSection from '@/components/common/BoardSection';
 import FloatingButton from '@/components/common/FloatingButton';
 import MainSchedules from '@/components/MainPage/MainSchedules';
@@ -7,6 +8,7 @@ import { useAnnouncement } from '@/hooks/useAnnouncement';
 import { useIssueBoard } from '@/hooks/useIssue';
 
 export default function UserMainPage() {
+  const { userId } = useParams();
   const { issueBoardData } = useIssueBoard();
   const { announcementData } = useAnnouncement();
 
@@ -18,7 +20,7 @@ export default function UserMainPage() {
         title="Kanban board"
         content={<KanbanBoard issues={issueBoardData} type="main" />}
       />
-      <FloatingButton />
+      <FloatingButton link={`/user/${userId}/post`} />
     </div>
   );
 }

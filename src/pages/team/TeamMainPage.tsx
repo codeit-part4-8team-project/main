@@ -25,7 +25,7 @@ export default function TeamMainPage() {
         title="Kanban board"
         content={<KanbanBoard issues={issueBoardData} type="main" />}
       />
-      <FloatingButton />
+      <FloatingButton link={`/team/${teamId}/post`} />
     </div>
   );
 }
