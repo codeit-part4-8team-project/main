@@ -30,12 +30,36 @@ export function UserProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useUserContext() {
-  const context = useContext(UserContext);
+export function useUserContext(forceUpdate: boolean = false) {
+  const { user, setUser } = useContext(UserContext);
+  const openModal = useModal();
+  const navigate = useNavigate();
+  const { data, loading, error } = useAxios<User>(
+    {
+      path: '/user/',
+    },
+    !user || forceUpdate,
+  );
 
-  if (context === null) {
-    throw new Error('UserProvider 외부입니다.');
-  }
+  useEffect(() => {
+    if (data && !loading) {
+      setUser(data);
+      console.log(data);
+    }
+    if (error) {
+      openModal(({ close }) => (
+        <AlertModal
+          buttonClick={() => {
+            close();
+            navigate('/Signin');
+          }}
+          buttonText="로그인 페이지로"
+        >
+          유저 정보를 불러오는 데에 실패하였습니다.
+        </AlertModal>
+      ));
+    }
+  }, [data, loading, error, setUser]);
 
-  return context;
+  return { user, setUser };
 }

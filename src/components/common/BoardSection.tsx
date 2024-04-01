@@ -9,6 +9,7 @@ import ViewListIcon from '@/assets/ViewListIcon';
 
 interface BoardSection {
   title: keyof typeof ICON;
+  mode?: 'month' | 'week';
   content?: ReactNode;
   children?: ReactNode;
 }
@@ -47,11 +48,10 @@ export default function BoardSection({ title, content, children }: BoardSection)
           <span className="font-rammetto">{title}</span>
         </div>
         {shouldDisplayControlDate && (
-          <ControlDate className={`text-body4-bold text-gray100`} mode="month" />
+          <ControlDate className={`text-body4-bold text-gray100`} mode={controlDateMode} />
         )}
       </div>
       <div className="flex-auto">{content || children}</div>
-      {/* content안에 단일 컴포넌트로 넣기 불편한 페이지가 있어서 chilren으로 받을 수 있도록 했습니다.*/}
     </div>
   );
 }

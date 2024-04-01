@@ -1,34 +1,22 @@
+import { userTeamsInfo } from '@/mockdata/teamData';
 import { ReactNode, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 import DropDown from '@/components/common/sideBar/DropDown';
-import { Team } from '@/types/teamTypes';
 import ColorChipIcon from '@/assets/ColorChipIcon';
 import MeatbollsIcon from '@/assets/MeatbollsIcon';
 
-interface GroupListProps {
-  teams: Team[];
-}
 interface GroupItemProps {
   color: string;
-  teamId: number;
-  isCurrent: boolean;
   children: ReactNode;
 }
 
-export default function GroupList({ teams }: GroupListProps) {
-  const { teamId } = useParams();
-
+export default function GroupList() {
   return (
     <ul className="absolute left-[2.4rem] top-[7.4rem] flex flex-col gap-[1.6rem]">
-      {teams.map(({ id, name, color }) => {
-        const isCurrent = teamId ? Number(teamId) === id : false;
-
+      {userTeamsInfo.map(({ name, color }) => {
         return (
-          <li key={id}>
-            <GroupItem color={color} teamId={id} isCurrent={isCurrent}>
-              {name}
-            </GroupItem>
+          <li>
+            <GroupItem color={color}>{name}</GroupItem>
           </li>
         );
       })}
@@ -36,7 +24,7 @@ export default function GroupList({ teams }: GroupListProps) {
   );
 }
 
-function GroupItem({ color, teamId, isCurrent, children }: GroupItemProps) {
+function GroupItem({ color, children }: GroupItemProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOptionClick = () => {
@@ -44,20 +32,15 @@ function GroupItem({ color, teamId, isCurrent, children }: GroupItemProps) {
   };
 
   return (
-    <Link to={`/team/${teamId}/main`}>
-      <div
-        className={clsx(
-          'grid h-16 w-[21.2rem] grid-cols-[2.4rem_1fr_2.4rem] items-center gap-[1.6rem] rounded-[0.6rem] py-[0.8rem] pl-[1.6rem] hover:bg-[#EDEEDC]/10',
-          isCurrent && 'bg-[#EDEEDC]/10',
-        )}
-      >
+    <Link to="/teams/1/main">
+      <button className="grid h-16 w-[21.2rem] grid-cols-[2.4rem_1fr_2.4rem] items-center gap-[1.6rem] rounded-[0.6rem] py-[0.8rem] pl-[1.6rem] hover:bg-[#EDEEDC]/10">
         <ColorChipIcon fill={color} />
         <span className="justify-self-start text-body3-bold text-[#EDEEDC]">{children}</span>
         <button onClick={handleOptionClick} className="relative justify-self-end">
           <MeatbollsIcon fill="white" />
           {isOpen && <DropDown />}
         </button>
-      </div>
+      </button>
     </Link>
   );
 }
