@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import clsx from 'clsx';
 import TextButton from '@/components/common/TextButton';
 import IssuesModal from '@/components/Modal/IssuesModal';
 import IssueList from '@/components/kanbanBoard/IssueList';
+import { useIssueContext } from '@/contexts/IssueProvider';
 import { useModal } from '@/contexts/ModalProvider';
-import { Issue, Issues } from '@/types/issueTypes';
+import { Issues } from '@/types/issueTypes';
 import { Team } from '@/types/teamTypes';
 
 interface KanbanBoardProps {
@@ -18,9 +19,8 @@ export default function KanbanBoard({
   type,
   team,
 }: KanbanBoardProps) {
-  const [todoList, setTodoList] = useState<Issue[] | []>([]);
-  const [progressList, setProgressList] = useState<Issue[] | []>([]);
-  const [doneList, setDoneList] = useState<Issue[] | []>([]);
+  const { todoList, progressList, doneList, setTodoList, setProgressList, setDoneList } =
+    useIssueContext();
 
   const openModal = useModal();
 

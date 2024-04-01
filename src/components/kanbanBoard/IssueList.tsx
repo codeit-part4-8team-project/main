@@ -1,5 +1,6 @@
 import NoCard from '@/components/common/NoCard';
 import IssueItem from '@/components/kanbanBoard/IssueItem';
+import { useIssueContext } from '@/contexts/IssueProvider';
 import { Issue } from '@/types/issueTypes';
 import { Team } from '@/types/teamTypes';
 
@@ -16,8 +17,14 @@ const TITLE = {
 };
 
 export default function IssueList({ status, issues = [], team }: IssueListProps) {
+  const { handleOnDrop, handleDragOver } = useIssueContext();
+
   return (
-    <div className="flex w-full max-w-[34.2rem] flex-col gap-[2.4rem] rounded-[2.4rem] bg-white px-12 pt-12 shadow-[0_0_1rem_0_rgba(17,17,17,0.05)]">
+    <div
+      onDrop={handleOnDrop}
+      onDragOver={handleDragOver}
+      className="flex w-full max-w-[34.2rem] flex-col gap-[2.4rem] rounded-[2.4rem] bg-white px-12 pt-12 shadow-[0_0_1rem_0_rgba(17,17,17,0.05)]"
+    >
       <span className="text-body2-bold text-gray80">{`${TITLE[status]} ${issues.length}`}</span>
       <div className="flex h-full flex-col gap-[1.5rem] overflow-scroll pb-12">
         {issues.length !== 0 ? (

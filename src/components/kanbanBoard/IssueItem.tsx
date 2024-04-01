@@ -1,4 +1,5 @@
 import ProfileStack from '@/components/common/ProfileStack';
+import { useIssueContext } from '@/contexts/IssueProvider';
 import { getProfilesImgs } from '@/lib/getProfileImgs';
 import { Issue } from '@/types/issueTypes';
 import { Team } from '@/types/teamTypes';
@@ -10,7 +11,7 @@ interface IssueItemProps {
 }
 
 export default function IssueItem({
-  issue: { title, content, team, assignedMembers },
+  issue: { id, title, content, team, assignedMembers },
   teamInfo,
 }: IssueItemProps) {
   if (teamInfo) team = teamInfo;
@@ -23,8 +24,13 @@ export default function IssueItem({
 
   const profileImgs = assignedMembers ? getProfilesImgs(assignedMembers) : [];
 
+  const { handleOnDrag } = useIssueContext();
   return (
-    <div className="relative min-h-64 w-full rounded-[2.4rem] border border-gray30 bg-white p-8">
+    <div
+      draggable
+      onDragStart={(e) => handleOnDrag(e, id)}
+      className="relative min-h-64 w-full rounded-[2.4rem] border border-gray30 bg-white p-8"
+    >
       <div className="flex flex-col gap-[2.2rem]">
         <div className="text-body4-bold text-gray100">{title}</div>
         <span className="text-body4-regular leading-[1.6rem] text-gray50">{content}</span>
