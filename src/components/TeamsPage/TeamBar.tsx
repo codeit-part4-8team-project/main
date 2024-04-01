@@ -1,19 +1,19 @@
-import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProfileStack from '@/components/common/ProfileStack';
 import TextButton from '@/components/common/TextButton';
 import InvitationGroupModal from '@/components/Modal/InvitationGroupModal';
 import TeamTab from '@/components/TeamsPage/TeamTab';
+import { useModal } from '@/contexts/ModalProvider';
 import { useTeam } from '@/contexts/TeamProvider';
 import { getProfilesImgs } from '@/lib/getProfileImgs';
 import ColorChipIcon from '@/assets/ColorChipIcon';
 import InviteIcon from '@/assets/InviteIcon';
 
 export default function TeamBar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const openModal = useModal();
 
-  const handleToggleModalClick = () => {
-    setIsOpen(!isOpen);
+  const handleModalClick = () => {
+    openModal(({ close }) => <InvitationGroupModal closeClick={close} />);
   };
 
   const { teamId } = useParams();
@@ -28,7 +28,6 @@ export default function TeamBar() {
 
   return (
     <div className="absolute left-[28.4rem] right-[2.4rem] top-[8.5rem] grid grid-cols-[14rem_auto_auto] items-center gap-[6.2rem]">
-      {isOpen && <InvitationGroupModal closeClick={handleToggleModalClick} />}
       <div className="flex w-[14rem] gap-4">
         <ColorChipIcon fill={color} />
         <span className="text-body1-bold text-gray100">{name}</span>
@@ -38,7 +37,7 @@ export default function TeamBar() {
         <TextButton
           buttonSize="sm"
           color="white"
-          onClick={handleToggleModalClick}
+          onClick={handleModalClick}
           className="flex h-[3.6rem] w-[8.7rem] gap-[0.8rem] border-0"
         >
           <InviteIcon />

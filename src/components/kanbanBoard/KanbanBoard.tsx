@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import clsx from 'clsx';
 import TextButton from '@/components/common/TextButton';
-import GroupModal from '@/components/Modal/GroupModal';
+import IssuesModal from '@/components/Modal/IssuesModal';
 import IssueList from '@/components/kanbanBoard/IssueList';
+import { useModal } from '@/contexts/ModalProvider';
 import { Issues } from '@/types/issueTypes';
 
 interface KanbanBoardProps {
@@ -11,10 +11,10 @@ interface KanbanBoardProps {
 }
 
 export default function KanbanBoard({ issues, type }: KanbanBoardProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const openModal = useModal();
 
-  const handleToggleModalClick = () => {
-    setIsOpen(!isOpen);
+  const handleModalClick = () => {
+    openModal(({ close }) => <IssuesModal closeClick={close} />);
   };
 
   const kanbanBoardClasses = clsx({
@@ -24,7 +24,6 @@ export default function KanbanBoard({ issues, type }: KanbanBoardProps) {
 
   return (
     <>
-      {isOpen && <GroupModal closeClick={handleToggleModalClick} />}
       <div className={clsx('flex gap-[2.4rem]', kanbanBoardClasses)}>
         <IssueList status="todo" issues={issues.todoIssues} />
         <IssueList status="progress" issues={issues.progressIssues} />
@@ -33,7 +32,7 @@ export default function KanbanBoard({ issues, type }: KanbanBoardProps) {
       {type === 'page' && (
         <TextButton
           buttonSize="sm"
-          onClick={handleToggleModalClick}
+          onClick={handleModalClick}
           className="absolute right-12 top-[3.6rem]"
         >
           게시하기

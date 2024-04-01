@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import NoCard from '@/components/common/NoCard';
 import TextButton from '@/components/common/TextButton';
 import AnnouncementModal from '@/components/Modal/AnnouncementModal';
 import AnnouncementItem from '@/components/announcement/AnnouncementItem';
+import { useModal } from '@/contexts/ModalProvider';
 import { useTeam } from '@/contexts/TeamProvider';
 import { Announcement } from '@/types/announcementTypes';
 
@@ -13,10 +13,10 @@ interface AnnouncementPageListProps {
 
 /* 팀의 공지사항 페이지에서 사용하는 공지글 리스트 */
 export default function AnnouncementPageList({ announcements }: AnnouncementPageListProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const openModal = useModal();
 
-  const handleToggleModalClick = () => {
-    setIsOpen(!isOpen);
+  const handleModalClick = () => {
+    openModal(({ close }) => <AnnouncementModal closeClick={close} />);
   };
 
   const { teamId } = useParams();
@@ -27,7 +27,6 @@ export default function AnnouncementPageList({ announcements }: AnnouncementPage
 
   return (
     <>
-      {isOpen && <AnnouncementModal closeClick={handleToggleModalClick} />}
       <div className="w-[132.6rem]">
         {announcements.length !== 0 ? (
           <ul className="grid w-fit list-none grid-cols-3 gap-[2.4rem]">
@@ -47,7 +46,7 @@ export default function AnnouncementPageList({ announcements }: AnnouncementPage
       </div>
       <TextButton
         buttonSize="sm"
-        onClick={handleToggleModalClick}
+        onClick={handleModalClick}
         className="absolute right-12 top-[3.6rem]"
       >
         게시하기
