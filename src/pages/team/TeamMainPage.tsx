@@ -28,7 +28,7 @@ export default function TeamMainPage() {
         <AnnouncementList announcements={announcementData} team={team} />
         <BoardSection
           title="Kanban board"
-          content={<KanbanBoard issues={issueBoardData} type="main" />}
+          content={<KanbanBoard issues={issueBoardData} type="main" team={team} />}
         />
       </div>
       <FloatingButton link={`/team/${teamId}/post`} />

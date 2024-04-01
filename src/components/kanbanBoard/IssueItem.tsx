@@ -1,26 +1,22 @@
-import { useParams } from 'react-router-dom';
 import ProfileStack from '@/components/common/ProfileStack';
-import { useTeam } from '@/contexts/TeamProvider';
 import { getProfilesImgs } from '@/lib/getProfileImgs';
 import { Issue } from '@/types/issueTypes';
+import { Team } from '@/types/teamTypes';
 import DragHandleIcon from '@/assets/DragHandleIcon';
 
 interface IssueItemProps {
   issue: Issue;
+  teamInfo?: Team;
 }
 
 export default function IssueItem({
   issue: { title, content, team, assignedMembers },
+  teamInfo,
 }: IssueItemProps) {
-  const { teamId } = useParams();
-
-  if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
-
-  const { team: currentTeam } = useTeam(teamId);
+  if (teamInfo) team = teamInfo;
 
   if (!team) {
-    // 데이터에 team 정보가 없는 경우 = 현재 팀 페이지인 경우
-    team = currentTeam;
+    throw Error('팀 정보가 없습니다.');
   }
 
   const { color, name } = team;
