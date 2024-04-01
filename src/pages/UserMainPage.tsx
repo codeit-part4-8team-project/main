@@ -13,14 +13,20 @@ export default function UserMainPage() {
   const { announcementData } = useAnnouncement();
 
   return (
-    <div className="grid h-full w-full grid-cols-[107.4fr_37.8fr] grid-rows-[33.7fr_52.5fr] gap-[5.2rem]">
-      <BoardSection title="My calendar" mode="week" content={<MainSchedules calendarType="나" />} />
-      <AnnouncementList announcements={announcementData} />
-      <BoardSection
-        title="Kanban board"
-        content={<KanbanBoard issues={issueBoardData} type="main" />}
-      />
+    <>
+      <div className="grid h-full w-full grid-cols-[107.4fr_37.8fr] grid-rows-[33.7fr_52.5fr] gap-[5.2rem]">
+        <BoardSection
+          title="My calendar"
+          mode="week"
+          content={<MainSchedules calendarType="나" />}
+        />
+        <AnnouncementList announcements={announcementData} />
+        <BoardSection
+          title="Kanban board"
+          content={<KanbanBoard issues={issueBoardData} type="main" />}
+        />
+      </div>
       <FloatingButton link={`/user/${userId}/post`} />
-    </div>
+    </>
   );
 }
