@@ -19,7 +19,11 @@ export default function TeamMainPage() {
 
   return (
     <div className="grid h-full w-full grid-cols-[107.4fr_37.8fr] grid-rows-[33.7fr_52.5fr] gap-[5.2rem]">
-      <BoardSection title="My calendar" content={<MainSchedules />} />
+      <BoardSection
+        title="Team calendar"
+        mode="week"
+        content={<MainSchedules teamId={teamId} calendarType="팀" />}
+      />
       <AnnouncementList announcements={announcementData} team={team} />
       <BoardSection
         title="Kanban board"

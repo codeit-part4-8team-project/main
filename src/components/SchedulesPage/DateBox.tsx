@@ -7,8 +7,9 @@ import { calendarContext } from '@/contexts/CalenarProvider';
 
 interface DateBoxProp {
   mode: 'week' | 'month' | 'modal';
+  calendarType: '나' | '팀';
 }
-function DateBox({ mode }: DateBoxProp) {
+function DateBox({ mode, calendarType }: DateBoxProp) {
   const [week, setWeek] = useState<Array<[number, Date]>>([]);
   const [allDay, setAllDay] = useState<Date[]>([]);
   const { nowDate } = useContext(calendarContext);
@@ -72,19 +73,19 @@ function DateBox({ mode }: DateBoxProp) {
           ))}
 
           {allDay.map((day: Date) => (
-            <AllDay mode="month" key={day.getTime()} day={day} />
+            <AllDay calendarType={calendarType} mode="month" key={day.getTime()} day={day} />
           ))}
         </div>
       )}
       {mode === 'week' && (
         <div className="grid h-[29.1rem] w-full grid-cols-7 rounded-[2.4rem] bg-white shadow-sm">
-          <WeekDisplay week={week} />
+          <WeekDisplay calendarType={calendarType} week={week} />
         </div>
       )}
       {mode === 'modal' && (
         <div className="grid h-full w-full grid-cols-7 rounded-[2.4rem]">
           {allDay.map((day: Date) => (
-            <AllDay key={day.getTime()} mode="modal" day={day} />
+            <AllDay calendarType={calendarType} key={day.getTime()} mode="modal" day={day} />
           ))}
         </div>
       )}
