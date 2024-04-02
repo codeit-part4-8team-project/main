@@ -8,20 +8,12 @@ interface ModalProps {
   children?: ReactNode;
   closeClick?: () => void;
   title: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
-function ModalLayout({ children, closeClick, title, size = 'lg' }: ModalProps) {
-  const container = clsx({
-    'relative h-[119.9rem] w-[49.7rem] bg-white p-16': size === 'xl',
-    'relative h-[87.6rem] w-[49.7rem] bg-white p-16 rounded-[2.4rem]': size === 'lg',
-    'relative h-[74rem] w-[49.7rem] bg-white p-16 rounded-[2.4rem]': size === 'md',
-    'relative h-[59.1rem] w-[49.7rem] bg-white p-16 rounded-[2.4rem]': size === 'sm',
-  });
+function ModalLayout({ children, closeClick, title }: ModalProps) {
   return (
     <>
-      {/* div하나 추가해서 패딩값 조절하기 */}
-      <div className="p-16">
+      <div className="flex flex-col p-16">
         {/* // <div className="flex size-full items-center justify-center bg-black bg-opacity-5"> */}
         {/* // <div className={`${container}`}> */}
         <div className="flex items-center justify-between">

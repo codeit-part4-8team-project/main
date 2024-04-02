@@ -1,4 +1,5 @@
 import close from '../../../../public/assets/close.svg';
+import { Author } from '@/types/commonTypes';
 
 interface dataType {
   Grade?: string;
@@ -10,20 +11,10 @@ interface dataType {
   username?: string;
 }
 
-interface OwnerType {
-  name: string;
-  imageUrl: string;
-  role?: string | null;
-  grade: string;
-  username: string;
-  createDate: string;
-}
-
 interface ModalMemberListProps {
-  formTextSize?: string;
   memberData?: dataType[];
   onClick?: (userName: string | undefined) => void;
-  owner?: OwnerType;
+  owner?: Author;
 }
 
 export default function ModalMemberList({ memberData, onClick, owner }: ModalMemberListProps) {
@@ -31,22 +22,25 @@ export default function ModalMemberList({ memberData, onClick, owner }: ModalMem
     'mb-[0.8rem] flex items-center gap-[1.6rem]  text-body4-regular text-body4-regular';
   return (
     <>
-      <div className={memberListItem}>
-        <img
-          src={owner?.imageUrl}
-          alt="ownerProfile"
-          className="h-[2.4rem] w-[2.4rem] rounded-full"
-        />
-        <div className="flex w-full items-center justify-between">
-          <p>{owner?.username}</p>
-          <p className="text-gray50">{owner?.grade}</p>
+      {owner && (
+        <div className={memberListItem}>
+          <img
+            src={owner?.imageUrl}
+            alt="ownerProfile"
+            className="h-[2.4rem] w-[2.4rem] rounded-full"
+          />
+          <div className="flex w-full items-center justify-between">
+            <p>{owner?.username}</p>
+            <p className="text-gray50">{owner?.grade}</p>
+          </div>
         </div>
-      </div>
+      )}
+
       {memberData?.map((item: dataType, index: number) => (
         <div key={index} className={memberListItem}>
           <img src={item.imageUrl} alt="profile" className="h-[2.4rem] w-[2.4rem] rounded-full" />
           <div className="flex w-full items-center justify-between">
-            <p>{item.name}</p>
+            <p>{item.username}</p>
             {onClick ? (
               <button type="button" onClick={() => onClick(item.username)}>
                 <img alt="close" src={close} />

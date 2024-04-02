@@ -14,6 +14,7 @@ import { defaultInstance, useAxios } from '@/hooks/useAxios';
 
 interface IssuesModalProps {
   closeClick: () => void;
+  teamId: number;
 }
 
 type Inputs = {
@@ -44,15 +45,15 @@ interface memberDataType {
 //     "string"
 //   ]
 // }
-export default function IssuesModal({ closeClick }: IssuesModalProps) {
+export default function IssuesModal({ closeClick, teamId = 1 }: IssuesModalProps) {
+  // 여긴 멤버 추가하고 값 받아와서 리스트 띄우는패치임
   const { fetchData: memberFetchData } = useAxios({}); // member tag GET axios
   const { fetchData } = useAxios({}); // POST axios
 
   const dueDateToggleRef = useRef<HTMLDivElement | null>(null);
   const [dueDateToggle, setDueDateToggle] = useState(false);
-  // 여기 작업 조금 남았음
   const [membersList, setMembersList] = useState<memberDataType[]>([]);
-  console.log('membersList Test', membersList);
+  console.log('membersList Test여기입니다.', membersList);
   const [memberCheck, setMemberCheck] = useState(false);
 
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
@@ -61,10 +62,9 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
       title: data.title,
       content: data.content,
       dueDate: data.dueDate,
-      assignedMembersUsernames: [data.assignedMembersUsernames], // 나중에 배열 타입문제 해결하기
+      assignedMembersUsernames: membersList.map((member) => member.username),
     };
     handlePostIssues(createIssue);
-    // console.log(createIssue);
   };
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
@@ -73,8 +73,6 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
   const handleDueDateClick = () => {
     setDueDateToggle(true);
   };
-
-  const teamId = 10;
 
   const handlePostIssues = (data: Inputs) => {
     fetchData({
@@ -87,11 +85,10 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
   const handleGetTeamMemberList = async () => {
     const userName = getValues('assignedMembersUsernames');
     const res = await defaultInstance.get(`member/${teamId}/search?username=${userName}`);
-    // console.log('여여', typeof res);
-    if (res.data !== '') {
+    if (res.data) {
       const newMember = res.data;
       setMemberCheck(false);
-      setMembersList((prevMembers) => [...prevMembers, newMember]);
+      setMembersList((prevMembers) => [...prevMembers, ...newMember]);
     } else if (res.data === '') {
       setMemberCheck(true);
     }
@@ -112,17 +109,9 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
       document.removeEventListener('mousedown', handleDueDateClickOutside);
     };
   }, [dueDateToggle]);
-  // {
-  //   "title": "string",
-  //   "content": "string",
-  //   "dueDate": "2024-03-20", // 이거 없고
-  //   "status": "TODO", // 이거 없고
-  //   "assignedMembersUsernames": [
-  //     "string"
-  //   ]
-  // }
+
   return (
-    <ModalLayout title="할 일" closeClick={closeClick} size="lg">
+    <ModalLayout title="할 일" closeClick={closeClick}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalFormBorder className="mt-16 h-[86.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 px-12 pt-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>게시자 (나)</p>
@@ -199,11 +188,7 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
             placeholder="그룹을 선택해 주세요"
             className={`${formTextSize} ${borderStyle} `}
           >
-            <button
-              className="absolute bottom-0 right-[1.8rem] top-0"
-              // onClick={handleStartDateClick}
-              type="button"
-            >
+            <button className="absolute bottom-0 right-[1.8rem] top-0" type="button">
               <img src={arrowDown} alt="arrowDown" />
             </button>
           </ModalInput>
@@ -221,7 +206,13 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
                 placeholder="닉네임을 검색해 주세요."
                 id="assignedMembersUsernames"
                 className={`${inputTextSize} ${borderStyle} `}
-              />
+              >
+                {memberCheck && (
+                  <p className="absolute mt-[0.5rem] text-body5-medium text-point_red">
+                    검색하신유저가없습니다.
+                  </p>
+                )}
+              </ModalInput>
               <TextButton buttonSize="sm" onClick={handleGetTeamMemberList} type="button">
                 태그하기
               </TextButton>
@@ -229,9 +220,9 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
           </div>
           <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
           <div className=" h-[10.6rem] w-full rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
-            {/* data map돌리고 싶은데 배열이 아닌것 같음. 얘기해서 배열로 바꿔줄수 있는지 여쭤보기 */}
-            {/* 값이 only 1개이니까 배열 안 만들고 그냥 초대하기 눌렸을때 하나, 검색시 === 값 하나 */}
-            <ModalMemberList formTextSize={formTextSize} onClick={handleRemoveMember} />
+            {membersList && (
+              <ModalMemberList onClick={handleRemoveMember} memberData={membersList} />
+            )}
           </div>
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
@@ -5,50 +6,84 @@ import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import { useAxios } from '@/hooks/useAxios';
+import { Author } from '@/types/commonTypes';
 
 interface Inputs {
   title: string;
   content: string;
 }
 
-interface FreeBoardModalProps {
-  closeClick: () => void;
-  teamId: number;
+interface defaultValue {
+  author?: Author;
+  title?: string;
+  content?: string;
 }
 
-export default function FreeBoardModal({ closeClick, teamId = 1 }: FreeBoardModalProps) {
-  const { fetchData: freeBoardFetchData } = useAxios({});
-  const { register, watch, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = ({ content, title }) => {
+interface FreeBoardModalProps {
+  closeClick: () => void;
+  teamId?: number;
+  postId: number;
+}
+
+export default function FreeBoardEditModal({
+  closeClick,
+  teamId = 1,
+  postId = 1,
+}: FreeBoardModalProps) {
+  const { data: defaultValue } = useAxios<defaultValue>(
+    {
+      path: `post/${postId}`,
+    },
+    true,
+  );
+  const { title: defaultTitle, content: defalutContent, author }: defaultValue = defaultValue || {};
+  const { fetchData: freeBoardEditData } = useAxios({});
+
+  const formTextSize = 'text-body3-medium';
+  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
+
+  const { register, watch, handleSubmit, reset } = useForm<Inputs>({
+    defaultValues: {
+      title: defaultTitle,
+      content: defalutContent,
+    },
+  });
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content }) => {
     const createFreeBoard = {
       content: content,
       title: title,
     };
-    handlePostFreeBoard(createFreeBoard);
+    handlePatchFreeBoard(createFreeBoard);
     console.log(createFreeBoard);
   };
-  const handlePostFreeBoard = (data: Inputs) => {
-    freeBoardFetchData({
-      newPath: `post/${teamId}`,
-      newMethod: 'POST',
+
+  const handlePatchFreeBoard = (data: Inputs) => {
+    freeBoardEditData({
+      newPath: `post/${postId}`,
+      newMethod: 'PATCH',
       newData: data,
     });
   };
 
-  const formTextSize = 'text-body3-medium';
-  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
+  useEffect(() => {
+    reset();
+  }, [defaultValue]);
+
   return (
     <ModalLayout title="작성하기" closeClick={closeClick}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="my-16 flex items-center gap-4">
-          <img src={profile} alt="profile" />
-          {/* 데이터 받아지면 변경 예정구역 */}
-          <p className=" text-[1.4rem]">userNickName</p>
-          {/*  */}
+          <img
+            src={author?.imageUrl}
+            alt="profile"
+            className="h-[2.4rem] w-[2.4rem] rounded-[99rem]"
+          />
+          <p className=" text-[1.4rem]">{author?.username}</p>
         </div>
         <div className="mb-[0.8rem] flex flex-col gap-[0.8rem]">
           <ModalLabel htmlFor="title" label="제목" className={`${formTextSize}`} />
           <ModalInput
+            defaultValue={defaultTitle}
             placeholder="제목을 작성해 주세요."
             id="title"
             name="title"
@@ -62,8 +97,9 @@ export default function FreeBoardModal({ closeClick, teamId = 1 }: FreeBoardModa
           <p className=" mb-[0.9rem] flex justify-end text-gray50">0/20</p>
         )}
         <div className="flex flex-col gap-[0.8rem]">
-          <ModalLabel htmlFor="content" label="내용*" className={`${formTextSize}`} />
+          <ModalLabel htmlFor="content" label="내용" className={`${formTextSize}`} />
           <textarea
+            defaultValue={defalutContent}
             {...register('content')}
             placeholder="내용을 입력해 주세요."
             id="content"
@@ -77,8 +113,8 @@ export default function FreeBoardModal({ closeClick, teamId = 1 }: FreeBoardModa
         ) : (
           <p className=" mb-[0.9rem] flex justify-end text-gray50">0/200</p>
         )}
-        <TextButton buttonSize="md" className="mt-16">
-          작성하기
+        <TextButton buttonSize="md" className="">
+          편집하기
         </TextButton>
       </form>
     </ModalLayout>

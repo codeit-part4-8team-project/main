@@ -18,7 +18,7 @@ import { defaultInstance, useAxios } from '@/hooks/useAxios';
 type Inputs = {
   name: string;
   description: string;
-  // members: string[] | null;
+  members?: string[];
   color: string;
   startDate: string;
   endDate: string;
@@ -37,27 +37,27 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     setValue,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = ({
-    name,
-    description,
-    startDate,
-    endDate,
-    githubLink,
-    discordLink,
-    figmaLink,
-    color,
-  }) => {
+  const onSubmit: SubmitHandler<Inputs> = (
+    { name, description, startDate, endDate, githubLink, discordLink, figmaLink, color },
+    event,
+  ) => {
     const createTeam = {
-      name: data.name,
-      description: data.description,
-      // members: [data?.members],
-      startDate: data.startDate,
-      endDate: data.endDate,
-      githubLink: data.githubLink,
-      color: data.color,
+      name: name,
+      description: description,
+      members: membersList.map((member) => member.username),
+      // map 이후 필터로 중복된 값을 걸러줘야함 내가
+      startDate: startDate,
+      endDate: endDate,
+      githubLink: githubLink,
+      discordLink: discordLink,
+      figmaLink: figmaLink,
+      color: color || '#292929',
     };
-    console.log('createTema', createTeam);
+    handleGroup(createTeam);
+    event?.target.closest('dialog').close();
   };
+  const nameWatch = watch('name');
+  const descriptionWatch = watch('description');
 
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
   const urlToggleRef = useRef<HTMLButtonElement | null>(null);
@@ -73,14 +73,13 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   const inputTextSize = 'text-body3-regular';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
 
-  // const testTeamId = 1;
-  // const { data, loading, error, fetchData } = useAxios({
-  //   path: `/api/member/${testTeamId}`,
-  //   method: 'GET',
-  //   data: {},
-  // });
-  // console.log('axiosFetchData', fetchData);
-  // console.log('axiosData', data);
+  const handleGroup = (data: Inputs) => {
+    groupFetch({
+      newPath: '/team/',
+      newMethod: 'POST',
+      newData: data,
+    });
+  };
 
   const handleColorClick = (color: string) => {
     setValue('color', color);
@@ -166,7 +165,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   }, [endDateToggle]);
 
   return (
-    <ModalLayout closeClick={closeClick} title="그룹 생성" size="xl">
+    <ModalLayout closeClick={closeClick} title="그룹 생성">
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalFormBorder className="mt-16 h-[96.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 px-12 pt-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>그룹 게시자</p>
@@ -186,8 +185,13 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               className={`${inputTextSize} ${borderStyle}`}
             />
           </div>
-          {watch('name') ? (
-            <p className=" mb-[0.9rem] flex justify-end text-gray50">{watch('name')?.length}/20</p>
+          {nameWatch?.length > 20 && (
+            <div className="absolute text-point_red">
+              <p>20자 이하로 입력해 주세요.</p>
+            </div>
+          )}
+          {nameWatch ? (
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">{nameWatch?.length}/20</p>
           ) : (
             <p className=" mb-[0.9rem] flex justify-end text-gray50">0/20</p>
           )}
@@ -202,9 +206,14 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               hookform={register('description')}
             />
           </div>
-          {watch('description') ? (
+          {descriptionWatch?.length > 40 && (
+            <div className="absolute text-point_red">
+              <p>40자 이하로 입력해 주세요.</p>
+            </div>
+          )}
+          {descriptionWatch ? (
             <p className=" mb-[0.9rem] flex justify-end text-gray50">
-              {watch('description')?.length}/40
+              {descriptionWatch?.length}/40
             </p>
           ) : (
             <p className=" mb-[0.9rem] flex justify-end text-gray50">0/40</p>
@@ -304,7 +313,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
           </div>
           <ModalMemberList formTextSize={formTextSize} />
         </ModalFormBorder>
-        <TextButton buttonSize="md" className="mt-16">
+        <TextButton buttonSize="md" className="mt-16" disabled={false}>
           생성하기
         </TextButton>
       </form>

@@ -8,16 +8,20 @@ import DateBox from '@/components/SchedulesPage/DateBox';
 
 interface ModalCalendarInputProps {
   startHookform: any;
+  startDefaultValue?: string;
   startName: string;
   endHookform: any;
   endName: string;
+  endDefaultValue?: string;
 }
 
 export default function ModalCalendarInput({
   startHookform,
   startName,
+  startDefaultValue,
   endHookform,
   endName,
+  endDefaultValue,
 }: ModalCalendarInputProps) {
   const startDateToggleRef = useRef<HTMLDivElement | null>(null);
   const endDateToggleRef = useRef<HTMLDivElement | null>(null);
@@ -66,6 +70,7 @@ export default function ModalCalendarInput({
       <ModalLabel htmlFor="date" label="날짜 (시작-종료)*" className={`${formTextSize}`} />
       <div className=" mb-12 mt-[0.9rem] flex items-center gap-2">
         <ModalInput
+          defaultValue={startDefaultValue}
           hookform={startHookform}
           type="text"
           name={startName}
@@ -91,8 +96,8 @@ export default function ModalCalendarInput({
         </ModalInput>
 
         <p className={`${formTextSize} text-[#5F5F5F]`}>-</p>
-        {/* <div ref={endDateToggleRef}> */}
         <ModalInput
+          defaultValue={endDefaultValue}
           hookform={endHookform}
           type="text"
           name={endName}
