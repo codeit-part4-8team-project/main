@@ -25,6 +25,7 @@ export default function IssueItem({
   const profileImgs = assignedMembers ? getProfilesImgs(assignedMembers) : [];
 
   const { handleOnDrag } = useIssueContext();
+
   return (
     <div
       draggable

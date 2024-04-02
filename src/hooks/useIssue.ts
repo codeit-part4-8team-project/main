@@ -42,16 +42,16 @@ export function useIssueBoard() {
 }
 
 export function useIssue(issueId?: number) {
-  const [issueData, setIssueData] = useState<Issue[] | []>();
+  const [issueData, setIssueData] = useState<Issue>();
 
   const path = `/issue/${issueId}`; // 특정 이슈 조회
 
-  const { loading, error, data, fetchData } = useAxios<Issue[] | []>(
+  const { loading, error, data, fetchData } = useAxios<Issue>(
     {
       path,
       method: 'GET', // TODO 가능하면 다른 요청들도 가능하도록
     },
-    true,
+    Boolean(issueId),
   );
 
   useEffect(() => {

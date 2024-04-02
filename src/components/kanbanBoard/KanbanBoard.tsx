@@ -42,9 +42,9 @@ export default function KanbanBoard({
   return (
     <>
       <div className={clsx('flex gap-[2.4rem]', kanbanBoardClasses)}>
-        <IssueList status="todo" issues={todoList} team={team} />
-        <IssueList status="progress" issues={progressList} team={team} />
-        <IssueList status="done" issues={doneList} team={team} />
+        <IssueList status="TODO" issues={todoList} team={team} />
+        <IssueList status="INPROGRESS" issues={progressList} team={team} />
+        <IssueList status="DONE" issues={doneList} team={team} />
       </div>
       {type === 'page' && (
         <TextButton

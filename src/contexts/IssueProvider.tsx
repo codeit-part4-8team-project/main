@@ -1,4 +1,5 @@
-import { ReactNode, createContext, useContext, useState } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import { useIssue } from '@/hooks/useIssue';
 import { Issue } from '@/types/issueTypes';
 
 interface IssueProviderProps {
@@ -32,22 +33,70 @@ const defaultValue = {
 const IssueContext = createContext<IssueContextValues>(defaultValue);
 
 export function IssueProvider({ children }: IssueProviderProps) {
+  const [issueId, setIssueId] = useState<number>();
   const [todoList, setTodoList] = useState<Issue[] | []>([]);
   const [progressList, setProgressList] = useState<Issue[] | []>([]);
   const [doneList, setDoneList] = useState<Issue[] | []>([]);
 
-  const handleOnDrag = (e: React.DragEvent<HTMLDivElement>, issueId: number) => {
-    e.dataTransfer?.setData('issueId', String(issueId));
+  const { issueData, fetchIssueData } = useIssue(issueId);
+
+  const currentStatus = issueData?.status;
+
+  const handleOnDrag = (e: React.DragEvent<HTMLDivElement>, id: number) => {
+    setIssueId(id);
   };
 
   const handleOnDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    const issueId = e.dataTransfer?.getData('issueId');
-    console.log('issueId', issueId);
+    const target = e.target as HTMLDivElement;
+    const newStatus = target.dataset.status;
+
+    const updateIssueData = () => {
+      fetchIssueData({
+        newPath: `/issue/${issueId}/status`,
+        newMethod: 'PATCH',
+        newData: {
+          status: newStatus,
+        },
+      });
+    };
+    const removeFromList = () => {
+      if (currentStatus === 'TODO') {
+        const newTodoList = todoList.filter((todo) => todo.id !== issueId);
+        setTodoList(newTodoList);
+      } else if (currentStatus === 'INPROGRESS') {
+        const newProgressList = progressList.filter((progress) => progress.id !== issueId);
+        setProgressList(newProgressList);
+      } else if (currentStatus === 'DONE') {
+        const newDoneList = doneList.filter((done) => done.id !== issueId);
+        setDoneList(newDoneList);
+      }
+    };
+
+    if (currentStatus === newStatus) return;
+    if (issueData) {
+      if (newStatus === 'TODO') {
+        setTodoList([...todoList, issueData]);
+        updateIssueData();
+        removeFromList();
+      } else if (newStatus === 'INPROGRESS') {
+        setProgressList([...progressList, issueData]);
+        updateIssueData();
+        removeFromList();
+      } else if (newStatus === 'DONE') {
+        setDoneList([...doneList, issueData]);
+        updateIssueData();
+        removeFromList();
+      }
+    }
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    if (issueId) fetchIssueData();
+  }, [issueId]);
 
   const value: IssueContextValues = {
     todoList,

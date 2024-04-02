@@ -1,7 +1,7 @@
 import { Author } from '@/types/commonTypes';
 import { Member, Team } from '@/types/teamTypes';
 
-export type IssueStatus = 'TODO' | 'PROGRESS' | 'DONE';
+export type IssueStatus = 'TODO' | 'INPROGRESS' | 'DONE';
 export interface Issue {
   id: number;
   title: string;
