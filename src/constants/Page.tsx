@@ -18,7 +18,7 @@ import MegaphoneIcon from '@/assets/MegaphoneIcon';
 import PeopleIcon from '@/assets/PeopleIcon';
 import ViewListIcon from '@/assets/ViewListIcon';
 
-export type UserPageType = 'main' | 'schedule' | 'issue' | 'post' | 'myPage';
+export type UserPageType = 'main' | 'schedule' | 'issue' | 'post' | 'mypage';
 export type TeamPageType = 'main' | 'schedule' | 'issue' | 'post' | 'announcement' | 'member';
 // type PageType = UserPageType | TeamPageType; /* 필요할 때 주석 해제 */
 
@@ -62,9 +62,13 @@ export const PAGES: Pages = {
       ),
       icon: <FolderIcon />,
     },
-    myPage: {
+    mypage: {
       title: '마이페이지',
-      page: <UserMyPage />,
+      page: (
+        <PageProvider>
+          <UserMyPage />
+        </PageProvider>
+      ),
       icon: <CalendarIcon /> /* TODO 디자인 나오는대로 아이콘 변경 필요 */,
     },
   },
@@ -104,7 +108,11 @@ export const PAGES: Pages = {
     },
     member: {
       title: '팀원',
-      page: <TeamMembers />,
+      page: (
+        <PageProvider>
+          <TeamMembers />
+        </PageProvider>
+      ),
       icon: <PeopleIcon />,
     },
   },

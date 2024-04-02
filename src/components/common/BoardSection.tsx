@@ -22,6 +22,7 @@ const ICON = {
   'Bulletin board': <FolderIcon fill="#292929" active />,
   Members: <FolderIcon fill="#292929" active />,
   콘텐츠: <FolderIcon fill="#292929" active />,
+  Mypage: <CalendarIcon fill="#292929" active />,
 };
 
 export default function BoardSection({ title, content, mode, children }: BoardSection) {
