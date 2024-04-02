@@ -1,30 +1,37 @@
-import { useParams } from 'react-router-dom';
-import { useTeam } from '@/contexts/TeamProvider';
+import ProfileStack from '@/components/common/ProfileStack';
+import { useIssueContext } from '@/contexts/IssueProvider';
+import { getProfilesImgs } from '@/lib/getProfileImgs';
 import { Issue } from '@/types/issueTypes';
+import { Team } from '@/types/teamTypes';
 import DragHandleIcon from '@/assets/DragHandleIcon';
-import ProfileIcon from '@/assets/ProfileIcon';
 
 interface IssueItemProps {
   issue: Issue;
+  teamInfo?: Team;
 }
 
-export default function IssueItem({ issue: { title, content, team } }: IssueItemProps) {
-  // TODO 메모이제이션이 필요한 부분인지?
-  const { teamId } = useParams();
-
-  if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
-
-  const { team: currentTeam } = useTeam(teamId);
+export default function IssueItem({
+  issue: { id, title, content, team, assignedMembers },
+  teamInfo,
+}: IssueItemProps) {
+  if (teamInfo) team = teamInfo;
 
   if (!team) {
-    // 데이터에 team 정보가 없는 경우 = 현재 팀 페이지인 경우
-    team = currentTeam;
+    throw Error('팀 정보가 없습니다.');
   }
 
   const { color, name } = team;
 
+  const profileImgs = assignedMembers ? getProfilesImgs(assignedMembers) : [];
+
+  const { handleOnDrag } = useIssueContext();
+
   return (
-    <div className="relative min-h-64 w-[28.2rem] rounded-[2.4rem] border border-gray30 bg-white p-8">
+    <div
+      draggable
+      onDragStart={(e) => handleOnDrag(e, id)}
+      className="relative min-h-64 w-full rounded-[2.4rem] border border-gray30 bg-white p-8"
+    >
       <div className="flex flex-col gap-[2.2rem]">
         <div className="text-body4-bold text-gray100">{title}</div>
         <span className="text-body4-regular leading-[1.6rem] text-gray50">{content}</span>
@@ -39,8 +46,7 @@ export default function IssueItem({ issue: { title, content, team } }: IssueItem
         {name}
       </button>
       <div className="absolute bottom-8 right-8">
-        <ProfileIcon size="sm" />
-        {/* <ProfileStack profileImgs={profiles} /> */}
+        <ProfileStack profileImgs={profileImgs} size="sm" />
       </div>
     </div>
   );
