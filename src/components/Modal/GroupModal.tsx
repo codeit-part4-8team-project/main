@@ -39,7 +39,7 @@ interface dataType {
 interface GroupModalProps {
   closeClick?: () => void;
 }
-
+// 파일이 덮였음 에러 해결
 export default function GroupModal({ closeClick }: GroupModalProps) {
   const { fetchData: groupFetch } = useAxios({});
 
