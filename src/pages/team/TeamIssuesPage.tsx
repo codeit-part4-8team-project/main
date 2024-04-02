@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import BoardSection from '@/components/common/BoardSection';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
+import { IssueProvider } from '@/contexts/IssueProvider';
 import { useTeam } from '@/contexts/TeamProvider';
 import { useIssueBoard } from '@/hooks/useIssue';
 
@@ -14,7 +15,9 @@ export default function TeamIssuesPage() {
 
   return (
     <BoardSection title="Kanban board">
-      <KanbanBoard issues={issueBoardData} type="page" team={team} />
+      <IssueProvider>
+        <KanbanBoard issues={issueBoardData} type="page" team={team} />
+      </IssueProvider>
     </BoardSection>
   );
 }
