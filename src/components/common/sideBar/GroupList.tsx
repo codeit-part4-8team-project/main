@@ -1,10 +1,8 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import clsx from 'clsx';
-import DropDown from '@/components/common/sideBar/DropDown';
 import { Team } from '@/types/teamTypes';
 import ColorChipIcon from '@/assets/ColorChipIcon';
-import MeatbollsIcon from '@/assets/MeatbollsIcon';
 
 interface GroupListProps {
   teams: Team[];
@@ -37,12 +35,6 @@ export default function GroupList({ teams }: GroupListProps) {
 }
 
 function GroupItem({ color, teamId, isCurrent, children }: GroupItemProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleOptionClick = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <Link to={`/team/${teamId}/main`}>
       <div
@@ -53,10 +45,6 @@ function GroupItem({ color, teamId, isCurrent, children }: GroupItemProps) {
       >
         <ColorChipIcon fill={color} />
         <span className="justify-self-start text-body3-bold text-[#EDEEDC]">{children}</span>
-        <button onClick={handleOptionClick} className="relative justify-self-end">
-          <MeatbollsIcon fill="white" />
-          {isOpen && <DropDown />}
-        </button>
       </div>
     </Link>
   );
