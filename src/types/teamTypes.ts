@@ -1,5 +1,7 @@
+import { PageableData } from '@/types/commonTypes';
+
 export type Grade = 'OWNER' | 'MANAGER' | 'TEAM_MEMBER';
-export type Role = 'BACKEND' | 'FRONTEND' | 'DESIGNER';
+export type Role = 'BACKEND' | 'FRONTEND' | 'DESIGNER' | 'PRODUCT_MANEGER';
 
 export interface Member {
   name: string;
@@ -15,5 +17,16 @@ export interface Team {
   name: string;
   description: string;
   color: string;
+  startDate?: string;
+  endDate?: string;
+  figmaLink?: string;
+  githubLink?: string;
+  discordLink?: string;
   members?: Member[] | [];
+}
+
+export type RequiredTeam = Required<Team>;
+
+export interface Teams extends PageableData {
+  content: Team[] | [];
 }

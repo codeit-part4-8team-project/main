@@ -1,18 +1,23 @@
-import { useContext, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import ScheduleModal from '../Modal/ScheduleModal';
-import { SchedulesData } from '@/contexts/CalenarProvider';
+import ModalLayout from '../common/modal/ModalLayout';
+import AddScheudleModal from './AddScheduleModal';
+import { Schedule } from '@/contexts/CalenarProvider';
 import { calendarContext } from '@/contexts/CalenarProvider';
 
 interface AllDayProp {
   day: Date;
   mode: 'month' | 'modal';
+  calendarType?: '나' | '팀';
 }
-function AllDay({ day, mode }: AllDayProp) {
-  const { nowDate, filteredSchedules, calendarType } = useContext(calendarContext);
+function AllDay({ day, mode, calendarType }: AllDayProp) {
+  const { nowDate, filteredSchedules } = useContext(calendarContext);
+  const [showAllSchedules, setShowAllSchedules] = useState(false);
+
   const Container =
-    "w-full h-full flex justify-center items-center border-none 'last-of-type:rounded-bl-[2.4rem]'";
-  const hover = 'hover:bg-gray10';
+    "w-full h-full flex justify-center items-center border-none 'last-of-type:rounded-bl-[2.4rem]' ";
+  const hover = 'hover:bg-gray10  ';
   const today = new Date();
 
   const notTodayStyle = 'text-gray50 ';
@@ -39,7 +44,7 @@ function AllDay({ day, mode }: AllDayProp) {
   const rowIndex = (daysInNextMonth + currentDate + daysInPrevMonth) / 7;
 
   const DateDay = clsx(
-    'bg-white w-full h-[16.2rem] text-body3-bold text-start py-4 px-[2.4rem] last:rouned-bl-[2.4rem]',
+    'bg-white w-full h-[16.2rem] text-body3-bold text-start py-4 px-[2.4rem] last:rouned-bl-[2.4rem]  ',
 
     todayClass,
     notTodayClass,
@@ -77,8 +82,10 @@ function AllDay({ day, mode }: AllDayProp) {
 
   const filterData = useMemo(() => {
     return Array.isArray(filteredSchedules)
-      ? filteredSchedules.filter((schedule: SchedulesData) => {
-          const scheduleStartDate = new Date(convertToISODate(schedule.startDateTime));
+      ? filteredSchedules.filter((schedule: Schedule) => {
+          const scheduleStartDate = new Date(
+            convertToISODate(schedule.startDateTime && schedule.startDateTime),
+          );
           const scheduleEndDate = new Date(convertToISODate(schedule.endDateTime));
           const dayStart = new Date(day.getFullYear(), day.getMonth(), day.getDate());
           const dayEnd = new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1);
@@ -89,31 +96,67 @@ function AllDay({ day, mode }: AllDayProp) {
 
   const renderSchedules = () => {
     if (filterData.length > 0) {
-      return filterData.map((schedule: SchedulesData, index: number) => (
+      // showAllSchedules 상태에 따라 모든 일정을 렌더링하거나 일부만 렌더링합니다.
+      const schedulesToRender = showAllSchedules ? filterData : filterData.slice(0, 2);
+      return schedulesToRender.map((schedule: Schedule, index: number) => (
         <div key={index}>
-          <div className="flex gap-1">
-            <div className="h-6 w-6">
-              <div
-                className="h-full w-full rounded-full"
-                style={{
-                  backgroundColor: schedule.teamResponse?.color || 'black',
-                }}
-              ></div>
+          <div className=" flex items-start gap-1">
+            <div
+              className="h-5 w-5 rounded-full"
+              style={{
+                backgroundColor: schedule.team?.color || 'black',
+              }}
+            ></div>
+            <div>
+              {calendarType === '나' ? (
+                <>
+                  <p className="text-gray100">{schedule.user?.name || schedule.team?.name}</p>
+                  <p className="text-gray50">{schedule.title}</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-gray100">{schedule.team?.name}</p>
+                  <p className="text-gray50">{schedule.title}</p>
+                </>
+              )}
             </div>
-            {calendarType === '나의 캘린더' ? (
-              <>
-                <p>{schedule.title}</p>
-                <p>{schedule.author?.name}</p>
-              </>
-            ) : (
-              <>
-                <p>{schedule.teamResponse?.name}</p>
-                <p>{schedule.title}</p>
-              </>
-            )}
           </div>
         </div>
       ));
+    }
+  };
+  useEffect(() => {
+    // 모달이 열릴 때 body 요소에 overflow-hidden 스타일을 적용
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      // 모달이 닫힐 때 overflow 스타일을 다시 제거
+      document.body.style.overflow = 'auto';
+    }
+
+    // 컴포넌트가 언마운트될 때 overflow 스타일을 초기화
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isModalOpen]);
+
+  const renderViewMoreButton = () => {
+    const filteredSchedulesLength = filterData.length;
+
+    if (filteredSchedulesLength > 2 && !showAllSchedules) {
+      return (
+        <>
+          <button
+            className="text-blue-500 hover:text-blue-700 relative cursor-pointer"
+            onClick={openModal}
+          >
+            <div className="ml-[0.1rem] text-body5-bold"> + 더보기</div>
+          </button>
+          {isModalOpen && (
+            <AddScheudleModal className="fixed z-50" onClick={closeModal} content={filterData} />
+          )}
+        </>
+      );
     }
   };
 
@@ -121,11 +164,12 @@ function AllDay({ day, mode }: AllDayProp) {
     <>
       {mode === 'month' && (
         <div className={`${Container} 'last: rounded-bl-[2.4rem]'`}>
-          <div onClick={openModal} className={clsx(DateDay)}>
+          <div className={clsx(DateDay)}>
             {`${day.getDate()} `}
+            {renderViewMoreButton()}
+
             {renderSchedules()}
           </div>
-          {isModalOpen && <ScheduleModal />}
         </div>
       )}
       {mode === 'modal' && (

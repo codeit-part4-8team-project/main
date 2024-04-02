@@ -1,11 +1,8 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { User } from '../types/user';
-import { useModal } from './ModalProvider';
-import AlertModal from '@/components/Modal/AlertModal';
 import { useAxios } from '@/hooks/useAxios';
 
-interface UserContextValue {
+export interface UserContextValue {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
@@ -30,12 +27,29 @@ export function UserProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useUserContext() {
+export function useUserContext(update: boolean = false) {
   const context = useContext(UserContext);
-
+  const { setUser } = context;
   if (context === null) {
     throw new Error('UserProvider 외부입니다.');
   }
+
+  const { data, loading, error } = useAxios<User>(
+    {
+      path: '/user/',
+    },
+    update,
+  );
+
+  useEffect(() => {
+    if (data && !loading) {
+      setUser(data);
+      console.log(data);
+    }
+    if (error) {
+      console.error(error);
+    }
+  }, [data, loading, error, setUser]);
 
   return context;
 }

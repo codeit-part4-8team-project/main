@@ -8,4 +8,4 @@ export interface User {
   bio: string;
 }
 
-export type UserEditForm = Omit<User, 'id' | 'oauthId' | 'provider'>;
+export type EditableUserProperty = Omit<User, 'id' | 'oauthId' | 'provider'>;
