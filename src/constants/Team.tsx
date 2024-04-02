@@ -12,9 +12,10 @@ export const MEMBER: {
     BACKEND: '백엔드',
     FRONTEND: '프론트엔드',
     DESIGNER: '디자이너',
+    PRODUCT_MANEGER: '서비스 기획자',
   },
   GRADE: {
-    OWNER: '그룹장',
+    OWNER: '오너',
     MANAGER: '매니저',
     TEAM_MEMBER: '팀원',
   },

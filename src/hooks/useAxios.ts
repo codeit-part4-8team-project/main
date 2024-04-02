@@ -15,7 +15,7 @@ const authInstance = axios.create({
 
 defaultInstance.interceptors.request.use(
   (req) => {
-    console.log('axios request config : ', req);
+    //console.log('axios request config : ', req);
     if (req.data && !(req.data instanceof FormData) && req.data instanceof Object) {
       req.headers['Content-Type'] = 'application/json';
     }
@@ -41,7 +41,7 @@ defaultInstance.interceptors.request.use(
 
 defaultInstance.interceptors.response.use(
   (res) => {
-    console.log('axios response config : ', res);
+    // console.log('axios response config : ', res);
     return res;
   }, // 응답 일일이 체크하실 꺼 번거로울까봐 콘솔에 바로 찍히라고 적어놨습니다. 나중에 뺄게요.
   async (error) => {

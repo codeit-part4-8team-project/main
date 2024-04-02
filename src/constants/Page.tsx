@@ -10,6 +10,7 @@ import TeamIssuesPage from '@/pages/team/TeamIssuesPage';
 import TeamMainPage from '@/pages/team/TeamMainPage';
 import TeamMembers from '@/pages/team/TeamMembers';
 import TeamPostsPage from '@/pages/team/TeamPostsPage';
+import { PageProvider } from '@/contexts/PageProvider';
 import BoxIcon from '@/assets/BoxIcon';
 import CalendarIcon from '@/assets/CalendarIcon';
 import FolderIcon from '@/assets/FolderIcon';
@@ -17,8 +18,8 @@ import MegaphoneIcon from '@/assets/MegaphoneIcon';
 import PeopleIcon from '@/assets/PeopleIcon';
 import ViewListIcon from '@/assets/ViewListIcon';
 
-export type UserPageType = 'main' | 'schedules' | 'issues' | 'posts' | 'myPage';
-export type TeamPageType = 'main' | 'schedules' | 'issues' | 'posts' | 'announcements' | 'members';
+export type UserPageType = 'main' | 'schedule' | 'issue' | 'post' | 'mypage';
+export type TeamPageType = 'main' | 'schedule' | 'issue' | 'post' | 'announcement' | 'member';
 // type PageType = UserPageType | TeamPageType; /* 필요할 때 주석 해제 */
 
 export interface Page {
@@ -42,24 +43,32 @@ export const PAGES: Pages = {
       page: <UserMainPage />,
       icon: <BoxIcon />,
     },
-    schedules: {
+    schedule: {
       title: '나의 캘린더',
       page: <SchedulesPage />,
       icon: <CalendarIcon />,
     },
-    issues: {
+    issue: {
       title: '칸반보드',
       page: <UserIssuesPage />,
       icon: <ViewListIcon />,
     },
-    posts: {
+    post: {
       title: '자유게시판',
-      page: <UserPostsPage />,
+      page: (
+        <PageProvider>
+          <UserPostsPage />
+        </PageProvider>
+      ),
       icon: <FolderIcon />,
     },
-    myPage: {
+    mypage: {
       title: '마이페이지',
-      page: <UserMyPage />,
+      page: (
+        <PageProvider>
+          <UserMyPage />
+        </PageProvider>
+      ),
       icon: <CalendarIcon /> /* TODO 디자인 나오는대로 아이콘 변경 필요 */,
     },
   },
@@ -69,29 +78,41 @@ export const PAGES: Pages = {
       page: <TeamMainPage />,
       icon: <BoxIcon />,
     },
-    schedules: {
+    schedule: {
       title: '팀 캘린더',
       page: <TeamCalendar />,
       icon: <CalendarIcon />,
     },
-    issues: {
+    issue: {
       title: '칸반보드',
       page: <TeamIssuesPage />,
       icon: <ViewListIcon />,
     },
-    announcements: {
+    announcement: {
       title: '공지사항',
-      page: <TeamAnnouncementsPage />,
+      page: (
+        <PageProvider>
+          <TeamAnnouncementsPage />
+        </PageProvider>
+      ),
       icon: <MegaphoneIcon />,
     },
-    posts: {
+    post: {
       title: '자유게시판',
-      page: <TeamPostsPage />,
+      page: (
+        <PageProvider>
+          <TeamPostsPage />
+        </PageProvider>
+      ),
       icon: <FolderIcon />,
     },
-    members: {
+    member: {
       title: '팀원',
-      page: <TeamMembers />,
+      page: (
+        <PageProvider>
+          <TeamMembers />
+        </PageProvider>
+      ),
       icon: <PeopleIcon />,
     },
   },
