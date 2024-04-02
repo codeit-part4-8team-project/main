@@ -40,6 +40,7 @@ interface GroupModalProps {
   closeClick?: () => void;
 }
 // 파일이 덮였음 에러 해결
+// 소은님 봐주세여
 export default function GroupModal({ closeClick }: GroupModalProps) {
   const { fetchData: groupFetch } = useAxios({});
 
