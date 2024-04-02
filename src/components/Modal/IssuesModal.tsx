@@ -14,6 +14,7 @@ import { defaultInstance, useAxios } from '@/hooks/useAxios';
 
 interface IssuesModalProps {
   closeClick: () => void;
+  teamId: number;
 }
 
 type Inputs = {
@@ -44,15 +45,15 @@ interface memberDataType {
 //     "string"
 //   ]
 // }
-export default function IssuesModal({ closeClick }: IssuesModalProps) {
+export default function IssuesModal({ closeClick, teamId = 3 }: IssuesModalProps) {
+  // 여긴 멤버 추가하고 값 받아와서 리스트 띄우는패치임
   const { fetchData: memberFetchData } = useAxios({}); // member tag GET axios
   const { fetchData } = useAxios({}); // POST axios
 
   const dueDateToggleRef = useRef<HTMLDivElement | null>(null);
   const [dueDateToggle, setDueDateToggle] = useState(false);
-  // 여기 작업 조금 남았음
   const [membersList, setMembersList] = useState<memberDataType[]>([]);
-  // console.log('membersList Test여기입니다.', membersList);
+  console.log('membersList Test여기입니다.', membersList);
   const [memberCheck, setMemberCheck] = useState(false);
 
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
@@ -62,9 +63,7 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
       content: data.content,
       dueDate: data.dueDate,
       assignedMembersUsernames: membersList.map((member) => member.username),
-      // assignedMembersUsernames: membersList,
     };
-    console.log('onSubmit입니다', createIssue);
     handlePostIssues(createIssue);
   };
   const formTextSize = 'text-body3-medium';
@@ -74,8 +73,6 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
   const handleDueDateClick = () => {
     setDueDateToggle(true);
   };
-
-  const teamId = 1;
 
   const handlePostIssues = (data: Inputs) => {
     fetchData({
@@ -88,11 +85,10 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
   const handleGetTeamMemberList = async () => {
     const userName = getValues('assignedMembersUsernames');
     const res = await defaultInstance.get(`member/${teamId}/search?username=${userName}`);
-    // console.log('여여', typeof res);
     if (res.data) {
       const newMember = res.data;
       setMemberCheck(false);
-      setMembersList((prevMembers) => [...prevMembers, newMember]);
+      setMembersList((prevMembers) => [...prevMembers, ...newMember]);
     } else if (res.data === '') {
       setMemberCheck(true);
     }
@@ -113,17 +109,9 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
       document.removeEventListener('mousedown', handleDueDateClickOutside);
     };
   }, [dueDateToggle]);
-  // {
-  //   "title": "string",
-  //   "content": "string",
-  //   "dueDate": "2024-03-20", // 이거 없고
-  //   "status": "TODO", // 이거 없고
-  //   "assignedMembersUsernames": [
-  //     "string"
-  //   ]
-  // }
+
   return (
-    <ModalLayout title="할 일" closeClick={closeClick} size="lg">
+    <ModalLayout title="할 일" closeClick={closeClick}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalFormBorder className="mt-16 h-[86.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 px-12 pt-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>게시자 (나)</p>
@@ -200,11 +188,7 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
             placeholder="그룹을 선택해 주세요"
             className={`${formTextSize} ${borderStyle} `}
           >
-            <button
-              className="absolute bottom-0 right-[1.8rem] top-0"
-              // onClick={handleStartDateClick}
-              type="button"
-            >
+            <button className="absolute bottom-0 right-[1.8rem] top-0" type="button">
               <img src={arrowDown} alt="arrowDown" />
             </button>
           </ModalInput>
@@ -236,7 +220,7 @@ export default function IssuesModal({ closeClick }: IssuesModalProps) {
           </div>
           <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
           <div className=" h-[10.6rem] w-full rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
-            <ModalMemberList formTextSize={formTextSize} onClick={handleRemoveMember} />
+            <ModalMemberList onClick={handleRemoveMember} />
           </div>
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">

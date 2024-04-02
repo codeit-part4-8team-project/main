@@ -20,17 +20,9 @@ interface Inputs {
   color: string;
   startDate: string;
   endDate: string;
-  githubLink?: string;
-  discordLink?: string;
-  figmaLink?: string;
-  // name?: string;
-  // description?: string;
-  // color?: string;
-  // startDate?: string;
-  // endDate?: string;
-  // githubLink?: string;
-  // discordLink?: string;
-  // figmaLink?: string;
+  githubLink: string;
+  discordLink: string;
+  figmaLink: string;
 }
 
 interface DefaultValue {
@@ -50,7 +42,7 @@ interface GroupEditModalProps {
   teamId: number;
 }
 
-export default function GroupEditModal({ closeClick, teamId = 3 }: GroupEditModalProps) {
+export default function GroupEditModal({ closeClick, teamId = 17 }: GroupEditModalProps) {
   const { data: defaultValue } = useAxios<DefaultValue>(
     {
       path: `team/${teamId}`,
@@ -58,17 +50,18 @@ export default function GroupEditModal({ closeClick, teamId = 3 }: GroupEditModa
     true,
   );
   const {
-    color,
-    description,
-    name,
-    startDate,
-    endDate,
-    figmaLink,
-    githubLink,
-    discordLink,
-    members,
+    color: defaultColor,
+    description: defaultDescription,
+    name: defaultName,
+    startDate: defaultStartDate,
+    endDate: defalutEndDate,
+    figmaLink: defaultFigmaLink,
+    githubLink: defaultGithubLink,
+    discordLink: defaultDiscordLink,
+    members: defaultMembers,
   }: DefaultValue = defaultValue || {};
-  const { data: patchData, fetchData: patchDataFetch } = useAxios<Inputs>({}); // put
+
+  const { error: patchError, fetchData: patchDataFetch } = useAxios<Inputs>({}); // put
 
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
 
@@ -79,18 +72,24 @@ export default function GroupEditModal({ closeClick, teamId = 3 }: GroupEditModa
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = ({
-    name,
-    description,
-    color,
-    startDate,
-    endDate,
-    githubLink,
-    discordLink,
-    figmaLink,
-  }) => {
+  } = useForm<Inputs>({
+    defaultValues: {
+      name: defaultName,
+      description: defaultDescription,
+      color: defaultColor,
+      startDate: defaultStartDate,
+      endDate: defalutEndDate,
+      githubLink: defaultGithubLink,
+      discordLink: defaultDiscordLink,
+      figmaLink: defaultFigmaLink,
+    },
+  });
+  const onSubmit: SubmitHandler<Inputs> = (
+    { name, description, color, startDate, endDate, githubLink, discordLink, figmaLink },
+    event,
+  ) => {
     const createTeam = {
       name: name,
       description: description,
@@ -100,18 +99,12 @@ export default function GroupEditModal({ closeClick, teamId = 3 }: GroupEditModa
       githubLink: githubLink,
       discordLink: discordLink,
       figmaLink: figmaLink,
-      // name: name || defaultValue?.name,
-      // description: description || defaultValue?.description,
-      // color: color || defaultValue?.color,
-      // startDate: startDate || defaultValue?.startDate,
-      // endDate: endDate || defaultValue?.endDate,
-      // githubLink: githubLink || defaultValue?.githubLink,
-      // discordLink: discordLink || defaultValue?.discordLink,
-      // figmaLink: figmaLink || defaultValue?.figmaLink,
     };
     handlePatchGroup(createTeam);
+    event?.target.closest('dialog').close();
     console.log('createTema', createTeam);
   };
+
   const nameWatch = watch('name');
   const descriptionWatch = watch('description');
   const formTextSize = 'text-body3-medium';
@@ -150,27 +143,31 @@ export default function GroupEditModal({ closeClick, teamId = 3 }: GroupEditModa
     };
   }, [colorToggle]);
 
+  useEffect(() => {
+    reset();
+  }, [defaultValue]);
+
   return (
     <>
       <ModalLayout title="그룹 편집" closeClick={closeClick}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalFormBorder className="mt-16 h-full w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 p-12">
             <p className={`${formTextSize} mb-[1.6rem]`}>그룹 게시자</p>
-            {members && members.length > 0 && (
+            {defaultMembers && defaultMembers.length > 0 && (
               <div className="mb-16 flex items-center gap-4">
                 <img
-                  src={members[0]?.imageUrl}
+                  src={defaultMembers[0]?.imageUrl}
                   alt="profile"
                   className="h-[2.4rem] w-[2.4rem] rounded-[99rem]"
                 />
-                <p className="text-[1.4rem]">{members[0]?.username}</p>
+                <p className="text-[1.4rem]">{defaultMembers[0]?.username}</p>
               </div>
             )}
 
             <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
               <ModalLabel htmlFor="name" label="그룹 이름" className={`${formTextSize}`} />
               <ModalInput
-                defaultValue={name}
+                defaultValue={defaultName}
                 name="name"
                 id="name"
                 hookform={register('name', { maxLength: 20, required: true })}
@@ -191,7 +188,7 @@ export default function GroupEditModal({ closeClick, teamId = 3 }: GroupEditModa
             <div className="mb-[0.8rem] flex flex-col gap-[0.8rem]">
               <ModalLabel htmlFor="description" label="그룹 설명" className={`${formTextSize}`} />
               <ModalInput
-                defaultValue={description}
+                defaultValue={defaultDescription}
                 id="description"
                 type="text"
                 placeholder="그룹 설명을 입력해 주세요."
@@ -223,7 +220,7 @@ export default function GroupEditModal({ closeClick, teamId = 3 }: GroupEditModa
               ) : (
                 <div
                   className={`h-[4.7rem] w-[4.7rem] rounded-[50%]`}
-                  style={{ backgroundColor: color }}
+                  style={{ backgroundColor: defaultColor }}
                 />
               )}
 
@@ -245,16 +242,16 @@ export default function GroupEditModal({ closeClick, teamId = 3 }: GroupEditModa
             <ModalCalendarInput
               startHookform={register('startDate')}
               startName="startDate"
-              startDefaultValue={startDate}
+              startDefaultValue={defaultStartDate}
               endHookform={register('endDate')}
               endName="endDate"
-              endDefaultValue={endDate}
+              endDefaultValue={defalutEndDate}
             />
             <ModalLabel htmlFor="link" label="외부 연결 링크" className={`${formTextSize}`} />
             <div className="mb-[0.8rem] mt-[1.6rem] flex gap-[1.2rem]">
               <img src={github} className={`${borderStyle} px-[1.8rem] py-[1.2rem]`} alt="github" />
               <ModalInput
-                defaultValue={githubLink}
+                defaultValue={defaultGithubLink}
                 hookform={register('githubLink')}
                 placeholder="URL을 입력해 주세요."
                 className={`${inputTextSize} ${borderStyle}`}
@@ -269,7 +266,7 @@ export default function GroupEditModal({ closeClick, teamId = 3 }: GroupEditModa
                 alt="discord"
               />
               <ModalInput
-                defaultValue={discordLink}
+                defaultValue={defaultDiscordLink}
                 hookform={register('discordLink')}
                 placeholder="URL을 입력해 주세요."
                 className={`${inputTextSize} ${borderStyle}`}
@@ -280,7 +277,7 @@ export default function GroupEditModal({ closeClick, teamId = 3 }: GroupEditModa
             <div className="mb-[0.8rem] mt-[1.6rem] flex gap-[1.2rem]">
               <img src={figma} className={`${borderStyle} px-[1.8rem] py-[1.2rem]`} alt="figma" />
               <ModalInput
-                defaultValue={figmaLink}
+                defaultValue={defaultFigmaLink}
                 hookform={register('figmaLink')}
                 placeholder="URL을 입력해 주세요."
                 className={`${inputTextSize} ${borderStyle}`}

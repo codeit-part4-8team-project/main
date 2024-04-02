@@ -11,7 +11,7 @@ import { Member } from '@/types/teamTypes';
 interface AfterApprovalProps {
   closeClick?: () => void;
   members?: Member[] | [];
-  teamId: number;
+  teamId?: number;
 }
 
 interface RoleDataType {
@@ -19,15 +19,12 @@ interface RoleDataType {
   name: string;
 }
 
-interface RoleProps {
-  roleData?: RoleDataType[];
-}
 export default function AfterApproval({
   members = [],
   closeClick,
   teamId = 3,
 }: AfterApprovalProps) {
-  const { data: roleData } = useAxios<RoleProps>(
+  const { data: roleData } = useAxios<RoleDataType[]>(
     {
       path: 'member/role',
     },
@@ -36,7 +33,7 @@ export default function AfterApproval({
   console.log('members', members);
   const { fetchData: groupPatchRoleData } = useAxios({});
   const [roleToggle, setRoleToggle] = useState<boolean>(false);
-  const [roleClickData, setRoleClickData] = useState('');
+  const [roleClickData, setRoleClickData] = useState<string>('');
   const handleroleToggle = () => {
     setRoleToggle(!roleToggle);
   };
@@ -68,8 +65,7 @@ export default function AfterApproval({
           <button onClick={handleroleToggle}>
             <img src={dropDown} />
           </button>
-          {/* {roleToggle && roleData && <Role roleData={roleData} onClick={handleRoleClick} />} */}
-          {roleToggle && <Role roleData={roleData} onClick={handleRoleClick} />}
+          {roleToggle && roleData && <Role roleData={roleData} onClick={handleRoleClick} />}
         </div>
       </ModalFormBorder>
       <TextButton buttonSize="md" onClick={handlegroupPutRoleData}>

@@ -47,7 +47,6 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   const [colorToggle, setColorToggle] = useState<boolean>(false);
   const [membersList, setMembersList] = useState<dataType[]>([]);
   const [memberCheck, setMemberCheck] = useState(false);
-  // const [disabled, setDisabled] = useState<boolean>(false)
 
   const {
     register,
@@ -57,16 +56,10 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     getValues,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = ({
-    name,
-    description,
-    startDate,
-    endDate,
-    githubLink,
-    discordLink,
-    figmaLink,
-    color,
-  }) => {
+  const onSubmit: SubmitHandler<Inputs> = (
+    { name, description, startDate, endDate, githubLink, discordLink, figmaLink, color },
+    event,
+  ) => {
     const createTeam = {
       name: name,
       description: description,
@@ -80,9 +73,10 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
       color: color || '#292929',
     };
     handleGroup(createTeam);
+    event?.target.closest('dialog').close();
   };
-  // const name = watch('name');
-  // const description = watch('description');
+  const nameWatch = watch('name');
+  const descriptionWatch = watch('description');
 
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
@@ -95,8 +89,6 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
       newData: data,
     });
   };
-  // 지선님
-  // user-aKXY00sJtx
 
   const handleGetMembers = async () => {
     const userName = getValues('members');
@@ -129,12 +121,6 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     }
   };
 
-  // const disabledButton = () => {
-  //   if (name.length < 20 && description.length < 40) {
-  //     setDisabled(true)
-  //   }
-  // };
-
   useEffect(() => {
     if (colorToggle) {
       document.addEventListener('mousedown', handleColorClickOutside);
@@ -165,13 +151,13 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               className={`${inputTextSize} ${borderStyle}`}
             />
           </div>
-          {watch('name')?.length > 20 && (
+          {nameWatch?.length > 20 && (
             <div className="absolute text-point_red">
               <p>20자 이하로 입력해 주세요.</p>
             </div>
           )}
-          {watch('name') ? (
-            <p className=" mb-[0.9rem] flex justify-end text-gray50">{watch('name')?.length}/20</p>
+          {nameWatch ? (
+            <p className=" mb-[0.9rem] flex justify-end text-gray50">{nameWatch?.length}/20</p>
           ) : (
             <p className=" mb-[0.9rem] flex justify-end text-gray50">0/20</p>
           )}
@@ -186,14 +172,14 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
               hookform={register('description')}
             />
           </div>
-          {watch('description')?.length > 40 && (
+          {descriptionWatch?.length > 40 && (
             <div className="absolute text-point_red">
               <p>40자 이하로 입력해 주세요.</p>
             </div>
           )}
-          {watch('description') ? (
+          {descriptionWatch ? (
             <p className=" mb-[0.9rem] flex justify-end text-gray50">
-              {watch('description')?.length}/40
+              {descriptionWatch?.length}/40
             </p>
           ) : (
             <p className=" mb-[0.9rem] flex justify-end text-gray50">0/40</p>
