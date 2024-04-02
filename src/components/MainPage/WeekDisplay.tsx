@@ -3,7 +3,7 @@ import { calendarContext } from '@/contexts/CalenarProvider';
 
 interface WeekDisplayProps {
   week: Array<[number, Date]>;
-  calendarType: '나' | '팀';
+  calendarType?: '나' | '팀';
 }
 
 export const WeekDisplay: React.FC<WeekDisplayProps> = ({ week, calendarType }) => {

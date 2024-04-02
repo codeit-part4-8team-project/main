@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import ScheduleModal from '../Modal/ScheduleModal';
 import ModalLayout from '../common/modal/ModalLayout';
@@ -9,7 +9,7 @@ import { calendarContext } from '@/contexts/CalenarProvider';
 interface AllDayProp {
   day: Date;
   mode: 'month' | 'modal';
-  calendarType: '나' | '팀';
+  calendarType?: '나' | '팀';
 }
 function AllDay({ day, mode, calendarType }: AllDayProp) {
   const { nowDate, filteredSchedules } = useContext(calendarContext);
