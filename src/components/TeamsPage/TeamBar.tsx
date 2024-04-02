@@ -10,12 +10,6 @@ import ColorChipIcon from '@/assets/ColorChipIcon';
 import InviteIcon from '@/assets/InviteIcon';
 
 export default function TeamBar() {
-  const openModal = useModal();
-
-  const handleModalClick = () => {
-    openModal(({ close }) => <InvitationGroupModal closeClick={close} />);
-  };
-
   const { teamId } = useParams();
 
   if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
@@ -25,6 +19,12 @@ export default function TeamBar() {
   } = useTeam(teamId);
 
   const profileImgs = members ? getProfilesImgs(members) : [];
+
+  const openModal = useModal();
+
+  const handleModalClick = () => {
+    openModal(({ close }) => <InvitationGroupModal teamId={Number(teamId)} closeClick={close} />);
+  };
 
   return (
     <div className="absolute left-[28.4rem] right-[2.4rem] top-[8.5rem] grid grid-cols-[14rem_auto_auto] items-center gap-[6.2rem]">
