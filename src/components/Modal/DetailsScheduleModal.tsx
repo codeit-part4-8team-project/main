@@ -27,7 +27,7 @@ interface defaultValue {
 
 export default function DetailScheduleModal({
   closeClick,
-  scheduleId = 5,
+  scheduleId = 2,
 }: DetailScheduleModalProps) {
   const { data: defaultValue } = useAxios(
     {
@@ -56,7 +56,7 @@ export default function DetailScheduleModal({
                 alt="profile"
                 className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
               />
-              <p className=" text-[1.4rem]">{user?.name}</p>
+              <p className=" text-[1.4rem]">{user?.username}</p>
             </>
           )}
           {author && (
@@ -66,7 +66,7 @@ export default function DetailScheduleModal({
                 alt="profile"
                 className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
               />
-              <p className=" text-[1.4rem]">{author?.name}</p>
+              <p className=" text-[1.4rem]">{author?.username}</p>
             </>
           )}
         </div>

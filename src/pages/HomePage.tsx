@@ -25,8 +25,7 @@ const HomePage = () => {
   const handleClickOpenModal = () => {
     // openModal(({ close }) => <GroupModal closeClick={close} />); // 에러메세지 큰건 해결
     // openModal(({ close }) => <GroupEditModal closeClick={close} />); // patch인데 put처럼 전체수정이 이루어짐
-    openModal(({ close }) => <InvitationGroupModal closeClick={close} />); // 여기 그룹초대받은 모달인데 수정사항 많음
-    // InvitationGroupModal은 이중 모달 띄우는거 채빈님께 물어보기
+    // openModal(({ close }) => <InvitationGroupModal closeClick={close} />); // 여기 그룹초대받은 모달인데 수정사항 많음
     // openModal(({ close }) => <ScheduleModal closeClick={close} />); // 여기도 에러메세지남음
     // openModal(({ close }) => <DetailScheduleModal closeClick={close} />); // 여기도 끝 딱히 손댈거없어보임
     // openModal(({ close }) => <IssuesModal closeClick={close} />); // 여기는 그룹을 지울까말까 고민중이고, 멤버초대하는게 클릭시 자꾸 내 정보에대한 값을 리스폰스로 받아서 처리하기가 어려움. + 그리고 막상 받고 api쏘면 Null값이 들어옴
@@ -36,7 +35,7 @@ const HomePage = () => {
     // openModal(({ close }) => <FreeBoardEdit closeClick={close} />); // 여기도 딱히 끝
     // openModal(({ close }) => <AnnouncementModal closeClick={close} />); // 여기서부터 집가서 다시 보고 첫번째부터 해결하기
     // openModal(({ close }) => <AnnouncementEditModal closeClick={close} />); // 임의로 만듦 나중에 디자인 확인 필요
-    // openModal(({ close }) => <AfterApproval closeClick={close} />);
+    openModal(({ close }) => <AfterApproval closeClick={close} />);
   };
   // ScheduleModal
   // GroupEditModal

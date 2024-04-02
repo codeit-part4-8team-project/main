@@ -15,9 +15,9 @@ export default function Role({ roleData, onClick }: RoleProps) {
         <button
           key={index}
           className="w-full px-[1.8rem] py-[1.2rem] text-start hover:bg-gray10"
-          onClick={() => onClick(item.name)}
+          onClick={() => onClick(item.role)}
         >
-          {item.name}
+          {item.role}
         </button>
       ))}
     </div>

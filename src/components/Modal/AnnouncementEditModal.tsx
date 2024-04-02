@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
@@ -19,41 +20,54 @@ interface DefaultValueType {
 }
 interface AnnouncementModalProps {
   closeClick: () => void;
+  teamId: number;
 }
-// 나중에 title 프롭으로 받기
 
-export default function AnnouncementEditModal({ closeClick }: AnnouncementModalProps) {
-  const teamId = 6;
+export default function AnnouncementEditModal({ closeClick, teamId = 1 }: AnnouncementModalProps) {
   const { data: defaultValue } = useAxios<DefaultValueType>(
     {
       path: `announcement/${teamId}`,
     },
     true,
   );
-  const { title, content, author }: DefaultValueType = defaultValue || {};
-  console.log(defaultValue);
-  const { fetchData } = useAxios({});
-  const { register, watch, handleSubmit } = useForm<Inputs>();
+
+  const {
+    title: defaultTitle,
+    content: defaultContent,
+    author,
+  }: DefaultValueType = defaultValue || {};
+
+  const { fetchData: patchData } = useAxios({});
+  const { register, watch, handleSubmit, reset } = useForm<Inputs>({
+    defaultValues: {
+      title: defaultTitle,
+      content: defaultContent,
+    },
+  });
   const onSubmit: SubmitHandler<Inputs> = ({ content, title }) => {
     const createFreeBoard = {
       content: content,
       title: title,
     };
-    handlePostAnnouncement(createFreeBoard);
-    console.log(createFreeBoard);
+    handlePatchAnnouncement(createFreeBoard);
   };
 
-  const handlePostAnnouncement = (data: Inputs) => {
-    fetchData({
+  const formTextSize = 'text-body3-medium';
+  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
+  const inputTextSize = 'text-body3-regular';
+
+  const handlePatchAnnouncement = (data: Inputs) => {
+    patchData({
       newPath: `announcement/${teamId}`,
       newMethod: 'PATCH',
       newData: data,
     });
   };
 
-  const formTextSize = 'text-body3-medium';
-  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
-  const inputTextSize = 'text-body3-regular';
+  useEffect(() => {
+    reset();
+  }, [defaultValue]);
+
   return (
     <ModalLayout title="공지사항 게시하기" closeClick={closeClick}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -68,7 +82,7 @@ export default function AnnouncementEditModal({ closeClick }: AnnouncementModalP
         <div>
           <ModalLabel htmlFor="title" label="제목" className={`${formTextSize}`} />
           <ModalInput
-            defaultValue={title}
+            defaultValue={defaultTitle}
             hookform={register('title')}
             id="title"
             name="title"
@@ -79,7 +93,7 @@ export default function AnnouncementEditModal({ closeClick }: AnnouncementModalP
         <div className="flex flex-col gap-[0.8rem]">
           <ModalLabel htmlFor="content" label="내용" className={`${formTextSize}`} />
           <textarea
-            defaultValue={content}
+            defaultValue={defaultContent}
             {...register('content')}
             placeholder="내용을 입력해 주세요."
             id="content"

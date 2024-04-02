@@ -20,7 +20,7 @@ interface DefaultValue {
   startDate?: string;
   endDate?: string;
   // members?: membersType[] | [];
-  members?: Member[] | [];
+  members?: Member[];
 }
 
 interface membersType {
@@ -44,7 +44,7 @@ interface membersType {
 // 모달위에 모달 만들기
 export default function InvitationGroupModal({
   closeClick,
-  teamId = 3,
+  teamId = 1,
 }: InvitationGroupModalProps) {
   const { data: defaultValue } = useAxios<DefaultValue>(
     {
@@ -71,6 +71,7 @@ export default function InvitationGroupModal({
   const handleApprovalClick = () => {
     setApproval(!approval);
   };
+
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle =
@@ -133,15 +134,17 @@ export default function InvitationGroupModal({
           <TextButton buttonSize="md" color="white" onClick={handleDeleteClick}>
             거부
           </TextButton>
-          <TextButton buttonSize="md" onClick={closeClick}>
+          <TextButton
+            buttonSize="md"
+            onClick={() => {
+              openModal(({ close }) => <AfterApproval members={members} closeClick={close} />);
+              closeClick();
+            }}
+          >
             승인
           </TextButton>
         </div>
       </ModalLayout>
-
-      {openModal(({ close }) => (
-        <AfterApproval closeClick={close} members={members} />
-      ))}
     </>
   );
 }

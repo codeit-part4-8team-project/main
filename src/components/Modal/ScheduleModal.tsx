@@ -21,7 +21,7 @@ type Inputs = {
   content: string;
 };
 // 여기는 user인지 team인지 구분이 필요함
-function ScheduleModal({ closeClick, team = false, user = false, teamId = 6 }: ScheduleModalProps) {
+function ScheduleModal({ closeClick, team = false, user = true, teamId = 1 }: ScheduleModalProps) {
   const { fetchData: userFetchData } = useAxios({});
   const { fetchData: teamFetchData } = useAxios({});
 
@@ -67,7 +67,7 @@ function ScheduleModal({ closeClick, team = false, user = false, teamId = 6 }: S
   };
 
   return (
-    <ModalLayout title="일정 추가" closeClick={closeClick} size="sm">
+    <ModalLayout title="일정 추가" closeClick={closeClick}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalFormBorder className="mt-16 h-full w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 p-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>게시자(나)</p>

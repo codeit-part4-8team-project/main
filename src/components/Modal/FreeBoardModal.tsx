@@ -13,9 +13,10 @@ interface Inputs {
 
 interface FreeBoardModalProps {
   closeClick: () => void;
+  teamId: number;
 }
 
-export default function FreeBoardModal({ closeClick }: FreeBoardModalProps) {
+export default function FreeBoardModal({ closeClick, teamId = 1 }: FreeBoardModalProps) {
   const { fetchData: freeBoardFetchData } = useAxios({});
   const { register, watch, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = ({ content, title }) => {
@@ -26,7 +27,6 @@ export default function FreeBoardModal({ closeClick }: FreeBoardModalProps) {
     handlePostFreeBoard(createFreeBoard);
     console.log(createFreeBoard);
   };
-  const teamId = 6;
   const handlePostFreeBoard = (data: Inputs) => {
     freeBoardFetchData({
       newPath: `post/${teamId}`,

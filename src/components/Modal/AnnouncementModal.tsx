@@ -17,7 +17,7 @@ interface AnnouncementModalProps {
 }
 // 나중에 group 프롭으로 받기
 
-export default function AnnouncementModal({ closeClick, teamId = 6 }: AnnouncementModalProps) {
+export default function AnnouncementModal({ closeClick, teamId = 1 }: AnnouncementModalProps) {
   const { fetchData } = useAxios({});
   const { register, watch, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = ({ content, title }) => {

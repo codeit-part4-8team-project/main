@@ -42,7 +42,7 @@ interface GroupEditModalProps {
   teamId: number;
 }
 
-export default function GroupEditModal({ closeClick, teamId = 17 }: GroupEditModalProps) {
+export default function GroupEditModal({ closeClick, teamId = 5 }: GroupEditModalProps) {
   const { data: defaultValue } = useAxios<DefaultValue>(
     {
       path: `team/${teamId}`,

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
@@ -6,7 +7,7 @@ import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
-import { useAxios } from '@/hooks/useAxios';
+import { defaultInstance, useAxios } from '@/hooks/useAxios';
 import { Author } from '@/types/commonTypes';
 
 interface IssuesModalProps {
@@ -31,6 +32,15 @@ interface dataType {
   username?: string;
 }
 
+interface MemberListType {
+  id: number;
+  name: string;
+  imageUrl: string;
+  role?: string;
+  grade: string;
+  username: string;
+  createdDate: string;
+}
 interface defaultValue {
   content?: string;
   title?: string;
@@ -38,37 +48,37 @@ interface defaultValue {
   author?: Author;
 }
 
-// put 메서드 형식
-// {
-//   "title": "string",
-//   "content": "string",
-//   "dueDate": "2024-03-24", // 동일하게 없음
-// -> default value로 TODO 넣어주기
-//   "status": "TODO", // 없음 -> 기본값 TODO 혹은, 드래그앤드롭에 해당하는 값이 알아서 들어옴
-//   "assignedMembersUsernames": [
-//     "string"
-//   ]
-// }
-export default function MyIssuesModal({ closeClick, issueId = 2, teamId = 6 }: IssuesModalProps) {
+export default function MyIssuesModal({ closeClick, issueId = 3, teamId = 1 }: IssuesModalProps) {
   const { data: defaultValue } = useAxios(
     {
       path: `issue/${issueId}`,
     },
     true,
   );
-  console.log(defaultValue);
-  const { content, title, assignedMembersUsernames, author }: defaultValue = defaultValue || {};
-  const { fetchData: memberFetchData } = useAxios({}); // member tag GET axios
+  const {
+    content: defaultContent,
+    title: defaultTitle,
+    assignedMembersUsernames: defaultAssignedMembersUsernames,
+    author,
+  }: defaultValue = defaultValue || {};
   const { fetchData: fetchPatchData } = useAxios({});
-  const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = ({ title, content, assignedMembersUsernames }) => {
-    const putIssue = {
+
+  const [membersList, setMemberList] = useState<MemberListType[]>([]);
+
+  const { register, watch, handleSubmit, getValues, reset } = useForm<Inputs>({
+    defaultValues: {
+      title: defaultTitle,
+      content: defaultContent,
+    },
+  });
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content }) => {
+    const patchIssue = {
       title: title,
       content: content,
-      assignedMembersUsernames: assignedMembersUsernames, // 배열 타입에러 자꾸남
+      assignedMembersUsernames: membersList.map((member) => member.username), // 배열 타입에러 자꾸남
     };
-    handlePatchIssues(putIssue);
-    console.log(putIssue);
+    handlePatchIssues(patchIssue);
+    console.log(patchIssue);
   };
 
   const titleWatch = watch('title');
@@ -77,31 +87,29 @@ export default function MyIssuesModal({ closeClick, issueId = 2, teamId = 6 }: I
   const inputTextSize = 'text-body3-regular';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
 
-  const handleGetTeamMemberList = () => {
+  const handleGetTeamMemberList = async () => {
     const userName = getValues('assignedMembersUsernames');
-    memberFetchData({
-      newPath: `member/${teamId}/search?username=${userName}`,
-    });
+    const res = await defaultInstance.get(`member/${teamId}/search?username=${userName}`);
+    console.log('res.data입니다', res.data);
+    if (res.data) {
+      const newMember = res.data;
+      setMemberList((prevMembers) => [...prevMembers, ...newMember]);
+    }
   };
 
   const handlePatchIssues = (data: Inputs) => {
     fetchPatchData({
-      newPath: `${teamId}/issue/${issueId}`,
+      newPath: `/issue/${issueId}`,
       newMethod: 'PATCH',
       newData: data,
     });
   };
-  // {
-  //   "title": "string",
-  //   "content": "string",
-  //   "dueDate": "2024-03-20", // 이거 없고
-  //   "status": "TODO", // 이거 없고
-  //   "assignedMembersUsernames": [
-  //     "string"
-  //   ]
-  // }
+
+  useEffect(() => {
+    reset();
+  }, [defaultValue]);
   return (
-    <ModalLayout title="할 일" closeClick={closeClick} size="lg">
+    <ModalLayout title="할 일" closeClick={closeClick}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalFormBorder className="mt-16 h-[64rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 px-12 pt-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>게시자 (나)</p>
@@ -116,7 +124,7 @@ export default function MyIssuesModal({ closeClick, issueId = 2, teamId = 6 }: I
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="title" label="이슈*" className={`${formTextSize}`} />
             <ModalInput
-              defaultValue={title}
+              defaultValue={defaultTitle}
               name="title"
               id="title"
               hookform={register('title')}
@@ -137,7 +145,7 @@ export default function MyIssuesModal({ closeClick, issueId = 2, teamId = 6 }: I
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="content" label="내용*" className={`${formTextSize}`} />
             <ModalInput
-              defaultValue={content}
+              defaultValue={defaultContent}
               name="content"
               id="content"
               hookform={register('content')}
@@ -178,7 +186,7 @@ export default function MyIssuesModal({ closeClick, issueId = 2, teamId = 6 }: I
           <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
           <div className=" h-[10.6rem] w-full rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
             {/* <ModalMemberList formTextSize={formTextSize} data={assignedMembersUsernames} />  formTextSize 는 뭐지?*/}
-            <ModalMemberList memberData={assignedMembersUsernames} owner={author} />
+            <ModalMemberList memberData={defaultAssignedMembersUsernames} owner={author} />
           </div>
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">

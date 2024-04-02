@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
@@ -20,20 +21,33 @@ interface defaultValue {
 
 interface FreeBoardModalProps {
   closeClick: () => void;
+  teamId?: number;
+  postId: number;
 }
 
-export default function FreeBoardEditModal({ closeClick }: FreeBoardModalProps) {
-  const teamId = 6;
-  const postId = 1;
+export default function FreeBoardEditModal({
+  closeClick,
+  teamId = 1,
+  postId = 1,
+}: FreeBoardModalProps) {
   const { data: defaultValue } = useAxios<defaultValue>(
     {
       path: `post/${postId}`,
     },
     true,
   );
-  const { title, content, author }: defaultValue = defaultValue || {};
+  const { title: defaultTitle, content: defalutContent, author }: defaultValue = defaultValue || {};
   const { fetchData: freeBoardEditData } = useAxios({});
-  const { register, watch, handleSubmit } = useForm<Inputs>();
+
+  const formTextSize = 'text-body3-medium';
+  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
+
+  const { register, watch, handleSubmit, reset } = useForm<Inputs>({
+    defaultValues: {
+      title: defaultTitle,
+      content: defalutContent,
+    },
+  });
   const onSubmit: SubmitHandler<Inputs> = ({ title, content }) => {
     const createFreeBoard = {
       content: content,
@@ -51,8 +65,10 @@ export default function FreeBoardEditModal({ closeClick }: FreeBoardModalProps) 
     });
   };
 
-  const formTextSize = 'text-body3-medium';
-  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
+  useEffect(() => {
+    reset();
+  }, [defaultValue]);
+
   return (
     <ModalLayout title="작성하기" closeClick={closeClick}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -67,7 +83,7 @@ export default function FreeBoardEditModal({ closeClick }: FreeBoardModalProps) 
         <div className="mb-[0.8rem] flex flex-col gap-[0.8rem]">
           <ModalLabel htmlFor="title" label="제목" className={`${formTextSize}`} />
           <ModalInput
-            defaultValue={title}
+            defaultValue={defaultTitle}
             placeholder="제목을 작성해 주세요."
             id="title"
             name="title"
@@ -83,7 +99,7 @@ export default function FreeBoardEditModal({ closeClick }: FreeBoardModalProps) 
         <div className="flex flex-col gap-[0.8rem]">
           <ModalLabel htmlFor="content" label="내용" className={`${formTextSize}`} />
           <textarea
-            defaultValue={content}
+            defaultValue={defalutContent}
             {...register('content')}
             placeholder="내용을 입력해 주세요."
             id="content"

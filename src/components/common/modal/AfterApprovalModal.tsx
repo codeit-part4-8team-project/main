@@ -22,7 +22,7 @@ interface RoleDataType {
 export default function AfterApproval({
   members = [],
   closeClick,
-  teamId = 3,
+  teamId = 1,
 }: AfterApprovalProps) {
   const { data: roleData } = useAxios<RoleDataType[]>(
     {
@@ -30,7 +30,6 @@ export default function AfterApproval({
     },
     true,
   );
-  console.log('members', members);
   const { fetchData: groupPatchRoleData } = useAxios({});
   const [roleToggle, setRoleToggle] = useState<boolean>(false);
   const [roleClickData, setRoleClickData] = useState<string>('');
@@ -61,11 +60,16 @@ export default function AfterApproval({
         <p className="text-body3-regular">#{members[0]?.username}</p>
         <div className="mb-[0.8rem] flex w-full text-body3-medium">나의역할</div>
         <div className=" relative flex w-full items-center justify-between rounded-[0.6rem] border-[0.1rem] border-gray30 px-[1.8rem] py-[1.2rem] text-body3-regular text-gray50">
-          역할을 선택해 주세요.
+          {roleClickData ? (
+            <p className="text-black">{roleClickData}</p>
+          ) : (
+            <p>역할을 선택해 주세요.</p>
+          )}
           <button onClick={handleroleToggle}>
             <img src={dropDown} />
+
+            {roleToggle && roleData && <Role roleData={roleData} onClick={handleRoleClick} />}
           </button>
-          {roleToggle && roleData && <Role roleData={roleData} onClick={handleRoleClick} />}
         </div>
       </ModalFormBorder>
       <TextButton buttonSize="md" onClick={handlegroupPutRoleData}>

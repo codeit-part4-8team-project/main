@@ -12,7 +12,6 @@ interface dataType {
 }
 
 interface ModalMemberListProps {
-  // formTextSize?: string;
   memberData?: dataType[];
   onClick?: (userName: string | undefined) => void;
   owner?: Author;
@@ -41,7 +40,7 @@ export default function ModalMemberList({ memberData, onClick, owner }: ModalMem
         <div key={index} className={memberListItem}>
           <img src={item.imageUrl} alt="profile" className="h-[2.4rem] w-[2.4rem] rounded-full" />
           <div className="flex w-full items-center justify-between">
-            <p>{item.name}</p>
+            <p>{item.username}</p>
             {onClick ? (
               <button type="button" onClick={() => onClick(item.username)}>
                 <img alt="close" src={close} />

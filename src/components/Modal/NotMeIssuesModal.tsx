@@ -3,6 +3,7 @@ import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
 import { useAxios } from '@/hooks/useAxios';
+import { Author } from '@/types/commonTypes';
 
 interface NotMeLssuesModalProps {
   closeClick: () => void;
@@ -22,10 +23,10 @@ interface DefaultValueType {
   title?: string;
   content?: string;
   assignedMembers?: UserType[];
-  author?: UserType;
+  author?: Author;
 }
 
-export default function NotMeIssuesModal({ closeClick, issueId = 2 }: NotMeLssuesModalProps) {
+export default function NotMeIssuesModal({ closeClick, issueId = 3 }: NotMeLssuesModalProps) {
   const teamId = 10;
   const { data: defaultValue } = useAxios(
     {
@@ -59,7 +60,7 @@ export default function NotMeIssuesModal({ closeClick, issueId = 2 }: NotMeLssue
         <div className={`${divTextSize} ${borderStyle} mb-[3.8rem]`}>{content}</div>
         <p className={`${TextSize} mb-[0.8rem] mt-12`}>팀원</p>
         <div className=" h-[10.6rem] w-full rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
-          <ModalMemberList formTextSize={TextSize} memberData={assignedMembers} owner={author} />
+          <ModalMemberList memberData={assignedMembers} owner={author} />
         </div>
       </ModalFormBorder>
     </ModalLayout>
