@@ -16,6 +16,7 @@ import MyIssuesModal from '@/components/Modal/MyIssuesModal';
 import NotMeIssuesModal from '@/components/Modal/NotMeIssuesModal';
 // import MyIssuesModal from '@/components/Modal/MyIssuesModal';
 import ScheduleModal from '@/components/Modal/ScheduleModal';
+import { Time } from '@/components/SchedulesPage/Tiem';
 import { useModal } from '@/contexts/ModalProvider';
 // import { useAxios } from '@/hooks/useAxios';
 import axios from '@/hooks/testAxios';
@@ -79,6 +80,7 @@ const HomePage = () => {
       </button>
       <ModalCalendar />
       {/* <div>홈페이지입니다.</div> */}
+      <Time />
     </>
   );
 };

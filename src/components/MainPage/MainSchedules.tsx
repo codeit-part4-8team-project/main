@@ -11,7 +11,7 @@ interface MainSchedulesProps {
 }
 
 function MainSchedules({ calendarType, teamId }: MainSchedulesProps) {
-  const { schedules, setSchedules, nowDate } = useContext(calendarContext);
+  const { setSchedules, nowDate } = useContext(calendarContext);
   const localDate = nowDate.toISOString().substring(0, 10);
   const Container = {
     width: '100%',
@@ -49,7 +49,7 @@ function MainSchedules({ calendarType, teamId }: MainSchedulesProps) {
 
       setSchedules(standardizedData);
     }
-  }, [loading, error, responseData]);
+  }, [loading, error, responseData, setSchedules]);
   const convertToISODate = (dateTimeString: string): string => {
     const [date, time] = dateTimeString.split(' ');
     const [year, month, day] = date.split('-');
@@ -59,7 +59,7 @@ function MainSchedules({ calendarType, teamId }: MainSchedulesProps) {
 
   useEffect(() => {
     fetchData();
-  }, [schedules]);
+  }, []);
 
   return (
     <>

@@ -7,7 +7,7 @@ import { calendarContext } from '@/contexts/CalenarProvider';
 
 interface DateBoxProp {
   mode: 'week' | 'month' | 'modal';
-  calendarType: '나' | '팀';
+  calendarType?: '나' | '팀';
 }
 function DateBox({ mode, calendarType }: DateBoxProp) {
   const [week, setWeek] = useState<Array<[number, Date]>>([]);
