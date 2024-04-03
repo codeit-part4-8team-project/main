@@ -4,22 +4,25 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAnnouncementPage } from '@/hooks/useAnnouncement';
+import { Trigger } from '@/hooks/useAxios';
+import { useMemberPage } from '@/hooks/useMember';
 import { useMyTeamPage } from '@/hooks/useMyTeam';
 import { usePostPage } from '@/hooks/usePost';
 import { Announcement } from '@/types/announcementTypes';
 import { Post } from '@/types/postTypes';
-import { Team } from '@/types/teamTypes';
+import { Member, Team } from '@/types/teamTypes';
 
 interface PageContextValue {
-  dataContent: Announcement[] | Post[] | Team[] | [];
+  dataContent: Announcement[] | Post[] | Team[] | Member[] | [];
   pageNumsArray: number[];
   currentPage: number;
   isFirst: boolean;
   isLast: boolean;
-  setCurrentPage: (page: number) => void;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   handlePrevClick: () => void;
   handleNextClick: () => void;
   handlePageNumberClick: (page: number) => void;
+  refetch?: Trigger;
 }
 
 interface PageProviderProps {
@@ -36,6 +39,7 @@ const defaultPageValue = {
   handlePrevClick: () => {},
   handleNextClick: () => {},
   handlePageNumberClick: () => {},
+  refetch: () => Promise.resolve(),
 };
 
 /* 예시: createNumArray(3, 5)는 [3, 4, 5, 6, 7] 배열을 반환 */
@@ -56,7 +60,8 @@ export function PageProvider({ children }: PageProviderProps) {
   const { postPageData, fetchPostPageData } = usePostPage(currentPage);
   const { announcementPageData, fetchAnnouncementPageData } = useAnnouncementPage(currentPage);
   const { myTeamPageData, fetchMyTeamPageData } = useMyTeamPage(currentPage);
-  let size: number, totalPages: number, content;
+  const { memberPageData, fetchMemberPageData } = useMemberPage(currentPage);
+  let size: number, totalPages: number, content, refetch;
 
   switch (pageContent) {
     case 'post':
@@ -73,6 +78,13 @@ export function PageProvider({ children }: PageProviderProps) {
       size = myTeamPageData.size;
       totalPages = myTeamPageData.totalPages;
       content = myTeamPageData.content;
+      refetch = fetchMyTeamPageData;
+      break;
+    case 'member':
+      size = memberPageData.size;
+      totalPages = memberPageData.totalPages;
+      content = memberPageData.content;
+      refetch = fetchMemberPageData;
       break;
     default:
       throw Error('페이지네이션을 사용할 수 없는 페이지입니다.');
@@ -95,6 +107,9 @@ export function PageProvider({ children }: PageProviderProps) {
     case 'mypage':
       newPath = `/team/my-team${query}`;
       break;
+    case 'member':
+      newPath = `/member/${teamId}${query}`;
+      break;
     default:
       throw Error('페이지네이션을 사용할 수 없는 페이지입니다.');
   }
@@ -109,6 +124,10 @@ export function PageProvider({ children }: PageProviderProps) {
         break;
       case 'mypage':
         fetchMyTeamPageData({ newPath });
+        break;
+      case 'member':
+        fetchMemberPageData({ newPath });
+        break;
     }
   }, [currentPage]);
 
@@ -147,6 +166,7 @@ export function PageProvider({ children }: PageProviderProps) {
         handlePrevClick,
         handleNextClick,
         handlePageNumberClick,
+        refetch,
       }}
     >
       {children}

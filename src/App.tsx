@@ -15,8 +15,8 @@ import { UserProvider } from '@/contexts/UserProvider';
 
 function App() {
   return (
-    <ModalProvider>
-      <UserProvider>
+    <UserProvider>
+      <ModalProvider>
         <CalendarProvider>
           <Router>
             <Routes>
@@ -42,8 +42,8 @@ function App() {
             </Routes>
           </Router>
         </CalendarProvider>
-      </UserProvider>
-    </ModalProvider>
+      </ModalProvider>
+    </UserProvider>
   );
 }
 

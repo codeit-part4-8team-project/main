@@ -5,6 +5,7 @@ import AllowDownIcon from '@/assets/AllowDownIcon';
 interface DropDownProps {
   options: string[];
   selectedOption: string;
+  initialOption?: string;
   onSelect: (value: string) => void;
   className?: string;
   size?: 'sm' | 'md';
@@ -13,6 +14,7 @@ interface DropDownProps {
 export default function Dropdown({
   options,
   selectedOption,
+  initialOption,
   onSelect,
   className,
   size = 'md',
@@ -35,8 +37,8 @@ export default function Dropdown({
         className="inline-flex h-full w-full items-center justify-between text-body3-regular focus:outline-none"
         onClick={toggleDropdown}
       >
-        <span className={selectedOption ? '' : 'text-gray50'}>
-          {selectedOption || '역할을 선택해주세요'}
+        <span className={selectedOption || initialOption ? '' : 'text-gray50'}>
+          {selectedOption || initialOption || '역할을 선택해주세요'}
         </span>
         <AllowDownIcon />
       </button>

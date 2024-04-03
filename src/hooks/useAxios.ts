@@ -85,6 +85,16 @@ interface UseAxiosParams<T> {
   data?: T | Record<string, never>;
 }
 
+export type Trigger = ({
+  newPath,
+  newMethod,
+  newData,
+}?: {
+  newPath?: string;
+  newMethod?: Method;
+  newData?: unknown;
+}) => Promise<void>;
+
 export const useAxios = <T = unknown, P = unknown, E = unknown>(
   { path = '', method = 'GET', data = {} }: UseAxiosParams<P>,
   shouldFetch: boolean = false,
