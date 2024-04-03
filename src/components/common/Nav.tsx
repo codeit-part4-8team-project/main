@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import LogoImg from '../../../public/assets/Logo.svg';
 import globalLink from '../../../public/assets/globe-dark.svg';
@@ -32,28 +32,18 @@ interface ModalProps {
   modalOutsideClicked: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ onClose, children, modalOutsideClicked }) => {
+const Modal: React.FC<ModalProps> = ({ children, modalOutsideClicked }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   return (
     <div
-      className="modal absolute bottom-0 left-[-28.5rem] right-0 top-[4.7rem] z-50 flex  justify-center"
+      className="modal absolute bottom-0 left-[-28.5rem] right-0 top-[9.7rem] z-50 flex flex-col justify-center"
       onClick={modalOutsideClicked}
     >
-      <div
-        ref={modalRef}
-        className="modal-content relative h-36 w-[38.4rem]  rounded-lg bg-white  pb-12 pl-12 pr-[20.9rem] pt-12 shadow-md"
-      >
-        <span
-          className="close absolute right-2 top-2 cursor-pointer"
-          onClick={() => {
-            onClose();
-          }}
-        >
-          &times;
-        </span>
+      <div ref={modalRef} className="modal-content relative h-36 w-[38.4rem] rounded-lg ">
         {children}
       </div>
+      //{' '}
     </div>
   );
 };
@@ -63,13 +53,10 @@ function Nav() {
   const [data, setData] = useState<UserData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
-  const [alarmData, setAlarmData] = useState<Alarm | null>({
-    id: 0,
-    description: '',
-    color: null,
-  });
-  const modalOutsideClicked = (e: any) => {
-    if (modalRef.current === e.target) {
+  const [alarmData, setAlarmData] = useState<Alarm[]>([]);
+
+  const modalOutsideClicked = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
       setIsModalOpen(false);
     }
   };
@@ -80,7 +67,6 @@ function Nav() {
       .then((response) => {
         if (response && response.data) {
           setData(response.data);
-          // setIsModalOpen(true);
         }
       })
       .catch((error) => {
@@ -93,17 +79,13 @@ function Nav() {
       .get('http://ec2-43-203-69-64.ap-northeast-2.compute.amazonaws.com:8080/api/team/pending')
       .then((response) => {
         if (response && response.data && Array.isArray(response.data) && response.data.length > 0) {
-          setAlarmData(response.data[0]); // Assuming only one alarm data is returned
+          setAlarmData(response.data); // Assuming only one alarm data is returned
         }
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   }, []);
-
-  const toggleModal = () => {
-    setIsModalOpen((prevIsModalOpen) => !prevIsModalOpen);
-  };
 
   return (
     <div>
@@ -126,17 +108,35 @@ function Nav() {
           </div>
         </div>
         <div className="relative my-2.5 mr-6 flex items-center gap-8">
-          {alarmData && alarmData.name ? (
-            <DarkGroupIcon onClick={toggleModal} className="" />
+          {alarmData.length > 0 ? (
+            <DarkGroupIcon onClick={() => setIsModalOpen(true)} className="" />
           ) : (
             <GroupIcon />
           )}
-          {isModalOpen && alarmData && alarmData.name ? (
-            <Modal onClose={toggleModal} modalOutsideClicked={modalOutsideClicked}>
-              <div className="whitespace-nowrap text-body4-bold">그룹 초대장이 도착했습니다</div>
-              <div className=" text-body4-regular">[{alarmData.name}]</div>
+          {isModalOpen ? (
+            <Modal onClose={() => setIsModalOpen(false)} modalOutsideClicked={modalOutsideClicked}>
+              {alarmData.map((alarm, index) => (
+                <div
+                  className="w-full  border border-gray30 bg-white  pb-12 pl-12 pr-[20.9rem] pt-12 shadow-md"
+                  key={index}
+                >
+                  <div className="whitespace-nowrap text-body4-bold">
+                    그룹 초대장이 도착했습니다
+                  </div>
+                  <span
+                    className="close absolute right-2 top-2 cursor-pointer"
+                    onClick={() => {
+                      setIsModalOpen(false);
+                    }}
+                  >
+                    &times;
+                  </span>
+                  <div className="text-body4-regular">[{alarm.name}]</div>
+                </div>
+              ))}
             </Modal>
           ) : null}
+
           {data && data.imageUrl ? (
             <Link to={`/user/${user?.id}/mypage`}>
               <img

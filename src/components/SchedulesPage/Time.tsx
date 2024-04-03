@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import TextButton from '../common/TextButton';
 import AllowDownIcon from '@/assets/AllowDownIcon';
 
 interface NavItemProps {
   icon: React.ReactNode;
-  children: React.ReactNode[];
+  children: React.ReactNode | React.ReactNode[];
 }
 
 function NavItem({ icon, children }: NavItemProps) {
@@ -19,6 +19,7 @@ function NavItem({ icon, children }: NavItemProps) {
     setSelectedItem(item);
     setOpen(false); // Close dropdown after selection
   };
+  const childrenArray = React.Children.toArray(children);
 
   return (
     <div className="nav-item-container relative">
@@ -28,20 +29,22 @@ function NavItem({ icon, children }: NavItemProps) {
         </div>
         {open && (
           <div className="  absolute left-0 right-0 top-[3.2rem] z-50 bg-white">
-            {children?.map((item, index) => (
-              <div
-                key={index}
-                onClick={() => handleItemClick(item as string)}
-                className={`max-h-[5rem] cursor-pointer overflow-y-auto ${
-                  selectedItem ===
-                  (typeof item === 'object' ? ((item as any)?.props?.children as string) : '')
-                    ? 'bg-gray300'
-                    : ''
-                }`}
-              >
-                {item}
-              </div>
-            ))}
+            <div className="max-h-[5rem] overflow-y-auto">
+              {childrenArray?.map((item, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleItemClick(item as string)}
+                  className={`max-h-[5rem] cursor-pointer overflow-y-auto ${
+                    selectedItem ===
+                    (typeof item === 'object' ? ((item as any)?.props?.children as string) : '')
+                      ? 'bg-gray300'
+                      : ''
+                  }`}
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
           </div>
         )}
         <button className="icon-button" onClick={toggleOpen}>
@@ -56,19 +59,18 @@ export default NavItem;
 
 export function Time() {
   const times = Array.from({ length: 12 }, (_, index) => index + 1);
-  const minutes = Array.from({ length: 60 }, (_, index) => index.toString().padStart(2, '0'));
-
+  const minutes: number[] = Array.from({ length: 60 }, (_, index) => index);
   return (
     <div className="flex flex-col items-center">
       <p className="mb-[0.2rem] mt-6 text-body5-bold text-gray100">시간</p>
       <div className="flex items-center  gap-[0.9rem]">
         <NavItem icon={<AllowDownIcon />}>
-          <p className="text-body5-bold text-gray100">AM</p>
-          <p className="text-body5-bold text-gray100">PM</p>
+          <p className=" text-center text-body5-bold text-gray100  hover:bg-gray30">AM</p>
+          <p className=" text-center text-body5-bold text-gray100  hover:bg-gray30">PM</p>
         </NavItem>
         <NavItem icon={<AllowDownIcon />}>
           {times.map((number) => (
-            <p className="text-body5-bold text-gray100" key={number}>
+            <p className=" text-center text-body5-bold text-gray100  hover:bg-gray30" key={number}>
               {number}
             </p>
           ))}
@@ -76,7 +78,7 @@ export function Time() {
         <div className="text-body5-bold text-gray100">:</div>
         <NavItem icon={<AllowDownIcon />}>
           {minutes.map((number) => (
-            <p className="text-body5-bold text-gray100" key={number}>
+            <p className=" text-center text-body5-bold text-gray100 hover:bg-gray30" key={number}>
               {number}
             </p>
           ))}
