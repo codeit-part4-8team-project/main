@@ -33,12 +33,14 @@ export interface Team {
 export interface CalendarContextType {
   nowDate: Date;
   mode: string;
+  setMode: React.Dispatch<React.SetStateAction<string>>;
   setNowDate: React.Dispatch<React.SetStateAction<Date>>;
   schedules?: Schedule[];
   setSchedules: React.Dispatch<React.SetStateAction<Schedule[]>>;
   filteredSchedules?: Schedule[];
   setFilteredSchedules: React.Dispatch<React.SetStateAction<Schedule[]>>;
   calendarType?: string;
+  setCalendarType: React.Dispatch<React.SetStateAction<string>>;
   teamIds: string[]; // teamIds 추가
   setTeamIds: React.Dispatch<React.SetStateAction<string[]>>; // setTeamIds 추가 // setTeamId 추가
   loadedTeamIds: string[]; // loadedTeamIds 추가
@@ -48,7 +50,9 @@ export interface CalendarContextType {
 const defaultContextValue: CalendarContextType = {
   nowDate: new Date(),
   mode: 'month',
-  calendarType: '나의 캘린더',
+  setMode: () => {},
+  calendarType: '나',
+  setCalendarType: () => {},
   schedules: [],
   setNowDate: () => {},
   setSchedules: () => [], // 스케줄 변경 함수를 빈 함수로 초기화
@@ -67,13 +71,15 @@ export const CalendarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [mode, setMode] = useState('month'); // mode 상태 추가
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [filteredSchedules, setFilteredSchedules] = useState<Schedule[]>([]);
-  const [calendarType, setCalendarType] = useState('나의 캘린더');
+  const [calendarType, setCalendarType] = useState('나');
   const [teamIds, setTeamIds] = useState<string[]>([]); // teamId state 추가
   const [loadedTeamIds, setLoadedTeamIds] = useState<string[]>([]); // loadedTeamIds 상태 추가
   const contextValue: CalendarContextType = {
     nowDate,
     mode,
+    setMode,
     calendarType,
+    setCalendarType,
     setNowDate,
     schedules,
     setSchedules,

@@ -16,7 +16,7 @@ import MyIssuesModal from '@/components/Modal/MyIssuesModal';
 import NotMeIssuesModal from '@/components/Modal/NotMeIssuesModal';
 // import MyIssuesModal from '@/components/Modal/MyIssuesModal';
 import ScheduleModal from '@/components/Modal/ScheduleModal';
-import { Time } from '@/components/SchedulesPage/Tiem';
+import { Time } from '@/components/SchedulesPage/Time';
 import { useModal } from '@/contexts/ModalProvider';
 // import { useAxios } from '@/hooks/useAxios';
 import axios from '@/hooks/testAxios';

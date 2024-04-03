@@ -1,7 +1,5 @@
-import { Dispatch, SetStateAction, useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
-import ScheduleModal from '../Modal/ScheduleModal';
-import ModalLayout from '../common/modal/ModalLayout';
 import AddScheudleModal from './AddScheduleModal';
 import { Schedule } from '@/contexts/CalenarProvider';
 import { calendarContext } from '@/contexts/CalenarProvider';
@@ -142,13 +140,16 @@ function AllDay({ day, mode, calendarType }: AllDayProp) {
 
   const renderViewMoreButton = () => {
     const filteredSchedulesLength = filterData.length;
-
+    const handleViewMoreClick = () => {
+      setShowAllSchedules(true);
+      openModal(); // 모달 열기
+    };
     if (filteredSchedulesLength > 2 && !showAllSchedules) {
       return (
         <>
           <button
             className="text-blue-500 hover:text-blue-700 relative cursor-pointer"
-            onClick={openModal}
+            onClick={handleViewMoreClick}
           >
             <div className="ml-[0.1rem] text-body5-bold"> + 더보기</div>
           </button>
