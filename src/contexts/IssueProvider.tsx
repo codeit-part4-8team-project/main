@@ -1,3 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
+
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { useIssue } from '@/hooks/useIssue';
 import { Issue } from '@/types/issueTypes';
@@ -13,7 +16,7 @@ interface IssueContextValues {
   setTodoList: (issues: Issue[] | []) => void;
   setProgressList: (issues: Issue[] | []) => void;
   setDoneList: (issues: Issue[] | []) => void;
-  handleOnDrag: (e: React.DragEvent<HTMLDivElement>, issueId: number) => void;
+  handleOnDrag: (issueId: number) => void;
   handleOnDrop: (e: React.DragEvent<HTMLDivElement>) => void;
   handleDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
 }
@@ -42,7 +45,7 @@ export function IssueProvider({ children }: IssueProviderProps) {
 
   const currentStatus = issueData?.status;
 
-  const handleOnDrag = (e: React.DragEvent<HTMLDivElement>, id: number) => {
+  const handleOnDrag = (id: number) => {
     setIssueId(id);
   };
 

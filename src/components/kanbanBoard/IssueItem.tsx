@@ -29,7 +29,7 @@ export default function IssueItem({
   return (
     <div
       draggable
-      onDragStart={(e) => handleOnDrag(e, id)}
+      onDragStart={() => handleOnDrag(id)}
       className="relative min-h-64 w-full rounded-[2.4rem] border border-gray30 bg-white p-8"
     >
       <div className="flex flex-col gap-[2.2rem]">

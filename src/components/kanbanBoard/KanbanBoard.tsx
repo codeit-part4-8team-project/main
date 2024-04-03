@@ -15,17 +15,24 @@ interface KanbanBoardProps {
 }
 
 export default function KanbanBoard({
-  issues: { todoIssues, progressIssues, doneIssues },
+  issues: { team: teamInfo, todoIssues, progressIssues, doneIssues },
   type,
   team,
 }: KanbanBoardProps) {
   const { todoList, progressList, doneList, setTodoList, setProgressList, setDoneList } =
     useIssueContext();
 
+  let teamId = 0;
+  if (teamInfo) {
+    teamId = teamInfo.id;
+  } else if (team) {
+    teamId = team.id;
+  }
+
   const openModal = useModal();
 
   const handleModalClick = () => {
-    openModal(({ close }) => <IssuesModal closeClick={close} />);
+    openModal(({ close }) => <IssuesModal teamId={teamId} closeClick={close} />);
   };
 
   useEffect(() => {

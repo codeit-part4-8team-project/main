@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import NoCard from '@/components/common/NoCard';
 import TextButton from '@/components/common/TextButton';
 import FreeBoardModal from '@/components/Modal/FreeBoardModal';
@@ -10,10 +11,12 @@ interface PostListProps {
 }
 
 export default function PostList({ posts }: PostListProps) {
+  const { teamId } = useParams();
+
   const openModal = useModal();
 
   const handleModalClick = () => {
-    openModal(({ close }) => <FreeBoardModal closeClick={close} />);
+    openModal(({ close }) => <FreeBoardModal teamId={Number(teamId)} closeClick={close} />);
   };
 
   return (
@@ -33,13 +36,15 @@ export default function PostList({ posts }: PostListProps) {
           </NoCard>
         )}
       </ul>
-      <TextButton
-        buttonSize="sm"
-        onClick={handleModalClick}
-        className="absolute right-12 top-[3.6rem]"
-      >
-        작성하기
-      </TextButton>
+      {teamId && (
+        <TextButton
+          buttonSize="sm"
+          onClick={handleModalClick}
+          className="absolute right-12 top-[3.6rem]"
+        >
+          작성하기
+        </TextButton>
+      )}
     </>
   );
 }
