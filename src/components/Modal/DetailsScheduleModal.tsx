@@ -24,10 +24,10 @@ interface defaultValue {
   author?: Author;
   user?: userType;
 }
-
+// 합칠때 에러 떠서 일단 기본값
 export default function DetailScheduleModal({
   closeClick,
-  scheduleId = 2,
+  scheduleId = 1,
 }: DetailScheduleModalProps) {
   const { data: defaultValue } = useAxios(
     {

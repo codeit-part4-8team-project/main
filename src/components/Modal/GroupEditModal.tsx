@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import github from '../../../public/assets/Github.svg';
 import arrowDown from '../../../public/assets/arrow-down-dark.png';
 import discord from '../../../public/assets/discord.svg';
@@ -11,6 +12,7 @@ import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
+import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 import { Member } from '@/types/teamTypes';
 
@@ -39,10 +41,15 @@ interface DefaultValue {
 
 interface GroupEditModalProps {
   closeClick: () => void;
-  teamId: number;
+  // teamId?: number;
+  // 합칠때 여기도 teamId 프롭에 넣기 에러가 뜸
 }
-
-export default function GroupEditModal({ closeClick, teamId = 5 }: GroupEditModalProps) {
+export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
+  // 얘네 지우기 합치고나면
+  const { teamId } = useParams();
+  if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
+  // 여기까지
+  const { user } = useUserContext();
   const { data: defaultValue } = useAxios<DefaultValue>(
     {
       path: `team/${teamId}`,
@@ -102,7 +109,6 @@ export default function GroupEditModal({ closeClick, teamId = 5 }: GroupEditModa
     };
     handlePatchGroup(createTeam);
     event?.target.closest('dialog').close();
-    console.log('createTema', createTeam);
   };
 
   const nameWatch = watch('name');
@@ -156,11 +162,11 @@ export default function GroupEditModal({ closeClick, teamId = 5 }: GroupEditModa
             {defaultMembers && defaultMembers.length > 0 && (
               <div className="mb-16 flex items-center gap-4">
                 <img
-                  src={defaultMembers[0]?.imageUrl}
+                  src={user?.imageUrl}
                   alt="profile"
                   className="h-[2.4rem] w-[2.4rem] rounded-[99rem]"
                 />
-                <p className="text-[1.4rem]">{defaultMembers[0]?.username}</p>
+                <p className="text-[1.4rem]">{user?.username}</p>
               </div>
             )}
 

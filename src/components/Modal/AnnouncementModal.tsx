@@ -16,17 +16,16 @@ interface AnnouncementModalProps {
   teamId?: number;
 }
 // 나중에 group 프롭으로 받기
-
+// 여기도 합칠때 없애기
 export default function AnnouncementModal({ closeClick, teamId = 1 }: AnnouncementModalProps) {
   const { fetchData } = useAxios({});
   const { register, watch, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = ({ content, title }) => {
-    const createFreeBoard = {
+    const createAnnouncement = {
       content: content,
       title: title,
     };
-    handlePostAnnouncement(createFreeBoard);
-    console.log(createFreeBoard);
+    handlePostAnnouncement(createAnnouncement);
   };
 
   const handlePostAnnouncement = (data: Inputs) => {

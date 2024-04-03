@@ -6,6 +6,7 @@ import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalScheduleCalendarInput from '@/components/common/modal/ModalScheduleCalendarInput';
+import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 
 interface ScheduleModalProps {
@@ -21,9 +22,11 @@ type Inputs = {
   content: string;
 };
 // 여기는 user인지 team인지 구분이 필요함
-function ScheduleModal({ closeClick, team = false, user = true, teamId = 1 }: ScheduleModalProps) {
+// 합칠때 teamId 에러가 계속 떠서 일단 기본값 넣어줌
+function ScheduleModal({ closeClick, team = false, user = false, teamId = 4 }: ScheduleModalProps) {
   const { fetchData: userFetchData } = useAxios({});
   const { fetchData: teamFetchData } = useAxios({});
+  const { user: userInformation } = useUserContext();
 
   const {
     register,
@@ -40,7 +43,6 @@ function ScheduleModal({ closeClick, team = false, user = true, teamId = 1 }: Sc
       content: content,
     };
     handleScheduleUserFetch(createSchedlue);
-    console.log('createTema', createSchedlue);
   };
   const titleWatch = watch('title');
   const contentWatch = watch('content');
@@ -72,10 +74,12 @@ function ScheduleModal({ closeClick, team = false, user = true, teamId = 1 }: Sc
         <ModalFormBorder className="mt-16 h-full w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 p-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>게시자(나)</p>
           <div className="mb-16 flex items-center gap-4">
-            <img src={profile} alt="profile" />
-            {/* 데이터 받아지면 변경 예정구역 */}
-            <p className=" text-[1.4rem]">userNickName</p>
-            {/*  */}
+            <img
+              src={userInformation?.imageUrl}
+              alt="profile"
+              className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
+            />
+            <p className=" text-[1.4rem]">{userInformation?.username}</p>
           </div>
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel label="제목" className={`${formTextSize}`} htmlFor="title" />

@@ -2,25 +2,28 @@ import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import arrowDown from '../../../public/assets/arrow-down-dark.png';
 import calender from '../../../public/assets/calendar-dark.svg';
-import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
+import GroupList from '@/components/common/modal/GroupList';
 import ModalCalendar from '@/components/common/modal/ModalCalendar';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
+import { useUserContext } from '@/contexts/UserProvider';
 import { defaultInstance, useAxios } from '@/hooks/useAxios';
 
 interface IssuesModalProps {
   closeClick: () => void;
-  teamId: number;
+  teamId?: number;
+  team?: string;
 }
 
 type Inputs = {
   title: string;
   content: string;
   dueDate: string;
+  status: string;
   assignedMembersUsernames: string[];
 };
 
@@ -33,28 +36,22 @@ interface memberDataType {
   createDate: string;
 }
 
-// {
-//   "title": "string",
-//   "content": "string",
-//   "dueDate": "2024-03-24",
-//   "status": "TODO", -> 기본값 TODO고정 값 안 보내도됨.
-// 이슈 생성 제목은 ‘할 일'만 생성가능
-// : 드레그로 칸반보드 움직일 수 있기 때문에
-// ‘진행중'과 '백로그'는 무의미합니다! 이게 상태 얘기하는것 같다
-//   "assignedMembersUsernames": [
-//     "string"
-//   ]
-// }
-export default function IssuesModal({ closeClick, teamId = 1 }: IssuesModalProps) {
-  // 여긴 멤버 추가하고 값 받아와서 리스트 띄우는패치임
-  const { fetchData: memberFetchData } = useAxios({}); // member tag GET axios
-  const { fetchData } = useAxios({}); // POST axios
+interface groupDataType {
+  id: string;
+  name: string;
+  description: string;
+  color: string;
+}
 
+export default function IssuesModal({ closeClick, teamId, team }: IssuesModalProps) {
+  const { fetchData } = useAxios({}); // POST axios
+  const { user } = useUserContext();
   const dueDateToggleRef = useRef<HTMLDivElement | null>(null);
   const [dueDateToggle, setDueDateToggle] = useState(false);
   const [membersList, setMembersList] = useState<memberDataType[]>([]);
-  console.log('membersList Test여기입니다.', membersList);
   const [memberCheck, setMemberCheck] = useState(false);
+  const [groupList, setGroupList] = useState(false);
+  const [groupClickData, setGroupClickData] = useState<groupDataType | null>(null);
 
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -62,6 +59,7 @@ export default function IssuesModal({ closeClick, teamId = 1 }: IssuesModalProps
       title: data.title,
       content: data.content,
       dueDate: data.dueDate,
+      status: 'TODO',
       assignedMembersUsernames: membersList.map((member) => member.username),
     };
     handlePostIssues(createIssue);
@@ -75,11 +73,19 @@ export default function IssuesModal({ closeClick, teamId = 1 }: IssuesModalProps
   };
 
   const handlePostIssues = (data: Inputs) => {
-    fetchData({
-      newPath: `issue/${teamId}`,
-      newMethod: 'POST',
-      newData: data,
-    });
+    if (teamId) {
+      fetchData({
+        newPath: `issue/${teamId}`,
+        newMethod: 'POST',
+        newData: data,
+      });
+    } else if (groupClickData?.id) {
+      fetchData({
+        newPath: `issue/${groupClickData.id}`,
+        newMethod: 'POST',
+        newData: data,
+      });
+    }
   };
 
   const handleGetTeamMemberList = async () => {
@@ -96,6 +102,14 @@ export default function IssuesModal({ closeClick, teamId = 1 }: IssuesModalProps
 
   const handleRemoveMember = (userName: string | undefined) => {
     setMembersList((prevMembers) => prevMembers.filter((member) => member.username !== userName));
+  };
+
+  const handleGroupClick = () => {
+    setGroupList(!groupList);
+  };
+
+  const handleGroupId = (data: groupDataType) => {
+    setGroupClickData(data);
   };
 
   const handleDueDateClickOutside = (e: MouseEvent) => {
@@ -116,10 +130,12 @@ export default function IssuesModal({ closeClick, teamId = 1 }: IssuesModalProps
         <ModalFormBorder className="mt-16 h-[86.3rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 px-12 pt-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>게시자 (나)</p>
           <div className="mb-16 flex items-center gap-4">
-            <img src={profile} alt="profile" />
-            {/* 데이터 받아지면 변경 예정구역 */}
-            <p className=" text-[1.4rem]">userNickName</p>
-            {/*  */}
+            <img
+              src={user?.imageUrl}
+              alt="profile"
+              className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
+            />
+            <p className=" text-[1.4rem]">{user?.username}</p>
           </div>
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="title" label="이슈*" className={`${formTextSize}`} />
@@ -180,18 +196,42 @@ export default function IssuesModal({ closeClick, teamId = 1 }: IssuesModalProps
               )}
             </ModalInput>
           </div>
+          <p className={`${formTextSize} mb-[0.8rem]`}>그룹</p>
+          {teamId ? (
+            <div
+              className={`${formTextSize} ${borderStyle} relative w-full px-[1.8rem] py-[1.2rem] `}
+            >
+              {/* 합칠때 team받으면 변경 에러 뜸 */}
+              {/* <p>{team.name}</p> */}
+              <p className="">ddd</p>
+            </div>
+          ) : (
+            <div
+              className={`${formTextSize} ${borderStyle} relative w-full px-[1.8rem] py-[1.2rem] `}
+            >
+              {groupClickData ? (
+                <div className="flex items-center gap-[3rem]">
+                  <p
+                    className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
+                    style={{ background: groupClickData.color }}
+                  ></p>
+                  <p className="">{groupClickData.name}</p>
+                </div>
+              ) : (
+                <p className="text-gray50">그룹을 선택해 주세요</p>
+              )}
 
-          <ModalLabel htmlFor="group" label="그룹" className={`${formTextSize}`} />
-          <ModalInput
-            id="group"
-            name="group"
-            placeholder="그룹을 선택해 주세요"
-            className={`${formTextSize} ${borderStyle} `}
-          >
-            <button className="absolute bottom-0 right-[1.8rem] top-0" type="button">
-              <img src={arrowDown} alt="arrowDown" />
-            </button>
-          </ModalInput>
+              <button
+                className="absolute bottom-0 right-[1.8rem] top-0"
+                type="button"
+                onClick={handleGroupClick}
+              >
+                <img src={arrowDown} alt="arrowDown" />
+              </button>
+              {groupList && <GroupList onClick={handleGroupId} />}
+            </div>
+          )}
+          {/* groupClickData */}
           <div className=" flex flex-col gap-[0.8rem]">
             <ModalLabel
               label="팀원 태그"

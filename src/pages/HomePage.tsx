@@ -5,6 +5,7 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import AnnouncementEditModal from '@/components/Modal/AnnouncementEditModal';
 import AnnouncementModal from '@/components/Modal/AnnouncementModal';
 import DetailScheduleModal from '@/components/Modal/DetailsScheduleModal';
+import FreeBoardDetail from '@/components/Modal/FreeBoardDetail';
 import FreeBoardEdit from '@/components/Modal/FreeBoardEdit';
 import FreeBoardModal from '@/components/Modal/FreeBoardModal';
 import GroupEditModal from '@/components/Modal/GroupEditModal';
@@ -34,6 +35,7 @@ const HomePage = () => {
     // openModal(({ close }) => <MyIssuesModal closeClick={close} />); // 내 이슈인지 아닌지 어떻게 확인?
     // openModal(({ close }) => <FreeBoardModal closeClick={close} />); // 여기도 딱히 끝
     // openModal(({ close }) => <FreeBoardEdit closeClick={close} />); // 여기도 딱히 끝
+    // openModal(({ close }) => <FreeBoardDetail closeClick={close} />); // 여기도 딱히 끝
     // openModal(({ close }) => <AnnouncementModal closeClick={close} />); // 여기서부터 집가서 다시 보고 첫번째부터 해결하기
     // openModal(({ close }) => <AnnouncementEditModal closeClick={close} />); // 임의로 만듦 나중에 디자인 확인 필요
     openModal(({ close }) => <AfterApproval closeClick={close} />);

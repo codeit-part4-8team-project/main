@@ -24,11 +24,11 @@ interface FreeBoardModalProps {
   teamId?: number;
   postId: number;
 }
-
+// 여기도 합칠때 지우기 에러남
 export default function FreeBoardEditModal({
   closeClick,
-  teamId = 1,
-  postId = 1,
+  teamId = 4,
+  postId = 2,
 }: FreeBoardModalProps) {
   const { data: defaultValue } = useAxios<defaultValue>(
     {

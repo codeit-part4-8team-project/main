@@ -4,6 +4,7 @@ import TextButton from '@/components/common/TextButton';
 import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
+import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 
 interface Inputs {
@@ -13,19 +14,19 @@ interface Inputs {
 
 interface FreeBoardModalProps {
   closeClick: () => void;
-  teamId: number;
+  teamId?: number;
 }
-
-export default function FreeBoardModal({ closeClick, teamId = 1 }: FreeBoardModalProps) {
+// 여기도 합칠때 지우기 에러
+export default function FreeBoardModal({ closeClick, teamId = 4 }: FreeBoardModalProps) {
   const { fetchData: freeBoardFetchData } = useAxios({});
   const { register, watch, handleSubmit } = useForm<Inputs>();
+  const { user } = useUserContext();
   const onSubmit: SubmitHandler<Inputs> = ({ content, title }) => {
     const createFreeBoard = {
       content: content,
       title: title,
     };
     handlePostFreeBoard(createFreeBoard);
-    console.log(createFreeBoard);
   };
   const handlePostFreeBoard = (data: Inputs) => {
     freeBoardFetchData({
@@ -41,10 +42,12 @@ export default function FreeBoardModal({ closeClick, teamId = 1 }: FreeBoardModa
     <ModalLayout title="작성하기" closeClick={closeClick}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="my-16 flex items-center gap-4">
-          <img src={profile} alt="profile" />
-          {/* 데이터 받아지면 변경 예정구역 */}
-          <p className=" text-[1.4rem]">userNickName</p>
-          {/*  */}
+          <img
+            src={user?.imageUrl}
+            alt="profile"
+            className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
+          />
+          <p className=" text-[1.4rem]">{user?.username}</p>
         </div>
         <div className="mb-[0.8rem] flex flex-col gap-[0.8rem]">
           <ModalLabel htmlFor="title" label="제목" className={`${formTextSize}`} />

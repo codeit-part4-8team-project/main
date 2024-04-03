@@ -6,6 +6,7 @@ import AfterApproval from '@/components/common/modal/AfterApprovalModal';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import { useModal } from '@/contexts/ModalProvider';
+import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 import { Member } from '@/types/teamTypes';
 
@@ -19,32 +20,13 @@ interface DefaultValue {
   name?: string;
   startDate?: string;
   endDate?: string;
-  // members?: membersType[] | [];
   members?: Member[];
 }
-
-interface membersType {
-  name: string;
-  imageUrl: string;
-  role?: string | null;
-  grade: string;
-  username: string;
-  createdDate: string;
-}
-
-// "name": "필겸",
-// "imageUrl": "http://t1.kakaocdn.net/account_images/default_profile.jpeg.twg.thumb.R640x640",
-// "role": null,
-// "grade": "OWNER",
-// "username": "user-PUESAx6JqD",
-// "createdDate": "2024-03-29"
-
-// 2024/03/27
-
-// 모달위에 모달 만들기
+// 얘는 어떻게 프롭으로 받아야하지? 들어가는 위치를 모르겠네
 export default function InvitationGroupModal({
   closeClick,
-  teamId = 1,
+  teamId = 4,
+  // 합칠때 얘도 기본값 빼기 에러 떠서 넣어놓음
 }: InvitationGroupModalProps) {
   const { data: defaultValue } = useAxios<DefaultValue>(
     {
@@ -52,13 +34,11 @@ export default function InvitationGroupModal({
     },
     true,
   );
-  // console.log(defaultValue);
-  const { fetchData: deleteFetch } = useAxios({});
-  const [approval, setApproval] = useState(false);
-  const { description, name, startDate, endDate, members } = defaultValue || {};
 
+  const { fetchData: deleteFetch } = useAxios({});
+  const { description, name, startDate, endDate, members } = defaultValue || {};
+  const { user } = useUserContext();
   const openModal = useModal();
-  // openModal(({ close }) => <InvitationGroupModal closeClick={close} />);
 
   // 여기 teamId는 프롭으로 useParms를 못 받을것 같은데 어떻게 가져오지?
   const handleDeleteClick = () => {
@@ -66,10 +46,6 @@ export default function InvitationGroupModal({
       newPath: `member/invite/${teamId}`,
       newMethod: 'DELETE',
     });
-  };
-  // after approval
-  const handleApprovalClick = () => {
-    setApproval(!approval);
   };
 
   const formTextSize = 'text-body3-medium';
@@ -85,25 +61,14 @@ export default function InvitationGroupModal({
           </div>
           <p className={`${formTextSize} mb-[1.6rem]`}>그룹 게시자</p>
           <div className="mb-12 flex items-center gap-4">
-            {members ? (
-              <>
-                <img
-                  src={members[0]?.imageUrl}
-                  alt="profile"
-                  className="h-[2.4rem] w-[2.4rem] rounded-[9999px]"
-                />
-                <p className=" text-[1.4rem]">{members[0]?.username}</p>
-              </>
-            ) : (
-              <>
-                <img
-                  src={profile}
-                  alt="profile"
-                  className="h-[2.4rem] w-[2.4rem] rounded-[9999px]"
-                />
-                <p className=" text-[1.4rem]">useName</p>
-              </>
-            )}
+            <>
+              <img
+                src={user?.imageUrl}
+                alt="profile"
+                className="h-[2.4rem] w-[2.4rem] rounded-[9999px]"
+              />
+              <p className=" text-[1.4rem]">{user?.username}</p>
+            </>
           </div>
           <div className="flex flex-col gap-[0.8rem]">
             <p className={`${formTextSize}`}>그룹이름</p>
@@ -137,7 +102,7 @@ export default function InvitationGroupModal({
           <TextButton
             buttonSize="md"
             onClick={() => {
-              openModal(({ close }) => <AfterApproval members={members} closeClick={close} />);
+              openModal(({ close }) => <AfterApproval closeClick={close} />);
               closeClick();
             }}
           >

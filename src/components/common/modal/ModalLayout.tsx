@@ -8,12 +8,13 @@ interface ModalProps {
   children?: ReactNode;
   closeClick?: () => void;
   title: string;
+  className?: string;
 }
 
-function ModalLayout({ children, closeClick, title }: ModalProps) {
+function ModalLayout({ children, closeClick, title, className }: ModalProps) {
   return (
     <>
-      <div className="flex flex-col p-16">
+      <div className={`flex flex-col p-16 ${className}`}>
         {/* // <div className="flex size-full items-center justify-center bg-black bg-opacity-5"> */}
         {/* // <div className={`${container}`}> */}
         <div className="flex items-center justify-between">
