@@ -8,7 +8,7 @@ import GroupModal from '@/components/Modal/GroupModal';
 import { useModal } from '@/contexts/ModalProvider';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
-import { Team, Teams } from '@/types/teamTypes';
+import { Team } from '@/types/teamTypes';
 import PlusCircleIcon from '@/assets/PlusCircleIcon';
 
 export default function SideBar() {
@@ -41,16 +41,16 @@ function ProfileSection() {
 function GroupSection() {
   const [teams, setTeams] = useState<Team[]>([]);
 
-  const { loading, error, data } = useAxios<Teams>(
+  const { loading, error, data } = useAxios<Team[] | []>(
     {
-      path: '/team/my-team',
+      path: '/team/',
       method: 'GET',
     },
     true,
   );
   useEffect(() => {
     if (data && !loading) {
-      setTeams(data.content);
+      setTeams(data);
     }
     if (error) {
       throw Error('내가 속한 팀을 불러올 수 없습니다.');
