@@ -49,14 +49,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
   const [membersList, setMembersList] = useState<dataType[]>([]);
   const [memberCheck, setMemberCheck] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    getValues,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit, watch, setValue, getValues } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (
     { name, description, startDate, endDate, githubLink, discordLink, figmaLink, color },
     event,

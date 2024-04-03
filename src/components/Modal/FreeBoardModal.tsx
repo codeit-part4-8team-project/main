@@ -1,5 +1,4 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
 import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';

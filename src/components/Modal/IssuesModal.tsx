@@ -42,8 +42,8 @@ interface groupDataType {
   description: string;
   color: string;
 }
-
-export default function IssuesModal({ closeClick, teamId, team }: IssuesModalProps) {
+// team 나중에 프롭으로 받아야함
+export default function IssuesModal({ closeClick, teamId }: IssuesModalProps) {
   const { fetchData } = useAxios({}); // POST axios
   const { user } = useUserContext();
   const dueDateToggleRef = useRef<HTMLDivElement | null>(null);

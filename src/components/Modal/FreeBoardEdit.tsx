@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
 import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
@@ -21,15 +20,10 @@ interface defaultValue {
 
 interface FreeBoardModalProps {
   closeClick: () => void;
-  teamId?: number;
   postId: number;
 }
 // 여기도 합칠때 지우기 에러남
-export default function FreeBoardEditModal({
-  closeClick,
-  teamId = 4,
-  postId = 2,
-}: FreeBoardModalProps) {
+export default function FreeBoardEditModal({ closeClick, postId = 2 }: FreeBoardModalProps) {
   const { data: defaultValue } = useAxios<defaultValue>(
     {
       path: `post/${postId}`,

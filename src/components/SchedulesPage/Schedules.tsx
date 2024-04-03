@@ -68,7 +68,7 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
       <div className="m-0 flex items-center justify-between p-0 ">
         <div className={title}></div>
 
-        <TextButton onClick={openModal} buttonSize="sm" color="black">
+        <TextButton onClick={handleOpenModal} buttonSize="sm" color="black">
           일정생성
         </TextButton>
       </div>

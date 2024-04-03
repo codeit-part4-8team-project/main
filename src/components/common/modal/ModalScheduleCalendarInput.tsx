@@ -3,8 +3,6 @@ import calender from '../../../../public/assets/calendar-dark.svg';
 import ModalCalendar from './ModalCalendar';
 import ModalInput from './ModalInput';
 import ModalLabel from './ModalLabel';
-import ControlDate from '@/components/SchedulesPage/ControlDate';
-import DateBox from '@/components/SchedulesPage/DateBox';
 
 interface ModalCalendarInputProps {
   startHookform: any;
