@@ -36,15 +36,13 @@ export default function PostList({ posts }: PostListProps) {
           </NoCard>
         )}
       </ul>
-      {teamId && (
-        <TextButton
-          buttonSize="sm"
-          onClick={handleModalClick}
-          className="absolute right-12 top-[3.6rem]"
-        >
-          작성하기
-        </TextButton>
-      )}
+      <TextButton
+        buttonSize="sm"
+        onClick={handleModalClick}
+        className="absolute right-12 top-[3.6rem]"
+      >
+        작성하기
+      </TextButton>
     </>
   );
 }
