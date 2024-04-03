@@ -11,23 +11,15 @@ interface MyTeamRowProps {
 }
 
 export default function MyTeamHistoryRow({ team, myUsername }: MyTeamRowProps) {
-  const { id, color, name, members } = team;
+  const { color, name, members } = team;
   const me = members?.find((member) => member.username === myUsername);
-  const { role, grade, createdDate } = me || {};
 
   const openModal = useModal();
   const handleManageClick = () => {
-    grade &&
-      role !== undefined &&
-      role !== null &&
+    console.log('관리버튼', me?.username);
+    me &&
       openModal(({ close }) => (
-        <ManageTeamHistoryModal
-          id={id}
-          teamname={name}
-          grade={grade}
-          role={role}
-          onClose={close}
-        ></ManageTeamHistoryModal>
+        <ManageTeamHistoryModal me={me} team={team} onClose={close}></ManageTeamHistoryModal>
       ));
   };
 
@@ -38,12 +30,12 @@ export default function MyTeamHistoryRow({ team, myUsername }: MyTeamRowProps) {
       </th>
       <th className="border-y border-solid border-gray20 text-body4-bold text-gray100">{name}</th>
       <th className="border-y border-solid border-gray20 text-body3-regular">
-        {role ? MEMBER.ROLE[role] : '역할 미지정'}
+        {me?.role ? MEMBER.ROLE[me.role] : '역할 미지정'}
       </th>
       <th className="border-y border-solid border-gray20 text-body3-regular">
-        {grade && MEMBER.GRADE[grade]}
+        {me?.grade && MEMBER.GRADE[me.grade]}
       </th>
-      <th className="border-y border-solid border-gray20 text-body3-regular">{createdDate}</th>
+      <th className="border-y border-solid border-gray20 text-body3-regular">{me?.createdDate}</th>
       <th className="w-[11.5rem] rounded-br-[0.6rem] rounded-tr-[0.6rem] border-y border-r border-solid border-gray20">
         <TextButton
           onClick={handleManageClick}
