@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import clsx from 'clsx';
 import calendar from '../../../../public/assets/calendar-dark.svg';
 import close from '../../../../public/assets/close.svg';
 import people from '../../../../public/assets/people-fill.svg';

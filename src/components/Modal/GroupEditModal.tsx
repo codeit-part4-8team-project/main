@@ -68,20 +68,13 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
     members: defaultMembers,
   }: DefaultValue = defaultValue || {};
 
-  const { error: patchError, fetchData: patchDataFetch } = useAxios<Inputs>({}); // put
+  const { fetchData: patchDataFetch } = useAxios<Inputs>({}); // put
 
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
 
   const [colorToggle, setColorToggle] = useState<boolean>(false);
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>({
+  const { register, handleSubmit, watch, setValue, reset } = useForm<Inputs>({
     defaultValues: {
       name: defaultName,
       description: defaultDescription,

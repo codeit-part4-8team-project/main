@@ -1,5 +1,4 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalInput from '@/components/common/modal/ModalInput';
@@ -13,7 +12,7 @@ interface ScheduleModalProps {
   closeClick?: () => void;
   user?: boolean;
   team?: boolean;
-  teamId: number;
+  teamId?: string;
 }
 type Inputs = {
   title: string;
@@ -23,17 +22,12 @@ type Inputs = {
 };
 // 여기는 user인지 team인지 구분이 필요함
 // 합칠때 teamId 에러가 계속 떠서 일단 기본값 넣어줌
-function ScheduleModal({ closeClick, team = false, user = false, teamId = 4 }: ScheduleModalProps) {
+function ScheduleModal({ closeClick, team = false, user = false, teamId }: ScheduleModalProps) {
   const { fetchData: userFetchData } = useAxios({});
   const { fetchData: teamFetchData } = useAxios({});
   const { user: userInformation } = useUserContext();
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit, watch } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = ({ title, startDateTime, endDateTime, content }) => {
     const createSchedlue = {

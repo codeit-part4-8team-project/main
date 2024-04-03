@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import calender from '../../../public/assets/calendar-dark.svg';
-import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
 import AfterApproval from '@/components/common/modal/AfterApprovalModal';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
@@ -36,7 +34,7 @@ export default function InvitationGroupModal({
   );
 
   const { fetchData: deleteFetch } = useAxios({});
-  const { description, name, startDate, endDate, members } = defaultValue || {};
+  const { description, name, startDate, endDate } = defaultValue || {};
   const { user } = useUserContext();
   const openModal = useModal();
 

@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { UseFormRegister } from 'react-hook-form';
 
 interface ModalInputProps {
   placeholder?: string;

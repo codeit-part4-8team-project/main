@@ -1,5 +1,4 @@
 import calender from '../../../public/assets/calendar-dark.svg';
-import profile from '../../../public/profile.svg';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import { useAxios } from '@/hooks/useAxios';

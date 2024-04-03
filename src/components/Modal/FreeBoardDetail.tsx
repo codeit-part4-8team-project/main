@@ -24,7 +24,7 @@ export default function FreeBoardDetail({ closeClick, postId = '1' }: FreeBoardD
     true,
   );
   console.log(defaultValue);
-  const { author, content, createdDate, title, likeCount }: DefalutVauleType = defaultValue || {};
+  const { author, content, createdDate, likeCount }: DefalutVauleType = defaultValue || {};
   const cutDateString = createdDate?.substring(0, 10);
 
   return (

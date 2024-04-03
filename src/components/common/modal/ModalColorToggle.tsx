@@ -1,10 +1,4 @@
 import { useAxios } from '@/hooks/useAxios';
-import Circles from '@/assets/Circle';
-
-interface circleType {
-  id: number;
-  color: string;
-}
 
 interface ModalToggleProps {
   handleColorClick: (color: string) => void;
