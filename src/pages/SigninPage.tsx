@@ -1,7 +1,5 @@
 import { MouseEventHandler, useEffect } from 'react';
 import TextButton from '@/components/common/TextButton';
-import AlertModal from '@/components/Modal/AlertModal';
-import { useModal } from '@/contexts/ModalProvider';
 import { useAxios } from '@/hooks/useAxios';
 
 interface OauthURLResponse {
@@ -11,7 +9,6 @@ interface OauthURLResponse {
 const SigninPage = () => {
   console.log('컴포넌트 리렌더링됨');
 
-  const openModal = useModal();
   const { data, error, fetchData } = useAxios<OauthURLResponse>({
     method: 'GET',
   });
@@ -25,17 +22,12 @@ const SigninPage = () => {
   };
 
   useEffect(() => {
-    console.log(data?.url);
     if (data) {
-      console.log(data.url);
       window.open(data.url, '_self');
     }
     if (error) {
-      openModal(({ close }) => (
-        <AlertModal buttonClick={close} buttonText="닫기">
-          {error.message}
-        </AlertModal>
-      ));
+      alert('로그인에 실패하였습니다.');
+      console.error(error);
     }
   }, [data, error]);
 

@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAxios } from '@/hooks/useAxios';
 
 interface OauthLoginResponse {
+  id: number;
   name: string;
   imageUrl: string;
   username: string;
@@ -31,22 +32,19 @@ const OauthRedirectPage = () => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       if (!data.newAccount) {
-        navigate('/user/main');
+        navigate(`/user/${data.id}/main`);
       } else {
-        //navigate('/signup');
-        navigate('/user/main');
+        navigate('/signup');
       }
     }
     if (error) {
+      alert('로그인에 실패하였습니다. 잠시 후 다시 시도해 주세요.');
+      navigate('/');
       console.log(error);
     }
-  }, [data]);
+  }, [data, error]);
 
-  return (
-    <div>
-      <div>Processing...</div>
-    </div>
-  );
+  return <div></div>; // 로고 나오면 가운데
 };
 
 export default OauthRedirectPage;
