@@ -8,7 +8,7 @@ export default function TeamTab() {
   const teamPageList = Object.keys(PAGES.team) as TeamPageType[];
 
   return (
-    <ul className="flex w-fit items-center gap-[2.4rem]">
+    <ul className="flex w-fit min-w-[55.8rem] items-center gap-[2.4rem]">
       {teamPageList.map((page, idx) => {
         const { title } = PAGES.team[page] as Page;
         const isCurrent = page === pageContent ? true : false;

@@ -8,12 +8,12 @@ import GroupModal from '@/components/Modal/GroupModal';
 import { useModal } from '@/contexts/ModalProvider';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
-import { Team, Teams } from '@/types/teamTypes';
+import { Team } from '@/types/teamTypes';
 import PlusCircleIcon from '@/assets/PlusCircleIcon';
 
 export default function SideBar() {
   return (
-    <div className="fixed bottom-0 left-0 top-[8.2rem] w-[26rem] rounded-tr-3xl bg-gray100">
+    <div className="fixed bottom-0 left-0 top-[8.2rem] z-50 w-[26rem] rounded-tr-3xl bg-gray100">
       <ProfileSection />
       <BoardList />
       <GroupSection />
@@ -25,7 +25,7 @@ function ProfileSection() {
   const { user } = useUserContext();
 
   return (
-    <Link to={`/user/${user?.id}/myPage`}>
+    <Link to={`/user/${user?.id}/mypage`}>
       <div className="my-[3.3rem] ml-16 flex items-center gap-[1.6rem]">
         <img
           src={user ? user.imageUrl : ProfileImg}
@@ -41,16 +41,16 @@ function ProfileSection() {
 function GroupSection() {
   const [teams, setTeams] = useState<Team[]>([]);
 
-  const { loading, error, data } = useAxios<Teams>(
+  const { loading, error, data } = useAxios<Team[] | []>(
     {
-      path: '/team/my-team',
+      path: '/team/',
       method: 'GET',
     },
     true,
   );
   useEffect(() => {
     if (data && !loading) {
-      setTeams(data.content);
+      setTeams(data);
     }
     if (error) {
       throw Error('내가 속한 팀을 불러올 수 없습니다.');

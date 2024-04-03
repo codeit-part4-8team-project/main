@@ -30,10 +30,12 @@ export default function BoardSection({ title, content, mode, children }: BoardSe
   const controlDateMode = mode === 'week' ? 'week' : 'month';
   const shouldDisplayControlDate = title === 'My calendar' || title === 'Team calendar';
   const gapBetweenTitleAndContent = clsx({
-    'gap-[1.6rem]': pageContent === ('main' || 'issue'),
+    'gap-[1.6rem]': pageContent === 'main',
     'gap-12': pageContent === 'schedule',
     'gap-[6.4rem]': pageContent === 'announcement',
     'gap-[2.8rem]': pageContent === 'member',
+    'gap-[2.4rem]': pageContent === 'post',
+    'gap-[3.8rem]': pageContent === 'issue',
   });
 
   return (

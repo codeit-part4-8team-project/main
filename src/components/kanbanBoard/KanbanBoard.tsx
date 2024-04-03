@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import clsx from 'clsx';
 import TextButton from '@/components/common/TextButton';
@@ -43,7 +44,8 @@ export default function KanbanBoard({
 
   const kanbanBoardClasses = clsx({
     'justify-between h-full w-content': type === 'main',
-    'justify-center absolute top-[3.7rem] bottom-[2.4rem] left-0 right-0': type === 'page',
+    'justify-center h-full min-[1870px]:absolute top-[3.7rem] bottom-[2.4rem] left-0 right-0':
+      type === 'page',
   });
 
   return (
