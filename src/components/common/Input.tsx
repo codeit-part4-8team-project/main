@@ -45,3 +45,26 @@ export default function Input({
     </div>
   );
 }
+
+interface InputValidateMessageProps {
+  isError?: boolean | string | undefined;
+  errorMessage?: string;
+  watchMessage?: string;
+  isValid?: boolean;
+  validMessage?: string;
+}
+export function InputValidateMessage({
+  isError,
+  errorMessage,
+  watchMessage,
+  isValid,
+  validMessage,
+}: InputValidateMessageProps) {
+  return (
+    <div className="flex justify-between text-body5-regular leading-[2.2rem]">
+      {isError ? <span className=" text-point_red">{errorMessage}</span> : isValid || <span></span>}
+      {isValid && <span className="text-[#8DDF90]">{validMessage}</span>}
+      <span className="self-end  text-gray50">{watchMessage}</span>
+    </div>
+  );
+}

@@ -1,11 +1,10 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Input from '../common/Input';
+import Input, { InputValidateMessage } from '../common/Input';
 import TextButton from '../common/TextButton';
 import ModalLayout from '../common/modal/ModalLayout';
-import AlertModal from './AlertModal';
 import { AxiosError, HttpStatusCode } from 'axios';
-import { useModal } from '@/contexts/ModalProvider';
+import { usePagenation } from '@/contexts/PageProvider';
 import { UserContextValue } from '@/contexts/UserProvider';
 import { defaultInstance, useAxios } from '@/hooks/useAxios';
 import ProfileIcon from '@/assets/ProfileIcon';
@@ -25,10 +24,10 @@ interface UserEditForm {
 }
 
 export default function EditProfileModal({ handleClose, userContext }: EditProfileModalProps) {
-  const openModal = useModal();
+  const { refetch } = usePagenation();
   const { user, setUser } = userContext;
-  //useUserContext 모달 내에서 사용시 null. update 인자 넣으면 되긴 하는데 다른 컴포넌트랑 렌더링 겹쳐서 리퀘스트 많아짐
-  //모달 내부에서 컨텍스트 쓰게끔 해 볼 필요.
+  const [isUniqueUsername, setIsUniqueUsername] = useState<boolean>(false);
+
   const {
     data: unavailableUsername,
     error: checkUsernameError,
@@ -88,7 +87,8 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
 
       if (fetchUserResponse.status === 'fulfilled') {
         setUser(fetchUserResponse.value.data);
-        //event?.target.closest('dialog').close();
+        console.log(refetch);
+        refetch && refetch(); //유저네임 바뀌는 것 때문에 팀 히스토리 쪽 모달에 문제생겨서 유
         handleClose();
       } else if (fetchUserResponse.status === 'rejected') {
         const error = fetchUserResponse.reason;
@@ -96,11 +96,7 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
           if (error.response?.status === HttpStatusCode.BadRequest) {
             setError('username', { type: 'duplicated', message: '이미 사용중인 닉네임입니다.' });
           } else {
-            openModal(({ close }) => (
-              <AlertModal buttonClick={close} buttonText="확인">
-                {(error as AxiosError<string>).response?.data || '닉네임 변경에 실패하였습니다'}
-              </AlertModal>
-            ));
+            alert((error as AxiosError<string>).response?.data || '닉네임 변경에 실패하였습니다');
           }
         }
       }
@@ -120,20 +116,13 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
     if (unavailableUsername === true) {
       setError('username', { type: 'duplicated', message: '이미 사용중인 닉네임입니다.' });
     } else if (unavailableUsername === false) {
-      openModal(({ close }) => (
-        <AlertModal buttonClick={close} buttonText="확인">
-          사용 가능한 닉네임입니다.
-        </AlertModal>
-      ));
+      setIsUniqueUsername(true);
+      console.log('사용가능한 닉네임입니다.');
       clearErrors('username');
       trigger('username');
     }
     if (checkUsernameError) {
-      openModal(({ close }) => (
-        <AlertModal buttonClick={close} buttonText="확인">
-          {checkUsernameError.message}
-        </AlertModal>
-      ));
+      alert(checkUsernameError.message || '닉네임 중복확인에 실패하였습니다');
     }
   }, [unavailableUsername, checkUsernameError]);
 
@@ -188,9 +177,11 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
               type="text"
               autoComplete="off"
             >
-              <span className="self-end text-body5-regular leading-[2.2rem] text-gray50">
-                {`${watch('name')?.length || 0}/20`}
-              </span>
+              <InputValidateMessage
+                isError={errors.name?.message}
+                errorMessage={errors.name?.message}
+                watchMessage={`${watch('teamname')?.length || 0}/20`}
+              />
             </Input>
             <div className="flex gap-[1.2rem]">
               <Input
@@ -212,6 +203,9 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
                     checkAvailable: () =>
                       unavailableUsername === false || '닉네임 중복을 확인해주세요',
                   },
+                  onChange: () => {
+                    setIsUniqueUsername(false);
+                  },
                 })}
                 id="username"
                 label="username"
@@ -219,11 +213,12 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
                 placeholder={user?.username}
                 autoComplete="off"
               >
-                {errors.username?.message && (
-                  <span className="text-body5-regular leading-[2.2rem] text-point_red">
-                    {errors.username.message}
-                  </span>
-                )}
+                <InputValidateMessage
+                  isError={errors.username?.message}
+                  errorMessage={errors.username?.message}
+                  isValid={isUniqueUsername}
+                  validMessage="사용 가능한 닉네임입니다."
+                />
               </Input>
               <TextButton
                 type="button"
