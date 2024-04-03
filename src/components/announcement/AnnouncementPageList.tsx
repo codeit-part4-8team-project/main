@@ -27,7 +27,7 @@ export default function AnnouncementPageList({ announcements }: AnnouncementPage
 
   return (
     <>
-      <div className="w-[132.6rem]">
+      <div className="w-full">
         {announcements.length !== 0 ? (
           <ul className="grid w-fit list-none grid-cols-3 gap-[2.4rem]">
             {announcements.map((announcement) => {
