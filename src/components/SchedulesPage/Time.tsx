@@ -60,26 +60,67 @@ export default NavItem;
 export function Time() {
   const times = Array.from({ length: 12 }, (_, index) => index + 1);
   const minutes: number[] = Array.from({ length: 60 }, (_, index) => index);
+
+  const [selectedHour, setSelectedHour] = useState<number>(1);
+  const [selectedMinute, setSelectedMinute] = useState<number>(0);
+  const [selectedPeriod, setSelectedPeriod] = useState<string>('AM');
+
+  const handleComplete = () => {
+    let hour = selectedHour;
+    if (selectedPeriod === 'PM') {
+      hour += 12;
+    }
+    const formattedTime = `${hour}:${formatTime(selectedMinute)} :00`;
+    console.log('Selected Time:', formattedTime);
+    // 여기서 선택된 시간 값을 다른 곳으로 전달하거나 사용할 수 있습니다.
+  };
+
   return (
     <div className="flex flex-col items-center">
       <p className="mb-[0.2rem] mt-6 text-body5-bold text-gray100">시간</p>
       <div className="flex items-center  gap-[0.9rem]">
         <NavItem icon={<AllowDownIcon />}>
-          <p className=" text-center text-body5-bold text-gray100  hover:bg-gray30">AM</p>
-          <p className=" text-center text-body5-bold text-gray100  hover:bg-gray30">PM</p>
+          <p
+            className={`text-center text-body5-bold text-gray100 hover:bg-gray30 ${
+              selectedPeriod === 'AM' ? 'bg-gray300' : ''
+            }`}
+            onClick={() => setSelectedPeriod('AM')}
+          >
+            AM
+          </p>
+          <p
+            className={`text-center text-body5-bold text-gray100 hover:bg-gray30 ${
+              selectedPeriod === 'PM' ? 'bg-gray300' : ''
+            }`}
+            onClick={() => setSelectedPeriod('PM')}
+          >
+            PM
+          </p>
         </NavItem>
         <NavItem icon={<AllowDownIcon />}>
           {times.map((number) => (
-            <p className=" text-center text-body5-bold text-gray100  hover:bg-gray30" key={number}>
-              {number}
+            <p
+              className={`text-center text-body5-bold text-gray100 hover:bg-gray30 ${
+                selectedHour === number ? 'bg-gray300' : ''
+              }`}
+              key={number}
+              onClick={() => setSelectedHour(number)}
+            >
+              {formatTime(number)}
             </p>
           ))}
         </NavItem>
         <div className="text-body5-bold text-gray100">:</div>
         <NavItem icon={<AllowDownIcon />}>
           {minutes.map((number) => (
-            <p className=" text-center text-body5-bold text-gray100 hover:bg-gray30" key={number}>
-              {number}
+            <p
+              className={`text-center text-body5-bold text-gray100 hover:bg-gray30 ${
+                selectedMinute === number ? 'bg-gray300' : ''
+              }`}
+              key={number}
+              onClick={() => setSelectedMinute(number)}
+            >
+              {formatTime(number)}
             </p>
           ))}
         </NavItem>
@@ -88,9 +129,14 @@ export function Time() {
         buttonSize="md"
         color="black"
         className="mt-[4.9rem] h-[3.2rem] w-[20.7rem] text-body5-bold text-gray100"
+        onClick={handleComplete}
       >
         완료
       </TextButton>
     </div>
   );
+}
+
+export function formatTime(time: number) {
+  return time < 10 ? `0${time}` : `${time}`;
 }
