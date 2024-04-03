@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import clsx from 'clsx';
 import NoCard from '@/components/common/NoCard';
 import TextButton from '@/components/common/TextButton';
 import AnnouncementModal from '@/components/Modal/AnnouncementModal';
@@ -27,9 +28,13 @@ export default function AnnouncementPageList({ announcements }: AnnouncementPage
 
   return (
     <>
-      <div className="w-[132.6rem]">
+      <div className="w-full">
         {announcements.length !== 0 ? (
-          <ul className="grid w-fit list-none grid-cols-3 gap-[2.4rem]">
+          <ul
+            className={clsx(
+              'mx-auto grid w-full max-w-[132.6rem] list-none grid-cols-3 gap-[2.4rem]',
+            )}
+          >
             {announcements.map((announcement) => {
               return (
                 <li key={announcement.id}>
