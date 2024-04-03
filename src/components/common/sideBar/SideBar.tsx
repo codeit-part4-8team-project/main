@@ -13,7 +13,7 @@ import PlusCircleIcon from '@/assets/PlusCircleIcon';
 
 export default function SideBar() {
   return (
-    <div className="fixed bottom-0 left-0 top-[8.2rem] w-[26rem] rounded-tr-3xl bg-gray100">
+    <div className="fixed bottom-0 left-0 top-[8.2rem] z-50 w-[26rem] rounded-tr-3xl bg-gray100">
       <ProfileSection />
       <BoardList />
       <GroupSection />
