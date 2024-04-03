@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Schedule } from '@/contexts/CalenarProvider';
 
 interface AddScheduleModalProps {

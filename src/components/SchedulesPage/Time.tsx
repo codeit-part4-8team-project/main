@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import TextButton from '../common/TextButton';
 import AllowDownIcon from '@/assets/AllowDownIcon';
 
@@ -28,7 +28,7 @@ function NavItem({ icon, children }: NavItemProps) {
         </div>
         {open && (
           <div className="  absolute left-0 right-0 top-[3.2rem] z-50 bg-white">
-            {children.map((item, index) => (
+            {children?.map((item, index) => (
               <div
                 key={index}
                 onClick={() => handleItemClick(item as string)}
