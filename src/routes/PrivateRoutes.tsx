@@ -24,7 +24,8 @@ export default function PrivateRoutes() {
   }, [data, loading, error, setUser]);
 
   if (loading) {
-    return <div>로딩중</div>;
+    return <Outlet />;
+    //로딩 중 페이지를 만들기 or 그냥 Outlet 반환해서 빈 ui 라도 보게.
   }
 
   //여길 data 가 아니라 user state로 잡으면 loading 풀렸을 때 user는 반영이 안된 상태
