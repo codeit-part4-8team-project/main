@@ -22,7 +22,7 @@ export default function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
-  const sizeClasses = clsx({ 'px-[10rem]': size === 'sm', 'px-[1.8rem]': size === 'md' });
+  const sizeClasses = clsx({ 'px-4': size === 'sm', 'px-[1.8rem]': size === 'md' });
 
   return (
     <div

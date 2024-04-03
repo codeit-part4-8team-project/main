@@ -77,6 +77,7 @@ export default function MemberRow({
                   field.onChange(value);
                 }}
                 className="h-[4.4rem] min-w-[11.7rem]"
+                size="sm"
               />
             )}
           />
