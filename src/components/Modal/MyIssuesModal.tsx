@@ -47,7 +47,7 @@ interface defaultValue {
   assignedMembersUsernames?: dataType[];
   author?: Author;
 }
-
+// 여기도 합칠때 지우기 에러
 export default function MyIssuesModal({ closeClick, issueId = 3, teamId = 1 }: IssuesModalProps) {
   const { data: defaultValue } = useAxios(
     {

@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
 import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
@@ -22,7 +21,7 @@ interface AnnouncementModalProps {
   closeClick: () => void;
   teamId: number;
 }
-
+// 여기도 합칠때 에러 처리하기
 export default function AnnouncementEditModal({ closeClick, teamId = 1 }: AnnouncementModalProps) {
   const { data: defaultValue } = useAxios<DefaultValueType>(
     {
@@ -45,11 +44,11 @@ export default function AnnouncementEditModal({ closeClick, teamId = 1 }: Announ
     },
   });
   const onSubmit: SubmitHandler<Inputs> = ({ content, title }) => {
-    const createFreeBoard = {
+    const createAnnouncement = {
       content: content,
       title: title,
     };
-    handlePatchAnnouncement(createFreeBoard);
+    handlePatchAnnouncement(createAnnouncement);
   };
 
   const formTextSize = 'text-body3-medium';

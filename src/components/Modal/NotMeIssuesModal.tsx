@@ -25,9 +25,8 @@ interface DefaultValueType {
   assignedMembers?: UserType[];
   author?: Author;
 }
-
+// 합칠때 여기도 지우기 에러
 export default function NotMeIssuesModal({ closeClick, issueId = 3 }: NotMeLssuesModalProps) {
-  const teamId = 10;
   const { data: defaultValue } = useAxios(
     {
       path: `issue/${issueId}`,

@@ -4,7 +4,6 @@ import github from '../../../public/assets/Github.svg';
 import arrowDown from '../../../public/assets/arrow-down-dark.png';
 import discord from '../../../public/assets/discord.svg';
 import figma from '../../../public/assets/figma.svg';
-import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
 import ModalCalendarInput from '@/components/common/modal/ModalCalendarInput';
 import ModalColorToggle from '@/components/common/modal/ModalColorToggle';
@@ -13,6 +12,7 @@ import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
+import { useUserContext } from '@/contexts/UserProvider';
 import { defaultInstance, useAxios } from '@/hooks/useAxios';
 
 type Inputs = {
@@ -39,10 +39,10 @@ interface dataType {
 interface GroupModalProps {
   closeClick?: () => void;
 }
-// 파일이 덮였음 에러 해결
-// 소은님 봐주세여
+
 export default function GroupModal({ closeClick }: GroupModalProps) {
   const { fetchData: groupFetch } = useAxios({});
+  const { user } = useUserContext();
 
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
   const [colorToggle, setColorToggle] = useState<boolean>(false);
@@ -65,13 +65,12 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
       name: name,
       description: description,
       members: membersList.map((member) => member.username),
-      // map 이후 필터로 중복된 값을 걸러줘야함 내가
       startDate: startDate,
       endDate: endDate,
       githubLink: githubLink,
       discordLink: discordLink,
       figmaLink: figmaLink,
-      color: color || '#292929',
+      color: color || '#7563E1',
     };
     handleGroup(createTeam);
     event?.target.closest('dialog').close();
@@ -138,9 +137,12 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
         <ModalFormBorder className="mt-16 h-full w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 p-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>그룹 게시자</p>
           <div className="mb-16 flex items-center gap-4">
-            <img src={profile} alt="profile" />
-            {/* 데이터 받아지면 변경 예정구역 */}
-            <p className=" text-[1.4rem]">userNickName</p>
+            <img
+              src={user?.imageUrl}
+              alt="profile"
+              className="h-[2.4rem] w-[2.4rem] rounded-[99rem]"
+            />
+            <p className=" text-[1.4rem]">{user?.username}</p>
           </div>
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="name" label="그룹 이름*" className={`${formTextSize}`} />
