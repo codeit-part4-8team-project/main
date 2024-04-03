@@ -15,7 +15,7 @@ export default function ProfileStack({ profileImgs, size }: ProfileStackProps) {
   });
 
   return (
-    <div className="flex">
+    <div className="flex min-w-[3.6rem]">
       {profileImgs.map((profile, idx) => {
         const imageClasses = clsx({
           'mr-0 z-0': idx === profileImgs.length - 1, // 2번 인덱스
