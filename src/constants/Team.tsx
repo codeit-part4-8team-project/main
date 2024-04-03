@@ -1,4 +1,4 @@
-import { Grade, Role } from '@/types/teamTypes';
+import { Grade, Member, Role } from '@/types/teamTypes';
 
 export const MEMBER: {
   ROLE: {
@@ -19,4 +19,14 @@ export const MEMBER: {
     MANAGER: '매니저',
     TEAM_MEMBER: '팀원',
   },
+};
+
+export const DEFAULT_MEMBER: Member = {
+  id: 0,
+  name: '',
+  imageUrl: '',
+  role: 'FRONTEND',
+  grade: 'TEAM_MEMBER',
+  username: '',
+  createdDate: '',
 };
