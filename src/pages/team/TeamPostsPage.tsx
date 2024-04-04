@@ -1,6 +1,6 @@
 import BoardSection from '@/components/common/BoardSection';
 import Pagenation from '@/components/common/pagenation/Pagenation';
-import PostList from '@/components/Post/PostList';
+import PostList from '@/components/Post/UserPostList';
 import { usePagenation } from '@/contexts/PageProvider';
 import { Post } from '@/types/postTypes';
 
