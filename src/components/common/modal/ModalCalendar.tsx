@@ -1,11 +1,14 @@
 import ControlDate from '../../SchedulesPage/ControlDate';
 import DateBox from '../../SchedulesPage/DateBox';
 
-function ModalCalendar() {
+interface ModalCalendarProps {
+  onModalDateClick?: (date: string) => void;
+}
+function ModalCalendar({ onModalDateClick }: ModalCalendarProps) {
   return (
     <div className="h-full w-full">
       <ControlDate mode="modal" />
-      <DateBox mode="modal" />
+      <DateBox onModalDateClick={onModalDateClick} mode="modal" />
     </div>
   );
 }

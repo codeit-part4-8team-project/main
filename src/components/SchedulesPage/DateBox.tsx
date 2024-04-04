@@ -8,8 +8,9 @@ import { calendarContext } from '@/contexts/CalenarProvider';
 interface DateBoxProp {
   mode: 'week' | 'month' | 'modal';
   calendarType?: '나' | '팀';
+  onModalDateClick?: (date: string) => void;
 }
-function DateBox({ mode, calendarType }: DateBoxProp) {
+function DateBox({ mode, calendarType, onModalDateClick }: DateBoxProp) {
   const [week, setWeek] = useState<Array<[number, Date]>>([]);
   const [allDay, setAllDay] = useState<Date[]>([]);
   const { nowDate } = useContext(calendarContext);
@@ -85,7 +86,13 @@ function DateBox({ mode, calendarType }: DateBoxProp) {
       {mode === 'modal' && (
         <div className="grid h-full w-full grid-cols-7 rounded-[2.4rem]">
           {allDay.map((day: Date) => (
-            <AllDay calendarType={calendarType} key={day.getTime()} mode="modal" day={day} />
+            <AllDay
+              onModalDateClick={onModalDateClick}
+              calendarType={calendarType}
+              key={day.getTime()}
+              mode="modal"
+              day={day}
+            />
           ))}
         </div>
       )}

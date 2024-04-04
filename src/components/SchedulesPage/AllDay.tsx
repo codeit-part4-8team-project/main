@@ -1,15 +1,20 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
+import ScheduleModal from '../Modal/ScheduleModal';
 import AddScheudleModal from './AddScheduleModal';
 import { Schedule } from '@/contexts/CalenarProvider';
 import { calendarContext } from '@/contexts/CalenarProvider';
+import { useModal } from '@/contexts/ModalProvider';
 
 interface AllDayProp {
   day: Date;
   mode: 'month' | 'modal';
   calendarType?: '나' | '팀';
+  onModalDateClick?: (date: string) => void;
+  teamId: string;
 }
-function AllDay({ day, mode, calendarType }: AllDayProp) {
+
+function AllDay({ day, mode, calendarType, onModalDateClick, teamId }: AllDayProp) {
   const { nowDate, filteredSchedules } = useContext(calendarContext);
   const [showAllSchedules, setShowAllSchedules] = useState(false);
 
@@ -40,7 +45,7 @@ function AllDay({ day, mode, calendarType }: AllDayProp) {
   const currentDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 1).getDate(); //현재 달의 일수
   const daysInPrevMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 0).getDate(); //다음 달의 마지막 날
   const rowIndex = (daysInNextMonth + currentDate + daysInPrevMonth) / 7;
-
+  const openModal = useModal();
   const DateDay = clsx(
     'bg-white w-full h-[16.2rem] text-body3-bold text-start py-4 px-[2.4rem] last:rouned-bl-[2.4rem]  ',
 
@@ -64,13 +69,19 @@ function AllDay({ day, mode, calendarType }: AllDayProp) {
     },
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  // const openModal = () => {
+  //   setIsModalOpen(true);
+  // };
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
+  const handleOpenModal = () => {
+    if (calendarType === '나') {
+      openModal(({ close }) => <ScheduleModal user={true} closeClick={close} />);
+    } else {
+      openModal(({ close }) => <ScheduleModal team={true} closeClick={close} teamId={teamId} />);
+    }
+  };
   const convertToISODate = (dateTimeString: string): string => {
     const [date, time] = dateTimeString.split(' ');
     const [year, month, day] = date.split('-');
@@ -142,7 +153,8 @@ function AllDay({ day, mode, calendarType }: AllDayProp) {
     const filteredSchedulesLength = filterData.length;
     const handleViewMoreClick = () => {
       setShowAllSchedules(true);
-      openModal(); // 모달 열기
+      openModal;
+      //openModal(); // 모달 열기
     };
     if (filteredSchedulesLength > 2 && !showAllSchedules) {
       return (
@@ -160,24 +172,43 @@ function AllDay({ day, mode, calendarType }: AllDayProp) {
       );
     }
   };
+  const handleModalDateClick = (clickedDate: Date) => {
+    const formattedDate = clickedDate
+      .toLocaleDateString('en-CA', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })
+      .replace(/\//g, '-'); // YY-MM-DD 형식으로 변환
+
+    // 부모 컴포넌트로 날짜를 전달
+    if (onModalDateClick) {
+      onModalDateClick(formattedDate);
+    }
+    console.log('Clicked date:', formattedDate);
+  };
+
+  const renderModalDate = () => {
+    const clickedDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), day.getDate());
+    return (
+      <div onClick={() => handleModalDateClick(clickedDate)}>
+        <p className={modalCell}>{` ${day.getDate()} `}</p>
+      </div>
+    );
+  }; //밖으로빼기
 
   return (
     <>
       {mode === 'month' && (
         <div className={`${Container} 'last: rounded-bl-[2.4rem]'`}>
-          <div className={clsx(DateDay)}>
+          <div className={clsx(DateDay)} onClick={handleOpenModal}>
             {`${day.getDate()} `}
             {renderViewMoreButton()}
-
             {renderSchedules()}
           </div>
         </div>
       )}
-      {mode === 'modal' && (
-        <div>
-          <p className={modalCell}>{` ${day.getDate()} `}</p>
-        </div>
-      )}
+      {mode === 'modal' && <div>{renderModalDate()}</div>}
     </>
   );
 }

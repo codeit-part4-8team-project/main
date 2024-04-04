@@ -17,24 +17,25 @@ const TeamPage = lazy(() => import('@/pages/team/TeamPage'));
 
 function App() {
   return (
-    <Suspense fallback={<div>로딩 중</div>}>
-      <UserProvider>
+    <UserProvider>
+      <CalendarProvider>
         <ModalProvider>
-          <CalendarProvider>
-            <Router>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/signin" element={<SigninPage />} />
-                <Route path="/login/oauth2/code/:provider" element={<OauthRedirectPage />} />
-                <Route element={<PrivateRoutes />}>
-                  <Route
-                    path="/signup"
-                    element={
-                      <StepProvider>
-                        <SignupPage />
-                      </StepProvider>
-                    }
-                  />
+          <Router>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/signin" element={<SigninPage />} />
+              <Route path="/login/oauth2/code/:provider" element={<OauthRedirectPage />} />
+              <Route
+                path="/signup"
+                element={
+                  <StepProvider>
+                    <SignupPage />
+                  </StepProvider>
+                }
+              />
+              <Route element={<PrivateRoutes />}>
+                <Route path="/user/:userId" element={<UserPageLayout />}>
+                  <Route path=":pageContent" element={<UserPage />} />
                 </Route>
                 <Route element={<PrivateRoutes />}>
                   <Route path="/user/:userId" element={<UserPageLayout />}>
@@ -44,12 +45,12 @@ function App() {
                     <Route path=":pageContent" element={<TeamPage />} />
                   </Route>
                 </Route>
-              </Routes>
-            </Router>
-          </CalendarProvider>
+              </Route>
+            </Routes>
+          </Router>
         </ModalProvider>
-      </UserProvider>
-    </Suspense>
+      </CalendarProvider>
+    </UserProvider>
   );
 }
 

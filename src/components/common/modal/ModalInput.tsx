@@ -10,6 +10,8 @@ interface ModalInputProps {
   // hookform?: UseFormRegister<string> | undefined; 타입을 모르것네
   children?: ReactNode;
   defaultValue?: string;
+  value?: string;
+  onModalDateClick?: (date: string) => void;
 }
 
 export default function ModalInput({
@@ -21,6 +23,8 @@ export default function ModalInput({
   hookform,
   children,
   defaultValue,
+  onModalDateClick,
+  value,
 }: ModalInputProps) {
   const inputSize = ' px-[1.8rem] py-[1.2rem] w-full';
   return (
@@ -34,6 +38,8 @@ export default function ModalInput({
           placeholder={placeholder}
           id={id}
           type={type}
+          onModalDateClick={onModalDateClick}
+          value={value}
         />
         {children}
       </div>
