@@ -1,9 +1,9 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import profile from '../../../public/profile.svg';
 import TextButton from '@/components/common/TextButton';
 import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
+import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 
 interface Inputs {
@@ -19,6 +19,7 @@ interface AnnouncementModalProps {
 // 여기도 합칠때 없애기
 export default function AnnouncementModal({ closeClick, teamId }: AnnouncementModalProps) {
   const { fetchData } = useAxios({});
+  const { user } = useUserContext();
   const { register, watch, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = ({ content, title }, event) => {
     const createAnnouncement = {
@@ -44,12 +45,14 @@ export default function AnnouncementModal({ closeClick, teamId }: AnnouncementMo
     <ModalLayout title="공지사항 게시하기" closeClick={closeClick}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="my-16 flex items-center gap-4">
-          <img src={profile} alt="profile" />
-          {/* 데이터 받아지면 변경 예정구역 */}
-          <p className=" text-[1.4rem]">userNickName</p>
-          {/*  */}
+          <img
+            src={user?.imageUrl}
+            alt="profile"
+            className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
+          />
+          <p className=" text-[1.4rem]">{user?.username}</p>
         </div>
-        <div>
+        <div className="mb-16">
           <ModalLabel htmlFor="title" label="제목" className={`${formTextSize}`} />
           <ModalInput
             hookform={register('title')}
