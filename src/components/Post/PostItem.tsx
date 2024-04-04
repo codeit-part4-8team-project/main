@@ -1,10 +1,10 @@
-import ProfileImg from '../../../public/assets/profile-large.svg';
 import FreeBoardDetail from '@/components/Modal/FreeBoardDetail';
 import PostLike from '@/components/Post/PostLike';
 import { useModal } from '@/contexts/ModalProvider';
 import { toDateFormat } from '@/lib/formatDate';
 import { Post } from '@/types/postTypes';
 import MeatbollsIcon from '@/assets/MeatbollsIcon';
+import ProfileImg from '@/assets/assets/profile-large.svg';
 
 interface PostItemProps {
   post: Post;
