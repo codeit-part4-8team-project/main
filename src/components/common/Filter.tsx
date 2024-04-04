@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useAxios } from '@/hooks/useAxios';
+import { useState } from 'react';
 import { Team } from '@/types/teamTypes';
 import CheckCircleIcon from '@/assets/CheckCircleFill';
 import ColorChipIcon from '@/assets/ColorChipIcon';
 
 interface FilterProps {
+  teamList: Team[];
   checkedTeamId: number[];
   setCheckedTeamId: (checked: number[]) => void;
 }
@@ -15,28 +15,9 @@ interface FilterItemProps {
   setCheckedTeamId: (checked: number[]) => void;
 }
 
-export default function Filter({ checkedTeamId, setCheckedTeamId }: FilterProps) {
-  const [teams, setTeams] = useState<Team[]>([]);
-
-  const { loading, error, data } = useAxios<Team[]>(
-    {
-      path: '/team/',
-      method: 'GET',
-    },
-    true,
-  );
-
-  useEffect(() => {
-    if (data && !loading) {
-      setTeams(data);
-    }
-    if (error) {
-      throw Error('내가 속한 팀을 불러올 수 없습니다.');
-    }
-  }, [data, loading, error]);
-
+export default function Filter({ teamList, checkedTeamId, setCheckedTeamId }: FilterProps) {
   if (checkedTeamId.length === 0) {
-    const myTeamsId = teams.map((team) => team.id);
+    const myTeamsId = teamList.map((team) => team.id);
     setCheckedTeamId(myTeamsId);
   }
 
@@ -44,7 +25,7 @@ export default function Filter({ checkedTeamId, setCheckedTeamId }: FilterProps)
     <div className="flex flex-col gap-12">
       <span className="text-body3-bold text-gray50">그룹 필터</span>
       <ul className="flex flex-col gap-[1.3rem]">
-        {teams.map((team) => {
+        {teamList.map((team) => {
           return (
             <FilterItem
               key={team.id}
