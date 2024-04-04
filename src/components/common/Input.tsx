@@ -62,7 +62,11 @@ export function InputValidateMessage({
 }: InputValidateMessageProps) {
   return (
     <div className="flex justify-between text-body5-regular leading-[2.2rem]">
-      {isError ? <span className=" text-point_red">{errorMessage}</span> : isValid || <span></span>}
+      {isError && !isValid ? (
+        <span className=" text-point_red">{errorMessage}</span>
+      ) : (
+        isValid || <span></span>
+      )}
       {isValid && <span className="text-[#8DDF90]">{validMessage}</span>}
       <span className="self-end  text-gray50">{watchMessage}</span>
     </div>

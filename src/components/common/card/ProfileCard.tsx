@@ -19,8 +19,7 @@ export default function ProfileCard() {
         <span className="mt-[1.6rem] text-body3-bold text-gray100">{user?.name}</span>
         <span className="text-body5-regular leading-[2.2rem] text-gray80">{user?.username}</span>
         <span className="mt-[2.2rem] w-[26.4rem] text-center text-body4-regular leading-[2.2rem] text-gray80">
-          {'안녕하세요 반갑습니다.UI/UX 디자이너 홍길동입니다 잘 부탁드려요.' ||
-            '자기소개를 작성해보세요'}
+          {user?.bio || '자기소개를 작성해보세요'}
         </span>
       </div>
       <span className=" text-body4-regular leading-[2.2rem] text-[#C1C1C1]">

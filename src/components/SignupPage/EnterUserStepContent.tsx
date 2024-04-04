@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import AlertModal from '../Modal/AlertModal';
-import Input from '../common/Input';
+import Input, { InputValidateMessage } from '../common/Input';
 import TextButton from '../common/TextButton';
 import { AxiosError, HttpStatusCode } from 'axios';
-import { useModal } from '@/contexts/ModalProvider';
 import { useStepContext } from '@/contexts/SignupStepProvider';
 import { useUserContext } from '@/contexts/UserProvider';
 import { defaultInstance, useAxios } from '@/hooks/useAxios';
+import { User } from '@/types/user';
 import ProfileIcon from '@/assets/ProfileIcon';
 
 interface UserEditForm {
@@ -19,8 +18,7 @@ interface UserEditForm {
 }
 
 function EnterUserStepContent() {
-  const openModal = useModal();
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const { setStep, setFormValidity } = useStepContext();
 
   const {
@@ -41,7 +39,6 @@ function EnterUserStepContent() {
     watch,
     formState: { isValid, errors },
     trigger,
-    reset,
   } = useForm<UserEditForm>({
     mode: 'all',
     defaultValues: {
@@ -68,29 +65,31 @@ function EnterUserStepContent() {
       if (!profileImage) {
         return Promise.resolve();
       }
-      return defaultInstance.put('/user/image', formDataOfImage);
+      return defaultInstance.patch('/user/image', formDataOfImage);
     };
 
     const formDataOfUser = { name: formData.name, username: formData.username, bio: formData.bio };
     const fetchUserInfo = () => {
-      return defaultInstance.put('/user/', formDataOfUser);
+      return defaultInstance.patch<User>('/user/', formDataOfUser);
     };
 
     try {
-      await Promise.all([fetchImage(), fetchUserInfo()]);
-      setStep(3);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response?.status === HttpStatusCode.BadRequest) {
+      const results = await Promise.allSettled([fetchImage(), fetchUserInfo()]);
+      const patchUserResponse = results[1];
+      if (patchUserResponse.status === 'fulfilled') {
+        patchUserResponse.value.status === HttpStatusCode.Ok &&
+          setUser(patchUserResponse.value.data);
+        setStep(3);
+      } else if (patchUserResponse.status === 'rejected') {
+        const error = patchUserResponse.reason;
+        if (error instanceof AxiosError && error.response?.status === HttpStatusCode.BadRequest) {
           setError('username', { type: 'duplicated', message: '이미 사용중인 닉네임입니다.' });
         } else {
-          openModal(({ close }) => (
-            <AlertModal buttonClick={close} buttonText="확인">
-              {(error as AxiosError<string>).response?.data || '에러 발생'}
-            </AlertModal>
-          ));
+          alert('예상치 못한 에러 발생. 잠시 후 다시 시도해 주세요.');
         }
       }
+    } catch (error) {
+      alert('예상치 못한 에러 발생. 잠시 후 다시 시도해 주세요.');
     }
   };
 
@@ -109,22 +108,9 @@ function EnterUserStepContent() {
       trigger('username');
     }
     if (checkUsernameError) {
-      openModal(({ close }) => (
-        <AlertModal buttonClick={close} buttonText="확인">
-          {checkUsernameError.message}
-        </AlertModal>
-      ));
+      alert(checkUsernameError.message || '닉네임 중복확인에 실패하였습니다');
     }
   }, [unavailableUsername, checkUsernameError]);
-
-  //유저컨텍스트 null> GET /api/user/ 받을 시 유저네임 defaultValue 초기화 안해주면 hook form에서 업데이트 안됨.
-  useEffect(() => {
-    if (user) {
-      reset({
-        username: user.username,
-      });
-    }
-  }, [user, reset]);
 
   useEffect(() => {
     setFormValidity(isValid);
@@ -164,30 +150,43 @@ function EnterUserStepContent() {
         </div>
         <div className="flex w-full flex-col gap-8">
           <Input
-            register={register('name')}
+            register={register('name', {
+              maxLength: {
+                value: 20,
+                message: '20자 이하로 작성해주세요',
+              },
+              pattern: {
+                value: /^[가-힣A-Za-z]+$/,
+                message: '이름은 한글, 알파벳만 사용할 수 있습니다.',
+              },
+            })}
             id="name"
             name="name"
-            label="성함"
+            label="이름"
             type="text"
-            value={user?.name || ''}
-            readOnly={false}
-            className="bg-gray20"
-          ></Input>
+            autoComplete="off"
+          >
+            <InputValidateMessage
+              isError={errors.name?.message}
+              errorMessage={errors.name?.message}
+              watchMessage={`${watch('name')?.length || 0}/20`}
+            />
+          </Input>
           <div className="flex gap-[1.2rem]">
             <Input
               register={register('username', {
                 required: true,
                 minLength: {
                   value: 5,
-                  message: '닉네임은 5자 이상, 30자 이하여야 합니다.',
+                  message: '유저네임은 5자 이상, 30자 이하여야 합니다.',
                 },
                 maxLength: {
                   value: 30,
-                  message: '닉네임은 5자 이상, 30자 이하여야 합니다.',
+                  message: '유저네임은 5자 이상, 30자 이하여야 합니다.',
                 },
                 pattern: {
                   value: /^[가-힣a-zA-Z0-9_-]+$/,
-                  message: '닉네임은 한글, 알파벳, 숫자, 밑줄(_),(-)만 사용할 수 있습니다.',
+                  message: '유저네임은 한글, 알파벳, 숫자, 밑줄(_),(-)만 사용할 수 있습니다.',
                 },
                 validate: {
                   checkAvailable: () =>
@@ -199,11 +198,12 @@ function EnterUserStepContent() {
               type="text"
               placeholder={user?.username}
             >
-              {errors.username?.message && (
-                <span className="text-body5-regular leading-[2.2rem] text-point_red">
-                  {errors.username.message}
-                </span>
-              )}
+              <InputValidateMessage
+                isError={errors.username?.message}
+                errorMessage={errors.username?.message}
+                isValid={unavailableUsername || false}
+                validMessage="사용 가능한 닉네임입니다."
+              />
             </Input>
             <TextButton
               type="button"
@@ -226,9 +226,11 @@ function EnterUserStepContent() {
             type="text"
             placeholder="간단한 자기소개를 입력해주세요."
           >
-            <span className="self-end text-body5-regular leading-[2.2rem] text-gray50">
-              {`${watch('bio')?.length || 0}/20`}
-            </span>
+            <InputValidateMessage
+              isError={errors.bio?.message}
+              errorMessage={errors.bio?.message}
+              watchMessage={`${watch('bio')?.length || 0}/20`}
+            />
           </Input>
         </div>
       </form>
