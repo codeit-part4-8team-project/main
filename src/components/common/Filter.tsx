@@ -17,6 +17,7 @@ interface FilterItemProps {
 
 export default function Filter({ checkedTeamId, setCheckedTeamId }: FilterProps) {
   const [teams, setTeams] = useState<Team[]>([]);
+
   const { loading, error, data } = useAxios<Team[]>(
     {
       path: '/team/',
@@ -24,6 +25,7 @@ export default function Filter({ checkedTeamId, setCheckedTeamId }: FilterProps)
     },
     true,
   );
+
   useEffect(() => {
     if (data && !loading) {
       setTeams(data);
@@ -32,6 +34,11 @@ export default function Filter({ checkedTeamId, setCheckedTeamId }: FilterProps)
       throw Error('내가 속한 팀을 불러올 수 없습니다.');
     }
   }, [data, loading, error]);
+
+  if (checkedTeamId.length === 0) {
+    const myTeamsId = teams.map((team) => team.id);
+    setCheckedTeamId(myTeamsId);
+  }
 
   return (
     <div className="flex flex-col gap-12">
