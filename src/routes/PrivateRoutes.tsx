@@ -23,7 +23,6 @@ export default function PrivateRoutes() {
   }, [data, loading, error, setUser]);
 
   if (loading) {
-    //return <Outlet />;
     return <Outlet />;
     //로딩 중 페이지를 만들기 or 그냥 Outlet 반환해서 빈 ui 라도 보게.
   }
