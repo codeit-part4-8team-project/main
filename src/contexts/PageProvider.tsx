@@ -18,11 +18,13 @@ interface PageContextValue {
   currentPage: number;
   isFirst: boolean;
   isLast: boolean;
+  checkedTeamId?: number[];
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  setCheckedTeamId?: React.Dispatch<React.SetStateAction<number[]>>;
   handlePrevClick: () => void;
   handleNextClick: () => void;
   handlePageNumberClick: (page: number) => void;
-  refetch?: Trigger;
+  refetch: Trigger;
 }
 
 interface PageProviderProps {
@@ -51,8 +53,12 @@ const createNumArray = (start: number, size: number) => {
 const PageContext = createContext<PageContextValue>(defaultPageValue);
 
 export function PageProvider({ children }: PageProviderProps) {
+  const currentCheckedTeamId = sessionStorage.getItem('filteredTeam');
+  const defaultCheckedTeamId = currentCheckedTeamId ? JSON.parse(currentCheckedTeamId) : [];
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [startPage, setStartPage] = useState(1);
+  const [checkedTeamId, setCheckedTeamId] = useState<number[]>(defaultCheckedTeamId);
 
   const { teamId, pageContent } = useParams();
   const isTeam = teamId ? true : false;
@@ -68,11 +74,13 @@ export function PageProvider({ children }: PageProviderProps) {
       size = postPageData.size;
       totalPages = postPageData.totalPages;
       content = postPageData.content;
+      refetch = fetchPostPageData;
       break;
     case 'announcement':
       size = announcementPageData.size;
       totalPages = announcementPageData.totalPages;
       content = announcementPageData.content;
+      refetch = fetchAnnouncementPageData;
       break;
     case 'mypage':
       size = myTeamPageData.size;
@@ -94,7 +102,10 @@ export function PageProvider({ children }: PageProviderProps) {
     totalPages = 1;
   }
 
-  const query = `?page=${currentPage || 1}`;
+  const query =
+    checkedTeamId.length > 0
+      ? `?teamIds=${checkedTeamId}&page=${currentPage || 1}`
+      : `?page=${currentPage || 1}`;
 
   let newPath: string;
   switch (pageContent) {
@@ -129,7 +140,7 @@ export function PageProvider({ children }: PageProviderProps) {
         fetchMemberPageData({ newPath });
         break;
     }
-  }, [currentPage]);
+  }, [currentPage, checkedTeamId]);
 
   let pageNumsArray = createNumArray(startPage, size);
 
@@ -162,7 +173,9 @@ export function PageProvider({ children }: PageProviderProps) {
         currentPage,
         isFirst,
         isLast,
+        checkedTeamId,
         setCurrentPage,
+        setCheckedTeamId,
         handlePrevClick,
         handleNextClick,
         handlePageNumberClick,

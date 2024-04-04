@@ -4,6 +4,10 @@ import { useAxios } from '@/hooks/useAxios';
 import { Issue, Issues } from '@/types/issueTypes';
 
 export function useIssueBoard() {
+  const currentCheckedTeamId = sessionStorage.getItem('filteredTeam');
+  const defaultCheckedTeamId = currentCheckedTeamId ? JSON.parse(currentCheckedTeamId) : [];
+  const [checkedTeamId, setCheckedTeamId] = useState<number[]>(defaultCheckedTeamId);
+
   const [issueBoardData, setIssueBoardData] = useState<Issues>({
     todoIssues: [],
     progressIssues: [],
@@ -12,9 +16,11 @@ export function useIssueBoard() {
 
   const { userId, teamId } = useParams();
 
+  const query = checkedTeamId.length > 0 ? `?teamIds=${checkedTeamId}` : '';
+
   let path;
   if (userId) {
-    path = `/issue/user`; // 유저의 통합 이슈 보드 조회 @ UserIssuesPage
+    path = `/issue/user${query}`; // 유저의 통합 이슈 보드 조회 @ UserIssuesPage
   } else if (teamId) {
     path = `/issue/team/${teamId}`; // 팀의 이슈 보드 조회 @ TeamIssuesPage
   } else {
@@ -38,7 +44,11 @@ export function useIssueBoard() {
     }
   }, [loading, error, data]);
 
-  return { issueBoardData, fetchIssueBoardData: fetchData };
+  useEffect(() => {
+    fetchData();
+  }, [checkedTeamId]);
+
+  return { issueBoardData, checkedTeamId, setCheckedTeamId, fetchIssueBoardData: fetchData };
 }
 
 export function useIssue(issueId?: number) {
