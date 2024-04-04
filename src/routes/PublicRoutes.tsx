@@ -4,13 +4,15 @@ import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 import { User } from '@/types/user';
 
-export default function PrivateRoutes() {
+export default function PublicRoutes() {
   const { user, setUser } = useUserContext();
+  const token = localStorage.getItem('accessToken') || localStorage.getItem('refreshToken');
+
   const { data, loading, error } = useAxios<User>(
     {
       path: '/user/',
     },
-    !user, //유저 있고 토큰 없는 경우는 가능성 낮고 다른 요청의 interceptor로 인해 알아서 리다이렉트
+    !user && Boolean(token),
   );
 
   useEffect(() => {
@@ -23,11 +25,8 @@ export default function PrivateRoutes() {
   }, [data, loading, error, setUser]);
 
   if (loading) {
-    //첫 마운트 때 호출 안하면 저절로 통과.
     return <Outlet />;
-    //로딩 중 페이지를 만들기 or 그냥 Outlet 반환해서 빈 ui 라도 보게.
   }
 
-  //여길 data 가 아니라 user state로 잡으면 loading 풀렸을 때 user는 반영이 안된 상태
-  return data ? <Outlet /> : <Navigate replace to={'/signin'} />;
+  return data ? <Navigate replace to={`user/${user?.id}/main`} /> : <Outlet />;
 }

@@ -1,6 +1,8 @@
 import { Suspense, lazy } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import BlockOtherUserRoute from './routes/PrivateRouteGuard';
 import PrivateRoutes from './routes/PrivateRoutes';
+import PublicRoutes from './routes/PublicRoutes';
 import UserPageLayout from '@/components/common/UserPageLayout';
 import TeamPageLayout from '@/components/TeamsPage/TeamPageLayout';
 import { CalendarProvider } from '@/contexts/CalenarProvider';
@@ -23,27 +25,31 @@ function App() {
           <ModalProvider>
             <Router>
               <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/signin" element={<SigninPage />} />
-                <Route path="/login/oauth2/code/:provider" element={<OauthRedirectPage />} />
-                <Route
-                  path="/signup"
-                  element={
-                    <StepProvider>
-                      <SignupPage />
-                    </StepProvider>
-                  }
-                />
+                <Route element={<PublicRoutes />}>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/signin" element={<SigninPage />} />
+                  <Route path="/login/oauth2/code/:provider" element={<OauthRedirectPage />} />
+                </Route>
                 <Route element={<PrivateRoutes />}>
-                  <Route path="/user/:userId" element={<UserPageLayout />}>
-                    <Route path=":pageContent" element={<UserPage />} />
-                  </Route>
-                  <Route element={<PrivateRoutes />}>
+                  <Route
+                    path="/signup"
+                    element={
+                      <StepProvider>
+                        <SignupPage />
+                      </StepProvider>
+                    }
+                  />
+                  <Route element={<BlockOtherUserRoute />}>
                     <Route path="/user/:userId" element={<UserPageLayout />}>
                       <Route path=":pageContent" element={<UserPage />} />
                     </Route>
-                    <Route path="/team/:teamId" element={<TeamPageLayout />}>
-                      <Route path=":pageContent" element={<TeamPage />} />
+                    <Route element={<PrivateRoutes />}>
+                      <Route path="/user/:userId" element={<UserPageLayout />}>
+                        <Route path=":pageContent" element={<UserPage />} />
+                      </Route>
+                      <Route path="/team/:teamId" element={<TeamPageLayout />}>
+                        <Route path=":pageContent" element={<TeamPage />} />
+                      </Route>
                     </Route>
                   </Route>
                 </Route>
