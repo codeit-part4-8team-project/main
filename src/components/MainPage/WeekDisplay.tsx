@@ -46,7 +46,7 @@ export const WeekDisplay: React.FC<WeekDisplayProps> = ({ week, calendarType }) 
                           {calendarType === '나' ? (
                             <>
                               <p className="text-gray100">{item.user?.name || item.team?.name}</p>
-                              <p>{item.title}</p>
+                              <p>{item.title}|</p>
                             </>
                           ) : (
                             <>

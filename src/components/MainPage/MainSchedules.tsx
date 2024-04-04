@@ -64,9 +64,7 @@ function MainSchedules({ calendarType, teamId }: MainSchedulesProps) {
   return (
     <>
       <div className="ml-0.3 mr-5.2 mt-0.3 bg-gray-200">
-        <div className="content flex justify-between gap-12 whitespace-nowrap">
-          {/* <ControlDate mode="week" /> */}
-        </div>
+        <div className="content flex justify-between gap-12 whitespace-nowrap"></div>
 
         <div style={Container}>
           <div>

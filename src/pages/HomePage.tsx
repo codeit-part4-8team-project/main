@@ -80,7 +80,7 @@ export const Carousel = ({ images }: CarouselProps) => {
           </button>
         </div>
       </main>
-      <footer className="fixed bottom-0 m-0 w-[192rem] bg-gray30 py-9 text-center text-body4-bold text-gray50">
+      <footer className="fixed bottom-0 m-0 w-full bg-gray30 py-9 text-center text-body4-bold text-gray50">
         All Rights Reserved ⓒ 2024 Project Team8-Codeit KEEPY UPPY.
       </footer>
     </div>
