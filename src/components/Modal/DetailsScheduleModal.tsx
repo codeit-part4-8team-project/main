@@ -24,10 +24,7 @@ interface defaultValue {
   user?: userType;
 }
 // 합칠때 에러 떠서 일단 기본값
-export default function DetailScheduleModal({
-  closeClick,
-  scheduleId = 1,
-}: DetailScheduleModalProps) {
+export default function DetailScheduleModal({ closeClick, scheduleId }: DetailScheduleModalProps) {
   const { data: defaultValue } = useAxios(
     {
       path: `schedule/${scheduleId}`,

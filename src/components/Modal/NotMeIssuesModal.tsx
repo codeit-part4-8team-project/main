@@ -25,7 +25,7 @@ interface DefaultValueType {
   author?: Author;
 }
 // 합칠때 여기도 지우기 에러
-export default function NotMeIssuesModal({ closeClick, issueId = 3 }: NotMeLssuesModalProps) {
+export default function NotMeIssuesModal({ closeClick, issueId }: NotMeLssuesModalProps) {
   const { data: defaultValue } = useAxios(
     {
       path: `issue/${issueId}`,

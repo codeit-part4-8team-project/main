@@ -20,10 +20,14 @@ interface DefaultValue {
   endDate?: string;
   members?: Member[];
 }
+
+interface GroupApproveData {
+  id?: number;
+}
 // 얘는 어떻게 프롭으로 받아야하지? 들어가는 위치를 모르겠네
 export default function InvitationGroupModal({
   closeClick,
-  teamId = 4,
+  teamId,
   // 합칠때 얘도 기본값 빼기 에러 떠서 넣어놓음
 }: InvitationGroupModalProps) {
   const { data: defaultValue } = useAxios<DefaultValue>(
@@ -32,8 +36,11 @@ export default function InvitationGroupModal({
     },
     true,
   );
-
+  // 승인 버튼 클릭시 일단 patch 로 승인 보내고 나서
+  // 승인 버튼 클릭했을때 memberId 쏘는거 받아서 member/${memberId} patch로 role 보내기
+  // grade는 피룡없음
   const { fetchData: deleteFetch } = useAxios({});
+  const { data: GroupApproveData, fetchData: GroupApproveClick } = useAxios<GroupApproveData>({});
   const { description, name, startDate, endDate } = defaultValue || {};
   const { user } = useUserContext();
   const openModal = useModal();
@@ -46,6 +53,13 @@ export default function InvitationGroupModal({
     });
   };
 
+  const handleGroupApproveClick = () => {
+    GroupApproveClick({
+      newPath: `member/invite/${teamId}`,
+      newMethod: 'PATCH',
+    });
+  };
+  const { id: memberId }: GroupApproveData = GroupApproveData || {};
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle =
@@ -100,8 +114,8 @@ export default function InvitationGroupModal({
           <TextButton
             buttonSize="md"
             onClick={() => {
-              openModal(({ close }) => <AfterApproval closeClick={close} />);
-              closeClick();
+              openModal(({ close }) => <AfterApproval closeClick={close} memberId={memberId} />);
+              handleGroupApproveClick;
             }}
           >
             승인

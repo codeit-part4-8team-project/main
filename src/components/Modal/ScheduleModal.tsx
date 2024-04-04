@@ -29,7 +29,10 @@ function ScheduleModal({ closeClick, team = false, user = false, teamId }: Sched
 
   const { register, handleSubmit, watch } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = ({ title, startDateTime, endDateTime, content }) => {
+  const onSubmit: SubmitHandler<Inputs> = (
+    { title, startDateTime, endDateTime, content },
+    event,
+  ) => {
     const createSchedlue = {
       title: title,
       startDateTime: startDateTime,
@@ -37,6 +40,7 @@ function ScheduleModal({ closeClick, team = false, user = false, teamId }: Sched
       content: content,
     };
     handleScheduleUserFetch(createSchedlue);
+    event?.target.closest('dialog').close();
   };
   const titleWatch = watch('title');
   const contentWatch = watch('content');

@@ -15,7 +15,7 @@ import ModalMemberList from '@/components/common/modal/ModalMemberList';
 import { useUserContext } from '@/contexts/UserProvider';
 import { defaultInstance, useAxios } from '@/hooks/useAxios';
 
-type Inputs = {
+interface Inputs {
   name: string;
   description: string;
   members?: string[];
@@ -25,7 +25,7 @@ type Inputs = {
   githubLink?: string;
   discordLink?: string;
   figmaLink?: string;
-};
+}
 
 interface dataType {
   bio: string;
@@ -273,7 +273,7 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             )}
           </div>
         </ModalFormBorder>
-        <TextButton buttonSize="md" className="mt-16" disabled={false}>
+        <TextButton buttonSize="md" className="mt-16">
           생성하기
         </TextButton>
       </form>

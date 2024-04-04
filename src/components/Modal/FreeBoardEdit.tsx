@@ -23,7 +23,7 @@ interface FreeBoardModalProps {
   postId: number;
 }
 // 여기도 합칠때 지우기 에러남
-export default function FreeBoardEditModal({ closeClick, postId = 2 }: FreeBoardModalProps) {
+export default function FreeBoardEditModal({ closeClick, postId }: FreeBoardModalProps) {
   const { data: defaultValue } = useAxios<defaultValue>(
     {
       path: `post/${postId}`,
@@ -42,13 +42,13 @@ export default function FreeBoardEditModal({ closeClick, postId = 2 }: FreeBoard
       content: defalutContent,
     },
   });
-  const onSubmit: SubmitHandler<Inputs> = ({ title, content }) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content }, event) => {
     const createFreeBoard = {
       content: content,
       title: title,
     };
     handlePatchFreeBoard(createFreeBoard);
-    console.log(createFreeBoard);
+    event?.target.closest('dialog').close();
   };
 
   const handlePatchFreeBoard = (data: Inputs) => {

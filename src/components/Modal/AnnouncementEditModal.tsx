@@ -22,7 +22,7 @@ interface AnnouncementModalProps {
   teamId: number;
 }
 // 여기도 합칠때 에러 처리하기
-export default function AnnouncementEditModal({ closeClick, teamId = 1 }: AnnouncementModalProps) {
+export default function AnnouncementEditModal({ closeClick, teamId }: AnnouncementModalProps) {
   const { data: defaultValue } = useAxios<DefaultValueType>(
     {
       path: `announcement/${teamId}`,
@@ -43,12 +43,13 @@ export default function AnnouncementEditModal({ closeClick, teamId = 1 }: Announ
       content: defaultContent,
     },
   });
-  const onSubmit: SubmitHandler<Inputs> = ({ content, title }) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ content, title }, event) => {
     const createAnnouncement = {
       content: content,
       title: title,
     };
     handlePatchAnnouncement(createAnnouncement);
+    event?.target.closest('dialog').close();
   };
 
   const formTextSize = 'text-body3-medium';
