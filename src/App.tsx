@@ -1,8 +1,8 @@
+import BlockOtherUserRoute from '@/routes/BlockOtherUserRoute';
+import PrivateRoutes from '@/routes/PrivateRoutes';
+import PublicRoutes from '@/routes/PublicRoutes';
 import { Suspense, lazy } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import BlockOtherUserRoute from './routes/PrivateRouteGuard';
-import PrivateRoutes from './routes/PrivateRoutes';
-import PublicRoutes from './routes/PublicRoutes';
 import UserPageLayout from '@/components/common/UserPageLayout';
 import TeamPageLayout from '@/components/TeamsPage/TeamPageLayout';
 import { CalendarProvider } from '@/contexts/CalenarProvider';
