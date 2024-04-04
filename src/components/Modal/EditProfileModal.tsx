@@ -26,11 +26,12 @@ interface UserEditForm {
 export default function EditProfileModal({ handleClose, userContext }: EditProfileModalProps) {
   const { refetch } = usePagenation();
   const { user, setUser } = userContext;
-  const [isUniqueUsername, setIsUniqueUsername] = useState<boolean>(false);
+  const [isUniqueUsername, setIsUniqueUsername] = useState<boolean>(true);
 
   const {
     data: unavailableUsername,
     error: checkUsernameError,
+    loading,
     fetchData: fetchCheckUsername,
   } = useAxios<boolean>({
     path: `user/checkUsername/${user?.username}`,
@@ -44,7 +45,7 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
     clearErrors,
     getValues,
     watch,
-    formState: { isValid, errors },
+    formState: { isValid, errors, dirtyFields },
     trigger,
   } = useForm<UserEditForm>({
     mode: 'all',
@@ -87,7 +88,6 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
 
       if (fetchUserResponse.status === 'fulfilled') {
         setUser(fetchUserResponse.value.data);
-        console.log(refetch);
         refetch && refetch(); //유저네임 바뀌는 것 때문에 팀 히스토리 쪽 모달에 문제생겨서 유
         handleClose();
       } else if (fetchUserResponse.status === 'rejected') {
@@ -115,16 +115,18 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
   useEffect(() => {
     if (unavailableUsername === true) {
       setError('username', { type: 'duplicated', message: '이미 사용중인 닉네임입니다.' });
+      setIsUniqueUsername(() => false);
+      trigger('username', { shouldFocus: true });
     } else if (unavailableUsername === false) {
-      setIsUniqueUsername(true);
-      console.log('사용가능한 닉네임입니다.');
       clearErrors('username');
-      trigger('username');
+      setIsUniqueUsername(() => true);
+      trigger('username', { shouldFocus: true });
     }
+    trigger();
     if (checkUsernameError) {
       alert(checkUsernameError.message || '닉네임 중복확인에 실패하였습니다');
     }
-  }, [unavailableUsername, checkUsernameError]);
+  }, [unavailableUsername, checkUsernameError, loading]);
 
   return (
     <ModalLayout title="프로필 변경" closeClick={handleClose}>
@@ -162,18 +164,19 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
           <div className="flex w-full flex-col gap-8">
             <Input
               register={register('name', {
+                required: '이름을 입력해주세요',
                 maxLength: {
                   value: 20,
                   message: '20자 이하로 작성해주세요',
                 },
                 pattern: {
                   value: /^[가-힣A-Za-z]+$/,
-                  message: '성함은 한글, 알파벳만 사용할 수 있습니다.',
+                  message: '이름은 한글, 알파벳만 사용할 수 있습니다.',
                 },
               })}
               id="name"
               name="name"
-              label="성함"
+              label="이름"
               type="text"
               autoComplete="off"
             >
@@ -186,37 +189,37 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
             <div className="flex gap-[1.2rem]">
               <Input
                 register={register('username', {
-                  required: true,
+                  required: '유저네임을 입력해주세요',
                   minLength: {
                     value: 5,
-                    message: '닉네임은 5자 이상, 30자 이하여야 합니다.',
+                    message: '유저네임은 5자 이상, 30자 이하여야 합니다.',
                   },
                   maxLength: {
                     value: 30,
-                    message: '닉네임은 5자 이상, 30자 이하여야 합니다.',
+                    message: '유저네임은 5자 이상, 30자 이하여야 합니다.',
                   },
                   pattern: {
                     value: /^[가-힣a-zA-Z0-9_-]+$/,
-                    message: '닉네임은 한글, 알파벳, 숫자, 밑줄(_),(-)만 사용할 수 있습니다.',
+                    message: '유저네임은 한글, 알파벳, 숫자, 밑줄(_),(-)만 사용할 수 있습니다.',
                   },
                   validate: {
                     checkAvailable: () =>
-                      unavailableUsername === false || '닉네임 중복을 확인해주세요',
+                      !dirtyFields.username || isUniqueUsername || '닉네임 중복을 확인해주세요',
                   },
                   onChange: () => {
                     setIsUniqueUsername(false);
                   },
                 })}
                 id="username"
-                label="username"
+                label="유저네임"
                 type="text"
                 placeholder={user?.username}
                 autoComplete="off"
               >
                 <InputValidateMessage
-                  isError={errors.username?.message}
+                  isError={dirtyFields.username && errors.username?.message}
                   errorMessage={errors.username?.message}
-                  isValid={isUniqueUsername}
+                  isValid={isUniqueUsername || !dirtyFields.username}
                   validMessage="사용 가능한 닉네임입니다."
                 />
               </Input>
@@ -242,9 +245,11 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
               placeholder="간단한 자기소개를 입력해주세요."
               autoComplete="off"
             >
-              <span className="self-end text-body5-regular leading-[2.2rem] text-gray50">
-                {`${watch('bio')?.length || 0}/20`}
-              </span>
+              <InputValidateMessage
+                isError={errors.bio?.message}
+                errorMessage={errors.bio?.message}
+                watchMessage={`${watch('bio')?.length || 0}/20`}
+              />
             </Input>
           </div>
         </form>

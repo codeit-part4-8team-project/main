@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import TextButton from '../common/TextButton';
 import { useStepContext } from '@/contexts/SignupStepProvider';
+import { useUserContext } from '@/contexts/UserProvider';
 
 function SignupLayout({ children }: { children: ReactNode }) {
+  const { user } = useUserContext();
   const { step, setStep, formValidity } = useStepContext();
   const navigate = useNavigate();
 
@@ -20,7 +22,7 @@ function SignupLayout({ children }: { children: ReactNode }) {
   const handleNextStepButtonClick = (currentStep: number) => {
     if (currentStep === 3) {
       return () => {
-        navigate('user/main');
+        navigate(`/user/${user?.id}/main`);
       };
     }
   };
