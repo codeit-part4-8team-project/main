@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import dropDown from '../../../../public/assets/arrow-down-dark.png';
 import TextButton from '@/components/common/TextButton';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import Role from '@/components/common/modal/Role';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
+import dropDown from '@/assets/assets/arrow-down-dark.png';
 
 interface AfterApprovalProps {
   closeClick?: () => void;

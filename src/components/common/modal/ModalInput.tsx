@@ -23,7 +23,6 @@ export default function ModalInput({
   hookform,
   children,
   defaultValue,
-  onModalDateClick,
   value,
 }: ModalInputProps) {
   const inputSize = ' px-[1.8rem] py-[1.2rem] w-full';
@@ -38,7 +37,6 @@ export default function ModalInput({
           placeholder={placeholder}
           id={id}
           type={type}
-          onModalDateClick={onModalDateClick}
           value={value}
         />
         {children}

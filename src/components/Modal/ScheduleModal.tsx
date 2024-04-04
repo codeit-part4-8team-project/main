@@ -37,17 +37,16 @@ function ScheduleModal({
   const { fetchData: userFetchData } = useAxios({});
   const { fetchData: teamFetchData } = useAxios({});
   const { user: userInformation } = useUserContext();
-
+  const [selectedStartDate, setSelectedStartDate] = useState<string>('');
+  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
+  const [TimeData, setTimeData] = useState<string>('');
   const { register, handleSubmit, watch } = useForm<Inputs>();
-
-  const onSubmit: SubmitHandler<Inputs> = (
-    { title, startDateTime, endDateTime, content },
-    event,
-  ) => {
+  const startDateTimeAll = `${selectedStartDate}${TimeData}`;
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content }, event) => {
     const createSchedlue = {
       title: title,
-      startDateTime: startDateTime,
-      endDateTime: endDateTime,
+      startDateTime: startDateTimeAll,
+      endDateTime: selectedEndDate,
       content: content,
     };
     handleScheduleUserFetch(createSchedlue);
@@ -76,21 +75,23 @@ function ScheduleModal({
       });
     }
   };
-  const [selectedStartDate, setSelectedStartDate] = useState<string>('');
-  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
 
   const handleStartDateClick = (date: string) => {
-    setSelectedStartDate(date);
+    setSelectedStartDate(date + ' 00:00:00');
     if (onModalStartDateClick) {
       onModalStartDateClick(date);
     }
   };
   const handleEndDateClick = (date: string) => {
-    setSelectedEndDate(date);
+    setSelectedEndDate(date + ' 00:00:00');
 
     if (onModalEndDateClick) {
       onModalEndDateClick(date);
     }
+  };
+  const handleTimeClick = (Time: string) => {
+    console.log('data', Time);
+    setTimeData(Time);
   };
 
   return (
@@ -156,6 +157,7 @@ function ScheduleModal({
             endHookform={register('endDateTime')}
             endName="endDateTime"
             onModalStartDateClick={handleStartDateClick}
+            onClickTime={handleTimeClick}
             startValue={selectedStartDate}
             endValue={selectedEndDate}
             onModalEndDateClick={handleEndDateClick}

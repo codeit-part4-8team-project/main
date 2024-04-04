@@ -1,8 +1,8 @@
-import calender from '../../../public/assets/calendar-dark.svg';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import { useAxios } from '@/hooks/useAxios';
 import { Author } from '@/types/commonTypes';
+import calender from '@/assets/assets/calendar-dark.svg';
 
 interface DetailScheduleModalProps {
   closeClick: () => void;

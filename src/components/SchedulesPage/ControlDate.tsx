@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import clsx from 'clsx';
-import ArrowLeftAll from '../../../public/assets/_allow-left-all.svg';
-import ArrowLeft from '../../../public/assets/_allow-left.svg';
-import ArrrowRightAll from '../../../public/assets/_allow-right-all.svg';
-import ArrowRight from '../../../public/assets/_allow-right.svg';
 import { calendarContext } from '@/contexts/CalenarProvider';
+import ArrowLeftAll from '@/assets/assets/_allow-left-all.svg';
+import ArrowLeft from '@/assets/assets/_allow-left.svg';
+import ArrrowRightAll from '@/assets/assets/_allow-right-all.svg';
+import ArrowRight from '@/assets/assets/_allow-right.svg';
 
 interface ControlDateProp {
   mode: 'month' | 'week' | 'modal';

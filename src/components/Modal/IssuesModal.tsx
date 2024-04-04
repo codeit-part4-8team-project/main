@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import arrowDown from '../../../public/assets/arrow-down-dark.png';
-import calender from '../../../public/assets/calendar-dark.svg';
 import TextButton from '@/components/common/TextButton';
 import GroupList from '@/components/common/modal/GroupList';
 import ModalCalendar from '@/components/common/modal/ModalCalendar';
@@ -12,6 +10,8 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
 import { useUserContext } from '@/contexts/UserProvider';
 import { defaultInstance, useAxios } from '@/hooks/useAxios';
+import arrowDown from '@/assets/assets/arrow-down-dark.png';
+import calender from '@/assets/assets/calendar-dark.svg';
 
 interface IssuesModalProps {
   closeClick: () => void;
@@ -60,13 +60,14 @@ export default function IssuesModal({
   const [memberCheck, setMemberCheck] = useState(false);
   const [groupList, setGroupList] = useState(false);
   const [groupClickData, setGroupClickData] = useState<groupDataType | null>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
 
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = ({ title, content, dueDate }, event) => {
     const createIssue = {
       title: title,
       content: content,
-      dueDate: dueDate,
+      dueDate: selectedEndDate,
       status: 'TODO',
       assignedMembersUsernames: membersList.map((member) => member.username),
     };
@@ -132,8 +133,7 @@ export default function IssuesModal({
       document.removeEventListener('mousedown', handleDueDateClickOutside);
     };
   }, [dueDateToggle]);
-  //소은
-  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
+
   const handleDateClick = (date: string) => {
     setSelectedEndDate(date);
 

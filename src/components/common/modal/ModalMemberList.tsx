@@ -1,5 +1,5 @@
-import close from '../../../../public/assets/close.svg';
 import { Author } from '@/types/commonTypes';
+import close from '@/assets/assets/close.svg';
 
 interface dataType {
   Grade?: string;
