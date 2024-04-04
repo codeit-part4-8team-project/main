@@ -70,7 +70,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
 export const useModal = () => {
   const context = useContext(ModalContext);
-
+  const id = useId();
   if (context === null) {
     throw new Error('ModalProvider 외부입니다.');
   }
@@ -79,7 +79,7 @@ export const useModal = () => {
 
   const openModal = useCallback(
     (getModalElement: GetModalElementType) => {
-      mount(crypto.randomUUID(), getModalElement);
+      mount(id, getModalElement);
     },
     [mount],
   );
