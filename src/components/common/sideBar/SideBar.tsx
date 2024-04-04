@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import ProfileImg from '../../../../public/assets/profile-small.svg';
 import ToolTip from '@/components/common/ToolTip';
 import BoardList from '@/components/common/sideBar/BoardList';
 import GroupList from '@/components/common/sideBar/GroupList';
@@ -10,6 +9,7 @@ import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 import { Team } from '@/types/teamTypes';
 import PlusCircleIcon from '@/assets/PlusCircleIcon';
+import ProfileImg from '@/assets/assets/profile-small.svg';
 
 export default function SideBar() {
   return (

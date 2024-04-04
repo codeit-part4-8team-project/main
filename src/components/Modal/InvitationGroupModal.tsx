@@ -1,4 +1,3 @@
-import calender from '../../../public/assets/calendar-dark.svg';
 import TextButton from '@/components/common/TextButton';
 import AfterApproval from '@/components/common/modal/AfterApprovalModal';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
@@ -7,6 +6,7 @@ import { useModal } from '@/contexts/ModalProvider';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 import { Member } from '@/types/teamTypes';
+import calender from '@/assets/assets/calendar-dark.svg';
 
 interface InvitationGroupModalProps {
   closeClick: () => void;

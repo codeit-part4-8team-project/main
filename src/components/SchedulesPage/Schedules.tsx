@@ -22,7 +22,6 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
   const openModal = useModal();
 
   const localDate = nowDate.toISOString().substring(0, 10);
-
   const { data, fetchData } = useAxios<{
     userSchedules: Schedule[];
     teamSchedules: Schedule[];
@@ -63,6 +62,9 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
       openModal(({ close }) => <ScheduleModal team={true} closeClick={close} teamId={teamId} />);
     }
   };
+  // const handle = () => {
+  //   if (handle)
+  // }
   return (
     <div className={container}>
       <div className="m-0 flex items-center justify-between p-0 ">

@@ -1,5 +1,5 @@
-import Close from '../../../public/images/Close.svg';
-import userImg from '../../../public/images/userImgNull.svg';
+import Close from '@/assets/images/Close.svg';
+import userImg from '@/assets/images/userImgNull.svg';
 
 interface MemberProfileProps {
   // wrong?: () => void;

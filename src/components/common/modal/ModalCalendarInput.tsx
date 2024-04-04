@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import calender from '../../../../public/assets/calendar-dark.svg';
 import ModalCalendar from './ModalCalendar';
 import ModalInput from './ModalInput';
 import ModalLabel from './ModalLabel';
+import calender from '@/assets/assets/calendar-dark.svg';
 
 interface ModalCalendarInputProps {
   startHookform: any;

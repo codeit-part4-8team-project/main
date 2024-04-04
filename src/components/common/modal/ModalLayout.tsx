@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
-import deleteTrash from '../../../../public/assets/Trash.svg';
-import calendar from '../../../../public/assets/calendar-dark.svg';
-import close from '../../../../public/assets/close.svg';
-import people from '../../../../public/assets/people-fill.svg';
+import deleteTrash from '@/assets/assets/Trash.svg';
+import calendar from '@/assets/assets/calendar-dark.svg';
+import close from '@/assets/assets/close.svg';
+import people from '@/assets/assets/people-fill.svg';
 
 interface ModalProps {
   children?: ReactNode;

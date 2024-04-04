@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import github from '../../../public/assets/Github.svg';
-import arrowDown from '../../../public/assets/arrow-down-dark.png';
-import discord from '../../../public/assets/discord.svg';
-import figma from '../../../public/assets/figma.svg';
 import TextButton from '@/components/common/TextButton';
 import ModalCalendarInput from '@/components/common/modal/ModalCalendarInput';
 import ModalColorToggle from '@/components/common/modal/ModalColorToggle';
@@ -14,6 +10,10 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
 import { useUserContext } from '@/contexts/UserProvider';
 import { defaultInstance, useAxios } from '@/hooks/useAxios';
+import github from '@/assets/assets/Github.svg';
+import arrowDown from '@/assets/assets/arrow-down-dark.png';
+import discord from '@/assets/assets/discord.svg';
+import figma from '@/assets/assets/figma.svg';
 
 interface Inputs {
   name: string;
@@ -52,6 +52,8 @@ export default function GroupModal({
 
   const colorToggleRef = useRef<HTMLButtonElement | null>(null);
   const [colorToggle, setColorToggle] = useState<boolean>(false);
+  const [selectedStartDate, setSelectedStartDate] = useState<string>('');
+  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
   const [membersList, setMembersList] = useState<dataType[]>([]);
   const [memberCheck, setMemberCheck] = useState(false);
 
@@ -64,8 +66,8 @@ export default function GroupModal({
       name: name,
       description: description,
       members: membersList.map((member) => member.username),
-      startDate: startDate,
-      endDate: endDate,
+      startDate: selectedStartDate,
+      endDate: selectedEndDate,
       githubLink: githubLink,
       discordLink: discordLink,
       figmaLink: figmaLink,
@@ -130,9 +132,6 @@ export default function GroupModal({
     };
   }, [colorToggle]);
 
-  //소은
-  const [selectedStartDate, setSelectedStartDate] = useState<string>('');
-  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
   const handleStartDateClick = (date: string) => {
     setSelectedStartDate(date);
     if (onModalStartDateClick) {

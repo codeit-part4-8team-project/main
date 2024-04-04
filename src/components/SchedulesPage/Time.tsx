@@ -47,7 +47,7 @@ function NavItem({ icon, children }: NavItemProps) {
             </div>
           </div>
         )}
-        <button className="icon-button" onClick={toggleOpen}>
+        <button className="icon-button" onClick={toggleOpen} type="button">
           {icon}
         </button>
       </div>
@@ -76,7 +76,7 @@ export function Time({ onTimeClick }: TimeProp) {
     if (onTimeClick) {
       onTimeClick(formattedTime);
     }
-    //console.log('Selected Time:', formattedTime);
+    console.log('Selected Time:', formattedTime);
     // 여기서 선택된 시간 값을 다른 곳으로 전달하거나 사용할 수 있습니다.
   };
 
@@ -134,6 +134,7 @@ export function Time({ onTimeClick }: TimeProp) {
         buttonSize="md"
         color="black"
         className="mt-[4.9rem] h-[3.2rem] w-[20.7rem] text-body5-bold text-gray100"
+        type="button"
         onClick={handleComplete}
       >
         완료

@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import github from '../../../public/assets/Github.svg';
-import arrowDown from '../../../public/assets/arrow-down-dark.png';
-import discord from '../../../public/assets/discord.svg';
-import figma from '../../../public/assets/figma.svg';
 import TextButton from '@/components/common/TextButton';
 import ModalCalendarInput from '@/components/common/modal/ModalCalendarInput';
 import ModalColorToggle from '@/components/common/modal/ModalColorToggle';
@@ -15,6 +11,10 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 import { Member } from '@/types/teamTypes';
+import github from '@/assets/assets/Github.svg';
+import arrowDown from '@/assets/assets/arrow-down-dark.png';
+import discord from '@/assets/assets/discord.svg';
+import figma from '@/assets/assets/figma.svg';
 
 interface Inputs {
   name: string;
