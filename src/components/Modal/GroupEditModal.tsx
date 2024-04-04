@@ -41,10 +41,16 @@ interface DefaultValue {
 
 interface GroupEditModalProps {
   closeClick: () => void;
+  onModalStartDateClick?: (date: string) => void;
+  onModalEndDateClick?: (date: string) => void;
   // teamId?: number;
   // 합칠때 여기도 teamId 프롭에 넣기 에러가 뜸
 }
-export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
+export default function GroupEditModal({
+  closeClick,
+  onModalStartDateClick,
+  onModalEndDateClick,
+}: GroupEditModalProps) {
   // 얘네 지우기 합치고나면
   const { teamId } = useParams();
   if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
@@ -145,7 +151,22 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
   useEffect(() => {
     reset();
   }, [defaultValue]);
+  //소은
+  const [selectedStartDate, setSelectedStartDate] = useState<string>('');
+  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
+  const handleStartDateClick = (date: string) => {
+    setSelectedStartDate(date);
+    if (onModalStartDateClick) {
+      onModalStartDateClick(date);
+    }
+  };
+  const handleEndDateClick = (date: string) => {
+    setSelectedEndDate(date);
 
+    if (onModalEndDateClick) {
+      onModalEndDateClick(date);
+    }
+  };
   return (
     <>
       <ModalLayout title="그룹 편집" closeClick={closeClick}>
@@ -245,6 +266,10 @@ export default function GroupEditModal({ closeClick }: GroupEditModalProps) {
               endHookform={register('endDate')}
               endName="endDate"
               endDefaultValue={defalutEndDate}
+              onModalStartDateClick={handleStartDateClick}
+              startValue={selectedStartDate}
+              endValue={selectedEndDate}
+              onModalEndDateClick={handleEndDateClick}
             />
             <ModalLabel htmlFor="link" label="외부 연결 링크" className={`${formTextSize}`} />
             <div className="mb-[0.8rem] mt-[1.6rem] flex gap-[1.2rem]">

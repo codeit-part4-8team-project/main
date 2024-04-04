@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import calender from '../../../../public/assets/calendar-dark.svg';
+import calender from '../../../../assets/calendar-dark.svg';
 import ModalCalendar from './ModalCalendar';
 import ModalInput from './ModalInput';
 import ModalLabel from './ModalLabel';
@@ -11,6 +11,10 @@ interface ModalCalendarInputProps {
   endHookform: any;
   endName: string;
   endDefaultValue?: string;
+  startValue?: string;
+  endValue?: string;
+  onModalStartDateClick?: (date: string) => void;
+  onModalEndDateClick?: (date: string) => void;
 }
 
 export default function ModalCalendarInput({
@@ -20,6 +24,10 @@ export default function ModalCalendarInput({
   endHookform,
   endName,
   endDefaultValue,
+  startValue,
+  endValue,
+  onModalStartDateClick,
+  onModalEndDateClick,
 }: ModalCalendarInputProps) {
   const startDateToggleRef = useRef<HTMLDivElement | null>(null);
   const endDateToggleRef = useRef<HTMLDivElement | null>(null);
@@ -75,6 +83,8 @@ export default function ModalCalendarInput({
           id="date"
           className={`${formTextSize} ${borderStyle}`}
           placeholder="YYYY-MM-DD"
+          onModalDateClick={onModalStartDateClick}
+          value={startValue}
         >
           <button
             className="absolute bottom-0 right-[1.8rem] top-0"
@@ -88,7 +98,7 @@ export default function ModalCalendarInput({
               className="absolute top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem]"
               ref={startDateToggleRef}
             >
-              <ModalCalendar />
+              <ModalCalendar onModalDateClick={onModalStartDateClick} />
             </div>
           )}
         </ModalInput>
@@ -102,6 +112,8 @@ export default function ModalCalendarInput({
           id="date"
           className={`${formTextSize} ${borderStyle}`}
           placeholder="YYYY-MM-DD"
+          onModalDateClick={onModalEndDateClick}
+          value={endValue}
         >
           <button
             className="absolute bottom-0 right-[1.8rem] top-0"
@@ -115,7 +127,7 @@ export default function ModalCalendarInput({
               className="absolute top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem]"
               ref={endDateToggleRef}
             >
-              <ModalCalendar />
+              <ModalCalendar onModalDateClick={onModalEndDateClick} />
             </div>
           )}
         </ModalInput>

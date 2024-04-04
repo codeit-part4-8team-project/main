@@ -9,6 +9,10 @@ interface ModalCalendarInputProps {
   startName: string;
   endHookform: any;
   endName: string;
+  startValue?: string; // 시작 날짜 값
+  endValue?: string; // 종료 날짜 값
+  onModalStartDateClick?: (date: string) => void;
+  onModalEndDateClick?: (date: string) => void;
 }
 
 export default function ModalScheduleCalendarInput({
@@ -16,6 +20,10 @@ export default function ModalScheduleCalendarInput({
   startName,
   endHookform,
   endName,
+  startValue,
+  endValue,
+  onModalStartDateClick,
+  onModalEndDateClick,
 }: ModalCalendarInputProps) {
   const startDateToggleRef = useRef<HTMLDivElement | null>(null);
   const endDateToggleRef = useRef<HTMLDivElement | null>(null);
@@ -59,6 +67,7 @@ export default function ModalScheduleCalendarInput({
 
   const formTextSize = 'text-[1.4rem] font-medium';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-[#E5E5E5]';
+
   return (
     <>
       <div className=" flex flex-col gap-[0.8rem]">
@@ -70,6 +79,8 @@ export default function ModalScheduleCalendarInput({
           id={startName}
           className={`${formTextSize} ${borderStyle}`}
           placeholder="날짜를 설정해 주세요."
+          onModalDateClick={onModalStartDateClick}
+          value={startValue}
         >
           <button
             className="absolute bottom-0 right-[1.8rem] top-0"
@@ -83,7 +94,7 @@ export default function ModalScheduleCalendarInput({
               className=" absolute right-0 top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem] shadow-[0_0_10px_0_rgba(17,17,17,0.05)]"
               ref={startDateToggleRef}
             >
-              <ModalCalendar />
+              <ModalCalendar onModalDateClick={onModalStartDateClick} />
             </div>
           )}
         </ModalInput>
@@ -97,6 +108,8 @@ export default function ModalScheduleCalendarInput({
           id={endName}
           className={`${formTextSize} ${borderStyle}`}
           placeholder="날짜를 설정해 주세요."
+          onModalDateClick={onModalEndDateClick}
+          value={endValue}
         >
           <button
             className="absolute bottom-0 right-[1.8rem] top-0"
@@ -110,7 +123,7 @@ export default function ModalScheduleCalendarInput({
               className=" absolute right-0 top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem] shadow-[0_0_10px_0_rgba(17,17,17,0.05)]"
               ref={endDateToggleRef}
             >
-              <ModalCalendar />
+              <ModalCalendar onModalDateClick={onModalEndDateClick} />
             </div>
           )}
         </ModalInput>

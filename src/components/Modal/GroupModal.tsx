@@ -38,9 +38,15 @@ interface dataType {
 
 interface GroupModalProps {
   closeClick?: () => void;
+  onModalStartDateClick?: (date: string) => void;
+  onModalEndDateClick?: (date: string) => void;
 }
 
-export default function GroupModal({ closeClick }: GroupModalProps) {
+export default function GroupModal({
+  closeClick,
+  onModalStartDateClick,
+  onModalEndDateClick,
+}: GroupModalProps) {
   const { fetchData: groupFetch } = useAxios({});
   const { user } = useUserContext();
 
@@ -124,6 +130,22 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
     };
   }, [colorToggle]);
 
+  //소은
+  const [selectedStartDate, setSelectedStartDate] = useState<string>('');
+  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
+  const handleStartDateClick = (date: string) => {
+    setSelectedStartDate(date);
+    if (onModalStartDateClick) {
+      onModalStartDateClick(date);
+    }
+  };
+  const handleEndDateClick = (date: string) => {
+    setSelectedEndDate(date);
+
+    if (onModalEndDateClick) {
+      onModalEndDateClick(date);
+    }
+  };
   return (
     <ModalLayout closeClick={closeClick} title="그룹 생성">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -211,6 +233,10 @@ export default function GroupModal({ closeClick }: GroupModalProps) {
             startName="startDate"
             endHookform={register('endDate')}
             endName="endDate"
+            onModalStartDateClick={handleStartDateClick}
+            startValue={selectedStartDate}
+            endValue={selectedEndDate}
+            onModalEndDateClick={handleEndDateClick}
           />
           <ModalLabel htmlFor="link" label="외부 연결 링크" className={`${formTextSize}`} />
           <div className="mb-[0.8rem] mt-[1.6rem] flex gap-[1.2rem]">

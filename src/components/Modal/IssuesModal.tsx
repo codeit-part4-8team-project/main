@@ -16,7 +16,9 @@ import { defaultInstance, useAxios } from '@/hooks/useAxios';
 interface IssuesModalProps {
   closeClick: () => void;
   teamId?: number;
+
   team?: any;
+  onModalDateClick?: (date: string) => void;
 }
 
 interface Inputs {
@@ -43,7 +45,13 @@ interface groupDataType {
   color: string;
 }
 // team 나중에 프롭으로 받아야함
-export default function IssuesModal({ closeClick, teamId, team }: IssuesModalProps) {
+
+export default function IssuesModal({
+  closeClick,
+  teamId,
+  onModalDateClick,
+  team,
+}: IssuesModalProps) {
   const { fetchData } = useAxios({}); // POST axios
   const { user } = useUserContext();
   const dueDateToggleRef = useRef<HTMLDivElement | null>(null);
@@ -124,6 +132,15 @@ export default function IssuesModal({ closeClick, teamId, team }: IssuesModalPro
       document.removeEventListener('mousedown', handleDueDateClickOutside);
     };
   }, [dueDateToggle]);
+  //소은
+  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
+  const handleDateClick = (date: string) => {
+    setSelectedEndDate(date);
+
+    if (onModalDateClick) {
+      onModalDateClick(selectedEndDate);
+    }
+  };
 
   return (
     <ModalLayout title="할 일" closeClick={closeClick}>
@@ -179,6 +196,8 @@ export default function IssuesModal({ closeClick, teamId, team }: IssuesModalPro
               id="dueDate"
               className={`${formTextSize} ${borderStyle}`}
               placeholder="날짜를 설정해 주세요."
+              value={selectedEndDate}
+              onModalDateClick={handleDateClick}
             >
               <button
                 className="absolute bottom-0 right-[1.8rem] top-0"
@@ -192,7 +211,7 @@ export default function IssuesModal({ closeClick, teamId, team }: IssuesModalPro
                   className=" absolute right-0 top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem] shadow-[0_0_10px_0_rgba(17,17,17,0.05)]"
                   ref={dueDateToggleRef}
                 >
-                  <ModalCalendar />
+                  <ModalCalendar onModalDateClick={handleDateClick} />
                 </div>
               )}
             </ModalInput>

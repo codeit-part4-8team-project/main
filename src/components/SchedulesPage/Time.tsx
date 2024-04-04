@@ -56,8 +56,10 @@ function NavItem({ icon, children }: NavItemProps) {
 }
 
 export default NavItem;
-
-export function Time() {
+interface TimeProp {
+  onTimeClick?: (time: string) => void;
+}
+export function Time({ onTimeClick }: TimeProp) {
   const times = Array.from({ length: 12 }, (_, index) => index + 1);
   const minutes: number[] = Array.from({ length: 60 }, (_, index) => index);
 
@@ -71,7 +73,10 @@ export function Time() {
       hour += 12;
     }
     const formattedTime = `${hour}:${formatTime(selectedMinute)} :00`;
-    console.log('Selected Time:', formattedTime);
+    if (onTimeClick) {
+      onTimeClick(formattedTime);
+    }
+    //console.log('Selected Time:', formattedTime);
     // 여기서 선택된 시간 값을 다른 곳으로 전달하거나 사용할 수 있습니다.
   };
 

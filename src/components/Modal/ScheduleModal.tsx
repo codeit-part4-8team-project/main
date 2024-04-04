@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import TextButton from '@/components/common/TextButton';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
@@ -9,6 +10,9 @@ import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 
 interface ScheduleModalProps {
+  onModalStartDateClick?: (date: string) => void;
+  onModalEndDateClick?: (date: string) => void;
+  onTimeClick?: (time: string) => void;
   closeClick?: () => void;
   user?: boolean;
   team?: boolean;
@@ -22,7 +26,14 @@ type Inputs = {
 };
 // 여기는 user인지 team인지 구분이 필요함
 // 합칠때 teamId 에러가 계속 떠서 일단 기본값 넣어줌
-function ScheduleModal({ closeClick, team = false, user = false, teamId }: ScheduleModalProps) {
+function ScheduleModal({
+  closeClick,
+  team = false,
+  user = false,
+  teamId,
+  onModalStartDateClick,
+  onModalEndDateClick,
+}: ScheduleModalProps) {
   const { fetchData: userFetchData } = useAxios({});
   const { fetchData: teamFetchData } = useAxios({});
   const { user: userInformation } = useUserContext();
@@ -63,6 +74,22 @@ function ScheduleModal({ closeClick, team = false, user = false, teamId }: Sched
         newMethod: 'POST',
         newData: data,
       });
+    }
+  };
+  const [selectedStartDate, setSelectedStartDate] = useState<string>('');
+  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
+
+  const handleStartDateClick = (date: string) => {
+    setSelectedStartDate(date);
+    if (onModalStartDateClick) {
+      onModalStartDateClick(date);
+    }
+  };
+  const handleEndDateClick = (date: string) => {
+    setSelectedEndDate(date);
+
+    if (onModalEndDateClick) {
+      onModalEndDateClick(date);
     }
   };
 
@@ -128,6 +155,10 @@ function ScheduleModal({ closeClick, team = false, user = false, teamId }: Sched
             startName="startDateTime"
             endHookform={register('endDateTime')}
             endName="endDateTime"
+            onModalStartDateClick={handleStartDateClick}
+            startValue={selectedStartDate}
+            endValue={selectedEndDate}
+            onModalEndDateClick={handleEndDateClick}
           />
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">
