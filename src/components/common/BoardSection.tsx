@@ -5,6 +5,7 @@ import ControlDate from '../SchedulesPage/ControlDate';
 import CalendarIcon from '@/assets/CalendarIcon';
 import FolderIcon from '@/assets/FolderIcon';
 import MegaphoneIcon from '@/assets/MegaphoneIcon';
+import PersonIcon from '@/assets/PersonIcon';
 import ViewListIcon from '@/assets/ViewListIcon';
 
 interface BoardSection {
@@ -21,8 +22,7 @@ const ICON = {
   Notice: <MegaphoneIcon fill="#292929" active />,
   'Bulletin board': <FolderIcon fill="#292929" active />,
   Members: <FolderIcon fill="#292929" active />,
-  콘텐츠: <FolderIcon fill="#292929" active />,
-  Mypage: <CalendarIcon fill="#292929" active />,
+  Mypage: <PersonIcon fill="#292929" active />,
 };
 
 export default function BoardSection({ title, content, mode, children }: BoardSection) {

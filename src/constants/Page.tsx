@@ -6,6 +6,7 @@ import CalendarIcon from '@/assets/CalendarIcon';
 import FolderIcon from '@/assets/FolderIcon';
 import MegaphoneIcon from '@/assets/MegaphoneIcon';
 import PeopleIcon from '@/assets/PeopleIcon';
+import PersonIcon from '@/assets/PersonIcon';
 import ViewListIcon from '@/assets/ViewListIcon';
 
 export type UserPageType = 'main' | 'schedule' | 'issue' | 'post' | 'mypage';
@@ -70,7 +71,7 @@ export const PAGES: Pages = {
           <UserMyPage />
         </PageProvider>
       ),
-      icon: <CalendarIcon /> /* TODO 디자인 나오는대로 아이콘 변경 필요 */,
+      icon: <PersonIcon />,
     },
   },
   team: {
