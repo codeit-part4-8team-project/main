@@ -59,7 +59,7 @@ export default function GroupModal({
 
   const { register, handleSubmit, watch, setValue, getValues } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (
-    { name, description, startDate, endDate, githubLink, discordLink, figmaLink, color },
+    { name, description, githubLink, discordLink, figmaLink, color },
     event,
   ) => {
     const createTeam = {

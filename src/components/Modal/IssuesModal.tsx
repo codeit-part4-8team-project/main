@@ -63,7 +63,7 @@ export default function IssuesModal({
   const [selectedEndDate, setSelectedEndDate] = useState<string>('');
 
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = ({ title, content, dueDate }, event) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content }, event) => {
     const createIssue = {
       title: title,
       content: content,

@@ -10,6 +10,7 @@ import { useAxios } from '@/hooks/useAxios';
 import { Team } from '@/types/teamTypes';
 import arrowDown from '@/assets/assets/arrow-down-dark.png';
 
+
 interface Inputs {
   title: string;
   content: string;
