@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import BoardSection from '@/components/common/BoardSection';
 import Filter from '@/components/common/Filter';
 import Pagenation from '@/components/common/pagenation/Pagenation';
-import PostList from '@/components/Post/PostList';
+import PostList from '@/components/Post/UserPostList';
 import { usePagenation } from '@/contexts/PageProvider';
 import { useAxios } from '@/hooks/useAxios';
 import { Post } from '@/types/postTypes';

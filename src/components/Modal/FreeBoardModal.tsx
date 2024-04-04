@@ -8,6 +8,7 @@ import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
+import { Team } from '@/types/teamTypes';
 
 interface Inputs {
   title: string;
@@ -17,7 +18,7 @@ interface Inputs {
 interface FreeBoardModalProps {
   closeClick: () => void;
   teamId?: string;
-  team: any;
+  team?: Team;
 }
 
 interface groupDataType {
@@ -90,7 +91,7 @@ export default function FreeBoardModal({ closeClick, teamId, team }: FreeBoardMo
           <div
             className={`${formTextSize} ${borderStyle} relative w-full px-[1.8rem] py-[1.2rem] `}
           >
-            <p>{team.name}</p>
+            <p>{team?.name}</p>
           </div>
         ) : (
           <div
