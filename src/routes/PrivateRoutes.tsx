@@ -13,7 +13,6 @@ export default function PrivateRoutes() {
     },
     !user,
   );
-
   useEffect(() => {
     if (data) {
       setUser(data);
@@ -23,11 +22,13 @@ export default function PrivateRoutes() {
     }
   }, [data, loading, error, setUser]);
 
+  console.log(user, data, loading);
   if (loading) {
-    return <Outlet />;
+    //return <Outlet />;
+    return <div></div>;
     //로딩 중 페이지를 만들기 or 그냥 Outlet 반환해서 빈 ui 라도 보게.
   }
 
   //여길 data 가 아니라 user state로 잡으면 loading 풀렸을 때 user는 반영이 안된 상태
-  return data ? <Outlet /> : <Navigate replace to={'/signin'} />;
+  return data || user ? <Outlet /> : <Navigate replace to={'/signin'} />;
 }
