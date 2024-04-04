@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import ProfileStack from '@/components/common/ProfileStack';
 import TextButton from '@/components/common/TextButton';
-import InvitationGroupModal from '@/components/Modal/InvitationGroupModal';
+import GroupMemberInviteModal from '@/components/Modal/groupMemberInviteModal';
 import TeamTab from '@/components/TeamsPage/TeamTab';
 import { useModal } from '@/contexts/ModalProvider';
 import { useTeam } from '@/contexts/TeamProvider';
@@ -23,7 +23,7 @@ export default function TeamBar() {
   const openModal = useModal();
 
   const handleModalClick = () => {
-    openModal(({ close }) => <InvitationGroupModal teamId={Number(teamId)} closeClick={close} />);
+    openModal(({ close }) => <GroupMemberInviteModal teamId={Number(teamId)} closeClick={close} />);
   };
 
   return (

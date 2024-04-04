@@ -8,7 +8,7 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
 import { defaultInstance, useAxios } from '@/hooks/useAxios';
 
-interface groupMemberInviteModalProps {
+interface GroupMemberInviteModalProps {
   closeClick: () => void;
   teamId: number;
 }
@@ -26,16 +26,16 @@ interface dataType {
   username: string;
 }
 
-export default function groupMemberInviteModal({
+export default function GroupMemberInviteModal({
   closeClick,
   teamId,
-}: groupMemberInviteModalProps) {
+}: GroupMemberInviteModalProps) {
   const { register, handleSubmit, getValues } = useForm<Inputs>();
   const { fetchData: groupMemberCreate } = useAxios({});
 
   const [membersList, setMembersList] = useState<dataType[]>([]);
   const [memberCheck, setMemberCheck] = useState(false);
-  const onSubmit: SubmitHandler<Inputs> = ({}) => {
+  const onSubmit: SubmitHandler<Inputs> = () => {
     const createMember = {
       members: membersList.map((member) => member.username),
     };
