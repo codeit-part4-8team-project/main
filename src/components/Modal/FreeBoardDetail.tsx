@@ -45,13 +45,12 @@ export default function FreeBoardDetail({
             className="h-[3.6rem] w-[3.6rem] rounded-[999rem]"
           />
           <div>
-            <p className="text-body4-regular">{author?.username}</p>
+            <p className="text-body4-regular">{author?.name}</p>
             <p className="text-body4-regular text-gray50">{cutDateString}</p>
           </div>
         </div>
-        <PostLike postId={postId} likeCount={likeCount} liked={liked} />
         <p className="text-body4-regular">{content}</p>
-        {/* <p className="text-gray50">{likeCount}</p> */}
+        <PostLike postId={postId} likeCount={likeCount} liked={liked} />
       </div>
     </ModalLayout>
   );

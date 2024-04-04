@@ -1,4 +1,4 @@
-import PlusImg from '../../../public/images/Plus.svg';
+import PlusImg from '@/assets/images/Plus.svg';
 
 interface ButtonProps {
   text: string;
@@ -12,7 +12,7 @@ function Button({ text, submit }: ButtonProps) {
         className={`${text === '게시' ? `w-[7.3rem] ${buttonStyles}` : `w-[10rem] ${buttonStyles}`}`}
         onClick={submit}
       >
-        <div className="flex items-center gap-2 text-lg">
+        <div className="text-lg flex items-center gap-2">
           <img src={PlusImg} alt="PlusImg" />
           {text}
         </div>

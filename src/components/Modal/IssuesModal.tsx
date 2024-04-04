@@ -63,7 +63,7 @@ export default function IssuesModal({
   const [selectedEndDate, setSelectedEndDate] = useState<string>('');
 
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = ({ title, content, dueDate }, event) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content }, event) => {
     const createIssue = {
       title: title,
       content: content,
@@ -153,7 +153,7 @@ export default function IssuesModal({
               alt="profile"
               className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
             />
-            <p className=" text-[1.4rem]">{user?.username}</p>
+            <p className=" text-[1.4rem]">{user?.name}</p>
           </div>
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="title" label="이슈*" className={`${formTextSize}`} />

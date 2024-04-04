@@ -77,7 +77,7 @@ export default function AnnouncementEditModal({ closeClick, teamId }: Announceme
             alt="profile"
             className="h-[2.4rem] w-[2.4rem] rounded-[99rem]"
           />
-          <p className=" text-[1.4rem]">{author?.username}</p>
+          <p className=" text-[1.4rem]">{author?.name}</p>
         </div>
         <div>
           <ModalLabel htmlFor="title" label="제목" className={`${formTextSize}`} />

@@ -72,7 +72,7 @@ export default function NotMeIssuesModal({
             alt="profile"
             className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
           />
-          <p className=" text-[1.4rem]">{author?.username}</p>
+          <p className=" text-[1.4rem]">{author?.name}</p>
         </div>
 
         <p className={`${TextSize} mb-[0.8rem]`}>이슈</p>
