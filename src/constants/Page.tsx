@@ -1,15 +1,5 @@
-import { ReactNode } from 'react';
-import SchedulesPage from '@/pages/SchedulesPage';
-import UserIssuesPage from '@/pages/UserIssuesPage';
-import UserMainPage from '@/pages/UserMainPage';
-import UserMyPage from '@/pages/UserMyPage';
-import UserPostsPage from '@/pages/UserPostsPage';
-import TeamAnnouncementsPage from '@/pages/team/TeamAnnouncementsPage';
-import TeamCalendar from '@/pages/team/TeamCalendar';
-import TeamIssuesPage from '@/pages/team/TeamIssuesPage';
-import TeamMainPage from '@/pages/team/TeamMainPage';
-import TeamMembers from '@/pages/team/TeamMembers';
-import TeamPostsPage from '@/pages/team/TeamPostsPage';
+/* eslint-disable react-refresh/only-export-components */
+import { ReactNode, lazy } from 'react';
 import { PageProvider } from '@/contexts/PageProvider';
 import BoxIcon from '@/assets/BoxIcon';
 import CalendarIcon from '@/assets/CalendarIcon';
@@ -20,7 +10,6 @@ import ViewListIcon from '@/assets/ViewListIcon';
 
 export type UserPageType = 'main' | 'schedule' | 'issue' | 'post' | 'mypage';
 export type TeamPageType = 'main' | 'schedule' | 'issue' | 'post' | 'announcement' | 'member';
-// type PageType = UserPageType | TeamPageType; /* 필요할 때 주석 해제 */
 
 export interface Page {
   title: string;
@@ -35,6 +24,18 @@ export interface Pages {
   user: PageByType<UserPageType>;
   team: PageByType<TeamPageType>;
 }
+
+const SchedulesPage = lazy(() => import('@/pages/SchedulesPage'));
+const UserIssuesPage = lazy(() => import('@/pages/UserIssuesPage'));
+const UserMainPage = lazy(() => import('@/pages/UserMainPage'));
+const UserMyPage = lazy(() => import('@/pages/UserMyPage'));
+const UserPostsPage = lazy(() => import('@/pages/UserPostsPage'));
+const TeamAnnouncementsPage = lazy(() => import('@/pages/team/TeamAnnouncementsPage'));
+const TeamCalendar = lazy(() => import('@/pages/team/TeamCalendar'));
+const TeamIssuesPage = lazy(() => import('@/pages/team/TeamIssuesPage'));
+const TeamMainPage = lazy(() => import('@/pages/team/TeamMainPage'));
+const TeamMembers = lazy(() => import('@/pages/team/TeamMembers'));
+const TeamPostsPage = lazy(() => import('@/pages/team/TeamPostsPage'));
 
 export const PAGES: Pages = {
   user: {
