@@ -20,11 +20,13 @@ interface UserEditForm {
 function EnterUserStepContent() {
   const { user, setUser } = useUserContext();
   const { setStep, setFormValidity } = useStepContext();
+  const [isUniqueUsername, setIsUniqueUsername] = useState<boolean>(true);
 
   const {
     data: unavailableUsername,
     error: checkUsernameError,
     fetchData: fetchCheckUsername,
+    loading,
   } = useAxios<boolean>({
     path: `user/checkUsername/${user?.username}`,
     method: 'GET',
@@ -37,11 +39,12 @@ function EnterUserStepContent() {
     clearErrors,
     getValues,
     watch,
-    formState: { isValid, errors },
+    formState: { isValid, errors, dirtyFields },
     trigger,
   } = useForm<UserEditForm>({
     mode: 'all',
     defaultValues: {
+      name: user?.name || '',
       username: user?.username || '',
     },
   });
@@ -103,18 +106,26 @@ function EnterUserStepContent() {
   useEffect(() => {
     if (unavailableUsername === true) {
       setError('username', { type: 'duplicated', message: '이미 사용중인 닉네임입니다.' });
+      setIsUniqueUsername(() => false);
+      trigger('username', { shouldFocus: true });
     } else if (unavailableUsername === false) {
       clearErrors('username');
-      trigger('username');
+      setIsUniqueUsername(() => true);
+      trigger('username', { shouldFocus: true });
     }
+    trigger();
     if (checkUsernameError) {
       alert(checkUsernameError.message || '닉네임 중복확인에 실패하였습니다');
     }
-  }, [unavailableUsername, checkUsernameError]);
+  }, [unavailableUsername, checkUsernameError, loading]);
 
   useEffect(() => {
     setFormValidity(isValid);
   }, [isValid, setFormValidity]);
+
+  useEffect(() => {
+    trigger(['name', 'username']);
+  }, []);
 
   return (
     <div className="mb-12 mt-[3.4rem] rounded-[0.6rem] border-[0.1rem] border-solid border-gray30 pb-[5.2rem] pt-12">
@@ -175,6 +186,9 @@ function EnterUserStepContent() {
           <div className="flex gap-[1.2rem]">
             <Input
               register={register('username', {
+                onChange: () => {
+                  setIsUniqueUsername(false);
+                },
                 required: true,
                 minLength: {
                   value: 5,
@@ -190,18 +204,18 @@ function EnterUserStepContent() {
                 },
                 validate: {
                   checkAvailable: () =>
-                    unavailableUsername === false || '닉네임 중복을 확인해주세요',
+                    !dirtyFields.username || isUniqueUsername || '닉네임 중복을 확인해주세요',
                 },
               })}
               id="username"
-              label="닉네임*"
+              label="유저네임*"
               type="text"
               placeholder={user?.username}
             >
               <InputValidateMessage
-                isError={errors.username?.message}
+                isError={!dirtyFields.username && errors.username?.message}
                 errorMessage={errors.username?.message}
-                isValid={unavailableUsername || false}
+                isValid={isUniqueUsername || !dirtyFields.username}
                 validMessage="사용 가능한 닉네임입니다."
               />
             </Input>
@@ -225,6 +239,7 @@ function EnterUserStepContent() {
             label="소개"
             type="text"
             placeholder="간단한 자기소개를 입력해주세요."
+            autoComplete="off"
           >
             <InputValidateMessage
               isError={errors.bio?.message}
