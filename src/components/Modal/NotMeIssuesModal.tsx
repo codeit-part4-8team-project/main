@@ -7,6 +7,7 @@ import { Author } from '@/types/commonTypes';
 interface NotMeLssuesModalProps {
   closeClick: () => void;
   issueId: number;
+  deletable?: boolean;
 }
 
 interface UserType {
@@ -25,13 +26,30 @@ interface DefaultValueType {
   author?: Author;
 }
 // 합칠때 여기도 지우기 에러
-export default function NotMeIssuesModal({ closeClick, issueId }: NotMeLssuesModalProps) {
+export default function NotMeIssuesModal({
+  closeClick,
+  issueId,
+  deletable,
+}: NotMeLssuesModalProps) {
   const { data: defaultValue } = useAxios(
     {
       path: `issue/${issueId}`,
     },
     true,
   );
+  const { fetchData: deleteData } = useAxios({});
+
+  const handleDeleteClick = () => {
+    if (deletable) {
+      const confirmDelete = window.confirm('이 이슈를 삭제하시겠습니까?');
+      if (confirmDelete) {
+        deleteData({
+          newPath: `issue/${issueId}`,
+          newMethod: 'DELETE',
+        });
+      }
+    }
+  };
 
   const { title, author, content, assignedMembers }: DefaultValueType = defaultValue || {};
   const TextSize = 'text-body3-medium';
@@ -40,7 +58,12 @@ export default function NotMeIssuesModal({ closeClick, issueId }: NotMeLssuesMod
     'rounded-[0.6rem] border-[0.1rem] border-gray30  px-[1.8rem] py-[1.2rem] w-full';
 
   return (
-    <ModalLayout closeClick={closeClick} title="할 일">
+    <ModalLayout
+      closeClick={closeClick}
+      title="할 일"
+      detail={deletable}
+      deleteOnClick={handleDeleteClick}
+    >
       <ModalFormBorder className="mt-16 h-full w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 p-12">
         <p className={`${TextSize} mb-[1.6rem]`}>게시자 (나)</p>
         <div className="mb-16 flex items-center gap-4">

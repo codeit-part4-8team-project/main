@@ -54,6 +54,8 @@ export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesMod
     },
     true,
   );
+  const { fetchData: deleteData } = useAxios({});
+
   const {
     content: defaultContent,
     title: defaultTitle,
@@ -104,11 +106,26 @@ export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesMod
     });
   };
 
+  const handleDeleteClick = () => {
+    const confirmDelete = window.confirm('이 이슈를 삭제하시겠습니까?');
+    if (confirmDelete) {
+      deleteData({
+        newPath: `issue/${issueId}`,
+        newMethod: 'DELETE',
+      });
+    }
+  };
+
   useEffect(() => {
     reset();
   }, [defaultValue]);
   return (
-    <ModalLayout title="할 일" closeClick={closeClick}>
+    <ModalLayout
+      title="할 일"
+      closeClick={closeClick}
+      detail={true}
+      deleteOnClick={handleDeleteClick}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalFormBorder className="mt-16 h-[64rem] w-[41.7rem] rounded-[0.6rem] border-[0.1rem] border-gray30 px-12 pt-12">
           <p className={`${formTextSize} mb-[1.6rem]`}>게시자 (나)</p>
