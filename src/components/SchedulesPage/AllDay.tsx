@@ -1,6 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
-import ScheduleModal from '../Modal/ScheduleModal';
 import AddScheudleModal from './AddScheduleModal';
 import { Schedule } from '@/contexts/CalenarProvider';
 import { calendarContext } from '@/contexts/CalenarProvider';
@@ -11,10 +10,9 @@ interface AllDayProp {
   mode: 'month' | 'modal';
   calendarType?: '나' | '팀';
   onModalDateClick?: (date: string) => void;
-  teamId?: string;
 }
 
-function AllDay({ day, mode, calendarType, onModalDateClick, teamId }: AllDayProp) {
+function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
   const { nowDate, filteredSchedules } = useContext(calendarContext);
   const [showAllSchedules, setShowAllSchedules] = useState(false);
 
