@@ -16,16 +16,16 @@ import { defaultInstance, useAxios } from '@/hooks/useAxios';
 interface IssuesModalProps {
   closeClick: () => void;
   teamId?: number;
-  team?: string;
+  team?: any;
 }
 
-type Inputs = {
+interface Inputs {
   title: string;
   content: string;
   dueDate: string;
   status: string;
   assignedMembersUsernames: string[];
-};
+}
 
 interface memberDataType {
   name: string;
@@ -43,7 +43,7 @@ interface groupDataType {
   color: string;
 }
 // team 나중에 프롭으로 받아야함
-export default function IssuesModal({ closeClick, teamId }: IssuesModalProps) {
+export default function IssuesModal({ closeClick, teamId, team }: IssuesModalProps) {
   const { fetchData } = useAxios({}); // POST axios
   const { user } = useUserContext();
   const dueDateToggleRef = useRef<HTMLDivElement | null>(null);
@@ -54,15 +54,16 @@ export default function IssuesModal({ closeClick, teamId }: IssuesModalProps) {
   const [groupClickData, setGroupClickData] = useState<groupDataType | null>(null);
 
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content, dueDate }, event) => {
     const createIssue = {
-      title: data.title,
-      content: data.content,
-      dueDate: data.dueDate,
+      title: title,
+      content: content,
+      dueDate: dueDate,
       status: 'TODO',
       assignedMembersUsernames: membersList.map((member) => member.username),
     };
     handlePostIssues(createIssue);
+    event?.target.closest('dialog').close();
   };
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
@@ -201,9 +202,7 @@ export default function IssuesModal({ closeClick, teamId }: IssuesModalProps) {
             <div
               className={`${formTextSize} ${borderStyle} relative w-full px-[1.8rem] py-[1.2rem] `}
             >
-              {/* 합칠때 team받으면 변경 에러 뜸 */}
-              {/* <p>{team.name}</p> */}
-              <p className="">ddd</p>
+              <p>{team.name}</p>
             </div>
           ) : (
             <div

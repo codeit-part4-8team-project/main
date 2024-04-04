@@ -47,7 +47,7 @@ interface defaultValue {
   author?: Author;
 }
 // 여기도 합칠때 지우기 에러
-export default function MyIssuesModal({ closeClick, issueId = 3, teamId = 1 }: IssuesModalProps) {
+export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesModalProps) {
   const { data: defaultValue } = useAxios(
     {
       path: `issue/${issueId}`,
@@ -70,14 +70,14 @@ export default function MyIssuesModal({ closeClick, issueId = 3, teamId = 1 }: I
       content: defaultContent,
     },
   });
-  const onSubmit: SubmitHandler<Inputs> = ({ title, content }) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content }, event) => {
     const patchIssue = {
       title: title,
       content: content,
       assignedMembersUsernames: membersList.map((member) => member.username), // 배열 타입에러 자꾸남
     };
     handlePatchIssues(patchIssue);
-    console.log(patchIssue);
+    event?.target.closest('dialog').close();
   };
 
   const titleWatch = watch('title');

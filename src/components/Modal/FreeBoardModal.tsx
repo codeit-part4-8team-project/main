@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import arrowDown from '../../../public/assets/arrow-down-dark.png';
 import TextButton from '@/components/common/TextButton';
+import GroupList from '@/components/common/modal/GroupList';
 import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
@@ -13,19 +16,30 @@ interface Inputs {
 
 interface FreeBoardModalProps {
   closeClick: () => void;
-  teamId?: number;
+  teamId?: string;
+  team: any;
+}
+
+interface groupDataType {
+  id: string;
+  name: string;
+  description: string;
+  color: string;
 }
 // 여기도 합칠때 지우기 에러
-export default function FreeBoardModal({ closeClick, teamId = 4 }: FreeBoardModalProps) {
+export default function FreeBoardModal({ closeClick, teamId, team }: FreeBoardModalProps) {
   const { fetchData: freeBoardFetchData } = useAxios({});
   const { register, watch, handleSubmit } = useForm<Inputs>();
   const { user } = useUserContext();
-  const onSubmit: SubmitHandler<Inputs> = ({ content, title }) => {
+  const [groupClickData, setGroupClickData] = useState<groupDataType | null>(null);
+  const [groupList, setGroupList] = useState(false);
+  const onSubmit: SubmitHandler<Inputs> = ({ content, title }, event) => {
     const createFreeBoard = {
       content: content,
       title: title,
     };
     handlePostFreeBoard(createFreeBoard);
+    event?.target.closest('dialog').close();
   };
   const handlePostFreeBoard = (data: Inputs) => {
     freeBoardFetchData({
@@ -33,6 +47,14 @@ export default function FreeBoardModal({ closeClick, teamId = 4 }: FreeBoardModa
       newMethod: 'POST',
       newData: data,
     });
+  };
+
+  const handleGroupClick = () => {
+    setGroupList(!groupList);
+  };
+
+  const handleGroupId = (data: groupDataType) => {
+    setGroupClickData(data);
   };
 
   const formTextSize = 'text-body3-medium';
@@ -62,6 +84,39 @@ export default function FreeBoardModal({ closeClick, teamId = 4 }: FreeBoardModa
           <p className=" mb-[0.9rem] flex justify-end text-gray50">{watch('title').length}/20</p>
         ) : (
           <p className=" mb-[0.9rem] flex justify-end text-gray50">0/20</p>
+        )}
+        <p className={`${formTextSize} mb-[0.8rem]`}>그룹</p>
+        {teamId ? (
+          <div
+            className={`${formTextSize} ${borderStyle} relative w-full px-[1.8rem] py-[1.2rem] `}
+          >
+            <p>{team.name}</p>
+          </div>
+        ) : (
+          <div
+            className={`${formTextSize} ${borderStyle} relative w-full px-[1.8rem] py-[1.2rem] `}
+          >
+            {groupClickData ? (
+              <div className="flex items-center gap-[3rem]">
+                <p
+                  className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
+                  style={{ background: groupClickData.color }}
+                ></p>
+                <p className="">{groupClickData.name}</p>
+              </div>
+            ) : (
+              <p className="text-gray50">그룹을 선택해 주세요</p>
+            )}
+
+            <button
+              className="absolute bottom-0 right-[1.8rem] top-0"
+              type="button"
+              onClick={handleGroupClick}
+            >
+              <img src={arrowDown} alt="arrowDown" />
+            </button>
+            {groupList && <GroupList onClick={handleGroupId} />}
+          </div>
         )}
         <div className="flex flex-col gap-[0.8rem]">
           <ModalLabel htmlFor="content" label="내용*" className={`${formTextSize}`} />

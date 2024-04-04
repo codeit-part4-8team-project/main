@@ -9,7 +9,7 @@ import { useAxios } from '@/hooks/useAxios';
 
 interface AfterApprovalProps {
   closeClick?: () => void;
-  teamId?: number;
+  memberId?: number;
 }
 
 interface RoleDataType {
@@ -17,7 +17,7 @@ interface RoleDataType {
   name: string;
 }
 // 합칠때 에러 처리하기
-export default function AfterApproval({ closeClick, teamId = 1 }: AfterApprovalProps) {
+export default function AfterApproval({ closeClick, memberId = 1 }: AfterApprovalProps) {
   const { data: roleData } = useAxios<RoleDataType[]>(
     {
       path: 'member/role',
@@ -26,16 +26,16 @@ export default function AfterApproval({ closeClick, teamId = 1 }: AfterApprovalP
   );
   const { user } = useUserContext();
 
-  const { fetchData: groupPatchRoleData } = useAxios({});
+  const { fetchData: memberRoleData } = useAxios({});
   const [roleToggle, setRoleToggle] = useState<boolean>(false);
   const [roleClickData, setRoleClickData] = useState<string>('');
   const handleroleToggle = () => {
     setRoleToggle(!roleToggle);
   };
   // 여기 합치고 테스트해봐야함 TEST
-  const handlegroupPatchRoleData = () => {
-    groupPatchRoleData({
-      newPath: `member/invite/${teamId}`,
+  const handleMemberRoleData = () => {
+    memberRoleData({
+      newPath: `member/${memberId}`,
       newMethod: 'PATCH',
       newData: roleClickData,
     });
@@ -67,7 +67,7 @@ export default function AfterApproval({ closeClick, teamId = 1 }: AfterApprovalP
           {roleToggle && roleData && <Role roleData={roleData} onClick={handleRoleClick} />}
         </div>
       </ModalFormBorder>
-      <TextButton buttonSize="md" onClick={handlegroupPatchRoleData}>
+      <TextButton buttonSize="md" onClick={handleMemberRoleData}>
         완료
       </TextButton>
     </ModalLayout>

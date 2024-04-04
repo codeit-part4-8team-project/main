@@ -1,10 +1,13 @@
 import ModalLayout from '@/components/common/modal/ModalLayout';
+import PostLike from '@/components/Post/PostLike';
 import { useAxios } from '@/hooks/useAxios';
 import { Author } from '@/types/commonTypes';
 
 interface FreeBoardDetailProps {
   closeClick: () => void;
-  postId: string;
+  postId: number;
+  liked: boolean;
+  likeCount: number;
 }
 
 interface DefalutVauleType {
@@ -12,11 +15,15 @@ interface DefalutVauleType {
   content?: string;
   createdDate?: string;
   title?: string;
-  likeCount?: number;
 }
 //여기도 합칠때 지우기
 // 여기 하트 물어보고 만들기
-export default function FreeBoardDetail({ closeClick, postId = '1' }: FreeBoardDetailProps) {
+export default function FreeBoardDetail({
+  closeClick,
+  postId,
+  liked,
+  likeCount,
+}: FreeBoardDetailProps) {
   const { data: defaultValue } = useAxios<DefalutVauleType>(
     {
       path: `post/${postId}`,
@@ -24,7 +31,8 @@ export default function FreeBoardDetail({ closeClick, postId = '1' }: FreeBoardD
     true,
   );
   console.log(defaultValue);
-  const { author, content, createdDate, likeCount }: DefalutVauleType = defaultValue || {};
+  // const { author, content, createdDate, likeCount }: DefalutVauleType = defaultValue || {};
+  const { author, content, createdDate }: DefalutVauleType = defaultValue || {};
   const cutDateString = createdDate?.substring(0, 10);
 
   return (
@@ -41,8 +49,9 @@ export default function FreeBoardDetail({ closeClick, postId = '1' }: FreeBoardD
             <p className="text-body4-regular text-gray50">{cutDateString}</p>
           </div>
         </div>
+        <PostLike postId={postId} likeCount={likeCount} liked={liked} />
         <p className="text-body4-regular">{content}</p>
-        <p className="text-gray50">{likeCount}</p>
+        {/* <p className="text-gray50">{likeCount}</p> */}
       </div>
     </ModalLayout>
   );
