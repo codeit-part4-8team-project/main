@@ -68,7 +68,7 @@ export default function DetailScheduleModal({ closeClick, scheduleId }: DetailSc
                 alt="profile"
                 className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
               />
-              <p className=" text-[1.4rem]">{user?.username}</p>
+              <p className=" text-[1.4rem]">{user?.name}</p>
             </>
           )}
           {author && (

@@ -52,7 +52,7 @@ function ModalWrapper({ children, id, onRemove }: Props) {
   }, [id]);
 
   return (
-    <dialog ref={ref} className="_pos-center fixed rounded-lg">
+    <dialog ref={ref} className="_pos-center fixed rounded-[2.4rem]">
       {children}
     </dialog>
   );

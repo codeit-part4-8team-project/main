@@ -79,7 +79,7 @@ export default function InvitationGroupModal({
                 alt="profile"
                 className="h-[2.4rem] w-[2.4rem] rounded-[9999px]"
               />
-              <p className=" text-[1.4rem]">{user?.username}</p>
+              <p className=" text-[1.4rem]">{user?.name}</p>
             </>
           </div>
           <div className="flex flex-col gap-[0.8rem]">

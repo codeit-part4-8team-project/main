@@ -53,7 +53,7 @@ export default function AfterApproval({ closeClick, memberId = 1 }: AfterApprova
         <div className="mb-[1.6rem] h-48 w-48 rounded-[20rem] border-[0.1rem] border-gray100">
           <img src={user?.imageUrl} alt="profile" className="size-full rounded-[20rem]" />
         </div>
-        <p className="text-body3-regular">#{user?.username}</p>
+        <p className="text-body3-regular">#{user?.name}</p>
         <div className="mb-[0.8rem] flex w-full text-body3-medium">나의역할</div>
         <div className=" relative flex w-full items-center justify-between rounded-[0.6rem] border-[0.1rem] border-gray30 px-[1.8rem] py-[1.2rem] text-body3-regular text-gray50">
           {roleClickData ? (

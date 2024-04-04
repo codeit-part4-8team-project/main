@@ -201,7 +201,6 @@ export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesMod
           </div>
           <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
           <div className=" h-[10.6rem] w-full rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
-            {/* <ModalMemberList formTextSize={formTextSize} data={assignedMembersUsernames} />  formTextSize 는 뭐지?*/}
             <ModalMemberList memberData={defaultAssignedMembersUsernames} owner={author} />
           </div>
         </ModalFormBorder>

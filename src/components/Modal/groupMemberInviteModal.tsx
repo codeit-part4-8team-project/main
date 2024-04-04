@@ -14,7 +14,7 @@ interface GroupMemberInviteModalProps {
 }
 
 interface Inputs {
-  members?: string[];
+  username?: string;
 }
 
 interface dataType {
@@ -33,11 +33,15 @@ export default function GroupMemberInviteModal({
   const { register, handleSubmit, getValues } = useForm<Inputs>();
   const { fetchData: groupMemberCreate } = useAxios({});
 
-  const [membersList, setMembersList] = useState<dataType[]>([]);
+  // const [membersList, setMembersList] = useState<dataType[]>([]);
+  const [member, setMember] = useState<dataType | null>(null);
   const [memberCheck, setMemberCheck] = useState(false);
   const onSubmit: SubmitHandler<Inputs> = () => {
+    // const createMember = {
+    //   members: membersList.map((member) => member.username),
+    // };
     const createMember = {
-      members: membersList.map((member) => member.username),
+      username: member?.username,
     };
     handleMemberCreate(createMember);
   };
@@ -48,27 +52,28 @@ export default function GroupMemberInviteModal({
   // 나중에 멤버그걸로 교체
   const handleMemberCreate = (data: Inputs) => {
     groupMemberCreate({
-      newPath: `/team/${teamId}`,
+      newPath: `/member/${teamId}`,
       newMethod: 'POST',
       newData: data,
     });
   };
 
   const handleGetMembers = async () => {
-    const userName = getValues('members');
+    const userName = getValues('username');
     const res = await defaultInstance.get(`/user/search?username=${userName}`);
     if (res.data !== '') {
       const newMember = res.data;
+      console.log(res.data);
       // 새로운 팀원을 기존 팀원 목록에 추가
       setMemberCheck(false);
-      setMembersList((prevMembers) => [...prevMembers, newMember]);
+      setMember(newMember);
     } else if (res.data === '') {
       setMemberCheck(true);
     }
   };
 
-  const handleRemoveMember = (userName: string | undefined) => {
-    setMembersList((prevMembers) => prevMembers.filter((member) => member.username !== userName));
+  const handleRemoveMember = () => {
+    setMember(null);
   };
 
   return (
@@ -79,11 +84,11 @@ export default function GroupMemberInviteModal({
             <ModalLabel label="팀원 초대" className={`${formTextSize}`} htmlFor="members" />
             <div className="flex items-center gap-[1.2rem]">
               <ModalInput
-                name="members"
-                hookform={register('members')}
+                name="username"
+                hookform={register('username')}
                 type="text"
                 placeholder="닉네임을 검색해 주세요."
-                id="mebers"
+                id="username"
                 className={`${inputTextSize} ${borderStyle} `}
               >
                 {memberCheck && (
@@ -100,13 +105,11 @@ export default function GroupMemberInviteModal({
 
           <p className={`${formTextSize} mb-[0.8rem] mt-12`}>팀원</p>
           <div className=" h-[10.6rem] w-full overflow-scroll rounded-[0.6rem] bg-[#F7F7F7] pl-[1.6rem] pr-[2.8rem] pt-[1.6rem]">
-            {membersList && (
-              <ModalMemberList onClick={handleRemoveMember} memberData={membersList} />
-            )}
+            {member && <ModalMemberList member={member} onClick={handleRemoveMember} />}
           </div>
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">
-          그룹 생성하기
+          초대하기
         </TextButton>
       </form>
     </ModalLayout>

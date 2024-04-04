@@ -62,9 +62,6 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
       openModal(({ close }) => <ScheduleModal team={true} closeClick={close} teamId={teamId} />);
     }
   };
-  // const handle = () => {
-  //   if (handle)
-  // }
   return (
     <div className={container}>
       <div className="m-0 flex items-center justify-between p-0 ">

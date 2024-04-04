@@ -156,7 +156,7 @@ export default function GroupModal({
               alt="profile"
               className="h-[2.4rem] w-[2.4rem] rounded-[99rem]"
             />
-            <p className=" text-[1.4rem]">{user?.username}</p>
+            <p className=" text-[1.4rem]">{user?.name}</p>
           </div>
           <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
             <ModalLabel htmlFor="name" label="그룹 이름*" className={`${formTextSize}`} />
