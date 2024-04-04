@@ -11,7 +11,7 @@ interface AllDayProp {
   mode: 'month' | 'modal';
   calendarType?: '나' | '팀';
   onModalDateClick?: (date: string) => void;
-  teamId: string;
+  teamId?: string;
 }
 
 function AllDay({ day, mode, calendarType, onModalDateClick, teamId }: AllDayProp) {

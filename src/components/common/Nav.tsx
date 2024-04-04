@@ -2,8 +2,6 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import LogoImg from '../../../public/assets/Logo.svg';
 import globalLink from '../../../public/assets/globe-dark.svg';
-import InvitationGroupModal from '../Modal/InvitationGroupModal';
-import { useModal } from '@/contexts/ModalProvider';
 import { useUserContext } from '@/contexts/UserProvider';
 import { defaultInstance } from '@/hooks/useAxios';
 import DarkGroupIcon from '@/assets/DarkGroupIcon';
@@ -31,43 +29,27 @@ interface Alarm {
 interface ModalProps {
   onClose: () => void;
   children: ReactNode;
-
-  onClick?: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ children, onClick }) => {
+const Modal: React.FC<ModalProps> = ({ children }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div
-      className="modal absolute bottom-0 left-[-28.5rem] right-0 top-[9.7rem] z-50 flex flex-col justify-center"
-      onClick={onClick}
-    >
+    <div className="modal absolute bottom-0 left-[-28.5rem] right-0 top-[9.7rem] z-50 flex flex-col justify-center">
       <div ref={modalRef} className="modal-content relative h-36 w-[38.4rem] rounded-lg ">
         {children}
       </div>
+      //{' '}
     </div>
   );
 };
 
 function Nav() {
-  //const { team } = useTeam(teamId);
   const { user } = useUserContext();
   const [data, setData] = useState<UserData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const [alarmData, setAlarmData] = useState<Alarm[]>([]);
 
-  const openModal = useModal();
-  const handleOpenModal = (alarm: Alarm) => {
-    openModal(({ close }) => <InvitationGroupModal teamId={alarm.id} closeClick={close} />);
-    setIsModalOpen(true);
-  };
-  const modalOutsideClicked = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-      setIsModalOpen(false);
-    }
-  };
+  const [alarmData, setAlarmData] = useState<Alarm[]>([]);
 
   useEffect(() => {
     defaultInstance
@@ -87,7 +69,7 @@ function Nav() {
       .get('http://ec2-43-203-69-64.ap-northeast-2.compute.amazonaws.com:8080/api/team/pending')
       .then((response) => {
         if (response && response.data && Array.isArray(response.data) && response.data.length > 0) {
-          setAlarmData(response.data);
+          setAlarmData(response.data); // Assuming only one alarm data is returned
         }
       })
       .catch((error) => {
@@ -125,7 +107,6 @@ function Nav() {
             <Modal onClose={() => setIsModalOpen(false)}>
               {alarmData.map((alarm, index) => (
                 <div
-                  onClick={() => handleOpenModal(alarm)}
                   className="w-full  border border-gray30 bg-white  pb-12 pl-12 pr-[20.9rem] pt-12 shadow-md"
                   key={index}
                 >
@@ -134,8 +115,7 @@ function Nav() {
                   </div>
                   <span
                     className="close absolute right-2 top-2 cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
+                    onClick={() => {
                       setIsModalOpen(false);
                     }}
                   >
