@@ -1,6 +1,7 @@
 import NoCard from '@/components/common/NoCard';
 import IssueItem from '@/components/kanbanBoard/IssueItem';
 import { useIssueContext } from '@/contexts/IssueProvider';
+import { useUserContext } from '@/contexts/UserProvider';
 import { Issue, IssueStatus } from '@/types/issueTypes';
 import { Team } from '@/types/teamTypes';
 
@@ -18,6 +19,7 @@ const TITLE = {
 
 export default function IssueList({ status, issues = [], team }: IssueListProps) {
   const { handleOnDrop, handleDragOver } = useIssueContext();
+  const { user } = useUserContext();
 
   return (
     <div className="flex w-full max-w-[34.2rem] flex-col gap-[2.4rem] rounded-[2.4rem] bg-white px-12 pt-12 shadow-[0_0_1rem_0_rgba(17,17,17,0.05)]">
@@ -29,7 +31,14 @@ export default function IssueList({ status, issues = [], team }: IssueListProps)
         className="flex h-full flex-col gap-[1.5rem] overflow-scroll pb-12"
       >
         {issues.length !== 0 ? (
-          issues.map((issue) => <IssueItem key={issue.id} issue={issue} teamInfo={team} />)
+          issues.map((issue) => (
+            <IssueItem
+              key={issue.id}
+              issue={issue}
+              isMine={user?.username === issue.author.username}
+              teamInfo={team}
+            />
+          ))
         ) : (
           <NoCard type="issue" backgroundColor="bg-[#F6F6F6]">
             이슈가 없습니다.

@@ -1,5 +1,7 @@
 import ProfileImg from '../../../public/assets/profile-large.svg';
+import FreeBoardDetail from '@/components/Modal/FreeBoardDetail';
 import PostLike from '@/components/Post/PostLike';
+import { useModal } from '@/contexts/ModalProvider';
 import { toDateFormat } from '@/lib/formatDate';
 import { Post } from '@/types/postTypes';
 import MeatbollsIcon from '@/assets/MeatbollsIcon';
@@ -13,8 +15,19 @@ export default function PostItem({ post }: PostItemProps) {
 
   const { color, name } = team;
 
+  const openModal = useModal();
+
+  const handleModalClick = () => {
+    openModal(({ close }) => (
+      <FreeBoardDetail closeClick={close} postId={id} liked={liked} likeCount={likeCount} />
+    ));
+  };
+
   return (
-    <div className="relative flex h-[23.3rem] w-[58rem] flex-col gap-[2.4rem] rounded-[2.4rem] border border-gray30 bg-white p-[2.4rem]">
+    <div
+      onClick={handleModalClick}
+      className="relative flex h-[23.3rem] w-[58rem] cursor-pointer flex-col gap-[2.4rem] rounded-[2.4rem] border border-gray30 bg-white p-[2.4rem]"
+    >
       <button type="button" className="absolute right-[2.4rem] top-[2.4rem]">
         <MeatbollsIcon />
       </button>
@@ -28,7 +41,7 @@ export default function PostItem({ post }: PostItemProps) {
           <div className="flex gap-[1.6rem]">
             <span className="text-body4-regular text-gray100">#{author.name}</span>
             <button
-              style={{ color }} /* TODO 임시 */
+              style={{ color }}
               className={`bottom-8 left-8 flex h-[1.8rem] items-center justify-center rounded-[4rem] border px-4 py-[0.6rem] text-[0.8rem] font-medium`}
             >
               {name}

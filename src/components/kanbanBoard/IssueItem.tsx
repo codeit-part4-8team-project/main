@@ -1,5 +1,8 @@
 import ProfileStack from '@/components/common/ProfileStack';
+import MyIssuesModal from '@/components/Modal/MyIssuesModal';
+import NotMeIssuesModal from '@/components/Modal/NotMeIssuesModal';
 import { useIssueContext } from '@/contexts/IssueProvider';
+import { useModal } from '@/contexts/ModalProvider';
 import { getProfilesImgs } from '@/lib/getProfileImgs';
 import { Issue } from '@/types/issueTypes';
 import { Team } from '@/types/teamTypes';
@@ -7,11 +10,13 @@ import DragHandleIcon from '@/assets/DragHandleIcon';
 
 interface IssueItemProps {
   issue: Issue;
+  isMine: boolean;
   teamInfo?: Team;
 }
 
 export default function IssueItem({
   issue: { id, title, content, team, assignedMembers },
+  isMine,
   teamInfo,
 }: IssueItemProps) {
   if (teamInfo) team = teamInfo;
@@ -20,17 +25,30 @@ export default function IssueItem({
     throw Error('팀 정보가 없습니다.');
   }
 
-  const { color, name } = team;
+  const { color, name, id: teamId } = team;
 
   const profileImgs = assignedMembers ? getProfilesImgs(assignedMembers) : [];
 
   const { handleOnDrag } = useIssueContext();
 
+  const openModal = useModal();
+
+  const handleModalClick = () => {
+    openModal(({ close }) =>
+      isMine ? (
+        <MyIssuesModal closeClick={close} issueId={id} teamId={teamId} />
+      ) : (
+        <NotMeIssuesModal closeClick={close} issueId={id} />
+      ),
+    );
+  };
+
   return (
     <div
+      onClick={handleModalClick}
       draggable
       onDragStart={() => handleOnDrag(id)}
-      className="relative min-h-64 w-full rounded-[2.4rem] border border-gray30 bg-white p-8"
+      className="relative min-h-64 w-full cursor-pointer rounded-[2.4rem] border border-gray30 bg-white p-8"
     >
       <div className="flex flex-col gap-[2.2rem]">
         <div className="text-body4-bold text-gray100">{title}</div>
@@ -40,7 +58,7 @@ export default function IssueItem({
         <DragHandleIcon />
       </button>
       <button
-        style={{ color }} /* TODO 임시 */
+        style={{ color }}
         className={`absolute bottom-8 left-8 flex h-[1.8rem] items-center justify-center rounded-[4rem] border px-4 py-[0.6rem] text-[0.8rem] font-medium`}
       >
         {name}
