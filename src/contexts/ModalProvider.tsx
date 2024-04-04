@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { ReactNode, createContext, useCallback, useContext, useId, useMemo, useState } from 'react';
 import ModalWrapper from '@/components/ModalWrapper';
 
 //ModalProvider에서 모달을 열고 닫는 함수와, 모달의 id를 상태로 관리합니다.
