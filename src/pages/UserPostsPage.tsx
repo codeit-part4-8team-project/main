@@ -40,12 +40,14 @@ export default function UserPostsPage() {
     <>
       <BoardSection title="Bulletin board">
         <div className="flex h-full flex-col items-center justify-between gap-[4.6rem]">
-          <Filter
-            teamList={teams}
-            checkedTeamId={checkedTeamId || []}
-            setCheckedTeamId={setCheckedTeamId || (() => {})}
-          />
-          <PostList posts={postData} />
+          <div className="flex gap-[7.9rem]">
+            <Filter
+              teamList={teams}
+              checkedTeamId={checkedTeamId || []}
+              setCheckedTeamId={setCheckedTeamId || (() => {})}
+            />
+            <PostList posts={postData} />
+          </div>
           <Pagenation />
         </div>
       </BoardSection>

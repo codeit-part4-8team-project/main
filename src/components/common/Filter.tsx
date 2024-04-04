@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import clsx from 'clsx';
 import { Team } from '@/types/teamTypes';
 import CheckCircleIcon from '@/assets/CheckCircleFill';
 import ColorChipIcon from '@/assets/ColorChipIcon';
@@ -7,6 +8,7 @@ interface FilterProps {
   teamList: Team[];
   checkedTeamId: number[];
   setCheckedTeamId: (checked: number[]) => void;
+  className?: string;
 }
 
 interface FilterItemProps {
@@ -15,14 +17,19 @@ interface FilterItemProps {
   setCheckedTeamId: (checked: number[]) => void;
 }
 
-export default function Filter({ teamList, checkedTeamId, setCheckedTeamId }: FilterProps) {
+export default function Filter({
+  teamList,
+  checkedTeamId,
+  setCheckedTeamId,
+  className,
+}: FilterProps) {
   if (checkedTeamId.length === 0) {
     const myTeamsId = teamList.map((team) => team.id);
     setCheckedTeamId(myTeamsId);
   }
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className={clsx('flex flex-col gap-12', className)}>
       <span className="text-body3-bold text-gray50">그룹 필터</span>
       <ul className="flex flex-col gap-[1.3rem]">
         {teamList.map((team) => {
