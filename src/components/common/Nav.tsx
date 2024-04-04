@@ -1,5 +1,6 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import globalLink from '../../../public/assets/globe-dark.svg';
 import { useUserContext } from '@/contexts/UserProvider';
 import { defaultInstance } from '@/hooks/useAxios';
 import DarkGroupIcon from '@/assets/DarkGroupIcon';
