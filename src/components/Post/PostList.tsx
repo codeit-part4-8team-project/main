@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import Filter from '@/components/common/Filter';
 import NoCard from '@/components/common/NoCard';
 import TextButton from '@/components/common/TextButton';
 import FreeBoardModal from '@/components/Modal/FreeBoardModal';
@@ -22,8 +21,7 @@ export default function PostList({ posts }: PostListProps) {
 
   return (
     <>
-      <Filter />
-      {/* <ul className="mt-[1.4rem] grid w-fit grid-cols-2 gap-12">
+      <ul className="mt-[1.4rem] grid w-fit grid-cols-2 gap-12">
         {posts.length !== 0 ? (
           posts.map((post) => {
             return (
@@ -37,7 +35,7 @@ export default function PostList({ posts }: PostListProps) {
             게시글이 없습니다.
           </NoCard>
         )}
-      </ul> */}
+      </ul>
       {teamId && (
         <TextButton
           buttonSize="sm"

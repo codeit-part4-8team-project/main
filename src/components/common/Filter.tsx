@@ -4,16 +4,19 @@ import { Team } from '@/types/teamTypes';
 import CheckCircleIcon from '@/assets/CheckCircleFill';
 import ColorChipIcon from '@/assets/ColorChipIcon';
 
+interface FilterProps {
+  checkedTeamId: number[];
+  setCheckedTeamId: (checked: number[]) => void;
+}
+
 interface FilterItemProps {
   team: Team;
   checkedTeamId: number[];
   setCheckedTeamId: (checked: number[]) => void;
 }
 
-export default function Filter() {
+export default function Filter({ checkedTeamId, setCheckedTeamId }: FilterProps) {
   const [teams, setTeams] = useState<Team[]>([]);
-  const [checkedTeamId, setCheckedTeamId] = useState<number[]>([]);
-
   const { loading, error, data } = useAxios<Team[]>(
     {
       path: '/team/',
@@ -29,6 +32,7 @@ export default function Filter() {
       throw Error('내가 속한 팀을 불러올 수 없습니다.');
     }
   }, [data, loading, error]);
+
   return (
     <div className="flex flex-col gap-12">
       <span className="text-body3-bold text-gray50">그룹 필터</span>
@@ -50,7 +54,6 @@ export default function Filter() {
 
 function FilterItem({
   team: { id, name, color },
-  // isChecked,
   checkedTeamId,
   setCheckedTeamId,
 }: FilterItemProps) {
@@ -65,6 +68,8 @@ function FilterItem({
     }
     setIsChecked(!isChecked);
   };
+
+  sessionStorage.setItem('filteredTeam', JSON.stringify(checkedTeamId));
 
   return (
     <li key={id} className="flex w-[19rem] items-center justify-between gap-4">
