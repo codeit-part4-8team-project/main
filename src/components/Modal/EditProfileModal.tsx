@@ -217,7 +217,7 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
                 autoComplete="off"
               >
                 <InputValidateMessage
-                  isError={errors.username?.message}
+                  isError={dirtyFields.username && errors.username?.message}
                   errorMessage={errors.username?.message}
                   isValid={isUniqueUsername || !dirtyFields.username}
                   validMessage="사용 가능한 닉네임입니다."
