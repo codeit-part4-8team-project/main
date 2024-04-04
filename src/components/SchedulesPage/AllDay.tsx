@@ -1,6 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
-import ScheduleModal from '../Modal/ScheduleModal';
 import AddScheudleModal from './AddScheduleModal';
 import { Schedule } from '@/contexts/CalenarProvider';
 import { calendarContext } from '@/contexts/CalenarProvider';
@@ -11,10 +10,9 @@ interface AllDayProp {
   mode: 'month' | 'modal';
   calendarType?: '나' | '팀';
   onModalDateClick?: (date: string) => void;
-  teamId?: string;
 }
 
-function AllDay({ day, mode, calendarType, onModalDateClick, teamId }: AllDayProp) {
+function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
   const { nowDate, filteredSchedules } = useContext(calendarContext);
   const [showAllSchedules, setShowAllSchedules] = useState(false);
 
@@ -75,13 +73,13 @@ function AllDay({ day, mode, calendarType, onModalDateClick, teamId }: AllDayPro
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const handleOpenModal = () => {
-    if (calendarType === '나') {
-      openModal(({ close }) => <ScheduleModal user={true} closeClick={close} />);
-    } else {
-      openModal(({ close }) => <ScheduleModal team={true} closeClick={close} teamId={teamId} />);
-    }
-  };
+  // const handleOpenModal = () => {
+  //   if (calendarType === '나') {
+  //     openModal(({ close }) => <ScheduleModal user={true} closeClick={close} />);
+  //   } else {
+  //     openModal(({ close }) => <ScheduleModal team={true} closeClick={close} teamId={teamId} />);
+  //   }
+  // };
   const convertToISODate = (dateTimeString: string): string => {
     const [date, time] = dateTimeString.split(' ');
     const [year, month, day] = date.split('-');
@@ -154,7 +152,7 @@ function AllDay({ day, mode, calendarType, onModalDateClick, teamId }: AllDayPro
     const handleViewMoreClick = () => {
       setShowAllSchedules(true);
       openModal;
-      //openModal(); // 모달 열기
+      // 모달 열기
     };
     if (filteredSchedulesLength > 2 && !showAllSchedules) {
       return (
@@ -201,7 +199,7 @@ function AllDay({ day, mode, calendarType, onModalDateClick, teamId }: AllDayPro
     <>
       {mode === 'month' && (
         <div className={`${Container} 'last: rounded-bl-[2.4rem]'`}>
-          <div className={clsx(DateDay)} onClick={handleOpenModal}>
+          <div className={clsx(DateDay)}>
             {`${day.getDate()} `}
             {renderViewMoreButton()}
             {renderSchedules()}

@@ -129,7 +129,10 @@ export default function ModalScheduleCalendarInput({
               className=" absolute right-0 top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem] shadow-[0_0_10px_0_rgba(17,17,17,0.05)]"
               ref={endDateToggleRef}
             >
-              <ModalCalendar onModalDateClick={onModalEndDateClick} />
+              <ModalCalendar onModalDateClick={onModalStartDateClick} />
+              <div className=" absolute right-0 top-[14rem] z-50 h-[19rem] w-[22.5rem] border-t-[0.1rem] border-gray50 bg-white px-[1.4rem] py-[1.3rem]">
+                <Time onTimeClick={() => onClickTime} />
+              </div>
             </div>
           )}
         </ModalInput>
