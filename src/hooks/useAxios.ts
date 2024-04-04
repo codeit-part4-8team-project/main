@@ -82,7 +82,7 @@ defaultInstance.interceptors.response.use(
 interface UseAxiosParams<T> {
   path?: string;
   method?: Method;
-  data?: T | Record<string, never>;
+  data?: T | unknown;
 }
 
 export type Trigger = ({
