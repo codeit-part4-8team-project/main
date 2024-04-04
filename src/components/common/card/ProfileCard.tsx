@@ -1,4 +1,5 @@
 import { useUserContext } from '@/contexts/UserProvider';
+import { prefixingUsername } from '@/lib/prefixingUsername';
 import ProfileIcon from '@/assets/ProfileIcon';
 
 export default function ProfileCard() {
@@ -16,7 +17,9 @@ export default function ProfileCard() {
         ) : (
           <ProfileIcon size="lg" className="h-40 w-40"></ProfileIcon>
         )}
-        <span className="mt-[1.6rem] text-body3-bold text-gray100">{user?.name}</span>
+        <span className="mt-[1.6rem] text-body3-bold text-gray100">
+          {prefixingUsername(user?.name)}
+        </span>
         <span className="text-body5-regular leading-[2.2rem] text-gray80">{user?.username}</span>
         <span className="mt-[2.2rem] w-[26.4rem] text-center text-body4-regular leading-[2.2rem] text-gray80">
           {user?.bio || '자기소개를 작성해보세요'}

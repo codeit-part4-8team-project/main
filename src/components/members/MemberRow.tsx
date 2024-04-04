@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import Dropdown from '../common/Dropdown';
 import TextButton from '../common/TextButton';
+import { prefixingUsername } from '@/lib/prefixingUsername';
 import { defaultInstance } from '@/hooks/useAxios';
 import { Member } from '@/types/teamTypes';
 import ProfileIcon from '@/assets/ProfileIcon';
@@ -61,7 +62,7 @@ export default function MemberRow({
         )}
       </th>
       <th className="">{name}</th>
-      <th>{username}</th>
+      <th>{prefixingUsername(username)}</th>
       <th>{role ? MEMBER.ROLE[role] : '역할 미지정'}</th>
       <th className="pr-[14.5rem]">
         {inEditing && (!isOwnersRow || (isOwnersOwnRow && !onlyOneOwner)) ? (

@@ -1,9 +1,12 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import globalLink from '../../../public/assets/globe-dark.svg';
 import { useUserContext } from '@/contexts/UserProvider';
 import { defaultInstance } from '@/hooks/useAxios';
 import DarkGroupIcon from '@/assets/DarkGroupIcon';
 import GroupIcon from '@/assets/GroupIcon';
+import KeepyUppyIcon from '@/assets/KeepyUppyIcon';
+import KeepyUppyLogo from '@/assets/KeepyUppyLogo';
 import PlusCircleIcon from '@/assets/PlusCircleIcon';
 import ProfileIcon from '@/assets/ProfileIcon';
 import LogoImg from '@/assets/assets/Logo.svg';
@@ -81,8 +84,9 @@ function Nav() {
     <div>
       <div className="z-1 fixed left-0 right-0 top-0 z-50 m-0  flex items-center justify-between bg-gray10">
         <div className="mb-[0.8rem] mt-[1.1rem] flex items-center">
-          <a href="/" className="ml-16 mt-[1.7rem]">
-            <img src={LogoImg} alt="로고 이미지" />
+          <a href="/" className="ml-16 flex items-center gap-[0.8rem] self-center">
+            <KeepyUppyIcon />
+            <KeepyUppyLogo size="sm" />
           </a>
           <div className="ml-[17.4rem] flex items-center gap-[0.8rem]">
             <a href="#" className="relative h-[3.6rem] w-[3.6rem] rounded-full bg-gray80">

@@ -1,4 +1,5 @@
 import { useUserContext } from '@/contexts/UserProvider';
+import { prefixingUsername } from '@/lib/prefixingUsername';
 import ProfileIcon from '@/assets/ProfileIcon';
 
 function CompletionStepContent() {
@@ -21,7 +22,7 @@ function CompletionStepContent() {
           ) : (
             <ProfileIcon size="lg" className="h-40 w-40"></ProfileIcon>
           )}
-          <span className="text-body3-bold text-gray100 ">{user?.username}</span>
+          <span className="text-body3-bold text-gray100 ">{prefixingUsername(user?.username)}</span>
           <span className="w-80 text-center text-body4-regular leading-[2.2rem] text-gray80">
             {user?.bio || '마이페이지에서 자기소개를 작성해보세요'}
           </span>
