@@ -13,7 +13,7 @@ export default {
       gray80: '#5F5F5F',
       gray100: '#292929',
       black: '#222222',
-      point_yellow: '#F3FF00',
+      point_yellow: '#FEE500',
       point_red: '#F74242',
     },
     fontSize: {

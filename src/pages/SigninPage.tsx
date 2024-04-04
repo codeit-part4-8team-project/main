@@ -6,6 +6,7 @@ import GoogleIcon from '@/assets/GoogleIcon';
 import KakaoIcon from '@/assets/KaKaoIcon';
 import KeepyUppyIcon from '@/assets/KeepyUppyIcon';
 import KeepyUppyLogo from '@/assets/KeepyUppyLogo';
+import imageUrl from '@/assets/assets/login-banner-icon.svg';
 
 interface OauthURLResponse {
   url: string;
@@ -42,8 +43,16 @@ const SigninPage = () => {
         <KeepyUppyIcon fill="#292929" />
         <KeepyUppyLogo size="sm" />
       </div>
-      <div className="mt-[18.9rem] flex w-[112rem] basis-[67.7rem] rounded-[2.4rem]  bg-white">
-        <div className="relative w-[48rem] rounded-l-[inherit] bg-[url('/assets/login-banner-icon.png')] bg-cover"></div>
+      <div className="mt-[18.9rem] flex w-[112rem] basis-[68rem] rounded-[2.4rem]  bg-white">
+        <div
+          // className={`relative w-[48rem] rounded-l-[inherit] bg-[url(${imageUrl})] bg-cover`}
+          // className={`relative w-[48rem] rounded-l-[inherit] bg-['/public/assets/login-banner-icon.png'] bg-cover`}
+          // className={`relative w-[48rem] rounded-l-[inherit]`}
+          // style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover' }}
+          className="rounded-l-[inherit] bg-black"
+        >
+          <img src={imageUrl} width={460} height={680}></img>
+        </div>
         <div className="flex flex-grow flex-col items-center rounded-r-[inherit]">
           <div className="mt-[10.3rem] flex w-[34.2rem] flex-col items-center">
             <div className="flex flex-col items-center gap-[2.6rem]">
@@ -72,8 +81,8 @@ const SigninPage = () => {
                 <TextButton
                   name="kakao"
                   buttonSize="md"
-                  color="white"
-                  className="gap-[1rem] bg-[#FEE500]"
+                  color="yellow"
+                  className="gap-[1rem]"
                   onClick={handleClickSocialLogin}
                 >
                   <KakaoIcon />
