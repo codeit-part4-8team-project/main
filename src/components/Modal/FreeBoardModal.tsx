@@ -8,7 +8,8 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 import { Team } from '@/types/teamTypes';
-import arrowDown from '/assets/arrow-down-dark.png';
+import arrowDown from '@/assets/assets/arrow-down-dark.png';
+
 
 interface Inputs {
   title: string;
