@@ -43,7 +43,7 @@ const SigninPage = () => {
         <KeepyUppyLogo size="sm" />
       </div>
       <div className="mt-[18.9rem] flex w-[112rem] basis-[67.7rem] rounded-[2.4rem]  bg-white">
-        <div className="relative w-[48rem] rounded-l-[inherit] bg-[url('/public/assets/login-banner-icon.png')] bg-cover"></div>
+        <div className="relative w-[48rem] rounded-l-[inherit] bg-[url('/assets/login-banner-icon.png')] bg-cover"></div>
         <div className="flex flex-grow flex-col items-center rounded-r-[inherit]">
           <div className="mt-[10.3rem] flex w-[34.2rem] flex-col items-center">
             <div className="flex flex-col items-center gap-[2.6rem]">

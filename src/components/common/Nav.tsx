@@ -1,6 +1,5 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import globalLink from '../../../public/assets/globe-dark.svg';
 import { useUserContext } from '@/contexts/UserProvider';
 import { defaultInstance } from '@/hooks/useAxios';
 import DarkGroupIcon from '@/assets/DarkGroupIcon';
@@ -9,7 +8,6 @@ import KeepyUppyIcon from '@/assets/KeepyUppyIcon';
 import KeepyUppyLogo from '@/assets/KeepyUppyLogo';
 import PlusCircleIcon from '@/assets/PlusCircleIcon';
 import ProfileIcon from '@/assets/ProfileIcon';
-import LogoImg from '@/assets/assets/Logo.svg';
 import globalLink from '@/assets/assets/globe-dark.svg';
 
 interface UserData {

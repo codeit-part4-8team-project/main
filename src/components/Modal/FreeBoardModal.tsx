@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import arrowDown from '../../../public/assets/arrow-down-dark.png';
 import TextButton from '@/components/common/TextButton';
 import GroupList from '@/components/common/modal/GroupList';
 import ModalInput from '@/components/common/modal/ModalInput';
@@ -9,6 +8,7 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 import { Team } from '@/types/teamTypes';
+import arrowDown from '/assets/arrow-down-dark.png';
 
 interface Inputs {
   title: string;
