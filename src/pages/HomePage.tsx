@@ -39,6 +39,7 @@ export const Carousel = ({ images }: CarouselProps) => {
         <KeepyUppyLogo size="sm" />
       </nav>
       <main className="h-100vh flex items-center justify-center overflow-hidden bg-gray20">
+        <h1>수고하셨습니다!</h1>
         <div className="relative ">
           <button
             onClick={prevSlide}
