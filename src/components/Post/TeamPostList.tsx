@@ -26,11 +26,11 @@ export default function TeamPostList({ posts }: PostListProps) {
 
   return (
     <>
-      <ul className="mt-[1.4rem] grid w-fit grid-cols-2 gap-12">
+      <ul className="mt-[1.4rem] grid w-full grid-cols-2 gap-12">
         {posts.length !== 0 ? (
           posts.map((post) => {
             return (
-              <li key={post.id}>
+              <li key={post.id} className="w-full">
                 <PostItem post={post} />
               </li>
             );
