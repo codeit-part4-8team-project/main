@@ -18,7 +18,7 @@ export default function UserPostList({ posts }: PostListProps) {
 
   return (
     <>
-      <ul className="mt-[1.4rem] grid w-fit grid-cols-2 gap-12">
+      <ul className="mt-[1.4rem] grid w-full grid-cols-2 gap-12">
         {posts.length !== 0 ? (
           posts.map((post) => {
             return (

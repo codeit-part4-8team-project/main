@@ -26,7 +26,7 @@ export default function PostItem({ post }: PostItemProps) {
   return (
     <div
       onClick={handleModalClick}
-      className="relative flex h-[23.3rem] w-[58rem] cursor-pointer flex-col gap-[2.4rem] rounded-[2.4rem] border border-gray30 bg-white p-[2.4rem]"
+      className="relative flex w-full cursor-pointer flex-col gap-[2.4rem] rounded-[2.4rem] border border-gray30 bg-white p-[2.4rem]"
     >
       <button type="button" className="absolute right-[2.4rem] top-[2.4rem]">
         <MeatbollsIcon />
