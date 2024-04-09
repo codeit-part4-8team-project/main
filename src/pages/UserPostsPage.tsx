@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import BoardSection from '@/components/common/BoardSection';
-import Filter from '@/components/common/Filter';
+// import Filter from '@/components/common/Filter';
 import Pagenation from '@/components/common/pagenation/Pagenation';
 import UserPostList from '@/components/Post/UserPostList';
 import { usePagenation } from '@/contexts/PageProvider';
@@ -41,12 +41,12 @@ export default function UserPostsPage() {
       <BoardSection title="Bulletin board">
         <div className="flex h-full flex-col items-center justify-between gap-[4.6rem]">
           <div className="flex w-full gap-[7.9rem] pr-[15.7rem]">
-            <Filter
+            {/* <Filter
               teamList={teams}
               checkedTeamId={checkedTeamId || []}
               setCheckedTeamId={setCheckedTeamId || (() => {})}
               className="mt-[4.6rem]"
-            />
+            /> */}
             <UserPostList posts={postData} />
           </div>
           <Pagenation />

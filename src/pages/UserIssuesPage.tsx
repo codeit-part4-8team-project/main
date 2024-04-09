@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import BoardSection from '@/components/common/BoardSection';
-import Filter from '@/components/common/Filter';
+// import Filter from '@/components/common/Filter';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
 import { IssueProvider } from '@/contexts/IssueProvider';
 import { useAxios } from '@/hooks/useAxios';
@@ -39,12 +39,12 @@ export default function UserIssuesPage() {
     <BoardSection title="Kanban board">
       <IssueProvider>
         <div className="flex h-full">
-          <Filter
+          {/* <Filter
             teamList={teams}
             checkedTeamId={checkedTeamId || []}
             setCheckedTeamId={setCheckedTeamId || (() => {})}
             className="mr-[7.4rem]"
-          />
+          /> */}
           <KanbanBoard issues={issueData} type="page" />
         </div>
       </IssueProvider>
