@@ -30,7 +30,7 @@ export default function TeamMainPage() {
         <BoardSection
           title="Team calendar"
           mode="week"
-          content={<MainSchedules teamId={teamId} calendarType="팀" />}
+          content={<MainSchedules teamId={Number(teamId)} calendarType="팀" />}
         />
         <AnnouncementList announcements={announcementData} team={team} />
         <BoardSection

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Schedule } from '@/contexts/CalenarProvider';
 import FilterCheckIconDark from '@/assets/FilterCheckIconDark';
 import FilterCheckIconLight from '@/assets/FilterCheckIconLight';
