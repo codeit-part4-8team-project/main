@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "name": "team1",
+      "description": "team1입니다",
+      "startDate": "2024-03-01",
+      "endDate": "2024-03-07"
+    },
+    {
+      "name": "team2",
+      "description": "team2입니다",
+      "startDate": "2024-03-01",
+      "endDate": "2024-03-07"
+    }
+  ]
+}
