@@ -1,6 +1,7 @@
 #!/bin/bash
 cd /home/ubuntu/main
 git pull origin main
-sudo npm install
-sudo npm run build
-pm2 restart keepy-uppy
+npm install
+npm run build
+sudo systemctl stop nginx
+sudo systemctl start nginx
