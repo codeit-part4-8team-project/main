@@ -10,7 +10,7 @@ import { Post } from '@/types/postTypes';
 import { Team } from '@/types/teamTypes';
 
 export default function UserPostsPage() {
-  const { dataContent, currentPage, checkedTeamId, setCheckedTeamId } = usePagenation();
+  const { dataContent, currentPage, checkedTeamId /* , setCheckedTeamId  */ } = usePagenation();
   const [postData, setPostData] = useState<Post[]>(dataContent as Post[]);
 
   useEffect(() => {
@@ -26,6 +26,8 @@ export default function UserPostsPage() {
     },
     true,
   );
+
+  console.log('teams', teams); /* TODO 에러 지우는 용도 - 삭제 예정 */
 
   useEffect(() => {
     if (data && !loading) {

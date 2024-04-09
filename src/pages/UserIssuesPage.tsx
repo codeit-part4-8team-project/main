@@ -9,7 +9,7 @@ import { Issues } from '@/types/issueTypes';
 import { Team } from '@/types/teamTypes';
 
 export default function UserIssuesPage() {
-  const { issueBoardData, checkedTeamId, setCheckedTeamId } = useIssueBoard();
+  const { issueBoardData, checkedTeamId /* , setCheckedTeamId */ } = useIssueBoard();
   const [issueData, setIssueData] = useState<Issues>(issueBoardData);
 
   useEffect(() => {
@@ -17,6 +17,8 @@ export default function UserIssuesPage() {
   }, [checkedTeamId, issueBoardData]);
 
   const [teams, setTeams] = useState<Team[]>([]);
+
+  console.log('teams', teams); /* TODO 에러 지우는 용도 - 삭제 예정 */
 
   const { loading, error, data } = useAxios<Team[]>(
     {
