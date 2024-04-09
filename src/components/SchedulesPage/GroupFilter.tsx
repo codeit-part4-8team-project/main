@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Schedule } from '@/contexts/CalenarProvider';
 import FilterCheckIconDark from '@/assets/FilterCheckIconDark';
 import FilterCheckIconLight from '@/assets/FilterCheckIconLight';
@@ -10,9 +10,11 @@ interface ChecklistItemProps {
 }
 
 function ChecklistItem({ item, isChecked, onCheck }: ChecklistItemProps) {
-  //const { title, teamResponse } = item; // 수정된 부분
   const nameStyle = 'text-body4-bold ml-4 text-[#292929]';
-  const color = item.team ? item.team.color : 'black'; // 수정된 부분
+  const color = item.team ? item.team.color : 'black';
+  const handleToggleCheck = () => {
+    onCheck(item.id, !isChecked);
+  };
   return (
     <div className="mr-[7.4rem] flex w-[17.3rem] items-center justify-between">
       <div className="flex">
@@ -20,7 +22,7 @@ function ChecklistItem({ item, isChecked, onCheck }: ChecklistItemProps) {
 
         <span className={nameStyle}>{item.title}</span>
       </div>
-      <div onClick={() => onCheck(item.id, !isChecked)}>
+      <div onClick={handleToggleCheck}>
         {isChecked ? <FilterCheckIconDark /> : <FilterCheckIconLight />}
       </div>
     </div>

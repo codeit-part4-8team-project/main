@@ -22,7 +22,6 @@ export default function PrivateRoutes() {
     }
   }, [data, loading, error, setUser]);
 
-  console.log(user, data, loading);
   if (loading) {
     //return <Outlet />;
     return <div></div>;

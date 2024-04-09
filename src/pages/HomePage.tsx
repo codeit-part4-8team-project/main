@@ -33,12 +33,12 @@ export const Carousel = ({ images }: CarouselProps) => {
   };
 
   return (
-    <div className="m-0 h-[108rem]  bg-gray20">
-      <nav className="fixed top-0 flex w-[192rem] items-center justify-center gap-3 bg-gray10 pb-[1.9rem] pt-[2.2rem]">
-        <KeepyUppyIcon />
+    <div className="m-0  min-h-screen bg-gray20">
+      <nav className="fixed top-0 z-10 flex h-[5.8rem] w-full items-center justify-center gap-[0.8rem] bg-gray10">
+        <KeepyUppyIcon fill="#292929" />
         <KeepyUppyLogo size="sm" />
       </nav>
-      <main className="h-100vh flex items-center justify-center bg-gray20">
+      <main className="h-100vh flex items-center justify-center overflow-hidden bg-gray20">
         <div className="relative ">
           <button
             onClick={prevSlide}
@@ -80,8 +80,10 @@ export const Carousel = ({ images }: CarouselProps) => {
           </button>
         </div>
       </main>
-      <footer className="fixed bottom-0 m-0 w-full bg-gray30 py-9 text-center text-body4-bold text-gray50">
-        All Rights Reserved ⓒ 2024 Project Team8-Codeit KEEPY UPPY.
+      <footer className="fixed bottom-0 flex h-[5.8rem] w-full items-center justify-center bg-gray10">
+        <span className="text-body4-bold text-gray50">
+          All Rights Reserved ⓒ 2024 Project Team8-Codeit KEEPY UPPY.
+        </span>
       </footer>
     </div>
   );
