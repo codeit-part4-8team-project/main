@@ -67,19 +67,11 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
     },
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const openModal = () => {
-  //   setIsModalOpen(true);
-  // };
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  // const handleOpenModal = () => {
-  //   if (calendarType === '나') {
-  //     openModal(({ close }) => <ScheduleModal user={true} closeClick={close} />);
-  //   } else {
-  //     openModal(({ close }) => <ScheduleModal team={true} closeClick={close} teamId={teamId} />);
-  //   }
-  // };
+
   const convertToISODate = (dateTimeString: string): string => {
     const [date, time] = dateTimeString.split(' ');
     const [year, month, day] = date.split('-');
@@ -103,7 +95,6 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
 
   const renderSchedules = () => {
     if (filterData.length > 0) {
-      // showAllSchedules 상태에 따라 모든 일정을 렌더링하거나 일부만 렌더링합니다.
       const schedulesToRender = showAllSchedules ? filterData : filterData.slice(0, 2);
       return schedulesToRender.map((schedule: Schedule, index: number) => (
         <div key={index}>
@@ -133,15 +124,12 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
     }
   };
   useEffect(() => {
-    // 모달이 열릴 때 body 요소에 overflow-hidden 스타일을 적용
     if (isModalOpen) {
       document.body.style.overflow = 'hidden';
     } else {
-      // 모달이 닫힐 때 overflow 스타일을 다시 제거
       document.body.style.overflow = 'auto';
     }
 
-    // 컴포넌트가 언마운트될 때 overflow 스타일을 초기화
     return () => {
       document.body.style.overflow = 'auto';
     };
@@ -152,7 +140,6 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
     const handleViewMoreClick = () => {
       setShowAllSchedules(true);
       openModal;
-      // 모달 열기
     };
     if (filteredSchedulesLength > 2 && !showAllSchedules) {
       return (

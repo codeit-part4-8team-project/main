@@ -16,7 +16,6 @@ import calender from '@/assets/assets/calendar-dark.svg';
 interface IssuesModalProps {
   closeClick: () => void;
   teamId?: number;
-
   team?: any;
   onModalDateClick?: (date: string) => void;
 }

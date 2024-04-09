@@ -7,7 +7,7 @@ import { useAxios } from '@/hooks/useAxios';
 
 interface MainSchedulesProps {
   calendarType: '나' | '팀';
-  teamId?: string;
+  teamId?: number;
 }
 
 function MainSchedules({ calendarType, teamId }: MainSchedulesProps) {
@@ -40,7 +40,7 @@ function MainSchedules({ calendarType, teamId }: MainSchedulesProps) {
         ...responseData.userSchedules.map((schedule) => ({ ...schedule })),
         ...responseData.teamSchedules?.map((schedule) => ({ ...schedule })),
       ];
-
+      console.log(responseData);
       const standardizedData = combinedSchedules.map((item: Schedule) => ({
         ...item,
         startDateTime: convertToISODate(item.startDateTime),
@@ -59,7 +59,7 @@ function MainSchedules({ calendarType, teamId }: MainSchedulesProps) {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [setSchedules, localDate]);
 
   return (
     <>

@@ -31,8 +31,11 @@ export const WeekDisplay: React.FC<WeekDisplayProps> = ({ week, calendarType }) 
                 const itemStartDate = new Date(item.startDateTime);
                 const itemEndDate = new Date(item.endDateTime);
                 const startOfDay = new Date(date);
+                const endOfDay = new Date(date);
+                endOfDay.setDate(endOfDay.getDate() + 1);
+                endOfDay.setHours(0, 0, 0, 0);
                 startOfDay.setHours(0, 0, 0, 0);
-                if (startOfDay <= itemEndDate && itemStartDate <= date) {
+                if (startOfDay <= itemEndDate && itemStartDate <= endOfDay) {
                   return (
                     <div key={item.id}>
                       <div className="flex justify-center ">
@@ -46,7 +49,7 @@ export const WeekDisplay: React.FC<WeekDisplayProps> = ({ week, calendarType }) 
                           {calendarType === '나' ? (
                             <>
                               <p className="text-gray100">{item.user?.name || item.team?.name}</p>
-                              <p>{item.title}|</p>
+                              <p>{item.title}</p>
                             </>
                           ) : (
                             <>
