@@ -150,9 +150,6 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
           >
             <div className="ml-[0.1rem] text-body5-bold"> + 더보기</div>
           </button>
-          {isModalOpen && (
-            <AddScheudleModal className="fixed z-50" onClick={closeModal} content={filterData} />
-          )}
         </>
       );
     }
@@ -191,6 +188,14 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
             {renderViewMoreButton()}
             {renderSchedules()}
           </div>
+
+          {isModalOpen && (
+            <AddScheudleModal
+              className="z-60 absolute shadow-xl"
+              onClick={closeModal}
+              content={filterData}
+            />
+          )}
         </div>
       )}
       {mode === 'modal' && <div>{renderModalDate()}</div>}

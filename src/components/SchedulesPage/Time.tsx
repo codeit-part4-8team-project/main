@@ -72,7 +72,11 @@ export function Time({ onTimeClick }: TimeProp) {
     if (selectedPeriod === 'PM') {
       hour += 12;
     }
-    const formattedTime = `${hour}:${formatTime(selectedMinute)} :00`;
+    const formattedHour = hour < 10 ? `0${hour}` : `${hour}`;
+    const formattedMinute = formatTime(selectedMinute);
+    const formattedTime = `${formattedHour}:${formattedMinute}:00`;
+
+    // const formattedTime = `${hour}:${formatTime(selectedMinute)}:00`;
     if (onTimeClick) {
       onTimeClick(formattedTime);
     }

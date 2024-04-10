@@ -12,7 +12,8 @@ import { useAxios } from '@/hooks/useAxios';
 interface ScheduleModalProps {
   onModalStartDateClick?: (date: string) => void;
   onModalEndDateClick?: (date: string) => void;
-  onTimeClick?: (time: string) => void;
+  onStartTimeClick?: (time: string) => void;
+  onEndTimeClick?: (time: string) => void;
   closeClick?: () => void;
   user?: boolean;
   team?: boolean;
@@ -32,6 +33,7 @@ function ScheduleModal({
   user = false,
   teamId,
   onModalStartDateClick,
+
   onModalEndDateClick,
 }: ScheduleModalProps) {
   const { fetchData: userFetchData } = useAxios({});
@@ -39,17 +41,26 @@ function ScheduleModal({
   const { user: userInformation } = useUserContext();
   const [selectedStartDate, setSelectedStartDate] = useState<string>('');
   const [selectedEndDate, setSelectedEndDate] = useState<string>('');
-  const [TimeData, setTimeData] = useState<string>('');
+  const [startTimeData, setStartTimeData] = useState<string>('');
+  const [endTimeData, setEndTimeData] = useState<string>('');
   const { register, handleSubmit, watch } = useForm<Inputs>();
-  const startDateTimeAll = `${selectedStartDate}${TimeData}`;
-  const onSubmit: SubmitHandler<Inputs> = ({ title, content }, event) => {
+
+  const onSubmit: SubmitHandler<Inputs> = async ({ title, content }, event) => {
     const createSchedlue = {
       title: title,
-      startDateTime: startDateTimeAll,
+      startDateTime: selectedStartDate,
       endDateTime: selectedEndDate,
       content: content,
     };
-    handleScheduleUserFetch(createSchedlue);
+    try {
+      await handleScheduleUserFetch(createSchedlue);
+      event?.target.closest('dialog').close();
+      window.location.reload();
+    } catch (error) {
+      console.error('Failed to add schedule:', error);
+      // 실패 처리 로직
+    }
+
     event?.target.closest('dialog').close();
   };
   const titleWatch = watch('title');
@@ -77,23 +88,28 @@ function ScheduleModal({
   };
 
   const handleStartDateClick = (date: string) => {
-    setSelectedStartDate(date + ' 00:00:00');
+    setSelectedStartDate(date); // 변수와 문자열을 올바르게 결합
     if (onModalStartDateClick) {
       onModalStartDateClick(date);
     }
   };
   const handleEndDateClick = (date: string) => {
-    setSelectedEndDate(date + ' 00:00:00');
+    setSelectedEndDate(date);
 
     if (onModalEndDateClick) {
       onModalEndDateClick(date);
     }
   };
-  const handleTimeClick = (Time: string) => {
+  const handleStartTimeClick = (Time: string) => {
     console.log('data', Time);
-    setTimeData(Time);
+    setStartTimeData(Time);
+    setSelectedStartDate(selectedStartDate + ' ' + Time);
   };
-
+  const handleEndTimeClick = (Time: string) => {
+    console.log('data', Time);
+    setEndTimeData(Time);
+    setSelectedEndDate(selectedEndDate + ' ' + Time);
+  };
   return (
     <ModalLayout title="일정 추가" closeClick={closeClick}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -157,7 +173,8 @@ function ScheduleModal({
             endHookform={register('endDateTime')}
             endName="endDateTime"
             onModalStartDateClick={handleStartDateClick}
-            onClickTime={handleTimeClick}
+            onStartClickTime={handleStartTimeClick}
+            onEndClickTime={handleEndTimeClick}
             startValue={selectedStartDate}
             endValue={selectedEndDate}
             onModalEndDateClick={handleEndDateClick}

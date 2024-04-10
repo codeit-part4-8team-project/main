@@ -14,7 +14,8 @@ interface ModalCalendarInputProps {
   endValue?: string; // 종료 날짜 값
   onModalStartDateClick?: (date: string) => void;
   onModalEndDateClick?: (date: string) => void;
-  onClickTime: (Time: string) => void;
+  onStartClickTime: (Time: string) => void;
+  onEndClickTime: (Time: string) => void;
 }
 
 export default function ModalScheduleCalendarInput({
@@ -26,14 +27,15 @@ export default function ModalScheduleCalendarInput({
   endValue,
   onModalStartDateClick,
   onModalEndDateClick,
-  onClickTime,
+  onStartClickTime,
+  onEndClickTime,
 }: ModalCalendarInputProps) {
   const startDateToggleRef = useRef<HTMLDivElement | null>(null);
   const endDateToggleRef = useRef<HTMLDivElement | null>(null);
 
   const [startDateToggle, setStartDateToggle] = useState(false);
   const [endDateToggle, setEndDateToggle] = useState(false);
-  console.log(startDateToggle);
+
   const handleStartDateClick = () => {
     // setStartDateToggle(true);
     setStartDateToggle(!startDateToggle);
@@ -99,7 +101,7 @@ export default function ModalScheduleCalendarInput({
             >
               <ModalCalendar onModalDateClick={onModalStartDateClick} />
               <div className=" absolute right-0 top-[14rem] z-50 h-[19rem] w-[22.5rem] border-t-[0.1rem] border-gray50 bg-white px-[1.4rem] py-[1.3rem]">
-                <Time onTimeClick={() => onClickTime} />
+                <Time onTimeClick={onStartClickTime} />
               </div>
             </div>
           )}
@@ -126,12 +128,12 @@ export default function ModalScheduleCalendarInput({
           </button>
           {endDateToggle && (
             <div
-              className=" absolute right-0 top-20 z-50 h-[20.1rem] w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem] shadow-[0_0_10px_0_rgba(17,17,17,0.05)]"
+              className="absolute right-0 top-20 z-50  w-[22.5rem] bg-white px-[1.4rem] py-[1.3rem] shadow-[0_0_10px_0_rgba(17,17,17,0.05)]"
               ref={endDateToggleRef}
             >
               <ModalCalendar onModalDateClick={onModalEndDateClick} />
               <div className=" absolute right-0 top-[14rem] z-50 h-[19rem] w-[22.5rem] border-t-[0.1rem] border-gray50 bg-white px-[1.4rem] py-[1.3rem]">
-                <Time onTimeClick={() => onClickTime} />
+                <Time onTimeClick={onEndClickTime} />
               </div>
             </div>
           )}

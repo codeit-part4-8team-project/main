@@ -8,8 +8,8 @@ interface AddScheduleModalProps {
 
 export default function AddScheduleModal({ className, onClick, content }: AddScheduleModalProps) {
   return (
-    <div onClick={onClick} className={className}>
-      <div className="z-50  w-60  bg-white px-[1rem]  py-[0.4rem] shadow-xl">
+    <div onClick={onClick} className={`z-60 ${className}`}>
+      <div className=" bg-white px-[1rem]  py-[0.4rem] shadow-xl">
         <div className="relative">
           <div className="flex flex-col gap-[1.5rem]">
             {content.map((schedule, index) => (
