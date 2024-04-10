@@ -73,8 +73,14 @@ export default function GroupModal({
       figmaLink: figmaLink,
       color: color || '#7563E1',
     };
-    handleGroup(createTeam);
-    event?.target.closest('dialog').close();
+
+    try {
+      handleGroup(createTeam);
+      event?.target.closest('dialog').close();
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
   };
   const nameWatch = watch('name');
   const descriptionWatch = watch('description');
