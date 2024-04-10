@@ -34,6 +34,7 @@ export default function FreeBoardModal({ closeClick, teamId, team }: FreeBoardMo
   const { user } = useUserContext();
   const [groupClickData, setGroupClickData] = useState<groupDataType | null>(null);
   const [groupList, setGroupList] = useState(false);
+
   const onSubmit: SubmitHandler<Inputs> = ({ content, title }, event) => {
     const createFreeBoard = {
       content: content,
@@ -42,12 +43,13 @@ export default function FreeBoardModal({ closeClick, teamId, team }: FreeBoardMo
     handlePostFreeBoard(createFreeBoard);
     event?.target.closest('dialog').close();
   };
+
   const handlePostFreeBoard = (data: Inputs) => {
     freeBoardFetchData({
       newPath: `post/${teamId}`,
       newMethod: 'POST',
       newData: data,
-    });
+    }).then(() => window.location.reload());
   };
 
   const handleGroupClick = () => {

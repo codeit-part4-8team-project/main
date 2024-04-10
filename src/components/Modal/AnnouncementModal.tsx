@@ -13,7 +13,7 @@ interface Inputs {
 
 interface AnnouncementModalProps {
   closeClick: () => void;
-  teamId?: number;
+  teamId: number;
 }
 // 나중에 group 프롭으로 받기
 // 여기도 합칠때 없애기
@@ -35,7 +35,7 @@ export default function AnnouncementModal({ closeClick, teamId }: AnnouncementMo
       newPath: `announcement/${teamId}`,
       newMethod: 'POST',
       newData: data,
-    });
+    }).then(() => window.location.reload());
   };
 
   const formTextSize = 'text-body3-medium';
