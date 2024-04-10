@@ -77,7 +77,6 @@ export default function GroupModal({
     try {
       handleGroup(createTeam);
       event?.target.closest('dialog').close();
-      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -94,7 +93,7 @@ export default function GroupModal({
       newPath: '/team/',
       newMethod: 'POST',
       newData: data,
-    });
+    }).then(() => window.location.reload());
   };
 
   const handleGetMembers = async () => {
