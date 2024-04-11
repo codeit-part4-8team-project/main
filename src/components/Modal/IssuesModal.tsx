@@ -10,13 +10,14 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalMemberList from '@/components/common/modal/ModalMemberList';
 import { useUserContext } from '@/contexts/UserProvider';
 import { defaultInstance, useAxios } from '@/hooks/useAxios';
+import { Team } from '@/types/teamTypes';
 import arrowDown from '@/assets/assets/arrow-down-dark.png';
 import calender from '@/assets/assets/calendar-dark.svg';
 
 interface IssuesModalProps {
   closeClick: () => void;
   teamId?: number;
-  team?: any;
+  team?: Team;
   onModalDateClick?: (date: string) => void;
 }
 
@@ -62,7 +63,7 @@ export default function IssuesModal({
   const [selectedEndDate, setSelectedEndDate] = useState<string>('');
 
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = ({ title, content }, event) => {
+  const onSubmit: SubmitHandler<Inputs> = async ({ title, content }, event) => {
     const createIssue = {
       title: title,
       content: content,
@@ -70,9 +71,15 @@ export default function IssuesModal({
       status: 'TODO',
       assignedMembersUsernames: membersList.map((member) => member.username),
     };
-    handlePostIssues(createIssue);
-    event?.target.closest('dialog').close();
+
+    try {
+      await handlePostIssues(createIssue);
+      event?.target.closest('dialog').close();
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
@@ -87,13 +94,13 @@ export default function IssuesModal({
         newPath: `issue/${teamId}`,
         newMethod: 'POST',
         newData: data,
-      });
+      }).then(() => window.location.reload());
     } else if (groupClickData?.id) {
       fetchData({
         newPath: `issue/${groupClickData.id}`,
         newMethod: 'POST',
         newData: data,
-      });
+      }).then(() => window.location.reload());
     }
   };
 
@@ -220,7 +227,7 @@ export default function IssuesModal({
             <div
               className={`${formTextSize} ${borderStyle} relative w-full px-[1.8rem] py-[1.2rem] `}
             >
-              <p>{team.name}</p>
+              <p>{team?.name}</p>
             </div>
           ) : (
             <div

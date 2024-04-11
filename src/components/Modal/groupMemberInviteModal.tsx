@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import TextButton from '@/components/common/TextButton';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalInput from '@/components/common/modal/ModalInput';
@@ -32,6 +33,7 @@ export default function GroupMemberInviteModal({
 }: GroupMemberInviteModalProps) {
   const { register, handleSubmit, getValues } = useForm<Inputs>();
   const { fetchData: groupMemberCreate } = useAxios({});
+  const navigate = useNavigate();
 
   // const [membersList, setMembersList] = useState<dataType[]>([]);
   const [member, setMember] = useState<dataType | null>(null);
@@ -55,6 +57,9 @@ export default function GroupMemberInviteModal({
       newPath: `/member/${teamId}`,
       newMethod: 'POST',
       newData: data,
+    }).then(() => {
+      navigate(`/team/${teamId}/member`);
+      window.location.reload();
     });
   };
 

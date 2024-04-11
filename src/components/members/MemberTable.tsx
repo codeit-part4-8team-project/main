@@ -51,7 +51,7 @@ export default function MemberTable({ members }: MemberTableProps) {
           const role = dirtyRowMember?.role || null;
           console.log(memberId, grade, role);
 
-          return defaultInstance.patch(`/member/${memberId}`, { role, grade });
+          return defaultInstance.patch(`/member/${memberId}`, { grade });
         });
         await Promise.allSettled(memberUpdates);
         refetch && refetch();

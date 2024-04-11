@@ -73,8 +73,13 @@ export default function GroupModal({
       figmaLink: figmaLink,
       color: color || '#7563E1',
     };
-    handleGroup(createTeam);
-    event?.target.closest('dialog').close();
+
+    try {
+      handleGroup(createTeam);
+      event?.target.closest('dialog').close();
+    } catch (error) {
+      console.log(error);
+    }
   };
   const nameWatch = watch('name');
   const descriptionWatch = watch('description');
@@ -88,7 +93,7 @@ export default function GroupModal({
       newPath: '/team/',
       newMethod: 'POST',
       newData: data,
-    });
+    }).then(() => window.location.reload());
   };
 
   const handleGetMembers = async () => {

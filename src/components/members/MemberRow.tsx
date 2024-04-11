@@ -1,6 +1,7 @@
 import { MEMBER } from '@/constants/Team';
 import { useRef } from 'react';
 import { Control, Controller } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import Dropdown from '../common/Dropdown';
 import TextButton from '../common/TextButton';
 import { prefixingUsername } from '@/lib/prefixingUsername';
@@ -25,6 +26,7 @@ export default function MemberRow({
 }: MemberRowProps) {
   const { id, imageUrl, name, username, role, grade, createdDate } = member;
   const rowRef = useRef<HTMLTableRowElement>(null);
+  const { teamId } = useParams();
   const isOwnersRow = grade === 'OWNER';
   //매니저는 오너꺼 일반 행으로 보여야함. 오너는 자기만 건드릴 수 있고. 추방버튼은 x
   //오너로우면 > 자기꺼 아니면 컨트롤러 안뜨게
@@ -38,7 +40,7 @@ export default function MemberRow({
   const handleDeleteClick = async () => {
     if (confirm(`정말 ${name} 님을 추방하시겠습니까?`)) {
       try {
-        await defaultInstance.delete(`/member/${id}`, { data: { username } });
+        await defaultInstance.delete(`/member/${teamId}`, { data: { username } });
         if (rowRef.current) {
           rowRef.current.style.display = 'none';
         }
@@ -64,7 +66,7 @@ export default function MemberRow({
       <th className="">{name}</th>
       <th>{prefixingUsername(username)}</th>
       <th>{role ? MEMBER.ROLE[role] : '역할 미지정'}</th>
-      <th className="pr-[14.5rem]">
+      <th className="text-nowrap pr-[14.5rem]">
         {inEditing && (!isOwnersRow || (isOwnersOwnRow && !onlyOneOwner)) ? (
           <Controller
             name={String(id)}

@@ -45,7 +45,7 @@ export default function ManageTeamHistoryModal({ me, team, onClose }: ManageTeam
   const onLeaveTeamClick = async () => {
     if (confirm(`정말 ${team.name} 그룹을 나가시겠습니까?`)) {
       try {
-        const res = await defaultInstance.delete(`/member${team.id}`, { data: { username } });
+        const res = await defaultInstance.delete(`/member/${team.id}`, { data: { username } });
         if (res.status !== HttpStatusCode.Ok) {
           alert('그룹 나가기에 실패하였습니다. 잠시 후 다시 시도해주세요');
         }
@@ -58,9 +58,9 @@ export default function ManageTeamHistoryModal({ me, team, onClose }: ManageTeam
   };
 
   const onDeleteTeamClick = async () => {
-    if (confirm(`정말 ${team.name} 그룹을 나가시겠습니까?`)) {
+    if (confirm(`정말 ${team.name} 그룹을 삭제하시겠습니까?`)) {
       try {
-        const res = await defaultInstance.delete(`/team${team.id}`);
+        const res = await defaultInstance.delete(`/team/${team.id}`);
         if (res.status !== HttpStatusCode.Ok) {
           alert('그룹 삭제에 실패하였습니다. 잠시 후 다시 시도해주세요');
         }
@@ -74,7 +74,6 @@ export default function ManageTeamHistoryModal({ me, team, onClose }: ManageTeam
 
   const onSubmit: SubmitHandler<TeamHistoryEditForm> = async (formData) => {
     if (!isDirty) {
-      console.log('더티아님');
       onClose();
       return;
     }
@@ -86,14 +85,14 @@ export default function ManageTeamHistoryModal({ me, team, onClose }: ManageTeam
       return defaultInstance.patch(`/team/${team.id}`, { ...team, name });
     };
 
-    const grade = Object.keys(MEMBER.GRADE).find(
-      (key) => MEMBER.GRADE[key as keyof typeof MEMBER.GRADE] === formData.grade,
-    );
+    // const grade = Object.keys(MEMBER.GRADE).find(
+    //   (key) => MEMBER.GRADE[key as keyof typeof MEMBER.GRADE] === formData.grade,
+    // );
     const role = Object.keys(MEMBER.ROLE).find(
       (key) => MEMBER.ROLE[key as keyof typeof MEMBER.ROLE] === formData.role,
     );
     const fetchMyRoleAndGrade = () => {
-      return defaultInstance.patch(`/member/${myId}`, { grade, role });
+      return defaultInstance.patch(`/member/${myId}`, { role });
     };
 
     try {

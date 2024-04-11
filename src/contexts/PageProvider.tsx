@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useAnnouncementPage } from '@/hooks/useAnnouncement';
 import { Trigger } from '@/hooks/useAxios';
 import { useMemberPage } from '@/hooks/useMember';
-import { useMyTeamPage } from '@/hooks/useMyTeam';
+import { useMyTeamPage } from '@/hooks/useMyTeamPage';
 import { usePostPage } from '@/hooks/usePost';
 import { Announcement } from '@/types/announcementTypes';
 import { Post } from '@/types/postTypes';
