@@ -71,7 +71,11 @@ function EnterUserStepContent() {
       return defaultInstance.patch('/user/image', formDataOfImage);
     };
 
-    const formDataOfUser = { name: formData.name, username: formData.username, bio: formData.bio };
+    const formDataOfUser = {
+      name: dirtyFields.name ? formData.name : undefined,
+      username: dirtyFields.username ? formData.username : undefined,
+      bio: dirtyFields.bio ? formData.bio : undefined,
+    };
     const fetchUserInfo = () => {
       return defaultInstance.patch<User>('/user/', formDataOfUser);
     };

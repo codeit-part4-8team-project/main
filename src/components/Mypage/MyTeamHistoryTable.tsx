@@ -8,8 +8,7 @@ export default function MyTeamHistoryTable() {
   const { dataContent } = usePagenation();
   const myTeams = dataContent as Team[];
   const { user } = useUserContext();
-  console.log(user, '유저');
-  console.log(myTeams, '내팀');
+
   return (
     <table className="relative w-full table-fixed border-separate border-spacing-y-[0.8rem] overflow-auto">
       <thead className="sticky top-0 h-[4.4rem] bg-[#F6F8FA] text-left text-body3-bold text-black">
