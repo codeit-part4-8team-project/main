@@ -45,7 +45,7 @@ export default function ManageTeamHistoryModal({ me, team, onClose }: ManageTeam
   const onLeaveTeamClick = async () => {
     if (confirm(`정말 ${team.name} 그룹을 나가시겠습니까?`)) {
       try {
-        const res = await defaultInstance.delete(`/member${team.id}`, { data: { username } });
+        const res = await defaultInstance.delete(`/member/${team.id}`, { data: { username } });
         if (res.status !== HttpStatusCode.Ok) {
           alert('그룹 나가기에 실패하였습니다. 잠시 후 다시 시도해주세요');
         }
@@ -85,9 +85,9 @@ export default function ManageTeamHistoryModal({ me, team, onClose }: ManageTeam
       return defaultInstance.patch(`/team/${team.id}`, { ...team, name });
     };
 
-    const grade = Object.keys(MEMBER.GRADE).find(
-      (key) => MEMBER.GRADE[key as keyof typeof MEMBER.GRADE] === formData.grade,
-    );
+    // const grade = Object.keys(MEMBER.GRADE).find(
+    //   (key) => MEMBER.GRADE[key as keyof typeof MEMBER.GRADE] === formData.grade,
+    // );
     const role = Object.keys(MEMBER.ROLE).find(
       (key) => MEMBER.ROLE[key as keyof typeof MEMBER.ROLE] === formData.role,
     );
