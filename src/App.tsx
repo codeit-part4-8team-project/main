@@ -26,14 +26,16 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/signin" element={<SigninPage />} />
                 <Route path="/login/oauth2/code/:provider" element={<OauthRedirectPage />} />
-                <Route
-                  path="/signup"
-                  element={
-                    <StepProvider>
-                      <SignupPage />
-                    </StepProvider>
-                  }
-                />
+                <Route element={<PrivateRoutes />}>
+                  <Route
+                    path="/signup"
+                    element={
+                      <StepProvider>
+                        <SignupPage />
+                      </StepProvider>
+                    }
+                  />
+                </Route>
                 <Route element={<PrivateRoutes />}>
                   <Route path="/user/:userId" element={<UserPageLayout />}>
                     <Route path=":pageContent" element={<UserPage />} />
