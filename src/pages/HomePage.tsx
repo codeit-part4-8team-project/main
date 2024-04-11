@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import KeepyUppyIcon from '@/assets/KeepyUppyIcon';
 import KeepyUppyLogo from '@/assets/KeepyUppyLogo';
@@ -32,6 +32,12 @@ export const Carousel = ({ images }: CarouselProps) => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
   };
 
+  useEffect(() => {
+    const nextImg = setInterval(() => {
+      nextSlide();
+    }, 3000);
+    return () => clearInterval(nextImg);
+  }, [currentIndex]);
   return (
     <div className="m-0  min-h-screen bg-gray20">
       <nav className="fixed top-0 z-10 flex h-[5.8rem] w-full items-center justify-center gap-[0.8rem] bg-gray10">
