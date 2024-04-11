@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { group } from 'console';
 import TextButton from '@/components/common/TextButton';
 import GroupList from '@/components/common/modal/GroupList';
 import ModalCalendar from '@/components/common/modal/ModalCalendar';
@@ -60,6 +61,7 @@ export default function IssuesModal({
   const [memberCheck, setMemberCheck] = useState(false);
   const [groupList, setGroupList] = useState(false);
   const [groupClickData, setGroupClickData] = useState<groupDataType | null>(null);
+  console.log(groupClickData?.id);
   const [selectedEndDate, setSelectedEndDate] = useState<string>('');
 
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
@@ -106,7 +108,9 @@ export default function IssuesModal({
 
   const handleGetTeamMemberList = async () => {
     const userName = getValues('assignedMembersUsernames');
-    const res = await defaultInstance.get(`member/${teamId}/search?username=${userName}`);
+    const res = await defaultInstance.get(
+      `member/${groupClickData?.id}/search?username=${userName}`,
+    );
     if (res.data) {
       const newMember = res.data;
       setMemberCheck(false);

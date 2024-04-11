@@ -45,11 +45,19 @@ export default function FreeBoardModal({ closeClick, teamId, team }: FreeBoardMo
   };
 
   const handlePostFreeBoard = (data: Inputs) => {
-    freeBoardFetchData({
-      newPath: `post/${teamId}`,
-      newMethod: 'POST',
-      newData: data,
-    }).then(() => window.location.reload());
+    if (teamId) {
+      freeBoardFetchData({
+        newPath: `post/${teamId}`,
+        newMethod: 'POST',
+        newData: data,
+      }).then(() => window.location.reload());
+    } else if (!teamId) {
+      freeBoardFetchData({
+        newPath: `post/${groupClickData?.id}`,
+        newMethod: 'POST',
+        newData: data,
+      }).then(() => window.location.reload());
+    }
   };
 
   const handleGroupClick = () => {
@@ -91,13 +99,19 @@ export default function FreeBoardModal({ closeClick, teamId, team }: FreeBoardMo
         <p className={`${formTextSize} mb-[0.8rem]`}>그룹</p>
         {teamId ? (
           <div
-            className={`${formTextSize} ${borderStyle} relative w-full px-[1.8rem] py-[1.2rem] `}
+            className={`${formTextSize} ${borderStyle} relative mb-16 w-full px-[1.8rem] py-[1.2rem]`}
           >
-            <p>{team?.name}</p>
+            <div className="flex items-center gap-[3rem]">
+              <p
+                className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
+                style={{ background: team?.color }}
+              ></p>
+              <p>{team?.name}</p>
+            </div>
           </div>
         ) : (
           <div
-            className={`${formTextSize} ${borderStyle} relative w-full px-[1.8rem] py-[1.2rem] `}
+            className={`${formTextSize} ${borderStyle} relative mb-16 w-full px-[1.8rem] py-[1.2rem]`}
           >
             {groupClickData ? (
               <div className="flex items-center gap-[3rem]">
@@ -105,7 +119,7 @@ export default function FreeBoardModal({ closeClick, teamId, team }: FreeBoardMo
                   className="h-[2.4rem] w-[2.4rem] rounded-[999rem]"
                   style={{ background: groupClickData.color }}
                 ></p>
-                <p className="">{groupClickData.name}</p>
+                <p>{groupClickData.name}</p>
               </div>
             ) : (
               <p className="text-gray50">그룹을 선택해 주세요</p>
