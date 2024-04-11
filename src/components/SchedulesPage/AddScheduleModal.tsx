@@ -6,21 +6,24 @@ interface AddScheduleModalProps {
   content: Schedule[];
 }
 
-export default function AddScheduleModal({ className, onClick, content }: AddScheduleModalProps) {
+export default function AddScheduleModal({ className, content, onClick }: AddScheduleModalProps) {
   return (
-    <div onClick={onClick} className={`z-60 ${className}`}>
-      <div className=" bg-white px-[1rem]  py-[0.4rem] shadow-xl">
+    <div
+      className={`z-60 fixed bottom-0 left-0 right-0 top-0 flex items-center justify-center ${className}`}
+      onClick={onClick}
+    >
+      <div className="rounded-lg bg-white p-4 shadow-xl">
         <div className="relative">
-          <div className="flex flex-col gap-[1.5rem]">
+          <div className="flex flex-col gap-4">
             {content.map((schedule, index) => (
-              <div key={index} className="schedule-item">
+              <div key={index} className="flex items-center gap-2">
                 <div
                   className="h-5 w-5 rounded-full"
                   style={{ backgroundColor: schedule.team?.color || 'black' }}
                 ></div>
-                <div className="schedule-details">
-                  <p className="text-gray100">{schedule.user?.name || schedule.team?.name}</p>
-                  <p className="text-gray50">{schedule.title}</p>
+                <div>
+                  <p className="text-gray-800">{schedule.user?.name || schedule.team?.name}</p>
+                  <p className="text-gray-500">{schedule.title}</p>
                 </div>
               </div>
             ))}

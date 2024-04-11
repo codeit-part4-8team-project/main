@@ -17,7 +17,7 @@ interface RoleDataType {
   name: string;
 }
 // 합칠때 에러 처리하기
-export default function AfterApproval({ closeClick, memberId = 1 }: AfterApprovalProps) {
+export default function AfterApproval({ closeClick, memberId }: AfterApprovalProps) {
   const { data: roleData } = useAxios<RoleDataType[]>(
     {
       path: 'member/role',
@@ -38,6 +38,8 @@ export default function AfterApproval({ closeClick, memberId = 1 }: AfterApprova
       newPath: `member/${memberId}`,
       newMethod: 'PATCH',
       newData: roleClickData,
+    }).then(() => {
+      closeClick && closeClick();
     });
   };
 
