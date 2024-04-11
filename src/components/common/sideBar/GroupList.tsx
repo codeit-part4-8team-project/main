@@ -5,8 +5,9 @@ import { Team } from '@/types/teamTypes';
 import ColorChipIcon from '@/assets/ColorChipIcon';
 
 interface GroupListProps {
-  teams: Team[];
+  myTeams: Team[];
 }
+
 interface GroupItemProps {
   color: string;
   teamId: number;
@@ -14,12 +15,12 @@ interface GroupItemProps {
   children: ReactNode;
 }
 
-export default function GroupList({ teams }: GroupListProps) {
+export default function GroupList({ myTeams }: GroupListProps) {
   const { teamId } = useParams();
 
   return (
     <ul className="absolute left-[2.4rem] top-[7.4rem] flex flex-col gap-[1.6rem]">
-      {teams.map(({ id, name, color }) => {
+      {myTeams.map(({ id, name, color }) => {
         const isCurrent = teamId ? Number(teamId) === id : false;
 
         return (

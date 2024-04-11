@@ -14,17 +14,17 @@ interface AnnouncementPageListProps {
 
 /* 팀의 공지사항 페이지에서 사용하는 공지글 리스트 */
 export default function AnnouncementPageList({ announcements }: AnnouncementPageListProps) {
-  const openModal = useModal();
-
-  const handleModalClick = () => {
-    openModal(({ close }) => <AnnouncementModal closeClick={close} />);
-  };
-
   const { teamId } = useParams();
 
   if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
 
   const { team } = useTeam(teamId);
+
+  const openModal = useModal();
+
+  const handleModalClick = () => {
+    openModal(({ close }) => <AnnouncementModal closeClick={close} teamId={Number(teamId)} />);
+  };
 
   return (
     <>

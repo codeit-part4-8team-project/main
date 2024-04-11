@@ -5,9 +5,7 @@ import BoardSection from '@/components/common/BoardSection';
 import Pagenation from '@/components/common/pagenation/Pagenation';
 import UserPostList from '@/components/Post/UserPostList';
 import { usePagenation } from '@/contexts/PageProvider';
-import { useAxios } from '@/hooks/useAxios';
 import { Post } from '@/types/postTypes';
-import { Team } from '@/types/teamTypes';
 
 export default function UserPostsPage() {
   const { dataContent, currentPage, checkedTeamId /* , setCheckedTeamId  */ } = usePagenation();
@@ -16,27 +14,6 @@ export default function UserPostsPage() {
   useEffect(() => {
     setPostData(dataContent as Post[]);
   }, [checkedTeamId, currentPage, dataContent]);
-
-  const [teams, setTeams] = useState<Team[]>([]);
-
-  const { loading, error, data } = useAxios<Team[]>(
-    {
-      path: '/team/',
-      method: 'GET',
-    },
-    true,
-  );
-
-  console.log('teams', teams); /* TODO 에러 지우는 용도 - 삭제 예정 */
-
-  useEffect(() => {
-    if (data && !loading) {
-      setTeams(data);
-    }
-    if (error) {
-      throw Error('내가 속한 팀을 불러올 수 없습니다.');
-    }
-  }, [data, loading, error]);
 
   return (
     <>
