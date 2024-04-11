@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { MouseEvent, useContext, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import AddScheudleModal from './AddScheduleModal';
 import { Schedule } from '@/contexts/CalenarProvider';
