@@ -7,7 +7,10 @@ import { useIssueBoard } from '@/hooks/useIssue';
 import { useMyTeams } from '@/hooks/useMyTeams';
 
 export default function UserIssuesPage() {
-  const [checkedTeamId, setCheckedTeamId] = useState<number[]>([]);
+  const currentCheckedTeamId = sessionStorage.getItem('filteredTeam');
+  const defaultCheckedTeamId = currentCheckedTeamId && JSON.parse(currentCheckedTeamId);
+
+  const [checkedTeamId, setCheckedTeamId] = useState<number[]>(defaultCheckedTeamId);
   const { issueBoardData, fetchIssueBoardData } = useIssueBoard(checkedTeamId);
 
   const { myTeams } = useMyTeams();
