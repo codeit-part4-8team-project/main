@@ -1,33 +1,53 @@
+import { MouseEvent } from 'react';
 import { Schedule } from '@/contexts/CalenarProvider';
 
 interface AddScheduleModalProps {
-  className: string;
   onClick: () => void;
   content: Schedule[];
+  onClose: () => void;
 }
 
-export default function AddScheduleModal({ className, content, onClick }: AddScheduleModalProps) {
+export default function AddScheduleModal({ content, onClick, onClose }: AddScheduleModalProps) {
+  const handleCloseModal = (e: MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      // 모달 닫기 함수 호출
+      onClick();
+    }
+    // 모달 닫기 함수 호출
+  };
+  const handleModalClick = (e: MouseEvent<HTMLDivElement>) => {
+    // 모달 요소를 클릭했을 때는 클릭 이벤트를 중단하여 모달이 닫히지 않도록 합니다.
+    e.stopPropagation();
+  };
   return (
     <div
-      className={`z-60 fixed bottom-0 left-0 right-0 top-0 flex items-center justify-center ${className}`}
-      onClick={onClick}
+      className={`absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center  bg-[#FCFCFC]`}
+      onClick={handleCloseModal}
     >
-      <div className="rounded-lg bg-white p-4 shadow-xl">
-        <div className="relative">
-          <div className="flex flex-col gap-4">
-            {content.map((schedule, index) => (
-              <div key={index} className="flex items-center gap-2">
+      <div
+        className=" relative  z-[60]  h-[15.4rem] w-60 overflow-y-auto  rounded-lg py-[0.4rem] shadow-xl"
+        onClick={handleModalClick}
+      >
+        <div className="flex flex-col gap-4">
+          <span className="close absolute right-2 top-2 cursor-pointer" onClick={onClose}>
+            &times;
+          </span>
+          {content.map((schedule, index) => (
+            <div key={index} className="flex flex-col items-center  gap-2">
+              <div className="flex gap-2">
                 <div
                   className="h-5 w-5 rounded-full"
                   style={{ backgroundColor: schedule.team?.color || 'black' }}
                 ></div>
-                <div>
-                  <p className="text-gray-800">{schedule.user?.name || schedule.team?.name}</p>
-                  <p className="text-gray-500">{schedule.title}</p>
-                </div>
+
+                <p className="text-gray-800  text-body4-bold">
+                  {schedule.user?.name || schedule.team?.name}
+                </p>
               </div>
-            ))}
-          </div>
+
+              <div className=" text-body3-regular text-gray50">{schedule.title}</div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
