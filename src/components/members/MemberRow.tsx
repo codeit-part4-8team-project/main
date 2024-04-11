@@ -66,7 +66,7 @@ export default function MemberRow({
       <th className="">{name}</th>
       <th>{prefixingUsername(username)}</th>
       <th>{role ? MEMBER.ROLE[role] : '역할 미지정'}</th>
-      <th className="pr-[14.5rem]">
+      <th className="text-nowrap pr-[14.5rem]">
         {inEditing && (!isOwnersRow || (isOwnersOwnRow && !onlyOneOwner)) ? (
           <Controller
             name={String(id)}
