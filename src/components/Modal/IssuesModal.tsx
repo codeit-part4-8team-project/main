@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { group } from 'console';
 import TextButton from '@/components/common/TextButton';
 import GroupList from '@/components/common/modal/GroupList';
 import ModalCalendar from '@/components/common/modal/ModalCalendar';
