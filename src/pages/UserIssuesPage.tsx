@@ -19,15 +19,13 @@ export default function UserIssuesPage() {
   return (
     <BoardSection title="Kanban board">
       <IssueProvider>
-        <div className="flex h-full">
-          <Filter
-            myTeams={myTeams}
-            checkedTeamId={checkedTeamId}
-            setCheckedTeamId={setCheckedTeamId}
-            className="mr-[7.4rem]"
-          />
-          <KanbanBoard issueBoardData={issueBoardData} type="page" />
-        </div>
+        <Filter
+          myTeams={myTeams}
+          checkedTeamId={checkedTeamId}
+          setCheckedTeamId={setCheckedTeamId}
+          className="absolute z-40 mr-[7.4rem]"
+        />
+        <KanbanBoard issueBoardData={issueBoardData} type="page" />
       </IssueProvider>
     </BoardSection>
   );

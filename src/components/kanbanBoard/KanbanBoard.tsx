@@ -40,7 +40,7 @@ export default function KanbanBoard({
 
   const kanbanBoardClasses = clsx({
     'justify-between h-full w-content': type === 'main',
-    'justify-center h-full min-[1870px]:absolute top-[3.7rem] bottom-[2.4rem] left-0 right-0':
+    'justify-center h-full top-[3.7rem] bottom-[2.4rem] left-0 right-0 min-[1870px]:absolute':
       type === 'page',
   });
 
