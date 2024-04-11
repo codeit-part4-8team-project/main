@@ -8,7 +8,8 @@ import { usePagenation } from '@/contexts/PageProvider';
 import { Post } from '@/types/postTypes';
 
 export default function UserPostsPage() {
-  const { dataContent, currentPage, checkedTeamId /* , setCheckedTeamId  */ } = usePagenation();
+  const [checkedTeamId, setCheckedTeamId] = useState<number[]>([]);
+  const { dataContent, currentPage } = usePagenation();
   const [postData, setPostData] = useState<Post[]>(dataContent as Post[]);
 
   useEffect(() => {

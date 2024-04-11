@@ -1,30 +1,32 @@
 import { useEffect, useState } from 'react';
 import BoardSection from '@/components/common/BoardSection';
-// import Filter from '@/components/common/Filter';
+import Filter from '@/components/common/Filter';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
 import { IssueProvider } from '@/contexts/IssueProvider';
 import { useIssueBoard } from '@/hooks/useIssue';
-import { Issues } from '@/types/issueTypes';
+import { useMyTeams } from '@/hooks/useMyTeams';
 
 export default function UserIssuesPage() {
-  const { issueBoardData, checkedTeamId /* , setCheckedTeamId */ } = useIssueBoard();
-  const [issueData, setIssueData] = useState<Issues>(issueBoardData);
+  const [checkedTeamId, setCheckedTeamId] = useState<number[]>([]);
+  const { issueBoardData, fetchIssueBoardData } = useIssueBoard(checkedTeamId);
+
+  const { myTeams } = useMyTeams();
 
   useEffect(() => {
-    setIssueData(issueBoardData);
-  }, [checkedTeamId, issueBoardData]);
+    fetchIssueBoardData();
+  }, [checkedTeamId]);
 
   return (
     <BoardSection title="Kanban board">
       <IssueProvider>
         <div className="flex h-full">
-          {/* <Filter
-            teamList={teams}
-            checkedTeamId={checkedTeamId || []}
-            setCheckedTeamId={setCheckedTeamId || (() => {})}
+          <Filter
+            myTeams={myTeams}
+            checkedTeamId={checkedTeamId}
+            setCheckedTeamId={setCheckedTeamId}
             className="mr-[7.4rem]"
-          /> */}
-          <KanbanBoard issues={issueData} type="page" />
+          />
+          <KanbanBoard issueBoardData={issueBoardData} type="page" />
         </div>
       </IssueProvider>
     </BoardSection>

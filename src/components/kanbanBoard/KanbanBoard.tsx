@@ -7,33 +7,29 @@ import IssueList from '@/components/kanbanBoard/IssueList';
 import { useIssueContext } from '@/contexts/IssueProvider';
 import { useModal } from '@/contexts/ModalProvider';
 import { Issues } from '@/types/issueTypes';
-import { Team } from '@/types/teamTypes';
 
 interface KanbanBoardProps {
-  issues: Issues;
+  issueBoardData: Issues;
   type: 'main' | 'page';
-  team?: Team;
 }
 
 export default function KanbanBoard({
-  issues: { team: teamInfo, todoIssues, progressIssues, doneIssues },
+  issueBoardData: { team: teamInfo, todoIssues, progressIssues, doneIssues },
   type,
-  team,
 }: KanbanBoardProps) {
   const { todoList, progressList, doneList, setTodoList, setProgressList, setDoneList } =
     useIssueContext();
 
-  let teamId = 0;
-  if (teamInfo) {
-    teamId = teamInfo.id;
-  } else if (team) {
-    teamId = team.id;
-  }
-
   const openModal = useModal();
 
   const handleModalClick = () => {
-    openModal(({ close }) => <IssuesModal teamId={teamId} closeClick={close} />);
+    openModal(({ close }) =>
+      teamInfo ? (
+        <IssuesModal teamId={teamInfo.id} team={teamInfo} closeClick={close} />
+      ) : (
+        <IssuesModal closeClick={close} />
+      ),
+    );
   };
 
   useEffect(() => {
@@ -51,9 +47,9 @@ export default function KanbanBoard({
   return (
     <>
       <div className={clsx('flex gap-[2.4rem]', kanbanBoardClasses)}>
-        <IssueList status="TODO" issues={todoList} team={team} />
-        <IssueList status="INPROGRESS" issues={progressList} team={team} />
-        <IssueList status="DONE" issues={doneList} team={team} />
+        <IssueList status="TODO" issues={todoList} team={teamInfo} />
+        <IssueList status="INPROGRESS" issues={progressList} team={teamInfo} />
+        <IssueList status="DONE" issues={doneList} team={teamInfo} />
       </div>
       {type === 'page' && (
         <TextButton
