@@ -23,11 +23,6 @@ export default function Filter({
   setCheckedTeamId,
   className,
 }: FilterProps) {
-  // if (checkedTeamId.length === 0) {
-  //   const myTeamsId = myTeams.map((team) => team.id);
-  //   setCheckedTeamId(myTeamsId);
-  // }
-
   return (
     <div className={clsx('flex flex-col gap-12', className)}>
       <span className="text-body3-bold text-gray50">그룹 필터</span>
