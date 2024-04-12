@@ -66,8 +66,8 @@ function Nav() {
         console.error('Error fetching data:', error);
       });
   }, []);
-  const handleModalClick = () => {
-    openModal(({ close }) => <InvitationGroupModal teamId={teamId || ''} closeClick={close} />);
+  const handleModalClick = (data: number) => {
+    openModal(({ close }) => <InvitationGroupModal teamId={data} closeClick={close} />);
   };
 
   return (
@@ -98,11 +98,13 @@ function Nav() {
             <GroupIcon />
           )}
           {isModalOpen && (
-            <NavModal onClose={() => setIsModalOpen(false)} onClick={handleModalClick}>
+            // <NavModal onClose={() => setIsModalOpen(false)} onClick={handleModalClick}>
+            <>
               {alarmData.map((alarm, index) => (
                 <div
                   className="w-full border border-gray30 bg-white pb-12 pl-12 pr-[20.9rem] pt-12 shadow-md"
                   key={index}
+                  onClick={() => handleModalClick(alarm?.id)}
                 >
                   <div className="whitespace-nowrap text-body4-bold">
                     그룹 초대장이 도착했습니다
@@ -110,7 +112,8 @@ function Nav() {
                   <div className="text-body4-regular">[{alarm.name}]</div>
                 </div>
               ))}
-            </NavModal>
+            </>
+            // </NavModal>
           )}
 
           {data && data.imageUrl ? (

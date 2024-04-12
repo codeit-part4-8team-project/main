@@ -10,7 +10,7 @@ import calender from '@/assets/assets/calendar-dark.svg';
 
 interface InvitationGroupModalProps {
   closeClick: () => void;
-  teamId: string;
+  teamId: number;
 }
 
 interface DefaultValue {
@@ -42,6 +42,7 @@ export default function InvitationGroupModal({
   const { fetchData: deleteFetch } = useAxios({});
   const { data: GroupApproveData, fetchData: GroupApproveClick } = useAxios<GroupApproveData>({});
   const { description, name, startDate, endDate } = defaultValue || {};
+  const { id: memberId }: GroupApproveData = GroupApproveData || {};
   const { user } = useUserContext();
   const openModal = useModal();
 
@@ -58,8 +59,11 @@ export default function InvitationGroupModal({
       newPath: `member/invite/${teamId}`,
       newMethod: 'PATCH',
     });
+
+    openModal(({ close }) => <AfterApproval closeClick={close} memberId={memberId} />);
   };
-  const { id: memberId }: GroupApproveData = GroupApproveData || {};
+
+  // console.log('memberId', memberId);
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle =
@@ -111,13 +115,7 @@ export default function InvitationGroupModal({
           <TextButton buttonSize="md" color="white" onClick={handleDeleteClick}>
             거부
           </TextButton>
-          <TextButton
-            buttonSize="md"
-            onClick={() => {
-              openModal(({ close }) => <AfterApproval closeClick={close} memberId={memberId} />);
-              handleGroupApproveClick;
-            }}
-          >
+          <TextButton buttonSize="md" onClick={handleGroupApproveClick}>
             승인
           </TextButton>
         </div>
