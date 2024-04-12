@@ -109,7 +109,7 @@ export function PageProvider({ children }: PageProviderProps) {
   });
 
   const query =
-    checkedTeamId.length > 0
+    checkedTeamId?.length > 0
       ? `${teamQuery}&page=${currentPage || 1}`
       : `?page=${currentPage || 1}`;
 
