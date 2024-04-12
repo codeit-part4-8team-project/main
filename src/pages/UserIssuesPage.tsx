@@ -10,7 +10,7 @@ export default function UserIssuesPage() {
   const currentCheckedTeamId = sessionStorage.getItem('filteredTeam');
   const defaultCheckedTeamId = currentCheckedTeamId && JSON.parse(currentCheckedTeamId);
 
-  const [checkedTeamId, setCheckedTeamId] = useState<number[]>(defaultCheckedTeamId);
+  const [checkedTeamId, setCheckedTeamId] = useState<number[]>(defaultCheckedTeamId ?? []);
   const { issueBoardData, fetchIssueBoardData } = useIssueBoard(checkedTeamId);
 
   const { myTeams } = useMyTeams();

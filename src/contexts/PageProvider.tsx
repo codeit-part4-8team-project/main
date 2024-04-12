@@ -58,7 +58,7 @@ export function PageProvider({ children }: PageProviderProps) {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [startPage, setStartPage] = useState(1);
-  const [checkedTeamId, setCheckedTeamId] = useState<number[]>(defaultCheckedTeamId);
+  const [checkedTeamId, setCheckedTeamId] = useState<number[]>(defaultCheckedTeamId || []);
 
   const { teamId, pageContent } = useParams();
   const isTeam = teamId ? true : false;
