@@ -5,7 +5,7 @@ import CheckCircleIcon from '@/assets/CheckCircleFill';
 import ColorChipIcon from '@/assets/ColorChipIcon';
 
 interface FilterProps {
-  teamList: Team[];
+  myTeams: Team[];
   checkedTeamId: number[];
   setCheckedTeamId: (checked: number[]) => void;
   className?: string;
@@ -18,28 +18,28 @@ interface FilterItemProps {
 }
 
 export default function Filter({
-  teamList,
+  myTeams,
   checkedTeamId,
   setCheckedTeamId,
   className,
 }: FilterProps) {
-  if (checkedTeamId.length === 0) {
-    const myTeamsId = teamList.map((team) => team.id);
-    setCheckedTeamId(myTeamsId);
-  }
+  // if (checkedTeamId.length === 0) {
+  //   const myTeamsId = myTeams.map((team) => team.id);
+  //   setCheckedTeamId(myTeamsId);
+  // }
 
   return (
     <div className={clsx('flex flex-col gap-12', className)}>
       <span className="text-body3-bold text-gray50">그룹 필터</span>
       <ul className="flex flex-col gap-[1.3rem]">
-        {teamList.map((team) => {
+        {myTeams.map((team) => {
           return (
             <FilterItem
               key={team.id}
               team={team}
               checkedTeamId={checkedTeamId}
               setCheckedTeamId={setCheckedTeamId}
-            ></FilterItem>
+            />
           );
         })}
       </ul>

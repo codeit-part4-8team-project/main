@@ -26,7 +26,7 @@ export default function UserMainPage() {
           title="Kanban board"
           content={
             <IssueProvider>
-              <KanbanBoard issues={issueBoardData} type="main" />
+              <KanbanBoard issueBoardData={issueBoardData} type="main" />
             </IssueProvider>
           }
         />

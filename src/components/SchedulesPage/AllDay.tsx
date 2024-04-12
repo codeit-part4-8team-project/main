@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { MouseEvent, useContext, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import AddScheudleModal from './AddScheduleModal';
 import { Schedule } from '@/contexts/CalenarProvider';
@@ -15,9 +15,9 @@ interface AllDayProp {
 function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
   const { nowDate, filteredSchedules } = useContext(calendarContext);
   const [showAllSchedules, setShowAllSchedules] = useState(false);
-
+  const ModalRef = useRef<HTMLDivElement>(null);
   const Container =
-    "w-full h-full flex justify-center items-center border-none 'last-of-type:rounded-bl-[2.4rem]' ";
+    "w-full h-full flex justify-center items-center border-none relative 'last-of-type:rounded-bl-[2.4rem]' ";
   const hover = 'hover:bg-gray10  ';
   const today = new Date();
 
@@ -70,6 +70,7 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setShowAllSchedules(false);
   };
 
   const convertToISODate = (dateTimeString: string): string => {
@@ -123,22 +124,12 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
       ));
     }
   };
-  useEffect(() => {
-    if (isModalOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isModalOpen]);
 
   const renderViewMoreButton = () => {
     const filteredSchedulesLength = filterData.length;
     const handleViewMoreClick = () => {
       setShowAllSchedules(true);
+
       openModal;
     };
     if (filteredSchedulesLength > 2 && !showAllSchedules) {
@@ -179,27 +170,35 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
     );
   }; //밖으로빼기
 
+  const outSiedClick = (e: MouseEvent) => {
+    const { target } = e;
+    if (isModalOpen && ModalRef.current && !ModalRef.current.contains(target as Node)) {
+      setIsModalOpen(false);
+      setShowAllSchedules(false);
+    }
+  };
   return (
-    <>
+    <div>
       {mode === 'month' && (
-        <div className={`${Container} 'last: rounded-bl-[2.4rem]'`}>
+        <div
+          ref={ModalRef}
+          onClick={outSiedClick}
+          className={`${Container} 'last: relative' rounded-bl-[2.4rem]`}
+        >
           <div className={clsx(DateDay)}>
             {`${day.getDate()} `}
             {renderViewMoreButton()}
             {renderSchedules()}
           </div>
-
-          {isModalOpen && (
-            <AddScheudleModal
-              className="z-60 absolute shadow-xl"
-              onClick={closeModal}
-              content={filterData}
-            />
-          )}
+          <div>
+            {showAllSchedules && (
+              <AddScheudleModal onClose={closeModal} onClick={closeModal} content={filterData} />
+            )}
+          </div>
         </div>
       )}
       {mode === 'modal' && <div>{renderModalDate()}</div>}
-    </>
+    </div>
   );
 }
 

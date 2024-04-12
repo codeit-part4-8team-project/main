@@ -3,11 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useAxios } from '@/hooks/useAxios';
 import { Issue, Issues } from '@/types/issueTypes';
 
-export function useIssueBoard() {
-  const currentCheckedTeamId = sessionStorage.getItem('filteredTeam');
-  const defaultCheckedTeamId = currentCheckedTeamId ? JSON.parse(currentCheckedTeamId) : [];
-  const [checkedTeamId, setCheckedTeamId] = useState<number[]>(defaultCheckedTeamId);
-
+export function useIssueBoard(checkedTeamId?: number[]) {
   const [issueBoardData, setIssueBoardData] = useState<Issues>({
     todoIssues: [],
     progressIssues: [],
@@ -16,7 +12,11 @@ export function useIssueBoard() {
 
   const { userId, teamId } = useParams();
 
-  const query = checkedTeamId.length > 0 ? `?teamIds=${checkedTeamId}` : '';
+  let query = '';
+  checkedTeamId?.forEach((teamId, idx) => {
+    if (idx === 0) query += `?teamIds=${teamId}`;
+    else query += `&teamIds=${teamId}`;
+  });
 
   let path;
   if (userId) {
@@ -27,10 +27,14 @@ export function useIssueBoard() {
     throw Error('이슈 데이터를 가져올 수 있는 페이지가 아닙니다.');
   }
 
-  const { loading, error, data, fetchData } = useAxios<Issues>(
+  const {
+    loading,
+    error,
+    data,
+    fetchData: fetchIssueBoardData,
+  } = useAxios<Issues>(
     {
       path,
-      method: 'GET', // TODO 가능하면 다른 요청들도 가능하도록
     },
     true,
   );
@@ -42,13 +46,9 @@ export function useIssueBoard() {
     if (error) {
       throw Error('이슈를 불러오지 못했습니다.');
     }
-  }, [loading, error, data]);
+  }, [checkedTeamId, loading, error, data]);
 
-  useEffect(() => {
-    fetchData();
-  }, [checkedTeamId]);
-
-  return { issueBoardData, checkedTeamId, setCheckedTeamId, fetchIssueBoardData: fetchData };
+  return { checkedTeamId, issueBoardData, fetchIssueBoardData };
 }
 
 export function useIssue(issueId?: number) {
@@ -59,7 +59,7 @@ export function useIssue(issueId?: number) {
   const { loading, error, data, fetchData } = useAxios<Issue>(
     {
       path,
-      method: 'GET', // TODO 가능하면 다른 요청들도 가능하도록
+      method: 'GET',
     },
     Boolean(issueId),
   );

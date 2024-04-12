@@ -1,5 +1,9 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import InvitationGroupModal from '../Modal/InvitationGroupModal';
+import NavModal from './NavModal';
+import { useModal } from '@/contexts/ModalProvider';
 import { useUserContext } from '@/contexts/UserProvider';
 import { defaultInstance } from '@/hooks/useAxios';
 import DarkGroupIcon from '@/assets/DarkGroupIcon';
@@ -9,6 +13,8 @@ import KeepyUppyLogo from '@/assets/KeepyUppyLogo';
 import PlusCircleIcon from '@/assets/PlusCircleIcon';
 import ProfileIcon from '@/assets/ProfileIcon';
 import globalLink from '@/assets/assets/globe-dark.svg';
+
+// Modal 컴포넌트를 가져옵니다.
 
 interface UserData {
   id: number;
@@ -27,31 +33,14 @@ interface Alarm {
   color: string | null;
 }
 
-interface ModalProps {
-  onClose: () => void;
-  children: ReactNode;
-}
-
-const Modal: React.FC<ModalProps> = ({ children }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <div className="modal absolute bottom-0 left-[-28.5rem] right-0 top-[9.7rem] z-50 flex flex-col justify-center">
-      <div ref={modalRef} className="modal-content relative h-36 w-[38.4rem] rounded-lg ">
-        {children}
-      </div>
-      //{' '}
-    </div>
-  );
-};
-
 function Nav() {
   const { user } = useUserContext();
   const [data, setData] = useState<UserData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [alarmData, setAlarmData] = useState<Alarm[]>([]);
+  const { teamId } = useParams();
 
+  const openModal = useModal();
   useEffect(() => {
     defaultInstance
       .get('http://ec2-43-203-69-64.ap-northeast-2.compute.amazonaws.com:8080/api/user/')
@@ -77,6 +66,9 @@ function Nav() {
         console.error('Error fetching data:', error);
       });
   }, []);
+  const handleModalClick = () => {
+    openModal(({ close }) => <InvitationGroupModal teamId={teamId || ''} closeClick={close} />);
+  };
 
   return (
     <div>
@@ -105,29 +97,21 @@ function Nav() {
           ) : (
             <GroupIcon />
           )}
-          {isModalOpen ? (
-            <Modal onClose={() => setIsModalOpen(false)}>
+          {isModalOpen && (
+            <NavModal onClose={() => setIsModalOpen(false)} onClick={handleModalClick}>
               {alarmData.map((alarm, index) => (
                 <div
-                  className="w-full  border border-gray30 bg-white  pb-12 pl-12 pr-[20.9rem] pt-12 shadow-md"
+                  className="w-full border border-gray30 bg-white pb-12 pl-12 pr-[20.9rem] pt-12 shadow-md"
                   key={index}
                 >
                   <div className="whitespace-nowrap text-body4-bold">
                     그룹 초대장이 도착했습니다
                   </div>
-                  <span
-                    className="close absolute right-2 top-2 cursor-pointer"
-                    onClick={() => {
-                      setIsModalOpen(false);
-                    }}
-                  >
-                    &times;
-                  </span>
                   <div className="text-body4-regular">[{alarm.name}]</div>
                 </div>
               ))}
-            </Modal>
-          ) : null}
+            </NavModal>
+          )}
 
           {data && data.imageUrl ? (
             <Link to={`/user/${user?.id}/mypage`}>

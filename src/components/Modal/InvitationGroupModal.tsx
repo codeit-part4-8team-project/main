@@ -10,7 +10,7 @@ import calender from '@/assets/assets/calendar-dark.svg';
 
 interface InvitationGroupModalProps {
   closeClick: () => void;
-  teamId: number;
+  teamId: string;
 }
 
 interface DefaultValue {
