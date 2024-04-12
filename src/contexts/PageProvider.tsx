@@ -54,7 +54,7 @@ const PageContext = createContext<PageContextValue>(defaultPageValue);
 
 export function PageProvider({ children }: PageProviderProps) {
   const currentCheckedTeamId = sessionStorage.getItem('filteredTeam');
-  const defaultCheckedTeamId = currentCheckedTeamId ? JSON.parse(currentCheckedTeamId) : [];
+  const defaultCheckedTeamId = currentCheckedTeamId && JSON.parse(currentCheckedTeamId);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [startPage, setStartPage] = useState(1);
@@ -63,7 +63,7 @@ export function PageProvider({ children }: PageProviderProps) {
   const { teamId, pageContent } = useParams();
   const isTeam = teamId ? true : false;
 
-  const { postPageData, fetchPostPageData } = usePostPage(currentPage);
+  const { postPageData, fetchPostPageData } = usePostPage(currentPage, checkedTeamId);
   const { announcementPageData, fetchAnnouncementPageData } = useAnnouncementPage(currentPage);
   const { myTeamPageData, fetchMyTeamPageData } = useMyTeamPage(currentPage);
   const { memberPageData, fetchMemberPageData } = useMemberPage(currentPage);
@@ -102,9 +102,15 @@ export function PageProvider({ children }: PageProviderProps) {
     totalPages = 1;
   }
 
+  let teamQuery = '';
+  checkedTeamId?.forEach((teamId, idx) => {
+    if (idx === 0) teamQuery += `?teamIds=${teamId}`;
+    else teamQuery += `&teamIds=${teamId}`;
+  });
+
   const query =
     checkedTeamId.length > 0
-      ? `?teamIds=${checkedTeamId}&page=${currentPage || 1}`
+      ? `${teamQuery}&page=${currentPage || 1}`
       : `?page=${currentPage || 1}`;
 
   let newPath: string;
@@ -174,8 +180,8 @@ export function PageProvider({ children }: PageProviderProps) {
         isFirst,
         isLast,
         checkedTeamId,
-        setCurrentPage,
         setCheckedTeamId,
+        setCurrentPage,
         handlePrevClick,
         handleNextClick,
         handlePageNumberClick,
@@ -189,6 +195,7 @@ export function PageProvider({ children }: PageProviderProps) {
 
 export function usePagenation() {
   const pageInfo = useContext(PageContext);
+
   if (!pageInfo) {
     throw Error('반드시 PageProvider 안에서 호출해야 합니다.');
   }

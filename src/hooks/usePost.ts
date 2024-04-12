@@ -35,12 +35,18 @@ export function usePost(postId?: number) {
   return { postData, fetchPostData: fetchData };
 }
 
-export function usePostPage(page?: number) {
+export function usePostPage(page?: number, checkedTeamId?: number[]) {
   const [postPageData, setPostPageData] = useState<Posts>(DEFAULT_PAGE_DATA);
 
   const { userId, teamId } = useParams();
 
-  const query = `?page=${page || 1}`;
+  let teamQuery = '';
+  checkedTeamId?.forEach((teamId, idx) => {
+    if (idx === 0) teamQuery += `?teamIds=${teamId}`;
+    else teamQuery += `&teamIds=${teamId}`;
+  });
+
+  const query = checkedTeamId?.length ? `${teamQuery}&page=${page || 1}` : `?page=${page || 1}`;
 
   let path = '';
   if (userId) {

@@ -37,7 +37,7 @@ export default function TeamMainPage() {
           title="Kanban board"
           content={
             <IssueProvider>
-              <KanbanBoard issues={issueBoardData} type="main" team={team} />
+              <KanbanBoard issueBoardData={issueBoardData} type="main" />
             </IssueProvider>
           }
         />
