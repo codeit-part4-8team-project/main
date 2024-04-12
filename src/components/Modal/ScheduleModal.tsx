@@ -45,6 +45,9 @@ function ScheduleModal({
   const [endTimeData, setEndTimeData] = useState<string>('');
   const { register, handleSubmit, watch } = useForm<Inputs>();
 
+  console.log('startTimeData', startTimeData);
+  console.log('endTimeData', endTimeData);
+
   const onSubmit: SubmitHandler<Inputs> = async ({ title, content }, event) => {
     const createSchedlue = {
       title: title,
