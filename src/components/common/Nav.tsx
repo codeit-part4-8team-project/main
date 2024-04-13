@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import InvitationGroupModal from '../Modal/InvitationGroupModal';
+import LogoutDropDown from './LogoutDropDown';
 import NavModal from './NavModal';
 import { useModal } from '@/contexts/ModalProvider';
 import { useUserContext } from '@/contexts/UserProvider';
@@ -129,6 +130,8 @@ function Nav() {
               <ProfileIcon size="lg" />
             </Link>
           )}
+          <div className="peer absolute right-0 top-0 h-[5.4rem] w-[3.6rem]"></div>
+          <LogoutDropDown />
         </div>
       </div>
     </div>

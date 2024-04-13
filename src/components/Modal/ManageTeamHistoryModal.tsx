@@ -1,7 +1,7 @@
 import { MEMBER } from '@/constants/Team';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import Dropdown from '../common/Dropdown';
 import Input, { InputValidateMessage } from '../common/Input';
+import SelectBoxDropdown from '../common/SelectBoxDropdown';
 import TextButton from '../common/TextButton';
 import ModalLayout from '../common/modal/ModalLayout';
 import { HttpStatusCode } from 'axios';
@@ -161,7 +161,7 @@ export default function ManageTeamHistoryModal({ me, team, onClose }: ManageTeam
                 name="role"
                 control={control}
                 render={({ field }) => (
-                  <Dropdown
+                  <SelectBoxDropdown
                     options={Object.values(MEMBER.ROLE)}
                     selectedOption={field.value}
                     onSelect={(value) => {
