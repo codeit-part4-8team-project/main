@@ -1,11 +1,19 @@
+import clsx from 'clsx';
+
 interface ItemDropDownProps {
   options: string[];
   action: () => void;
+  className?: string;
 }
 
-export default function ItemDropDown({ options, action }: ItemDropDownProps) {
+export default function ItemDropDown({ options, action, className }: ItemDropDownProps) {
   return (
-    <div className="absolute left-0 top-[2.4rem] z-30 flex w-40 flex-col rounded-[0.6rem] bg-[#FCFCFC] py-[0.4rem] shadow-[0px_0px_10px_0px_rgba(17,17,17,0.05)]">
+    <div
+      className={clsx(
+        'absolute left-0 top-[2.4rem] z-30 flex w-40 flex-col rounded-[0.6rem] bg-[#FCFCFC] py-[0.4rem] shadow-[0px_0px_10px_0px_rgba(17,17,17,0.05)]',
+        className,
+      )}
+    >
       {options.map((option) => {
         return (
           <button
