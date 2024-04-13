@@ -10,7 +10,7 @@ interface FreeBoardDetailProps {
   liked: boolean;
   likeCount: number;
 }
-
+// 나중에 좋아요 버튼 어떻게할지 해결하기
 interface DefalutVauleType {
   author?: Author;
   content?: string;
@@ -25,7 +25,7 @@ export default function FreeBoardDetail({ closeClick, postId }: FreeBoardDetailP
     },
     true,
   );
-
+  
   const { author, content, createdDate }: DefalutVauleType = defaultValue || {};
   const cutDateString = createdDate?.substring(0, 10);
 
