@@ -118,7 +118,7 @@ function Nav() {
           )}
 
           {data && data.imageUrl ? (
-            <Link to={`/user/${user?.id}/mypage`}>
+            <Link to={`/user/${user?.id}/mypage`} className="peer">
               <img
                 className="h-[3.6rem] w-[3.6rem] rounded-full"
                 src={data.imageUrl}
@@ -126,11 +126,11 @@ function Nav() {
               />
             </Link>
           ) : (
-            <Link to={`/user/${user?.id}/mypage`}>
+            <Link to={`/user/${user?.id}/mypage`} className="peer">
               <ProfileIcon size="lg" />
             </Link>
           )}
-          <div className="peer absolute right-0 top-0 h-[5.4rem] w-[3.6rem]"></div>
+          <div className="peer absolute right-0 top-0 -z-10 h-[5.4rem] w-[3.6rem]"></div>
           <LogoutDropDown />
         </div>
       </div>
