@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import TextButton from '@/components/common/TextButton';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
@@ -62,11 +62,12 @@ export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesMod
     assignedMembersUsernames: defaultAssignedMembersUsernames,
     author,
   }: defaultValue = defaultValue || {};
+  console.log(defaultValue);
   const { fetchData: fetchPatchData } = useAxios({});
 
   const [membersList, setMemberList] = useState<MemberListType[]>([]);
 
-  const { register, watch, handleSubmit, getValues, reset } = useForm<Inputs>({
+  const { register, watch, handleSubmit, getValues } = useForm<Inputs>({
     defaultValues: {
       title: defaultTitle,
       content: defaultContent,
@@ -116,9 +117,11 @@ export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesMod
     }
   };
 
-  useEffect(() => {
-    reset();
-  }, [defaultValue]);
+  //임시방편, 나중에 data null 일때 ui 만들기
+  if (!defaultValue) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <ModalLayout
       title="할 일"
@@ -169,9 +172,9 @@ export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesMod
               className={`${inputTextSize} ${borderStyle}`}
             />
           </div>
-          {contentWatch?.length > 20 && (
+          {contentWatch?.length > 40 && (
             <div className="absolute text-point_red">
-              <p>20자 이하로 입력해 주세요.</p>
+              <p>40자 이하로 입력해 주세요.</p>
             </div>
           )}
           {contentWatch ? (

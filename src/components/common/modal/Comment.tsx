@@ -32,9 +32,10 @@ interface DefaultValue {
   content?: ContentType[];
   numberOfElements?: number;
 }
-
+// 나중에 페이지네이션으로 page={number}에 number 값 넣기 2군데임 참고
+// useState사용
 export default function Comment({ postId }: CommentProps) {
-  const { data: defaultValue } = useAxios<DefaultValue>(
+  const { data: defaultValue, fetchData: getAxios } = useAxios<DefaultValue>(
     {
       path: `comment/post/${postId}?page=1`,
     },
@@ -42,7 +43,6 @@ export default function Comment({ postId }: CommentProps) {
   );
 
   const { fetchData: commentFetch } = useAxios({});
-  console.log(defaultValue);
   const { content, numberOfElements }: DefaultValue = defaultValue || {};
 
   const { handleSubmit, register, watch, reset } = useForm<Inputs>({});
@@ -58,13 +58,17 @@ export default function Comment({ postId }: CommentProps) {
   const inputTextSize = 'text-body3-regular';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
 
-  const handleCommentPost = (data: Inputs) => {
-    commentFetch({
+  const handleCommentPost = async (data: Inputs) => {
+    await commentFetch({
       newPath: `comment/post/${postId}`,
       newMethod: 'POST',
       newData: data,
     });
+    getAxios({
+      newPath: `comment/post/${postId}?page=1`,
+    });
   };
+
   return (
     <>
       <div className="border-b-[0.1rem]  border-dashed pb-[2.4rem] text-gray50">
@@ -76,6 +80,7 @@ export default function Comment({ postId }: CommentProps) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-[0.8rem] mt-[2.4rem] flex flex-col gap-[0.8rem]">
           <ModalLabel htmlFor="content" label="댓글" className={`${formTextSize}`} />
+          {/* 요청 보내고 value 값 비우기 */}
           <ModalInput
             hookform={register('content')}
             placeholder="댓글을 입력해 주세요."
