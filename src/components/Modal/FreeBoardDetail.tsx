@@ -1,11 +1,9 @@
 import Comment from '@/components/common/modal/Comment';
-import ModalInput from '@/components/common/modal/ModalInput';
-import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import { useAxios } from '@/hooks/useAxios';
 import { Author } from '@/types/commonTypes';
-import comment from '@/assets/assets/comment.svg';
 
+// 나중에 좋아요 타입 삭제하기
 interface FreeBoardDetailProps {
   closeClick: () => void;
   postId: number;
@@ -19,6 +17,7 @@ interface DefalutVauleType {
   createdDate?: string;
   title?: string;
 }
+
 export default function FreeBoardDetail({ closeClick, postId }: FreeBoardDetailProps) {
   const { data: defaultValue } = useAxios<DefalutVauleType>(
     {
@@ -26,10 +25,7 @@ export default function FreeBoardDetail({ closeClick, postId }: FreeBoardDetailP
     },
     true,
   );
-  const formTextSize = 'text-body3-medium';
-  const inputTextSize = 'text-body3-regular';
-  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
-
+  
   const { author, content, createdDate }: DefalutVauleType = defaultValue || {};
   const cutDateString = createdDate?.substring(0, 10);
 
@@ -48,23 +44,7 @@ export default function FreeBoardDetail({ closeClick, postId }: FreeBoardDetailP
           </div>
         </div>
         <p className="mb-[2.4rem] text-body4-regular">{content}</p>
-        <div className="border-b-[0.1rem]  border-dashed pb-[2.4rem] text-gray50">
-          <div className="flex items-center gap-[0.4rem]">
-            <img src={comment} alt="comment" />
-            <p>2</p>
-          </div>
-        </div>
-        <div className="mb-[0.8rem] mt-[2.4rem] flex flex-col gap-[0.8rem]">
-          <ModalLabel htmlFor="comment" label="댓글" className={`${formTextSize}`} />
-          <ModalInput
-            placeholder="댓글을 입력해 주세요."
-            id="comment"
-            name="comment"
-            className={`${inputTextSize} ${borderStyle}`}
-          />
-        </div>
-        <p className="mb-[2.4rem] flex justify-end text-gray50">0/20</p>
-        <Comment />
+        <Comment postId={postId} />
       </div>
     </ModalLayout>
   );
