@@ -85,14 +85,14 @@ export default function ManageTeamHistoryModal({ me, team, onClose }: ManageTeam
       return defaultInstance.patch(`/team/${team.id}`, { ...team, name });
     };
 
-    // const grade = Object.keys(MEMBER.GRADE).find(
-    //   (key) => MEMBER.GRADE[key as keyof typeof MEMBER.GRADE] === formData.grade,
-    // );
+    const grade = Object.keys(MEMBER.GRADE).find(
+      (key) => MEMBER.GRADE[key as keyof typeof MEMBER.GRADE] === formData.grade,
+    );
     const role = Object.keys(MEMBER.ROLE).find(
       (key) => MEMBER.ROLE[key as keyof typeof MEMBER.ROLE] === formData.role,
     );
     const fetchMyRoleAndGrade = () => {
-      return defaultInstance.patch(`/member/${myId}`, { role });
+      return defaultInstance.patch(`/member/${myId}`, { role, grade });
     };
 
     try {
