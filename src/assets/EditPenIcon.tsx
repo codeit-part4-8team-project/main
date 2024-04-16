@@ -17,7 +17,7 @@ export default function EditPenIcon({ fill, className, onClick, ...props }: Icon
         stroke="#292929"
         stroke-width="1.7"
       />
-      <path d="M13 7L17 11" stroke="#292929" stroke-width="1.7" />
+      <path d="M13 7L17 11" stroke="#292929" strokeWidth="1.7" />
     </svg>
   );
 }
