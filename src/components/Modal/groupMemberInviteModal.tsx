@@ -52,15 +52,14 @@ export default function GroupMemberInviteModal({
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
 
   // 나중에 멤버그걸로 교체
-  const handleMemberCreate = (data: Inputs) => {
-    groupMemberCreate({
+  const handleMemberCreate = async (data: Inputs) => {
+    await groupMemberCreate({
       newPath: `/member/${teamId}`,
       newMethod: 'POST',
       newData: data,
-    }).then(() => {
-      navigate(`/team/${teamId}/member`);
-      window.location.reload();
     });
+    closeClick();
+    navigate(`/team/${teamId}/member`);
   };
 
   const handleGetMembers = async () => {
