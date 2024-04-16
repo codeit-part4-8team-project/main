@@ -57,8 +57,9 @@ function ScheduleModal({
     };
     try {
       await handleScheduleUserFetch(createSchedlue);
-      event?.target.closest('dialog').close();
+      //event?.target.closest('dialog').close();
       window.location.reload();
+      closeClick?.();
     } catch (error) {
       console.error('Failed to add schedule:', error);
       // 실패 처리 로직
@@ -98,7 +99,6 @@ function ScheduleModal({
   };
   const handleEndDateClick = (date: string) => {
     setSelectedEndDate(date);
-
     if (onModalEndDateClick) {
       onModalEndDateClick(date);
     }
@@ -176,11 +176,11 @@ function ScheduleModal({
             endHookform={register('endDateTime')}
             endName="endDateTime"
             onModalStartDateClick={handleStartDateClick}
+            onModalEndDateClick={handleEndDateClick}
             onStartClickTime={handleStartTimeClick}
             onEndClickTime={handleEndTimeClick}
             startValue={selectedStartDate}
             endValue={selectedEndDate}
-            onModalEndDateClick={handleEndDateClick}
           />
         </ModalFormBorder>
         <TextButton buttonSize="md" className="mt-16">

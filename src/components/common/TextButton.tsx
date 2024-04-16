@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   buttonSize: 'sm' | 'md' | 'lg';
-  color?: 'black' | 'white' | 'red' | 'yellow';
+  color?: 'black' | 'white' | 'red' | 'yellow' | 'blue' | 'gray';
   children: ReactNode;
   disabled?: boolean;
   className?: string;
@@ -33,6 +33,8 @@ const TextButton = ({
     'bg-white text-point_red border-solid border-[0.1rem] border-point_red': color === 'red',
     'bg-point_yellow text-[#000000] border-solid border-[0.1rem] border-point_yellow':
       color === 'yellow',
+    'bg-[#292A2D]  text-[#9AB4F2]': color === 'blue',
+    'bg-[#9AB4F2]  text-[#292A2D]': color === 'gray',
   });
 
   return (
