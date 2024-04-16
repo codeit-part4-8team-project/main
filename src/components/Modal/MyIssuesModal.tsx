@@ -78,14 +78,14 @@ export default function MyIssuesModal({
       content: defaultContent,
     },
   });
-  const onSubmit: SubmitHandler<Inputs> = ({ title, content }, event) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content }) => {
     const patchIssue = {
       title: title,
       content: content,
       assignedMembersUsernames: membersList.map((member) => member.username), // 배열 타입에러 자꾸남
     };
     handlePatchIssues(patchIssue);
-    event?.target.closest('dialog').close();
+    closeClick();
   };
 
   const titleWatch = watch('title');
@@ -113,13 +113,15 @@ export default function MyIssuesModal({
     reloadIssueBoard();
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     const confirmDelete = window.confirm('이 이슈를 삭제하시겠습니까?');
     if (confirmDelete) {
-      deleteData({
+      await deleteData({
         newPath: `issue/${issueId}`,
         newMethod: 'DELETE',
       });
+      reloadIssueBoard();
+      closeClick();
     }
   };
 
