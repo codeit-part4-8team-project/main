@@ -1,6 +1,7 @@
 import { MouseEvent, useContext, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import AddScheudleModal from './AddScheduleModal';
+import ScheduleDeleteModal from './ScheduleDeleteModal';
 import { Schedule } from '@/contexts/CalenarProvider';
 import { calendarContext } from '@/contexts/CalenarProvider';
 import { useModal } from '@/contexts/ModalProvider';
@@ -13,8 +14,9 @@ interface AllDayProp {
 }
 
 function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
-  const { nowDate, filteredSchedules } = useContext(calendarContext);
+  const { nowDate, filteredSchedules, teamId } = useContext(calendarContext);
   const [showAllSchedules, setShowAllSchedules] = useState(false);
+  const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(null); // 선택된 스케줄 상태 추가
   const ModalRef = useRef<HTMLDivElement>(null);
   const Container =
     "w-full h-full flex justify-center items-center border-none relative 'last-of-type:rounded-bl-[2.4rem]' ";
@@ -94,6 +96,25 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
       : [];
   }, [filteredSchedules, day]);
 
+  const handleOpenDeleteModal = (schedule: Schedule) => {
+    setSelectedSchedule(schedule);
+
+    if (calendarType === '나') {
+      openModal(({ close }) => (
+        <ScheduleDeleteModal user={true} closeClick={close} selectedSchedule={schedule} />
+      ));
+    } else {
+      openModal(({ close }) => (
+        <ScheduleDeleteModal
+          team={true}
+          closeClick={close}
+          teamId={teamId}
+          selectedSchedule={schedule}
+        />
+      ));
+    }
+  };
+
   const renderSchedules = () => {
     if (filterData.length > 0) {
       const schedulesToRender = showAllSchedules ? filterData : filterData.slice(0, 2);
@@ -109,12 +130,16 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
             <div>
               {calendarType === '나' ? (
                 <>
-                  <p className="text-gray100">{schedule.user?.name || schedule.team?.name}</p>
+                  <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
+                    {schedule.user?.name || schedule.team?.name}
+                  </p>
                   <p className="text-gray50">{schedule.title}</p>
                 </>
               ) : (
                 <>
-                  <p className="text-gray100">{schedule.team?.name}</p>
+                  <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
+                    {schedule.team?.name}
+                  </p>
                   <p className="text-gray50">{schedule.title}</p>
                 </>
               )}
@@ -127,6 +152,7 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
 
   const renderViewMoreButton = () => {
     const filteredSchedulesLength = filterData.length;
+
     const handleViewMoreClick = () => {
       setShowAllSchedules(true);
 
@@ -177,6 +203,7 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
       setShowAllSchedules(false);
     }
   };
+
   return (
     <div>
       {mode === 'month' && (

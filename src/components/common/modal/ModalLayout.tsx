@@ -1,4 +1,9 @@
-import { ReactNode } from 'react';
+import { ReactNode, useContext, useState } from 'react';
+import ScheduleEditModal from '@/components/SchedulesPage/ScheduleEditModal';
+import { Schedule } from '@/contexts/CalenarProvider';
+import { calendarContext } from '@/contexts/CalenarProvider';
+import { useModal } from '@/contexts/ModalProvider';
+import EditPenIcon from '@/assets/EditPenIcon';
 import deleteTrash from '@/assets/assets/Trash.svg';
 import calendar from '@/assets/assets/calendar-dark.svg';
 import close from '@/assets/assets/close.svg';
@@ -11,6 +16,8 @@ interface ModalProps {
   className?: string;
   detail?: boolean;
   deleteOnClick?: () => void;
+  onClick?: () => void;
+  calendarType?: '나' | '팀';
 }
 
 export default function ModalLayout({
@@ -20,7 +27,38 @@ export default function ModalLayout({
   className,
   detail = false,
   deleteOnClick,
+  onClick,
+  calendarType,
 }: ModalProps) {
+  const openModal = useModal();
+  const { teamId } = useContext(calendarContext);
+  const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(null);
+
+  const handleOpenEditModal = (schedule: Schedule | null) => {
+    setSelectedSchedule(schedule);
+    if (!schedule) {
+      console.log(selectedSchedule);
+      return;
+    }
+
+    setSelectedSchedule(schedule);
+    console.log(selectedSchedule);
+    if (calendarType === '나') {
+      openModal(({ close }) => (
+        <ScheduleEditModal user={true} closeClick={close} selectedSchedule={schedule} />
+      ));
+    } else {
+      openModal(({ close }) => (
+        <ScheduleEditModal
+          team={true}
+          closeClick={close}
+          teamId={teamId}
+          selectedSchedule={schedule}
+        />
+      ));
+    }
+  };
+
   return (
     <>
       <div className={`flex flex-col p-16 ${className}`}>
@@ -33,7 +71,8 @@ export default function ModalLayout({
               title === '프로필 변경') && <img src={people} alt="사람들" />}
             {title}
           </div>
-          <div className="flex gap-[1.6rem]">
+
+          <div className="flex gap-[1.6rem]" onClick={onClick}>
             {detail && (
               <button onClick={deleteOnClick}>
                 <img src={deleteTrash} alt="deleteButton" />

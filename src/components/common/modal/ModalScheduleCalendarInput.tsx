@@ -14,8 +14,8 @@ interface ModalCalendarInputProps {
   endValue?: string; // 종료 날짜 값
   onModalStartDateClick?: (date: string) => void;
   onModalEndDateClick?: (date: string) => void;
-  onStartClickTime: (Time: string) => void;
-  onEndClickTime: (Time: string) => void;
+  onStartClickTime?: (Time: string) => void;
+  onEndClickTime?: (Time: string) => void;
 }
 
 export default function ModalScheduleCalendarInput({

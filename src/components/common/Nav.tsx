@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
 import InvitationGroupModal from '../Modal/InvitationGroupModal';
 import LogoutDropDown from './LogoutDropDown';
 import NavModal from './NavModal';
@@ -14,8 +13,6 @@ import KeepyUppyLogo from '@/assets/KeepyUppyLogo';
 import PlusCircleIcon from '@/assets/PlusCircleIcon';
 import ProfileIcon from '@/assets/ProfileIcon';
 import globalLink from '@/assets/assets/globe-dark.svg';
-
-// Modal 컴포넌트를 가져옵니다.
 
 interface UserData {
   id: number;
@@ -39,7 +36,6 @@ function Nav() {
   const [data, setData] = useState<UserData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [alarmData, setAlarmData] = useState<Alarm[]>([]);
-  const { teamId } = useParams();
 
   const openModal = useModal();
   useEffect(() => {
@@ -99,8 +95,7 @@ function Nav() {
             <GroupIcon />
           )}
           {isModalOpen && (
-            // <NavModal onClose={() => setIsModalOpen(false)} onClick={handleModalClick}>
-            <>
+            <NavModal onClose={() => setIsModalOpen(false)}>
               {alarmData.map((alarm, index) => (
                 <div
                   className="w-full border border-gray30 bg-white pb-12 pl-12 pr-[20.9rem] pt-12 shadow-md"
@@ -113,8 +108,7 @@ function Nav() {
                   <div className="text-body4-regular">[{alarm.name}]</div>
                 </div>
               ))}
-            </>
-            // </NavModal>
+            </NavModal>
           )}
 
           {data && data.imageUrl ? (

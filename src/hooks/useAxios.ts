@@ -15,7 +15,6 @@ const authInstance = axios.create({
 
 defaultInstance.interceptors.request.use(
   (req) => {
-    //console.log('axios request config : ', req);
     if (req.data && !(req.data instanceof FormData) && req.data instanceof Object) {
       req.headers['Content-Type'] = 'application/json';
     }
