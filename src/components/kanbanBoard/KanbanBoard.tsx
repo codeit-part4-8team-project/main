@@ -25,7 +25,6 @@ export default function KanbanBoard({
   const openModal = useModal();
 
   const handleModalClick = () => {
-    console.log('버튼클릭은되나?');
     openModal(({ close }) =>
       teamInfo ? (
         <IssuesModal
@@ -35,7 +34,6 @@ export default function KanbanBoard({
           reloadIssueBoard={reloadIssueBoard}
         />
       ) : (
-        // <IssuesModal closeClick={close} />
         <IssuesModal closeClick={close} reloadIssueBoard={reloadIssueBoard} />
       ),
     );
@@ -56,9 +54,24 @@ export default function KanbanBoard({
   return (
     <>
       <div className={clsx('flex gap-[2.4rem]', kanbanBoardClasses)}>
-        <IssueList status="TODO" issues={todoList} team={teamInfo} />
-        <IssueList status="INPROGRESS" issues={progressList} team={teamInfo} />
-        <IssueList status="DONE" issues={doneList} team={teamInfo} />
+        <IssueList
+          status="TODO"
+          issues={todoList}
+          team={teamInfo}
+          reloadIssueBoard={reloadIssueBoard}
+        />
+        <IssueList
+          status="INPROGRESS"
+          issues={progressList}
+          team={teamInfo}
+          reloadIssueBoard={reloadIssueBoard}
+        />
+        <IssueList
+          status="DONE"
+          issues={doneList}
+          team={teamInfo}
+          reloadIssueBoard={reloadIssueBoard}
+        />
       </div>
       {type === 'page' && (
         <TextButton

@@ -9,6 +9,7 @@ export default function TeamIssuesPage() {
   const reloadIssueBoard = () => {
     fetchIssueBoardData();
   };
+
   return (
     <BoardSection title="Kanban board">
       <IssueProvider>

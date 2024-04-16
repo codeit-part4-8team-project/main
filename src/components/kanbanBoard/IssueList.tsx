@@ -9,6 +9,7 @@ interface IssueListProps {
   status: IssueStatus;
   issues: Issue[] | [];
   team?: Team;
+  reloadIssueBoard: () => void;
 }
 
 const TITLE = {
@@ -17,7 +18,7 @@ const TITLE = {
   DONE: '백로그',
 };
 
-export default function IssueList({ status, issues = [], team }: IssueListProps) {
+export default function IssueList({ status, issues = [], team, reloadIssueBoard }: IssueListProps) {
   const { handleOnDrop, handleDragOver } = useIssueContext();
   const { user } = useUserContext();
 
@@ -37,6 +38,7 @@ export default function IssueList({ status, issues = [], team }: IssueListProps)
               issue={issue}
               isMine={user?.username === issue.author.username}
               teamInfo={team}
+              reloadIssueBoard={reloadIssueBoard}
             />
           ))
         ) : (
