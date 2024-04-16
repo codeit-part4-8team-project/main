@@ -11,11 +11,13 @@ import { Issues } from '@/types/issueTypes';
 interface KanbanBoardProps {
   issueBoardData: Issues;
   type: 'main' | 'page';
+  reloadIssueBoard: () => void;
 }
 
 export default function KanbanBoard({
   issueBoardData: { team: teamInfo, todoIssues, progressIssues, doneIssues },
   type,
+  reloadIssueBoard,
 }: KanbanBoardProps) {
   const { todoList, progressList, doneList, setTodoList, setProgressList, setDoneList } =
     useIssueContext();
@@ -23,11 +25,18 @@ export default function KanbanBoard({
   const openModal = useModal();
 
   const handleModalClick = () => {
+    console.log('버튼클릭은되나?');
     openModal(({ close }) =>
       teamInfo ? (
-        <IssuesModal teamId={teamInfo.id} team={teamInfo} closeClick={close} />
+        <IssuesModal
+          teamId={teamInfo.id}
+          team={teamInfo}
+          closeClick={close}
+          reloadIssueBoard={reloadIssueBoard}
+        />
       ) : (
-        <IssuesModal closeClick={close} />
+        // <IssuesModal closeClick={close} />
+        <IssuesModal closeClick={close} reloadIssueBoard={reloadIssueBoard} />
       ),
     );
   };
