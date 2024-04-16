@@ -13,6 +13,10 @@ export default function UserPostsPage() {
 
   const { myTeams } = useMyTeams();
 
+  const reloadPosts = () => {
+    refetch();
+  };
+
   useEffect(() => {
     refetch();
   }, [checkedTeamId]);
@@ -28,7 +32,7 @@ export default function UserPostsPage() {
               setCheckedTeamId={setCheckedTeamId as () => void}
               className="mt-[4.6rem]"
             />
-            <UserPostList posts={dataContent as Post[]} />
+            <UserPostList reloadPosts={reloadPosts} posts={dataContent as Post[]} />
           </div>
           <Pagenation />
         </div>

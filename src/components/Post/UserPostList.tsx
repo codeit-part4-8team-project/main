@@ -7,13 +7,14 @@ import { Post } from '@/types/postTypes';
 
 interface PostListProps {
   posts: Post[] | [];
+  reloadPosts: () => void;
 }
 
-export default function UserPostList({ posts }: PostListProps) {
+export default function UserPostList({ posts, reloadPosts }: PostListProps) {
   const openModal = useModal();
 
   const handleModalClick = () => {
-    openModal(({ close }) => <FreeBoardModal closeClick={close} />);
+    openModal(({ close }) => <FreeBoardModal reloadPosts={reloadPosts} closeClick={close} />);
   };
 
   return (
