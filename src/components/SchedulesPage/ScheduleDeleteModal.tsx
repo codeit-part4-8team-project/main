@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import PopupModal from '../Modal/PopupModal';
 import ScheduleEditModal from './ScheduleEditModal';
@@ -41,20 +41,14 @@ function ScheduleDeleteModal({
   team = false,
   user = false,
   onClick,
-
-  onModalStartDateClick,
   selectedSchedule,
-
   calendarType,
   teamId,
-  onModalEndDateClick,
 }: ScheduleDeleteModalProps) {
   const { fetchData: userFetchData } = useAxios({});
   const { fetchData: teamFetchData } = useAxios({});
   const { user: userInformation } = useUserContext();
-  const [modalClosed, setModalClosed] = useState<boolean>(false);
-  const [selectedStartDate, setSelectedStartDate] = useState<string>('');
-  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
+
   const { register, handleSubmit, watch } = useForm<Inputs>();
 
   const openModal = useModal();
@@ -63,7 +57,6 @@ function ScheduleDeleteModal({
     try {
       await handleScheduleUserFetch(selectedSchedule);
       window.location.reload();
-      setModalClosed(true); // 모달을 닫음
     } catch (error) {
       console.error('Failed to add schedule:', error);
     }
@@ -92,20 +85,6 @@ function ScheduleDeleteModal({
       });
     }
     closeClick?.();
-  };
-
-  const handleStartDateClick = (date: string) => {
-    setSelectedStartDate(date); // 변수와 문자열을 올바르게 결합
-    if (onModalStartDateClick) {
-      onModalStartDateClick(date);
-    }
-  };
-  const handleEndDateClick = (date: string) => {
-    setSelectedEndDate(date);
-
-    if (onModalEndDateClick) {
-      onModalEndDateClick(date);
-    }
   };
 
   useEffect(() => {
@@ -232,19 +211,14 @@ function ScheduleDeleteModal({
               startName="startDateTime"
               endHookform={register('endDateTime')}
               endName="endDateTime"
-              onModalStartDateClick={handleStartDateClick}
-              // onStartClickTime={handleStartTimeClick}
-              // onEndClickTime={handleEndTimeClick}
               startValue={selectedSchedule.startDateTime}
               endValue={selectedSchedule.endDateTime}
-              onModalEndDateClick={handleEndDateClick}
             />
           </ModalFormBorder>
           <TextButton
             buttonSize="md"
             className="mt-16 text-body4-bold text-point_red"
             color="white"
-            // onClick={() => handleScheduleUserFetch(selectedSchedule)}
             onClick={handleOpenPopupModal}
           >
             일정 삭제

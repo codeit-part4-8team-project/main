@@ -7,7 +7,6 @@ import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalScheduleCalendarInput from '@/components/common/modal/ModalScheduleCalendarInput';
 import { Schedule } from '@/contexts/CalenarProvider';
-import { useModal } from '@/contexts/ModalProvider';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 
@@ -29,16 +28,14 @@ type Inputs = {
   endDateTime: string;
   content: string;
 };
-// 여기는 user인지 team인지 구분이 필요함
-// 합칠때 teamId 에러가 계속 떠서 일단 기본값 넣어줌
+
 function ScheduleEditModal({
   closeClick,
   team = false,
   user = false,
-  onClick,
-
-  onModalStartDateClick,
   selectedSchedule,
+  onClick,
+  onModalStartDateClick,
   onModalEndDateClick,
 }: ScheduleEditModalProps) {
   const [formData, setFormData] = useState<Inputs>({
@@ -50,80 +47,116 @@ function ScheduleEditModal({
   const { fetchData: userFetchData } = useAxios({});
   const { fetchData: teamFetchData } = useAxios({});
   const { user: userInformation } = useUserContext();
-  const [modalClosed, setModalClosed] = useState<boolean>(false);
-  const [selectedStartDate, setSelectedStartDate] = useState<string>('');
-  const [selectedEndDate, setSelectedEndDate] = useState<string>('');
+  const [selectedStartDate, setSelectedStartDate] = useState<string>(
+    selectedSchedule.startDateTime,
+  );
+  const [selectedEndDate, setSelectedEndDate] = useState<string>(selectedSchedule.endDateTime);
+  const [selectedStartTime, setSelectedStartTime] = useState<string>('');
+  const [selectedEndTime, setSelectedEndTime] = useState<string>('');
   const [startTimeData, setStartTimeData] = useState<string>('');
   const [endTimeData, setEndTimeData] = useState<string>('');
-  const { register, handleSubmit, watch } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log('Submitted data:', data);
-    try {
-      await handleScheduleUserFetch(data);
-      window.location.reload();
-      setModalClosed(true); // 모달을 닫음
-    } catch (error) {
-      console.error('Failed to add schedule:', error);
-    }
-  };
+  const { register, handleSubmit, watch } = useForm<Inputs>();
   const titleWatch = watch('title');
   const contentWatch = watch('content');
 
-  const formTextSize = 'text-body3-medium';
-  const inputTextSize = 'text-body3-regular';
-  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
-  const InputValueLength = 'mb-[0.9rem] flex justify-end text-gray50';
-
-  const handleScheduleUserFetch = (data: Inputs) => {
-    if (user) {
-      userFetchData({
-        newPath: `schedule/${selectedSchedule.id}`,
-        newMethod: 'PATCH',
-        newData: data,
-      });
-    } else if (team) {
-      teamFetchData({
-        newPath: `schedule/${selectedSchedule.id}`,
-        newMethod: 'PATCH',
-        newData: data,
-      });
-    }
-    closeClick?.();
-  };
   useEffect(() => {
     if (selectedSchedule) {
       setSelectedStartDate(selectedSchedule.startDateTime);
       setSelectedEndDate(selectedSchedule.endDateTime);
     }
   }, [selectedSchedule]);
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      startDateTime: selectedStartDate + ' ' + selectedStartTime,
+      endDateTime: selectedEndDate + ' ' + selectedEndTime,
+    }));
+  }, [
+    selectedStartDate,
+    selectedStartTime,
+    selectedEndDate,
+    selectedEndTime,
+    startTimeData,
+    endTimeData,
+  ]);
+
+  const onSubmit: SubmitHandler<Inputs> = async () => {
+    try {
+      await handleScheduleUserFetch();
+      window.location.reload();
+      closeClick?.();
+    } catch (error) {
+      console.error('Failed to add schedule:', error);
+    }
+  };
+
   const handleStartDateClick = (date: string) => {
-    setSelectedStartDate(date); // 변수와 문자열을 올바르게 결합
+    setSelectedStartDate(date);
     if (onModalStartDateClick) {
       onModalStartDateClick(date);
     }
   };
+
   const handleEndDateClick = (date: string) => {
     setSelectedEndDate(date);
-
     if (onModalEndDateClick) {
       onModalEndDateClick(date);
     }
   };
+
   const handleStartTimeClick = (Time: string) => {
-    console.log('data', Time);
     setStartTimeData(Time);
+    setSelectedStartTime(Time);
     setSelectedStartDate(selectedStartDate + ' ' + Time);
   };
+
   const handleEndTimeClick = (Time: string) => {
-    console.log('data', Time);
     setEndTimeData(Time);
+    setSelectedEndTime(Time);
     setSelectedEndDate(selectedEndDate + ' ' + Time);
   };
-  useEffect(() => {
-    userFetchData;
-  }, [selectedSchedule]);
 
+  const handleStartDateChange = (date: string) => {
+    setSelectedStartDate(date);
+    setFormData((prevData) => ({
+      ...prevData,
+      startDateTime: date + ' ' + selectedStartTime,
+    }));
+  };
+
+  const handleEndDateChange = (date: string) => {
+    setSelectedEndDate(date);
+    setFormData((prevData) => ({
+      ...prevData,
+      endDateTime: date + ' ' + selectedEndTime,
+    }));
+  };
+
+  const handleScheduleUserFetch = () => {
+    const data = {
+      title: formData.title,
+      startDateTime: formData.startDateTime,
+      endDateTime: formData.endDateTime,
+      content: formData.content,
+    };
+    console.log('Data to be sent:', data);
+    if (user) {
+      userFetchData({
+        newPath: `schedule/${selectedSchedule.id}`,
+        newMethod: 'PATCH',
+        newData: formData,
+      });
+    } else if (team) {
+      teamFetchData({
+        newPath: `schedule/${selectedSchedule.id}`,
+        newMethod: 'PATCH',
+        newData: formData,
+      });
+    }
+    closeClick?.();
+  };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -131,6 +164,10 @@ function ScheduleEditModal({
       [name]: value,
     }));
   };
+  const formTextSize = 'text-body3-medium';
+  const inputTextSize = 'text-body3-regular';
+  const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
+  const InputValueLength = 'mb-[0.9rem] flex justify-end text-gray50';
 
   return (
     <>
@@ -154,8 +191,8 @@ function ScheduleEditModal({
                 id="title"
                 type="text"
                 name="title"
-                defaultValue={formData.title}
-                //onChange={handleInputChange}
+                value={formData.title}
+                onChange={handleInputChange}
               />
             </div>
             {titleWatch?.length > 20 && (
@@ -177,9 +214,8 @@ function ScheduleEditModal({
                 id="content"
                 type="text"
                 name="content"
-                defaultValue={formData.content}
-                //value={formData.content}
-                //onChange={handleInputChange}
+                value={formData.content}
+                onChange={handleInputChange}
               />
             </div>
             {contentWatch?.length > 40 && (
@@ -201,8 +237,10 @@ function ScheduleEditModal({
               onModalStartDateClick={handleStartDateClick}
               onStartClickTime={handleStartTimeClick}
               onEndClickTime={handleEndTimeClick}
-              startValue={selectedSchedule.startDateTime}
-              endValue={selectedSchedule.endDateTime}
+              startValue={selectedStartDate}
+              onStartDateChange={handleStartDateChange}
+              onEndDateChange={handleEndDateChange}
+              endValue={selectedEndDate}
               onModalEndDateClick={handleEndDateClick}
             />
           </ModalFormBorder>
@@ -210,7 +248,7 @@ function ScheduleEditModal({
             buttonSize="md"
             className="mt-16 text-body4-bold text-point_red"
             color="black"
-            onClick={() => handleScheduleUserFetch(selectedSchedule)}
+            onClick={() => handleScheduleUserFetch()}
           >
             수정완료
           </TextButton>

@@ -1,9 +1,4 @@
-import { ReactNode, useContext, useState } from 'react';
-import ScheduleEditModal from '@/components/SchedulesPage/ScheduleEditModal';
-import { Schedule } from '@/contexts/CalenarProvider';
-import { calendarContext } from '@/contexts/CalenarProvider';
-import { useModal } from '@/contexts/ModalProvider';
-import EditPenIcon from '@/assets/EditPenIcon';
+import { ReactNode } from 'react';
 import deleteTrash from '@/assets/assets/Trash.svg';
 import calendar from '@/assets/assets/calendar-dark.svg';
 import close from '@/assets/assets/close.svg';
@@ -28,37 +23,7 @@ export default function ModalLayout({
   detail = false,
   deleteOnClick,
   onClick,
-  calendarType,
 }: ModalProps) {
-  const openModal = useModal();
-  const { teamId } = useContext(calendarContext);
-  const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(null);
-
-  const handleOpenEditModal = (schedule: Schedule | null) => {
-    setSelectedSchedule(schedule);
-    if (!schedule) {
-      console.log(selectedSchedule);
-      return;
-    }
-
-    setSelectedSchedule(schedule);
-    console.log(selectedSchedule);
-    if (calendarType === '나') {
-      openModal(({ close }) => (
-        <ScheduleEditModal user={true} closeClick={close} selectedSchedule={schedule} />
-      ));
-    } else {
-      openModal(({ close }) => (
-        <ScheduleEditModal
-          team={true}
-          closeClick={close}
-          teamId={teamId}
-          selectedSchedule={schedule}
-        />
-      ));
-    }
-  };
-
   return (
     <>
       <div className={`flex flex-col p-16 ${className}`}>

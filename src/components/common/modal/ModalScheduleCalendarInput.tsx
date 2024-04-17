@@ -12,6 +12,8 @@ interface ModalCalendarInputProps {
   endName: string;
   startValue?: string; // 시작 날짜 값
   endValue?: string; // 종료 날짜 값
+  onStartDateChange?: (date: string) => void; // 추가: 시작일 변경 시 호출될 함수
+  onEndDateChange?: (date: string) => void;
   onModalStartDateClick?: (date: string) => void;
   onModalEndDateClick?: (date: string) => void;
   onStartClickTime?: (Time: string) => void;
@@ -25,6 +27,8 @@ export default function ModalScheduleCalendarInput({
   endName,
   startValue,
   endValue,
+  onStartDateChange,
+  onEndDateChange,
   onModalStartDateClick,
   onModalEndDateClick,
   onStartClickTime,
@@ -50,7 +54,14 @@ export default function ModalScheduleCalendarInput({
   const handleEndDateClickOutside = (e: MouseEvent) => {
     if (!endDateToggleRef.current?.contains(e.target as Node)) setEndDateToggle(false);
   };
+  const handleStartDateChange = (date: string) => {
+    onStartDateChange?.(date); // 부모 컴포넌트로 시작일 변경을 알림
+  };
 
+  // 종료일 선택이 변경될 때 호출되는 함수
+  const handleEndDateChange = (date: string) => {
+    onEndDateChange?.(date); // 부모 컴포넌트로 종료일 변경을 알림
+  };
   useEffect(() => {
     if (startDateToggle) {
       document.addEventListener('mousedown', handleStartDateClickOutside);
@@ -85,6 +96,7 @@ export default function ModalScheduleCalendarInput({
           placeholder="날짜를 설정해 주세요."
           onModalDateClick={onModalStartDateClick}
           value={startValue}
+          onChange={handleStartDateChange}
         >
           <button
             className="absolute bottom-0 right-[1.8rem] top-0"
@@ -117,6 +129,7 @@ export default function ModalScheduleCalendarInput({
           placeholder="날짜를 설정해 주세요."
           onModalDateClick={onModalEndDateClick}
           value={endValue}
+          onChange={handleEndDateChange}
         >
           <button
             className="absolute bottom-0 right-[1.8rem] top-0"
