@@ -10,6 +10,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   disabled?: boolean;
   className?: string;
+  onClick?: () => any; //빌드 오류나서 일단 바꿔놓음
 }
 
 const TextButton = ({
@@ -39,8 +40,8 @@ const TextButton = ({
 
   return (
     <button
-      disabled={disabled}
       onClick={onClick}
+      disabled={disabled}
       className={clsx(
         'flex max-h-[4.6rem] items-center justify-center rounded-[0.6rem] font-bold disabled:bg-gray30',
         colorClasses,

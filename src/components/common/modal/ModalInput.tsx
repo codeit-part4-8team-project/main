@@ -10,10 +10,10 @@ interface ModalInputProps {
   // hookform?: UseFormRegister<string> | undefined; 타입을 모르것네
   children?: ReactNode;
   defaultValue?: string;
-  ref?: any;
   value?: string;
   disabled?: ReactNode;
   onModalDateClick?: (date: string) => void;
+  onChange?: any;
 }
 
 export default function ModalInput({
@@ -22,10 +22,10 @@ export default function ModalInput({
   id,
   type,
   name,
-  ref,
+
   hookform,
   children,
-
+  onChange,
   defaultValue,
   disabled,
   value,
@@ -45,8 +45,7 @@ export default function ModalInput({
           type={type}
           value={value}
           disabled={disabled}
-          // onChange={onChange}
-          ref={ref}
+          onChange={onChange}
         />
         {children}
       </div>

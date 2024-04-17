@@ -16,7 +16,6 @@ interface AllDayProp {
 function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
   const { nowDate, filteredSchedules, teamId } = useContext(calendarContext);
   const [showAllSchedules, setShowAllSchedules] = useState(false);
-  const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(null); // 선택된 스케줄 상태 추가
   const ModalRef = useRef<HTMLDivElement>(null);
   const Container =
     "w-full h-full flex justify-center items-center border-none relative 'last-of-type:rounded-bl-[2.4rem]' ";
@@ -24,10 +23,10 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
   const today = new Date();
 
   const notTodayStyle = 'text-gray50 ';
-  // 오늘 날짜에 대한 스타일 클래스 결정
+
   let todayClass = '';
   if (day.getDate() === today.getDate() && day.getMonth() === today.getMonth()) {
-    todayClass = 'text-gray100'; // 배경색 스타일을 직접 지정
+    todayClass = 'text-gray100';
   }
   let notTodayClass = '';
   if (day.getDate() !== today.getDate()) {
@@ -38,8 +37,8 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
     'text-gray30':
       day.getMonth() !== nowDate.getMonth() || day.getFullYear() !== nowDate.getFullYear(),
   });
-  const numColumns = 7; // 그리드의 총 열 수 (일주일의 일수에 따라 달라질 수 있음)
-  const columnIndex = day.getDay(); // 현재 요일의 열 인덱스 (0부터 시작)
+  const numColumns = 7;
+  const columnIndex = day.getDay();
   const isLastColumn = columnIndex === numColumns - 1;
   const daysInNextMonth = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 0).getDate(); //이전달의 첫번째 날
   const currentDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 1).getDate(); //현재 달의 일수
@@ -97,8 +96,6 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
   }, [filteredSchedules, day]);
 
   const handleOpenDeleteModal = (schedule: Schedule) => {
-    setSelectedSchedule(schedule);
-
     if (calendarType === '나') {
       openModal(({ close }) => (
         <ScheduleDeleteModal user={true} closeClick={close} selectedSchedule={schedule} />
