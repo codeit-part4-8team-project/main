@@ -5,25 +5,32 @@ import TextButton from '@/components/common/TextButton';
 import AnnouncementModal from '@/components/Modal/AnnouncementModal';
 import AnnouncementItem from '@/components/announcement/AnnouncementItem';
 import { useModal } from '@/contexts/ModalProvider';
-import { useTeam } from '@/contexts/TeamProvider';
 import { Announcement } from '@/types/announcementTypes';
 
 interface AnnouncementPageListProps {
   announcements: Announcement[] | [];
+  reloadAnnouncements: () => void;
 }
 
 /* 팀의 공지사항 페이지에서 사용하는 공지글 리스트 */
-export default function AnnouncementPageList({ announcements }: AnnouncementPageListProps) {
+export default function AnnouncementPageList({
+  announcements,
+  reloadAnnouncements,
+}: AnnouncementPageListProps) {
   const { teamId } = useParams();
 
   if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
 
-  const { team } = useTeam(teamId);
-
   const openModal = useModal();
 
   const handleModalClick = () => {
-    openModal(({ close }) => <AnnouncementModal closeClick={close} teamId={Number(teamId)} />);
+    openModal(({ close }) => (
+      <AnnouncementModal
+        reloadAnnouncements={reloadAnnouncements}
+        closeClick={close}
+        teamId={Number(teamId)}
+      />
+    ));
   };
 
   return (
@@ -38,7 +45,7 @@ export default function AnnouncementPageList({ announcements }: AnnouncementPage
             {announcements.map((announcement) => {
               return (
                 <li key={announcement.id}>
-                  <AnnouncementItem announcement={announcement} type="page" team={team} />
+                  <AnnouncementItem announcement={announcement} type="page" />
                 </li>
               );
             })}

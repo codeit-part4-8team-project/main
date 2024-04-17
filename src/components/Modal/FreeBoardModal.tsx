@@ -16,6 +16,7 @@ interface Inputs {
 }
 
 interface FreeBoardModalProps {
+  reloadPosts: () => void;
   closeClick: () => void;
   teamId?: string;
   team?: Team;
@@ -28,7 +29,12 @@ interface groupDataType {
   color: string;
 }
 // 여기도 합칠때 지우기 에러
-export default function FreeBoardModal({ closeClick, teamId, team }: FreeBoardModalProps) {
+export default function FreeBoardModal({
+  reloadPosts,
+  closeClick,
+  teamId,
+  team,
+}: FreeBoardModalProps) {
   const { fetchData: freeBoardFetchData } = useAxios({});
   const { register, watch, handleSubmit } = useForm<Inputs>();
   const { user } = useUserContext();
@@ -44,19 +50,21 @@ export default function FreeBoardModal({ closeClick, teamId, team }: FreeBoardMo
     event?.target.closest('dialog').close();
   };
 
-  const handlePostFreeBoard = (data: Inputs) => {
+  const handlePostFreeBoard = async (data: Inputs) => {
     if (teamId) {
-      freeBoardFetchData({
+      await freeBoardFetchData({
         newPath: `post/${teamId}`,
         newMethod: 'POST',
         newData: data,
-      }).then(() => window.location.reload());
+      });
+      reloadPosts();
     } else if (!teamId) {
-      freeBoardFetchData({
+      await freeBoardFetchData({
         newPath: `post/${groupClickData?.id}`,
         newMethod: 'POST',
         newData: data,
-      }).then(() => window.location.reload());
+      });
+      reloadPosts();
     }
   };
 

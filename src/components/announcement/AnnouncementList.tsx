@@ -1,16 +1,14 @@
 import NoCard from '@/components/common/NoCard';
 import AnnouncementItem from '@/components/announcement/AnnouncementItem';
 import { Announcement } from '@/types/announcementTypes';
-import { Team } from '@/types/teamTypes';
 import MegaphoneIcon from '@/assets/MegaphoneIcon';
 
 interface AnnouncementListProps {
   announcements: Announcement[];
-  team?: Team;
 }
 
 /* 유저/팀의 대시보드 페이지에서 사용하는 공지글 리스트 */
-export default function AnnouncementList({ announcements, team }: AnnouncementListProps) {
+export default function AnnouncementList({ announcements }: AnnouncementListProps) {
   return (
     <div className="row-span-2 mt-[3.6rem] flex h-full w-full flex-col gap-[2.6rem]">
       <div className="flex gap-4">
@@ -26,7 +24,7 @@ export default function AnnouncementList({ announcements, team }: AnnouncementLi
             {announcements.map((announcement) => {
               return (
                 <li key={announcement.id}>
-                  <AnnouncementItem announcement={announcement} type="main" team={team} />
+                  <AnnouncementItem announcement={announcement} type="main" />
                 </li>
               );
             })}

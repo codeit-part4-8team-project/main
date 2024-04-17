@@ -11,6 +11,7 @@ import { Author } from '@/types/commonTypes';
 
 interface IssuesModalProps {
   closeClick: () => void;
+  reloadIssueBoard: () => void;
   issueId: number;
   teamId: number;
 }
@@ -47,7 +48,12 @@ interface defaultValue {
   author?: Author;
 }
 // 여기도 합칠때 지우기 에러
-export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesModalProps) {
+export default function MyIssuesModal({
+  closeClick,
+  reloadIssueBoard,
+  issueId,
+  teamId,
+}: IssuesModalProps) {
   const { data: defaultValue } = useAxios(
     {
       path: `issue/${issueId}`,
@@ -62,7 +68,6 @@ export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesMod
     assignedMembersUsernames: defaultAssignedMembersUsernames,
     author,
   }: defaultValue = defaultValue || {};
-  console.log(defaultValue);
   const { fetchData: fetchPatchData } = useAxios({});
 
   const [membersList, setMemberList] = useState<MemberListType[]>([]);
@@ -73,14 +78,14 @@ export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesMod
       content: defaultContent,
     },
   });
-  const onSubmit: SubmitHandler<Inputs> = ({ title, content }, event) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content }) => {
     const patchIssue = {
       title: title,
       content: content,
       assignedMembersUsernames: membersList.map((member) => member.username), // 배열 타입에러 자꾸남
     };
     handlePatchIssues(patchIssue);
-    event?.target.closest('dialog').close();
+    closeClick();
   };
 
   const titleWatch = watch('title');
@@ -99,21 +104,24 @@ export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesMod
     }
   };
 
-  const handlePatchIssues = (data: Inputs) => {
-    fetchPatchData({
+  const handlePatchIssues = async (data: Inputs) => {
+    await fetchPatchData({
       newPath: `/issue/${issueId}`,
       newMethod: 'PATCH',
       newData: data,
     });
+    reloadIssueBoard();
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     const confirmDelete = window.confirm('이 이슈를 삭제하시겠습니까?');
     if (confirmDelete) {
-      deleteData({
+      await deleteData({
         newPath: `issue/${issueId}`,
         newMethod: 'DELETE',
       });
+      reloadIssueBoard();
+      closeClick();
     }
   };
 

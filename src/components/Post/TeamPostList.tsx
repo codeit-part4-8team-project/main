@@ -9,9 +9,10 @@ import { Post } from '@/types/postTypes';
 
 interface PostListProps {
   posts: Post[] | [];
+  reloadPosts: () => void;
 }
 
-export default function TeamPostList({ posts }: PostListProps) {
+export default function TeamPostList({ posts, reloadPosts }: PostListProps) {
   const { teamId } = useParams();
 
   if (!teamId) throw Error('팀 페이지가 아닙니다.');
@@ -21,7 +22,9 @@ export default function TeamPostList({ posts }: PostListProps) {
   const openModal = useModal();
 
   const handleModalClick = () => {
-    openModal(({ close }) => <FreeBoardModal teamId={teamId} team={team} closeClick={close} />);
+    openModal(({ close }) => (
+      <FreeBoardModal reloadPosts={reloadPosts} teamId={teamId} team={team} closeClick={close} />
+    ));
   };
 
   return (

@@ -19,6 +19,10 @@ export default function TeamMainPage() {
   const { issueBoardData, fetchIssueBoardData } = useIssueBoard();
   const { announcementData, fetchAnnouncementData } = useAnnouncement();
 
+  const reloadIssueBoard = () => {
+    fetchIssueBoardData();
+  };
+
   useEffect(() => {
     fetchAnnouncementData();
     fetchIssueBoardData();
@@ -37,7 +41,11 @@ export default function TeamMainPage() {
           title="Kanban board"
           content={
             <IssueProvider>
-              <KanbanBoard issueBoardData={issueBoardData} type="main" />
+              <KanbanBoard
+                reloadIssueBoard={reloadIssueBoard}
+                issueBoardData={issueBoardData}
+                type="main"
+              />
             </IssueProvider>
           }
         />
