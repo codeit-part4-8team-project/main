@@ -1,0 +1,42 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Rammetto+One&display=swap'); */
+@import './fonts.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  font-family:
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    'Helvetica Neue',
+    'Segoe UI',
+    'Apple SD Gothic Neo',
+    'Noto Sans KR',
+    'Malgun Gothic',
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    sans-serif;
+  -ms-overflow-style: none;
+  font-size: 62.5%;
+  margin: 0;
+}
+
+body ::-webkit-scrollbar {
+  display: none;
+}
+
+@layer components {
+  ._pos-center {
+    @apply left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4;
+  }
+}
