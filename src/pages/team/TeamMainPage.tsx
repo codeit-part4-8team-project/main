@@ -6,7 +6,6 @@ import MainSchedules from '@/components/MainPage/MainSchedules';
 import AnnouncementList from '@/components/announcement/AnnouncementList';
 import KanbanBoard from '@/components/kanbanBoard/KanbanBoard';
 import { IssueProvider } from '@/contexts/IssueProvider';
-import { useTeam } from '@/contexts/TeamProvider';
 import { useAnnouncement } from '@/hooks/useAnnouncement';
 import { useIssueBoard } from '@/hooks/useIssue';
 
@@ -15,7 +14,6 @@ export default function TeamMainPage() {
 
   if (!teamId) throw Error('해당 팀 ID가 존재하지 않습니다.');
 
-  const { team } = useTeam(teamId);
   const { issueBoardData, fetchIssueBoardData } = useIssueBoard();
   const { announcementData, fetchAnnouncementData } = useAnnouncement();
 
@@ -36,7 +34,7 @@ export default function TeamMainPage() {
           mode="week"
           content={<MainSchedules teamId={Number(teamId)} calendarType="팀" />}
         />
-        <AnnouncementList announcements={announcementData} team={team} />
+        <AnnouncementList announcements={announcementData} />
         <BoardSection
           title="Kanban board"
           content={

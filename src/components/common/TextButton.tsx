@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { ButtonHTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 import clsx from 'clsx';
 
 //사이즈 컬러 별로 분기, classname 받아서 부모에서 스타일 추가 가능하도록
@@ -10,7 +10,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   disabled?: boolean;
   className?: string;
-  onClick?: () => any; //빌드 오류나서 일단 바꿔놓음
+  onClick?: MouseEventHandler<HTMLButtonElement>; //빌드 오류나서 일단 바꿔놓음
 }
 
 const TextButton = ({
