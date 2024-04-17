@@ -12,12 +12,14 @@ interface IssueItemProps {
   issue: Issue;
   isMine: boolean;
   teamInfo?: Team;
+  reloadIssueBoard: () => void;
 }
 
 export default function IssueItem({
   issue: { id, title, content, team, assignedMembers },
   isMine,
   teamInfo,
+  reloadIssueBoard,
 }: IssueItemProps) {
   if (teamInfo) team = teamInfo;
 
@@ -36,7 +38,12 @@ export default function IssueItem({
   const handleModalClick = () => {
     openModal(({ close }) =>
       isMine ? (
-        <MyIssuesModal closeClick={close} issueId={id} teamId={teamId} />
+        <MyIssuesModal
+          closeClick={close}
+          reloadIssueBoard={reloadIssueBoard}
+          issueId={id}
+          teamId={teamId}
+        />
       ) : (
         <NotMeIssuesModal closeClick={close} issueId={id} />
       ),

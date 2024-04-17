@@ -11,6 +11,8 @@ interface ModalProps {
   className?: string;
   detail?: boolean;
   deleteOnClick?: () => void;
+  onClick?: () => void;
+  calendarType?: '나' | '팀';
 }
 
 export default function ModalLayout({
@@ -20,6 +22,7 @@ export default function ModalLayout({
   className,
   detail = false,
   deleteOnClick,
+  onClick,
 }: ModalProps) {
   return (
     <>
@@ -33,7 +36,8 @@ export default function ModalLayout({
               title === '프로필 변경') && <img src={people} alt="사람들" />}
             {title}
           </div>
-          <div className="flex gap-[1.6rem]">
+
+          <div className="flex gap-[1.6rem]" onClick={onClick}>
             {detail && (
               <button onClick={deleteOnClick}>
                 <img src={deleteTrash} alt="deleteButton" />

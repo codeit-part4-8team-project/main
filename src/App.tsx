@@ -1,11 +1,11 @@
 import { Suspense, lazy } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import EntrancePageLayout from './components/common/EntrancePageLayout';
 import PrivateRoutes from './routes/PrivateRoutes';
 import UserPageLayout from '@/components/common/UserPageLayout';
 import TeamPageLayout from '@/components/TeamsPage/TeamPageLayout';
 import { CalendarProvider } from '@/contexts/CalenarProvider';
 import { ModalProvider } from '@/contexts/ModalProvider';
-import { StepProvider } from '@/contexts/SignupStepProvider';
 import { UserProvider } from '@/contexts/UserProvider';
 
 const HomePage = lazy(() => import('@/pages/HomePage'));
@@ -23,18 +23,13 @@ function App() {
           <ModalProvider>
             <Router>
               <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/signin" element={<SigninPage />} />
                 <Route path="/login/oauth2/code/:provider" element={<OauthRedirectPage />} />
-                <Route element={<PrivateRoutes />}>
-                  <Route
-                    path="/signup"
-                    element={
-                      <StepProvider>
-                        <SignupPage />
-                      </StepProvider>
-                    }
-                  />
+                <Route path="/" element={<HomePage />} />
+                <Route element={<EntrancePageLayout />}>
+                  <Route path="/signin" element={<SigninPage />} />
+                  <Route element={<PrivateRoutes />}>
+                    <Route path="/signup" element={<SignupPage />} />
+                  </Route>
                 </Route>
                 <Route element={<PrivateRoutes />}>
                   <Route path="/user/:userId" element={<UserPageLayout />}>

@@ -10,8 +10,12 @@ import { useIssueBoard } from '@/hooks/useIssue';
 
 export default function UserMainPage() {
   const { userId } = useParams();
-  const { issueBoardData } = useIssueBoard();
+  const { issueBoardData, fetchIssueBoardData } = useIssueBoard();
   const { announcementData } = useAnnouncement();
+
+  const reloadIssueBoard = () => {
+    fetchIssueBoardData();
+  };
 
   return (
     <>
@@ -26,7 +30,11 @@ export default function UserMainPage() {
           title="Kanban board"
           content={
             <IssueProvider>
-              <KanbanBoard issueBoardData={issueBoardData} type="main" />
+              <KanbanBoard
+                reloadIssueBoard={reloadIssueBoard}
+                issueBoardData={issueBoardData}
+                type="main"
+              />
             </IssueProvider>
           }
         />

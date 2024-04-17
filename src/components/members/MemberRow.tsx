@@ -2,7 +2,7 @@ import { MEMBER } from '@/constants/Team';
 import { useRef } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import Dropdown from '../common/Dropdown';
+import SelectBoxDropdown from '../common/SelectBoxDropdown';
 import TextButton from '../common/TextButton';
 import { prefixingUsername } from '@/lib/prefixingUsername';
 import { defaultInstance } from '@/hooks/useAxios';
@@ -72,7 +72,7 @@ export default function MemberRow({
             name={String(id)}
             control={control}
             render={({ field }) => (
-              <Dropdown
+              <SelectBoxDropdown
                 options={Object.values(editableGradeOption)}
                 initialOption={MEMBER.GRADE[grade]}
                 selectedOption={field.value}

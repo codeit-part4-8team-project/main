@@ -11,7 +11,9 @@ interface ModalInputProps {
   children?: ReactNode;
   defaultValue?: string;
   value?: string;
+  disabled?: ReactNode;
   onModalDateClick?: (date: string) => void;
+  onChange?: any;
 }
 
 export default function ModalInput({
@@ -20,12 +22,16 @@ export default function ModalInput({
   id,
   type,
   name,
+
   hookform,
   children,
+  onChange,
   defaultValue,
+  disabled,
   value,
 }: ModalInputProps) {
   const inputSize = ' px-[1.8rem] py-[1.2rem] w-full';
+
   return (
     <>
       <div className="relative w-full">
@@ -38,6 +44,8 @@ export default function ModalInput({
           id={id}
           type={type}
           value={value}
+          disabled={disabled}
+          onChange={onChange}
         />
         {children}
       </div>

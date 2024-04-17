@@ -15,6 +15,10 @@ export default function UserIssuesPage() {
 
   const { myTeams } = useMyTeams();
 
+  const reloadIssueBoard = () => {
+    fetchIssueBoardData();
+  };
+
   useEffect(() => {
     fetchIssueBoardData();
   }, [checkedTeamId]);
@@ -28,7 +32,11 @@ export default function UserIssuesPage() {
           setCheckedTeamId={setCheckedTeamId}
           className="absolute z-40 mr-[7.4rem]"
         />
-        <KanbanBoard issueBoardData={issueBoardData} type="page" />
+        <KanbanBoard
+          issueBoardData={issueBoardData}
+          type="page"
+          reloadIssueBoard={reloadIssueBoard}
+        />
       </IssueProvider>
     </BoardSection>
   );

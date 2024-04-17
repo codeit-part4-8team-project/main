@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
 import InvitationGroupModal from '../Modal/InvitationGroupModal';
+import LogoutDropDown from './LogoutDropDown';
 import NavModal from './NavModal';
 import { useModal } from '@/contexts/ModalProvider';
 import { useUserContext } from '@/contexts/UserProvider';
@@ -13,8 +13,6 @@ import KeepyUppyLogo from '@/assets/KeepyUppyLogo';
 import PlusCircleIcon from '@/assets/PlusCircleIcon';
 import ProfileIcon from '@/assets/ProfileIcon';
 import globalLink from '@/assets/assets/globe-dark.svg';
-
-// Modal 컴포넌트를 가져옵니다.
 
 interface UserData {
   id: number;
@@ -38,7 +36,6 @@ function Nav() {
   const [data, setData] = useState<UserData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [alarmData, setAlarmData] = useState<Alarm[]>([]);
-  const { teamId } = useParams();
 
   const openModal = useModal();
   useEffect(() => {
@@ -66,8 +63,8 @@ function Nav() {
         console.error('Error fetching data:', error);
       });
   }, []);
-  const handleModalClick = () => {
-    openModal(({ close }) => <InvitationGroupModal teamId={teamId || ''} closeClick={close} />);
+  const handleModalClick = (data: number) => {
+    openModal(({ close }) => <InvitationGroupModal teamId={data} closeClick={close} />);
   };
 
   return (
@@ -98,11 +95,12 @@ function Nav() {
             <GroupIcon />
           )}
           {isModalOpen && (
-            <NavModal onClose={() => setIsModalOpen(false)} onClick={handleModalClick}>
+            <NavModal onClose={() => setIsModalOpen(false)}>
               {alarmData.map((alarm, index) => (
                 <div
                   className="w-full border border-gray30 bg-white pb-12 pl-12 pr-[20.9rem] pt-12 shadow-md"
                   key={index}
+                  onClick={() => handleModalClick(alarm?.id)}
                 >
                   <div className="whitespace-nowrap text-body4-bold">
                     그룹 초대장이 도착했습니다
@@ -114,7 +112,7 @@ function Nav() {
           )}
 
           {data && data.imageUrl ? (
-            <Link to={`/user/${user?.id}/mypage`}>
+            <Link to={`/user/${user?.id}/mypage`} className="peer">
               <img
                 className="h-[3.6rem] w-[3.6rem] rounded-full"
                 src={data.imageUrl}
@@ -122,10 +120,12 @@ function Nav() {
               />
             </Link>
           ) : (
-            <Link to={`/user/${user?.id}/mypage`}>
+            <Link to={`/user/${user?.id}/mypage`} className="peer">
               <ProfileIcon size="lg" />
             </Link>
           )}
+          <div className="peer absolute right-0 top-0 -z-10 h-[5.4rem] w-[3.6rem]"></div>
+          <LogoutDropDown />
         </div>
       </div>
     </div>

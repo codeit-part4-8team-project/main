@@ -15,7 +15,7 @@ interface SchedulesProps {
 function Schedules({ calendarType, teamId }: SchedulesProps) {
   const { setSchedules, setFilteredSchedules, mode, nowDate } = useContext(calendarContext);
   const [groupData, setGroupData] = useState<Schedule[]>([]);
-  const container = 'w-[161.2rem] bg-gray10 mb-[2.4rem] mr-[2.4rem] pr-[26.9rem] rounded-[2.4rem]';
+  const container = ' bg-gray10 mb-[2.4rem] mr-[2.4rem] pr-[26.9rem] rounded-[2.4rem]';
   const TeamMonthStyle = 'ml-[26.9rem]';
   const title = clsx('flex items-center');
 
@@ -55,6 +55,7 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
   useEffect(() => {
     fetchData();
   }, [calendarType, teamId, mode, nowDate]);
+
   const handleOpenModal = () => {
     if (calendarType === '나') {
       openModal(({ close }) => <ScheduleModal user={true} closeClick={close} />);

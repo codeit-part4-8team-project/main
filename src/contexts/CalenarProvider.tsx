@@ -1,6 +1,5 @@
 import React, { createContext, useState } from 'react';
 
-/* User + Team 합친 스케줄 */
 export interface Schedule {
   id: number;
   title: string;
@@ -10,6 +9,7 @@ export interface Schedule {
   author?: Author; // import
   team?: Team; // import
   user?: User;
+  deletable?: boolean;
 }
 export interface User {
   name: string;
@@ -42,6 +42,8 @@ export interface CalendarContextType {
   calendarType?: string;
   setCalendarType: React.Dispatch<React.SetStateAction<string>>;
   teamIds: string[]; // teamIds 추가
+  teamId?: string;
+  setTeamId?: React.Dispatch<React.SetStateAction<string>>;
   setTeamIds: React.Dispatch<React.SetStateAction<string[]>>; // setTeamIds 추가 // setTeamId 추가
   loadedTeamIds: string[]; // loadedTeamIds 추가
   setLoadedTeamIds: React.Dispatch<React.SetStateAction<string[]>>;
@@ -59,6 +61,8 @@ const defaultContextValue: CalendarContextType = {
   filteredSchedules: [],
   setFilteredSchedules: () => {},
   teamIds: [], // 초기값 설정
+  teamId: '1',
+  setTeamId: () => {},
   setTeamIds: () => {}, // 초기값 설정
   loadedTeamIds: [], // 초기값 설정
   setLoadedTeamIds: () => {}, // 초기값 설정
@@ -74,6 +78,7 @@ export const CalendarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [calendarType, setCalendarType] = useState('나');
   const [teamIds, setTeamIds] = useState<string[]>([]); // teamId state 추가
   const [loadedTeamIds, setLoadedTeamIds] = useState<string[]>([]); // loadedTeamIds 상태 추가
+  const [teamId, setTeamId] = useState<string>('');
   const contextValue: CalendarContextType = {
     nowDate,
     mode,
@@ -83,6 +88,8 @@ export const CalendarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setNowDate,
     schedules,
     setSchedules,
+    teamId,
+    setTeamId,
     filteredSchedules,
     setFilteredSchedules,
     teamIds, // teamIds 추가

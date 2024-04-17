@@ -11,11 +11,13 @@ import { Issues } from '@/types/issueTypes';
 interface KanbanBoardProps {
   issueBoardData: Issues;
   type: 'main' | 'page';
+  reloadIssueBoard: () => void;
 }
 
 export default function KanbanBoard({
   issueBoardData: { team: teamInfo, todoIssues, progressIssues, doneIssues },
   type,
+  reloadIssueBoard,
 }: KanbanBoardProps) {
   const { todoList, progressList, doneList, setTodoList, setProgressList, setDoneList } =
     useIssueContext();
@@ -25,9 +27,14 @@ export default function KanbanBoard({
   const handleModalClick = () => {
     openModal(({ close }) =>
       teamInfo ? (
-        <IssuesModal teamId={teamInfo.id} team={teamInfo} closeClick={close} />
+        <IssuesModal
+          teamId={teamInfo.id}
+          team={teamInfo}
+          closeClick={close}
+          reloadIssueBoard={reloadIssueBoard}
+        />
       ) : (
-        <IssuesModal closeClick={close} />
+        <IssuesModal closeClick={close} reloadIssueBoard={reloadIssueBoard} />
       ),
     );
   };
@@ -47,9 +54,24 @@ export default function KanbanBoard({
   return (
     <>
       <div className={clsx('flex gap-[2.4rem]', kanbanBoardClasses)}>
-        <IssueList status="TODO" issues={todoList} team={teamInfo} />
-        <IssueList status="INPROGRESS" issues={progressList} team={teamInfo} />
-        <IssueList status="DONE" issues={doneList} team={teamInfo} />
+        <IssueList
+          status="TODO"
+          issues={todoList}
+          team={teamInfo}
+          reloadIssueBoard={reloadIssueBoard}
+        />
+        <IssueList
+          status="INPROGRESS"
+          issues={progressList}
+          team={teamInfo}
+          reloadIssueBoard={reloadIssueBoard}
+        />
+        <IssueList
+          status="DONE"
+          issues={doneList}
+          team={teamInfo}
+          reloadIssueBoard={reloadIssueBoard}
+        />
       </div>
       {type === 'page' && (
         <TextButton

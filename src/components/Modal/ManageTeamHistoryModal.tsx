@@ -1,7 +1,7 @@
 import { MEMBER } from '@/constants/Team';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import Dropdown from '../common/Dropdown';
 import Input, { InputValidateMessage } from '../common/Input';
+import SelectBoxDropdown from '../common/SelectBoxDropdown';
 import TextButton from '../common/TextButton';
 import ModalLayout from '../common/modal/ModalLayout';
 import { HttpStatusCode } from 'axios';
@@ -85,14 +85,14 @@ export default function ManageTeamHistoryModal({ me, team, onClose }: ManageTeam
       return defaultInstance.patch(`/team/${team.id}`, { ...team, name });
     };
 
-    // const grade = Object.keys(MEMBER.GRADE).find(
-    //   (key) => MEMBER.GRADE[key as keyof typeof MEMBER.GRADE] === formData.grade,
-    // );
+    const grade = Object.keys(MEMBER.GRADE).find(
+      (key) => MEMBER.GRADE[key as keyof typeof MEMBER.GRADE] === formData.grade,
+    );
     const role = Object.keys(MEMBER.ROLE).find(
       (key) => MEMBER.ROLE[key as keyof typeof MEMBER.ROLE] === formData.role,
     );
     const fetchMyRoleAndGrade = () => {
-      return defaultInstance.patch(`/member/${myId}`, { role });
+      return defaultInstance.patch(`/member/${myId}`, { role, grade });
     };
 
     try {
@@ -161,7 +161,7 @@ export default function ManageTeamHistoryModal({ me, team, onClose }: ManageTeam
                 name="role"
                 control={control}
                 render={({ field }) => (
-                  <Dropdown
+                  <SelectBoxDropdown
                     options={Object.values(MEMBER.ROLE)}
                     selectedOption={field.value}
                     onSelect={(value) => {

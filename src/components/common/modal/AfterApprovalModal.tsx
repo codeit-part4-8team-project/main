@@ -17,7 +17,9 @@ interface RoleDataType {
   name: string;
 }
 // 합칠때 에러 처리하기
+// 여기 작업하기 - 필겸 -
 export default function AfterApproval({ closeClick, memberId }: AfterApprovalProps) {
+  console.log('membersId입니다', memberId);
   const { data: roleData } = useAxios<RoleDataType[]>(
     {
       path: 'member/role',
@@ -29,10 +31,12 @@ export default function AfterApproval({ closeClick, memberId }: AfterApprovalPro
   const { fetchData: memberRoleData } = useAxios({});
   const [roleToggle, setRoleToggle] = useState<boolean>(false);
   const [roleClickData, setRoleClickData] = useState<string>('');
+  console.log(roleClickData);
   const handleroleToggle = () => {
     setRoleToggle(!roleToggle);
   };
-  // 여기 합치고 테스트해봐야함 TEST
+  // roleclickData 해결 하기 값 안 넘어감
+  // + memberId나중에 백한테 물어보기
   const handleMemberRoleData = () => {
     memberRoleData({
       newPath: `member/${memberId}`,

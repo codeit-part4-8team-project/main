@@ -11,7 +11,7 @@ interface DropDownProps {
   size?: 'sm' | 'md';
 }
 //밸류 받고 위에서 키 찾아 보내는걸로
-export default function Dropdown({
+export default function SelectBoxDropdown({
   options,
   selectedOption,
   initialOption,

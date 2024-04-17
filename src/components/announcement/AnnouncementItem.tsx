@@ -4,7 +4,6 @@ import ItemDropDown from '@/components/common/ItemDropDown';
 import { toDateFormat } from '@/lib/formatDate';
 import { useAxios } from '@/hooks/useAxios';
 import { Announcement } from '@/types/announcementTypes';
-import { Team } from '@/types/teamTypes';
 import AllowDownIcon from '@/assets/AllowDownIcon';
 import ClosedIcon from '@/assets/ClosedIcon';
 import MeatbollsIcon from '@/assets/MeatbollsIcon';
@@ -13,13 +12,11 @@ import PinAngleIcon from '@/assets/PinAngleIcon';
 interface AnnouncementItemProps {
   announcement: Announcement;
   type: 'main' | 'page';
-  team?: Team;
 }
 
 export default function AnnouncementItem({
-  announcement: { id, title, content, createdDate, pinned },
+  announcement: { id, title, content, createdDate, pinned, team },
   type,
-  team,
 }: AnnouncementItemProps) {
   const [isPinned, setIsPinned] = useState(pinned);
   const [isHidden, setIsHidden] = useState(true);
@@ -50,7 +47,7 @@ export default function AnnouncementItem({
 
   return (
     <div
-      style={{ backgroundColor: team?.color || 'white' }}
+      style={{ backgroundColor: team.color }}
       className={clsx(
         'relative flex flex-col gap-[1.7rem] rounded-[2.4rem] p-[2.4rem]',
         type === 'page' && 'h-[24.8rem] w-full',

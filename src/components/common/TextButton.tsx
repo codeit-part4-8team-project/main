@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { ButtonHTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 import clsx from 'clsx';
 
 //사이즈 컬러 별로 분기, classname 받아서 부모에서 스타일 추가 가능하도록
@@ -6,10 +6,11 @@ import clsx from 'clsx';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   buttonSize: 'sm' | 'md' | 'lg';
-  color?: 'black' | 'white' | 'red' | 'yellow';
+  color?: 'black' | 'white' | 'red' | 'yellow' | 'blue' | 'gray';
   children: ReactNode;
   disabled?: boolean;
   className?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>; //빌드 오류나서 일단 바꿔놓음
 }
 
 const TextButton = ({
@@ -33,12 +34,14 @@ const TextButton = ({
     'bg-white text-point_red border-solid border-[0.1rem] border-point_red': color === 'red',
     'bg-point_yellow text-[#000000] border-solid border-[0.1rem] border-point_yellow':
       color === 'yellow',
+    'bg-[#292A2D]  text-[#9AB4F2]': color === 'blue',
+    'bg-[#9AB4F2]  text-[#292A2D]': color === 'gray',
   });
 
   return (
     <button
-      disabled={disabled}
       onClick={onClick}
+      disabled={disabled}
       className={clsx(
         'flex max-h-[4.6rem] items-center justify-center rounded-[0.6rem] font-bold disabled:bg-gray30',
         colorClasses,

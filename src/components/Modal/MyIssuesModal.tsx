@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import TextButton from '@/components/common/TextButton';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
@@ -11,6 +11,7 @@ import { Author } from '@/types/commonTypes';
 
 interface IssuesModalProps {
   closeClick: () => void;
+  reloadIssueBoard: () => void;
   issueId: number;
   teamId: number;
 }
@@ -47,7 +48,12 @@ interface defaultValue {
   author?: Author;
 }
 // 여기도 합칠때 지우기 에러
-export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesModalProps) {
+export default function MyIssuesModal({
+  closeClick,
+  reloadIssueBoard,
+  issueId,
+  teamId,
+}: IssuesModalProps) {
   const { data: defaultValue } = useAxios(
     {
       path: `issue/${issueId}`,
@@ -66,20 +72,20 @@ export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesMod
 
   const [membersList, setMemberList] = useState<MemberListType[]>([]);
 
-  const { register, watch, handleSubmit, getValues, reset } = useForm<Inputs>({
+  const { register, watch, handleSubmit, getValues } = useForm<Inputs>({
     defaultValues: {
       title: defaultTitle,
       content: defaultContent,
     },
   });
-  const onSubmit: SubmitHandler<Inputs> = ({ title, content }, event) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content }) => {
     const patchIssue = {
       title: title,
       content: content,
       assignedMembersUsernames: membersList.map((member) => member.username), // 배열 타입에러 자꾸남
     };
     handlePatchIssues(patchIssue);
-    event?.target.closest('dialog').close();
+    closeClick();
   };
 
   const titleWatch = watch('title');
@@ -98,27 +104,32 @@ export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesMod
     }
   };
 
-  const handlePatchIssues = (data: Inputs) => {
-    fetchPatchData({
+  const handlePatchIssues = async (data: Inputs) => {
+    await fetchPatchData({
       newPath: `/issue/${issueId}`,
       newMethod: 'PATCH',
       newData: data,
     });
+    reloadIssueBoard();
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     const confirmDelete = window.confirm('이 이슈를 삭제하시겠습니까?');
     if (confirmDelete) {
-      deleteData({
+      await deleteData({
         newPath: `issue/${issueId}`,
         newMethod: 'DELETE',
       });
+      reloadIssueBoard();
+      closeClick();
     }
   };
 
-  useEffect(() => {
-    reset();
-  }, [defaultValue]);
+  //임시방편, 나중에 data null 일때 ui 만들기
+  if (!defaultValue) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <ModalLayout
       title="할 일"
@@ -169,9 +180,9 @@ export default function MyIssuesModal({ closeClick, issueId, teamId }: IssuesMod
               className={`${inputTextSize} ${borderStyle}`}
             />
           </div>
-          {contentWatch?.length > 20 && (
+          {contentWatch?.length > 40 && (
             <div className="absolute text-point_red">
-              <p>20자 이하로 입력해 주세요.</p>
+              <p>40자 이하로 입력해 주세요.</p>
             </div>
           )}
           {contentWatch ? (

@@ -12,12 +12,15 @@ interface Inputs {
 }
 
 interface AnnouncementModalProps {
+  reloadAnnouncements: () => void;
   closeClick: () => void;
   teamId: number;
 }
-// 나중에 group 프롭으로 받기
-// 여기도 합칠때 없애기
-export default function AnnouncementModal({ closeClick, teamId }: AnnouncementModalProps) {
+export default function AnnouncementModal({
+  reloadAnnouncements,
+  closeClick,
+  teamId,
+}: AnnouncementModalProps) {
   const { fetchData } = useAxios({});
   const { user } = useUserContext();
   const { register, watch, handleSubmit } = useForm<Inputs>();
@@ -30,12 +33,13 @@ export default function AnnouncementModal({ closeClick, teamId }: AnnouncementMo
     event?.target.closest('dialog').close();
   };
 
-  const handlePostAnnouncement = (data: Inputs) => {
-    fetchData({
+  const handlePostAnnouncement = async (data: Inputs) => {
+    await fetchData({
       newPath: `announcement/${teamId}`,
       newMethod: 'POST',
       newData: data,
-    }).then(() => window.location.reload());
+    });
+    reloadAnnouncements();
   };
 
   const formTextSize = 'text-body3-medium';

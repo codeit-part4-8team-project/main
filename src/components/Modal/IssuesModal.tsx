@@ -19,6 +19,7 @@ interface IssuesModalProps {
   teamId?: number;
   team?: Team;
   onModalDateClick?: (date: string) => void;
+  reloadIssueBoard: () => void;
 }
 
 interface Inputs {
@@ -51,6 +52,7 @@ export default function IssuesModal({
   teamId,
   onModalDateClick,
   team,
+  reloadIssueBoard,
 }: IssuesModalProps) {
   const { fetchData } = useAxios({}); // POST axios
   const { user } = useUserContext();
@@ -60,11 +62,11 @@ export default function IssuesModal({
   const [memberCheck, setMemberCheck] = useState(false);
   const [groupList, setGroupList] = useState(false);
   const [groupClickData, setGroupClickData] = useState<groupDataType | null>(null);
-  console.log(groupClickData?.id);
+
   const [selectedEndDate, setSelectedEndDate] = useState<string>('');
 
   const { register, watch, handleSubmit, getValues } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async ({ title, content }, event) => {
+  const onSubmit: SubmitHandler<Inputs> = ({ title, content }, event) => {
     const createIssue = {
       title: title,
       content: content,
@@ -73,12 +75,8 @@ export default function IssuesModal({
       assignedMembersUsernames: membersList.map((member) => member.username),
     };
 
-    try {
-      await handlePostIssues(createIssue);
-      event?.target.closest('dialog').close();
-    } catch (error) {
-      console.log(error);
-    }
+    handlePostIssues(createIssue);
+    event?.target.closest('dialog').close();
   };
 
   const formTextSize = 'text-body3-medium';
@@ -89,33 +87,49 @@ export default function IssuesModal({
     setDueDateToggle(true);
   };
 
-  const handlePostIssues = (data: Inputs) => {
+  const handlePostIssues = async (data: Inputs) => {
     if (teamId) {
-      fetchData({
+      await fetchData({
         newPath: `issue/${teamId}`,
         newMethod: 'POST',
         newData: data,
-      }).then(() => window.location.reload());
+      });
+      reloadIssueBoard();
     } else if (groupClickData?.id) {
-      fetchData({
+      await fetchData({
         newPath: `issue/${groupClickData.id}`,
         newMethod: 'POST',
         newData: data,
-      }).then(() => window.location.reload());
+      });
+      reloadIssueBoard();
     }
   };
 
   const handleGetTeamMemberList = async () => {
     const userName = getValues('assignedMembersUsernames');
-    const res = await defaultInstance.get(
-      `member/${groupClickData?.id}/search?username=${userName}`,
-    );
-    if (res.data) {
-      const newMember = res.data;
-      setMemberCheck(false);
-      setMembersList((prevMembers) => [...prevMembers, ...newMember]);
-    } else if (res.data === '') {
-      setMemberCheck(true);
+
+    if (teamId) {
+      const res = await defaultInstance.get(`member/${teamId}/search?username=${userName}`);
+      if (res.data) {
+        const newMember = res.data;
+        setMemberCheck(false);
+        setMembersList((prevMembers) => [...prevMembers, ...newMember]);
+      } else if (res.data === '') {
+        setMemberCheck(true);
+      }
+    }
+
+    if (groupClickData?.id) {
+      const res = await defaultInstance.get(
+        `member/${groupClickData?.id}/search?username=${userName}`,
+      );
+      if (res.data) {
+        const newMember = res.data;
+        setMemberCheck(false);
+        setMembersList((prevMembers) => [...prevMembers, ...newMember]);
+      } else if (res.data === '') {
+        setMemberCheck(true);
+      }
     }
   };
 

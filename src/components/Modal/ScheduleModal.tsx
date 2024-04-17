@@ -41,12 +41,8 @@ function ScheduleModal({
   const { user: userInformation } = useUserContext();
   const [selectedStartDate, setSelectedStartDate] = useState<string>('');
   const [selectedEndDate, setSelectedEndDate] = useState<string>('');
-  const [startTimeData, setStartTimeData] = useState<string>('');
-  const [endTimeData, setEndTimeData] = useState<string>('');
-  const { register, handleSubmit, watch } = useForm<Inputs>();
 
-  console.log('startTimeData', startTimeData);
-  console.log('endTimeData', endTimeData);
+  const { register, handleSubmit, watch } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async ({ title, content }, event) => {
     const createSchedlue = {
@@ -55,13 +51,16 @@ function ScheduleModal({
       endDateTime: selectedEndDate,
       content: content,
     };
+    console.log('dk');
     try {
+      console.log('스캐줄', createSchedlue);
       await handleScheduleUserFetch(createSchedlue);
-      event?.target.closest('dialog').close();
+      //event?.target.closest('dialog').close();
+
       window.location.reload();
+      closeClick?.();
     } catch (error) {
       console.error('Failed to add schedule:', error);
-      // 실패 처리 로직
     }
 
     event?.target.closest('dialog').close();
@@ -98,19 +97,14 @@ function ScheduleModal({
   };
   const handleEndDateClick = (date: string) => {
     setSelectedEndDate(date);
-
     if (onModalEndDateClick) {
       onModalEndDateClick(date);
     }
   };
   const handleStartTimeClick = (Time: string) => {
-    console.log('data', Time);
-    setStartTimeData(Time);
     setSelectedStartDate(selectedStartDate + ' ' + Time);
   };
   const handleEndTimeClick = (Time: string) => {
-    console.log('data', Time);
-    setEndTimeData(Time);
     setSelectedEndDate(selectedEndDate + ' ' + Time);
   };
   return (
@@ -176,13 +170,14 @@ function ScheduleModal({
             endHookform={register('endDateTime')}
             endName="endDateTime"
             onModalStartDateClick={handleStartDateClick}
+            onModalEndDateClick={handleEndDateClick}
             onStartClickTime={handleStartTimeClick}
             onEndClickTime={handleEndTimeClick}
             startValue={selectedStartDate}
             endValue={selectedEndDate}
-            onModalEndDateClick={handleEndDateClick}
           />
         </ModalFormBorder>
+
         <TextButton buttonSize="md" className="mt-16">
           일정 추가하기
         </TextButton>

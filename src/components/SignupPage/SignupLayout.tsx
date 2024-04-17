@@ -39,7 +39,7 @@ function SignupLayout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="flex w-[112rem] basis-[67.7rem] flex-col items-center justify-between rounded-[2.4rem] bg-white px-[19rem]">
+    <div className="flex h-auto basis-[112rem] flex-col items-center justify-between overflow-y-auto overflow-x-hidden rounded-[2.4rem] bg-white px-[19rem]">
       <div className="mt-12 text-body3-bold text-gray30" onClick={handleHeaderStepClick}>
         <span id="1" className={clsx(step === 1 ? 'text-gray80' : '')}>
           약관동의 &gt;{' '}
@@ -54,7 +54,7 @@ function SignupLayout({ children }: { children: ReactNode }) {
       {children}
       <TextButton
         buttonSize="md"
-        className="mb-[5.4rem]"
+        className="mb-[5.4rem] min-w-[54rem]"
         form={setFormAttributeOfButtonElement(step)}
         onClick={handleNextStepButtonClick(step)}
         disabled={!formValidity}
