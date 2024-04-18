@@ -32,9 +32,8 @@ export default function BoardSection({ title, content, mode, children }: BoardSe
   const gapBetweenTitleAndContent = clsx({
     'gap-[1.6rem]': pageContent === 'main',
     'gap-12': pageContent === 'schedule',
-    'gap-[6.4rem]': pageContent === 'announcement',
     'gap-[2.8rem]': pageContent === 'member',
-    'gap-[2.4rem]': pageContent === 'post',
+    'gap-[2.4rem]': pageContent === 'post' || 'announcement',
     'gap-[3.8rem]': pageContent === 'issue',
   });
 

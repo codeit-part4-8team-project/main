@@ -2,18 +2,16 @@ import FreeBoardDetail from '@/components/Modal/FreeBoardDetail';
 import PostLike from '@/components/Post/PostLike';
 import { useModal } from '@/contexts/ModalProvider';
 import { toDateFormat } from '@/lib/formatDate';
-import { useAxios } from '@/hooks/useAxios';
-import { Comments } from '@/types/commentTypes';
-import { Post } from '@/types/postTypes';
-import CommentIcon from '@/assets/CommentIcon';
+import { Announcement } from '@/types/announcementTypes';
+import PinAngleIcon from '@/assets/PinAngleIcon';
 import ProfileImg from '@/assets/assets/profile-large.svg';
 
-interface PostItemProps {
-  post: Post;
+interface AnnouncementPageItemProps {
+  announcement: Announcement;
 }
 
-export default function PostItem({ post }: PostItemProps) {
-  const { id, author, title, content, createdDate, liked, likeCount, team } = post;
+export default function AnnouncementPageItem({ announcement }: AnnouncementPageItemProps) {
+  const { id, author, title, content, createdDate, team, pinned } = announcement;
 
   const { color, name } = team;
 
@@ -21,22 +19,23 @@ export default function PostItem({ post }: PostItemProps) {
 
   const handleModalClick = () => {
     openModal(({ close }) => (
-      <FreeBoardDetail closeClick={close} postId={id} liked={liked} likeCount={likeCount} />
+      <FreeBoardDetail
+        closeClick={close}
+        postId={id}
+        liked={false}
+        likeCount={0}
+      /> /* TODO 상세보기 모달 만들어지면 교체 */
     ));
   };
-
-  const { data } = useAxios<Comments>(
-    {
-      path: `comment/post/${id}?page=1`,
-    },
-    true,
-  );
 
   return (
     <div
       onClick={handleModalClick}
       className="relative flex h-[23.3rem] w-full cursor-pointer flex-col gap-[2.4rem] rounded-[2.4rem] border border-gray30 bg-white p-[2.4rem]"
     >
+      <button type="button" className="absolute right-[2.4rem] top-[2.4rem]">
+        {pinned && <PinAngleIcon />}
+      </button>
       <div className="flex h-[3.6rem] items-center gap-[1.5rem]">
         <img
           src={author.imageUrl || ProfileImg}
@@ -63,13 +62,7 @@ export default function PostItem({ post }: PostItemProps) {
         </span>
       </div>
       <div className="absolute bottom-[2.4rem] left-[2.7rem] flex gap-[0.6rem]">
-        <PostLike postId={id} liked={liked} likeCount={likeCount} />
-        <div className="flex items-center gap-[0.2rem]">
-          <CommentIcon />
-          <span className="text-[1.2rem] leading-[1.6rem] text-gray50">
-            {data?.totalElements || 0}
-          </span>
-        </div>
+        <PostLike postId={id} liked={false} likeCount={0} /> {/* TODO api 데이터 없음 */}
       </div>
     </div>
   );

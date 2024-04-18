@@ -9,16 +9,14 @@ interface NoCardProps {
 
 export default function NoCard({ type, backgroundColor, children }: NoCardProps) {
   const cardSizeClasses = clsx({
-    'min-h-64 w-full': type === 'issue',
-    'h-[23.3rem] w-[58rem]': type === 'post',
-    'h-64 w-full': type === 'announcement-main',
-    'h-[24.8rem] w-[42.6rem]': type === 'announcement-page',
+    'h-[23.3rem] w-[58rem]': type === 'post' || type === 'announcement-page',
+    'h-[16rem] w-full': type === 'announcement-main' || type === 'issue',
   });
 
   return (
     <div
       className={clsx(
-        'relative flex flex-col items-center justify-center rounded-[2.4rem] p-[2.4rem]',
+        'relative flex flex-col items-center justify-center rounded-[2.4rem]',
         backgroundColor,
         cardSizeClasses,
       )}
