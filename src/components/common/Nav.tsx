@@ -71,10 +71,13 @@ function Nav() {
     <div>
       <div className="z-1 fixed left-0 right-0 top-0 z-50 m-0  flex items-center justify-between bg-gray10">
         <div className="mb-[0.8rem] mt-[1.1rem] flex items-center">
-          <a href="/" className="ml-16 flex items-center gap-[0.8rem] self-center">
+          <Link
+            to={`/user/${user?.id}/main`}
+            className="ml-16 flex items-center gap-[0.8rem] self-center"
+          >
             <KeepyUppyIcon />
             <KeepyUppyLogo size="sm" />
-          </a>
+          </Link>
           <div className="ml-[17.4rem] flex items-center gap-[0.8rem]">
             <a href="#" className="relative h-[3.6rem] w-[3.6rem] rounded-full bg-gray80">
               <img
