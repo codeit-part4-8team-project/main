@@ -9,7 +9,7 @@ import dropDown from '@/assets/assets/arrow-down-dark.png';
 
 interface AfterApprovalProps {
   closeClick?: () => void;
-  memberId?: number;
+  memberId: number;
 }
 
 interface RoleDataType {
