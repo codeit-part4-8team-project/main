@@ -4,7 +4,7 @@ import ChatInput from '@/components/chat/ChatInput';
 
 export default function Chat() {
   return (
-    <div className="relative flex h-[102.2rem] w-[49.7rem] border-[0.2rem] bg-white">
+    <div className="fixed right-0 top-[5.8rem] z-50 flex h-full w-[49.7rem] bg-white">
       <ChatHeader />
       <ChatBody />
       <ChatInput />
