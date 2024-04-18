@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Board from '@/components/common/Board';
+import FloatingButton from '@/components/common/FloatingButton';
 import Nav from '@/components/common/Nav';
 import SideBar from '@/components/common/sideBar/SideBar';
 import TeamBar from '@/components/TeamsPage/TeamBar';
@@ -17,6 +18,7 @@ export default function TeamPageLayout() {
           <Board>
             <Outlet />
           </Board>
+          <FloatingButton />
         </div>
       </ModalProvider>
     </TeamProvider>
