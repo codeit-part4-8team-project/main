@@ -11,12 +11,10 @@ import PinAngleIcon from '@/assets/PinAngleIcon';
 
 interface AnnouncementItemProps {
   announcement: Announcement;
-  type: 'main' | 'page';
 }
 
 export default function AnnouncementItem({
   announcement: { id, title, content, createdDate, pinned, team },
-  type,
 }: AnnouncementItemProps) {
   const [isPinned, setIsPinned] = useState(pinned);
   const [isHidden, setIsHidden] = useState(true);
@@ -48,17 +46,13 @@ export default function AnnouncementItem({
   return (
     <div
       style={{ backgroundColor: team.color }}
-      className={clsx(
-        'relative flex flex-col gap-[1.7rem] rounded-[2.4rem] p-[2.4rem]',
-        type === 'page' && 'h-[24.8rem] w-full',
-        type === 'main' && 'w-full',
-      )}
+      className="relative flex w-full flex-col gap-[1.7rem] rounded-[2.4rem] p-[2.4rem]"
     >
       <span className="text-body3-bold text-gray100">{title}</span>
       <span
         className={clsx(
           'inline-block overflow-auto text-body3-regular text-gray100',
-          type === 'main' && isHidden ? 'h-[4.4rem] overflow-hidden' : 'h-[13.2rem]',
+          isHidden ? 'h-[4.4rem] overflow-hidden' : 'h-[13.2rem]',
         )}
       >
         {content}
@@ -70,15 +64,13 @@ export default function AnnouncementItem({
             <PinAngleIcon />
           </button>
         )}
-        {type === 'main' && (
-          <button type="button" onClick={handleToggleContent}>
-            {isHidden ? (
-              <AllowDownIcon />
-            ) : (
-              <ClosedIcon className="m-[0.4rem] w-[1.6rem] opacity-65" />
-            )}
-          </button>
-        )}
+        <button type="button" onClick={handleToggleContent}>
+          {isHidden ? (
+            <AllowDownIcon />
+          ) : (
+            <ClosedIcon className="m-[0.4rem] w-[1.6rem] opacity-65" />
+          )}
+        </button>
         <button type="button" onClick={handleDropDownOpen} className="relative">
           <MeatbollsIcon />
           {isDropped && <ItemDropDown options={dropDownOption} action={handlePinOptionClick} />}

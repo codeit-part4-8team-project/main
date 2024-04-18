@@ -24,7 +24,7 @@ export default function AnnouncementList({ announcements }: AnnouncementListProp
             {announcements.map((announcement) => {
               return (
                 <li key={announcement.id}>
-                  <AnnouncementItem announcement={announcement} type="main" />
+                  <AnnouncementItem announcement={announcement} />
                 </li>
               );
             })}
