@@ -41,8 +41,7 @@ export default function Comment({ postId, children }: CommentProps) {
   );
 
   const { fetchData: commentFetch } = useAxios({});
-  const { content, numberOfElements, last, first, totalPages, totalElements }: DefaultValue =
-    defaultValue || {};
+  const { content, numberOfElements, last, first, totalPages }: DefaultValue = defaultValue || {};
 
   const { handleSubmit, register, watch, reset } = useForm<Inputs>({});
   const [reRending, setReRending] = useState<number | undefined>(0);
@@ -116,7 +115,6 @@ export default function Comment({ postId, children }: CommentProps) {
           {content?.map((item, index) => <CommentItem item={item} key={index} />)}
         </form>
         <CommentPageination
-          // totalElements={totalElements}
           reRending={reRending}
           totalPages={totalPages}
           onPageChange={handlePagination}

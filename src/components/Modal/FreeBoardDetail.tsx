@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Comment from '@/components/common/modal/Comment';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import FreeBoardEditModal from '@/components/Modal/FreeBoardEdit';
@@ -36,7 +35,7 @@ export default function FreeBoardDetail({
   // likeCount,
   // liked,
 }: FreeBoardDetailProps) {
-  const { data: defaultValue, fetchData: defaultFetch } = useAxios<DefalutVauleType>(
+  const { data: defaultValue } = useAxios<DefalutVauleType>(
     {
       path: `post/${postId}`,
     },
