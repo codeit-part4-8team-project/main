@@ -19,7 +19,9 @@ export default function ChatHeader() {
           </div>
         </div>
       </div>
-      <MeatbollsIcon />
+      <button type="button">
+        <MeatbollsIcon />
+      </button>
     </div>
   );
 }
