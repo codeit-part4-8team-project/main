@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import EntrancePageLayout from './components/common/EntrancePageLayout';
 import PrivateRoutes from './routes/PrivateRoutes';
+import LoadingPage from '@/pages/LoadingPage';
 import UserPageLayout from '@/components/common/UserPageLayout';
 import TeamPageLayout from '@/components/TeamsPage/TeamPageLayout';
 import { CalendarProvider } from '@/contexts/CalenarProvider';
@@ -17,7 +18,7 @@ const TeamPage = lazy(() => import('@/pages/team/TeamPage'));
 
 function App() {
   return (
-    <Suspense fallback={<div>로딩 중</div>}>
+    <Suspense fallback={<LoadingPage />}>
       <UserProvider>
         <CalendarProvider>
           <ModalProvider>
