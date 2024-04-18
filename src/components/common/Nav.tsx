@@ -68,65 +68,64 @@ function Nav() {
   };
 
   return (
-    <div>
-      <div className="z-1 fixed left-0 right-0 top-0 z-50 m-0  flex items-center justify-between bg-gray10">
-        <div className="mb-[0.8rem] mt-[1.1rem] flex items-center">
-          <a href="/" className="ml-16 flex items-center gap-[0.8rem] self-center">
-            <KeepyUppyIcon />
-            <KeepyUppyLogo size="sm" />
+    <div className="z-1 fixed left-0 right-0 top-0 z-50 m-0 flex h-[5.8rem] items-center justify-between bg-gray10">
+      <div className="mb-[0.8rem] mt-[1.1rem] flex items-center">
+        <Link
+          to={`/user/${user?.id}/main`}
+          className="ml-16 flex items-center gap-[0.8rem] self-center"
+        >
+          <KeepyUppyIcon />
+          <KeepyUppyLogo size="sm" />
+        </Link>
+        <div className="ml-[17.4rem] flex items-center gap-[0.8rem]">
+          <a href="#" className="relative h-[3.6rem] w-[3.6rem] rounded-full bg-gray80">
+            <img
+              className="[0.6rem] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform"
+              src={globalLink}
+              alt="글로벌 아이콘"
+            />
           </a>
-          <div className="ml-[17.4rem] flex items-center gap-[0.8rem]">
-            <a href="#" className="relative h-[3.6rem] w-[3.6rem] rounded-full bg-gray80">
-              <img
-                className="[0.6rem] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform"
-                src={globalLink}
-                alt="글로벌 아이콘"
-              />
-            </a>
-            <a href="#" className="mr-2.5">
-              <PlusCircleIcon />
-            </a>
-          </div>
+          <a href="#" className="mr-2.5">
+            <PlusCircleIcon />
+          </a>
         </div>
-        <div className="relative my-2.5 mr-6 flex items-center gap-8">
-          {alarmData.length > 0 ? (
-            <DarkGroupIcon onClick={() => setIsModalOpen(true)} className="" />
-          ) : (
-            <GroupIcon />
-          )}
-          {isModalOpen && (
-            <NavModal onClose={() => setIsModalOpen(false)}>
-              {alarmData.map((alarm, index) => (
-                <div
-                  className="w-full border border-gray30 bg-white pb-12 pl-12 pr-[20.9rem] pt-12 shadow-md"
-                  key={index}
-                  onClick={() => handleModalClick(alarm?.id)}
-                >
-                  <div className="whitespace-nowrap text-body4-bold">
-                    그룹 초대장이 도착했습니다
-                  </div>
-                  <div className="text-body4-regular">[{alarm.name}]</div>
-                </div>
-              ))}
-            </NavModal>
-          )}
+      </div>
+      <div className="relative my-2.5 mr-6 flex items-center gap-8">
+        {alarmData.length > 0 ? (
+          <DarkGroupIcon onClick={() => setIsModalOpen(true)} className="" />
+        ) : (
+          <GroupIcon />
+        )}
+        {isModalOpen && (
+          <NavModal onClose={() => setIsModalOpen(false)}>
+            {alarmData.map((alarm, index) => (
+              <div
+                className="w-full border border-gray30 bg-white pb-12 pl-12 pr-[20.9rem] pt-12 shadow-md"
+                key={index}
+                onClick={() => handleModalClick(alarm?.id)}
+              >
+                <div className="whitespace-nowrap text-body4-bold">그룹 초대장이 도착했습니다</div>
+                <div className="text-body4-regular">[{alarm.name}]</div>
+              </div>
+            ))}
+          </NavModal>
+        )}
 
-          {data && data.imageUrl ? (
-            <Link to={`/user/${user?.id}/mypage`} className="peer">
-              <img
-                className="h-[3.6rem] w-[3.6rem] rounded-full"
-                src={data.imageUrl}
-                alt="프로필 이미지"
-              />
-            </Link>
-          ) : (
-            <Link to={`/user/${user?.id}/mypage`} className="peer">
-              <ProfileIcon size="lg" />
-            </Link>
-          )}
-          <div className="peer absolute right-0 top-0 -z-10 h-[5.4rem] w-[3.6rem]"></div>
-          <LogoutDropDown />
-        </div>
+        {data && data.imageUrl ? (
+          <Link to={`/user/${user?.id}/mypage`} className="peer">
+            <img
+              className="h-[3.6rem] w-[3.6rem] rounded-full"
+              src={data.imageUrl}
+              alt="프로필 이미지"
+            />
+          </Link>
+        ) : (
+          <Link to={`/user/${user?.id}/mypage`} className="peer">
+            <ProfileIcon size="lg" />
+          </Link>
+        )}
+        <div className="peer absolute right-0 top-0 -z-10 h-[5.4rem] w-[3.6rem]"></div>
+        <LogoutDropDown />
       </div>
     </div>
   );
