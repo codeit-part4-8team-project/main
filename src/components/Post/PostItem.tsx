@@ -2,8 +2,10 @@ import FreeBoardDetail from '@/components/Modal/FreeBoardDetail';
 import PostLike from '@/components/Post/PostLike';
 import { useModal } from '@/contexts/ModalProvider';
 import { toDateFormat } from '@/lib/formatDate';
+import { useAxios } from '@/hooks/useAxios';
+import { Comments } from '@/types/commentTypes';
 import { Post } from '@/types/postTypes';
-import MeatbollsIcon from '@/assets/MeatbollsIcon';
+import CommentIcon from '@/assets/CommentIcon';
 import ProfileImg from '@/assets/assets/profile-large.svg';
 
 interface PostItemProps {
@@ -23,14 +25,18 @@ export default function PostItem({ post }: PostItemProps) {
     ));
   };
 
+  const { data } = useAxios<Comments>(
+    {
+      path: `comment/post/${id}?page=1`,
+    },
+    true,
+  );
+
   return (
     <div
       onClick={handleModalClick}
       className="relative flex w-full cursor-pointer flex-col gap-[2.4rem] rounded-[2.4rem] border border-gray30 bg-white p-[2.4rem]"
     >
-      <button type="button" className="absolute right-[2.4rem] top-[2.4rem]">
-        <MeatbollsIcon />
-      </button>
       <div className="flex h-[3.6rem] items-center gap-[1.5rem]">
         <img
           src={author.imageUrl || ProfileImg}
@@ -56,8 +62,14 @@ export default function PostItem({ post }: PostItemProps) {
           {content}
         </span>
       </div>
-      <div className="absolute bottom-[2.4rem] left-[2.7rem]">
+      <div className="absolute bottom-[2.4rem] left-[2.7rem] flex gap-[0.6rem]">
         <PostLike postId={id} liked={liked} likeCount={likeCount} />
+        <div className="flex items-center gap-[0.2rem]">
+          <CommentIcon />
+          <span className="text-[1.2rem] leading-[1.6rem] text-gray50">
+            {data?.totalElements || 0}
+          </span>
+        </div>
       </div>
     </div>
   );
