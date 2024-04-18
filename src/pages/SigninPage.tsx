@@ -6,6 +6,7 @@ import GoogleIcon from '@/assets/GoogleIcon';
 import KakaoIcon from '@/assets/KaKaoIcon';
 import KeepyUppyIcon from '@/assets/KeepyUppyIcon';
 import KeepyUppyLogo from '@/assets/KeepyUppyLogo';
+import imgUrl from '@/assets/assets/login-banner-logo.svg';
 
 interface OauthURLResponse {
   url: string;
@@ -39,7 +40,7 @@ const SigninPage = () => {
   return (
     <div className="flex basis-[112rem] rounded-[2.4rem] bg-white">
       <div className="flex flex-grow basis-[46rem] rounded-l-[inherit] bg-black pr-[8%] max-xl:hidden">
-        <img src="/src/assets/assets/login-banner-logo.svg" className="self-end"></img>
+        <img src={imgUrl} className="self-end"></img>
       </div>
       {/* pb-[12rem] pl-[16.4rem] pr-[15.7rem] pt-[11.7rem] 버튼 컨테이너 w-[34.2]*/}
       <div className="flex flex-grow basis-[66rem] flex-col items-center justify-center rounded-r-[inherit]">
