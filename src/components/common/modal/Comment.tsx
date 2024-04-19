@@ -20,6 +20,26 @@ interface ContentType {
   content: string;
   createdDate: string;
   id: number;
+  reply: ReplyType[];
+}
+
+interface pageableType {
+  pageNumber: number;
+}
+interface ReplyType {
+  id: number;
+  content: string;
+  createdDate: string;
+  author: Author;
+  mention: MentionType;
+}
+
+interface MentionType {
+  username: string;
+  // createdDate: string
+  // grade: string;
+  // imageUrl: string;
+  // id: string;
 }
 
 interface DefaultValue {
@@ -30,6 +50,7 @@ interface DefaultValue {
   first?: boolean;
   totalPages?: number;
   totalElements?: number;
+  pageable?: pageableType;
 }
 
 export default function Comment({ postId, children }: CommentProps) {
@@ -39,9 +60,12 @@ export default function Comment({ postId, children }: CommentProps) {
     },
     true,
   );
-
+  const { fetchData: deleteFetch } = useAxios({});
   const { fetchData: commentFetch } = useAxios({});
-  const { content, numberOfElements, last, first, totalPages }: DefaultValue = defaultValue || {};
+  // const { fetchData: patchFetch } = useAxios({});
+  const { content, numberOfElements, last, first, totalPages, pageable }: DefaultValue =
+    defaultValue || {};
+  // console.log(content);
 
   const { handleSubmit, register, watch, reset } = useForm<Inputs>({});
   const [reRending, setReRending] = useState<number | undefined>(0);
@@ -49,6 +73,10 @@ export default function Comment({ postId, children }: CommentProps) {
     const createComment = {
       content: content,
     };
+
+    // if () {
+
+    // }
     handleCommentPost(createComment);
 
     reset();
@@ -78,6 +106,34 @@ export default function Comment({ postId, children }: CommentProps) {
     });
   };
 
+  const handleCommentDelete = async (commentId: number) => {
+    const confirmDelete = window.confirm('이 이슈를 삭제하시겠습니까?');
+    if (confirmDelete) {
+      await deleteFetch({
+        newPath: `comment/${commentId}`,
+        newMethod: 'DELETE',
+      });
+    }
+    if (pageable) {
+      getAxios({
+        newPath: `comment/post/${postId}?page=${pageable?.pageNumber + 1}`,
+      });
+    }
+  };
+
+  // const handleCommentPatch = async (commentId?: number, newData?: Partial<Inputs>) => {
+  //   await patchFetch({
+  //     newPath: `comment/${commentId}`,
+  //     newMethod: 'PATCH',
+  //     newData: newData,
+  //   });
+  //   if (pageable) {
+  //     getAxios({
+  //       newPath: `comment/post/${postId}?page=${pageable?.pageNumber + 1}`,
+  //     });
+  //   }
+  // };
+
   return (
     <>
       <div className="mx-[2.4rem] px-16  pb-[2.4rem] text-gray50">
@@ -87,9 +143,9 @@ export default function Comment({ postId, children }: CommentProps) {
           {children}
         </div>
       </div>
-      <div className=" h-[78rem] bg-gray10 pt-[2.6rem]">
-        <form onSubmit={handleSubmit(onSubmit)} className="px-[6.4rem]">
-          <div className="mb-[0.8rem] flex flex-col gap-[0.8rem]">
+      <div className=" h-full bg-gray10 pt-[2.6rem]">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="mb-[0.8rem] flex flex-col gap-[0.8rem] px-[6.4rem]">
             <ModalLabel htmlFor="content" label="댓글" className={`${formTextSize}`} />
             <ModalInput
               hookform={register('content', { maxLength: 100, required: true })}
@@ -100,20 +156,26 @@ export default function Comment({ postId, children }: CommentProps) {
             />
           </div>
           {watch('content')?.length > 100 && (
-            <div className="absolute text-point_red">
+            <div className="absolute px-[6.4rem] text-point_red">
               <p>100자 이하로 입력해 주세요.</p>
             </div>
           )}
           {watch('content') ? (
-            <p className=" mb-[2.4rem] flex justify-end text-gray50">
+            <p className=" mb-[2.4rem] flex justify-end px-[6.4rem] text-gray50">
               {watch('content')?.length}/100
             </p>
           ) : (
-            <p className=" mb-[2.4rem] flex justify-end text-gray50">0/100</p>
+            <p className=" mb-[2.4rem] flex justify-end px-[6.4rem] text-gray50">0/100</p>
           )}
-
-          {content?.map((item, index) => <CommentItem item={item} key={index} />)}
         </form>
+        {content?.map((item) => (
+          <CommentItem
+            item={item}
+            key={item.id}
+            handleCommentDelete={handleCommentDelete}
+            // handleCommentPatch={handleCommentPatch}
+          />
+        ))}
         <CommentPageination
           reRending={reRending}
           totalPages={totalPages}

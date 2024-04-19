@@ -14,6 +14,7 @@ interface ModalInputProps {
   disabled?: ReactNode;
   onModalDateClick?: (date: string) => void;
   onChange?: any;
+  divClassName?: string;
 }
 
 export default function ModalInput({
@@ -22,19 +23,19 @@ export default function ModalInput({
   id,
   type,
   name,
-
   hookform,
   children,
   // onChange,
   defaultValue,
   disabled,
   value,
+  divClassName,
 }: ModalInputProps) {
   const inputSize = ' px-[1.8rem] py-[1.2rem] w-full';
 
   return (
     <>
-      <div className="relative w-full">
+      <div className={`relative w-full ${divClassName}`}>
         <input
           autoComplete="off"
           defaultValue={defaultValue}
