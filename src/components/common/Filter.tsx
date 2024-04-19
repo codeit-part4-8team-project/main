@@ -62,7 +62,7 @@ function FilterItem({
   sessionStorage.setItem('filteredTeam', JSON.stringify(checkedTeamId));
 
   return (
-    <li key={id} className="flex w-[19rem] items-center justify-between gap-4">
+    <li key={id} className="flex w-[16.2rem] items-center justify-between gap-4">
       <ColorChipIcon fill={color} />
       <span className="grow justify-self-start text-body4-bold">{name}</span>
       <button type="button" onClick={handleCheckClick}>

@@ -26,17 +26,18 @@ export default function UserIssuesPage() {
   return (
     <BoardSection title="Kanban board">
       <IssueProvider>
-        <Filter
-          myTeams={myTeams}
-          checkedTeamId={checkedTeamId}
-          setCheckedTeamId={setCheckedTeamId}
-          className="absolute z-40 mr-[7.4rem]"
-        />
-        <KanbanBoard
-          issueBoardData={issueBoardData}
-          type="page"
-          reloadIssueBoard={reloadIssueBoard}
-        />
+        <div className="flex h-full w-[131rem] justify-between">
+          <Filter
+            myTeams={myTeams}
+            checkedTeamId={checkedTeamId}
+            setCheckedTeamId={setCheckedTeamId}
+          />
+          <KanbanBoard
+            issueBoardData={issueBoardData}
+            type="page"
+            reloadIssueBoard={reloadIssueBoard}
+          />
+        </div>
       </IssueProvider>
     </BoardSection>
   );
