@@ -38,7 +38,7 @@ export default function TeamBar() {
           buttonSize="sm"
           color="white"
           onClick={handleModalClick}
-          className="flex h-[3.6rem] w-[8.7rem] gap-[0.8rem] border-0"
+          className="flex h-[3.6rem] w-[8.7rem] gap-[0.8rem] whitespace-nowrap border-0"
         >
           <InviteIcon />
           <span>초대</span>
