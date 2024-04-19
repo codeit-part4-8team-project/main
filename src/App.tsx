@@ -3,8 +3,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import EntrancePageLayout from './components/common/EntrancePageLayout';
 import PrivateRoutes from './routes/PrivateRoutes';
 import LoadingPage from '@/pages/LoadingPage';
-import UserPageLayout from '@/components/common/UserPageLayout';
-import TeamPageLayout from '@/components/TeamsPage/TeamPageLayout';
+import PageLayout from '@/components/common/PageLayout';
 import { CalendarProvider } from '@/contexts/CalenarProvider';
 import { ModalProvider } from '@/contexts/ModalProvider';
 import { UserProvider } from '@/contexts/UserProvider';
@@ -33,16 +32,11 @@ function App() {
                   </Route>
                 </Route>
                 <Route element={<PrivateRoutes />}>
-                  <Route path="/user/:userId" element={<UserPageLayout />}>
+                  <Route path="/user/:userId" element={<PageLayout type="user" />}>
                     <Route path=":pageContent" element={<UserPage />} />
                   </Route>
-                  <Route element={<PrivateRoutes />}>
-                    <Route path="/user/:userId" element={<UserPageLayout />}>
-                      <Route path=":pageContent" element={<UserPage />} />
-                    </Route>
-                    <Route path="/team/:teamId" element={<TeamPageLayout />}>
-                      <Route path=":pageContent" element={<TeamPage />} />
-                    </Route>
+                  <Route path="/team/:teamId" element={<PageLayout type="team" />}>
+                    <Route path=":pageContent" element={<TeamPage />} />
                   </Route>
                 </Route>
               </Routes>
