@@ -26,17 +26,20 @@ export default function UserIssuesPage() {
   return (
     <BoardSection title="Kanban board">
       <IssueProvider>
-        <div className="flex h-full w-[131rem] justify-between">
+        <div className="mx-auto flex h-full max-w-[160rem] justify-between gap-[4.63rem]">
           <Filter
             myTeams={myTeams}
             checkedTeamId={checkedTeamId}
             setCheckedTeamId={setCheckedTeamId}
+            className="basis-[15.9rem]"
           />
           <KanbanBoard
             issueBoardData={issueBoardData}
             type="page"
+            className="min-w-[85rem] flex-auto"
             reloadIssueBoard={reloadIssueBoard}
           />
+          <div className="shrink basis-[15.9rem]"></div>
         </div>
       </IssueProvider>
     </BoardSection>

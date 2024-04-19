@@ -11,12 +11,14 @@ import { Issues } from '@/types/issueTypes';
 interface KanbanBoardProps {
   issueBoardData: Issues;
   type: 'main' | 'page';
+  className?: string;
   reloadIssueBoard: () => void;
 }
 
 export default function KanbanBoard({
   issueBoardData: { team: teamInfo, todoIssues, progressIssues, doneIssues },
   type,
+  className,
   reloadIssueBoard,
 }: KanbanBoardProps) {
   const { todoList, progressList, doneList, setTodoList, setProgressList, setDoneList } =
@@ -52,7 +54,7 @@ export default function KanbanBoard({
 
   return (
     <>
-      <div className={clsx('flex gap-[2.4rem]', kanbanBoardClasses)}>
+      <div className={clsx('flex gap-[2.4rem]', kanbanBoardClasses, className)}>
         <IssueList
           status="TODO"
           issues={todoList}
