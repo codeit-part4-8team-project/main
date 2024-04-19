@@ -2,13 +2,15 @@ import { Author, PageableData } from '@/types/commonTypes';
 import { Team } from '@/types/teamTypes';
 
 export interface Post {
-  id: 0;
+  id: number;
   title: string;
   author: Author;
   content: string;
   createdDate: string;
-  likeCount: 0;
+  likeCount: number;
   team: Team;
+  editable: boolean;
+  deletable: boolean;
   edited: boolean;
   liked: boolean;
 }

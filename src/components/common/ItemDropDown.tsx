@@ -10,7 +10,7 @@ export default function ItemDropDown({ options, action, className }: ItemDropDow
   return (
     <div
       className={clsx(
-        'absolute left-0 top-[2.4rem] z-30 flex w-40 flex-col rounded-[0.6rem] bg-[#FCFCFC] py-[0.4rem] shadow-[0px_0px_10px_0px_rgba(17,17,17,0.05)]',
+        'absolute left-0 top-[2.4rem] z-50 flex w-40 flex-col rounded-[0.6rem] bg-[#FCFCFC] py-[0.4rem] shadow-[0px_0px_10px_0px_rgba(17,17,17,0.05)]',
         className,
       )}
     >

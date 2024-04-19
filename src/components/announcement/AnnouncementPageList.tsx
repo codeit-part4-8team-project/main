@@ -1,9 +1,8 @@
 import { useParams } from 'react-router-dom';
-import clsx from 'clsx';
 import NoCard from '@/components/common/NoCard';
 import TextButton from '@/components/common/TextButton';
 import AnnouncementModal from '@/components/Modal/AnnouncementModal';
-import AnnouncementItem from '@/components/announcement/AnnouncementItem';
+import AnnouncementPageItem from '@/components/announcement/AnnouncementPageItem';
 import { useModal } from '@/contexts/ModalProvider';
 import { Announcement } from '@/types/announcementTypes';
 
@@ -36,25 +35,21 @@ export default function AnnouncementPageList({
   return (
     <>
       <div className="w-full">
-        {announcements.length !== 0 ? (
-          <ul
-            className={clsx(
-              'mx-auto grid w-full max-w-[132.6rem] list-none grid-cols-3 gap-[2.4rem]',
-            )}
-          >
-            {announcements.map((announcement) => {
+        <ul className="mt-[1.4rem] grid w-full grid-cols-2 gap-12">
+          {announcements.length !== 0 ? (
+            announcements.map((announcement) => {
               return (
-                <li key={announcement.id}>
-                  <AnnouncementItem announcement={announcement} type="page" />
+                <li key={announcement.id} className="w-full">
+                  <AnnouncementPageItem announcement={announcement} />
                 </li>
               );
-            })}
-          </ul>
-        ) : (
-          <NoCard type="announcement-page" backgroundColor="bg-white">
-            공지사항이 없습니다.
-          </NoCard>
-        )}
+            })
+          ) : (
+            <NoCard type="announcement-page" backgroundColor="bg-white">
+              게시글이 없습니다.
+            </NoCard>
+          )}
+        </ul>
       </div>
       <TextButton
         buttonSize="sm"
