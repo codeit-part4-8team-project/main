@@ -8,8 +8,8 @@ import { useAxios } from '@/hooks/useAxios';
 import dropDown from '@/assets/assets/arrow-down-dark.png';
 
 interface AfterApprovalProps {
-  closeClick?: () => void;
-  memberId: number;
+  closeClick: () => void;
+  memberId?: number;
 }
 
 interface RoleDataType {
@@ -17,9 +17,8 @@ interface RoleDataType {
   name: string;
 }
 // 합칠때 에러 처리하기
-// 여기 작업하기 - 필겸 -
+
 export default function AfterApproval({ closeClick, memberId }: AfterApprovalProps) {
-  console.log('membersId입니다', memberId);
   const { data: roleData } = useAxios<RoleDataType[]>(
     {
       path: 'member/role',
@@ -31,17 +30,17 @@ export default function AfterApproval({ closeClick, memberId }: AfterApprovalPro
   const { fetchData: memberRoleData } = useAxios({});
   const [roleToggle, setRoleToggle] = useState<boolean>(false);
   const [roleClickData, setRoleClickData] = useState<string>('');
-  console.log(roleClickData);
+
   const handleroleToggle = () => {
     setRoleToggle(!roleToggle);
   };
-  // roleclickData 해결 하기 값 안 넘어감
-  // + memberId나중에 백한테 물어보기
+
   const handleMemberRoleData = () => {
     memberRoleData({
       newPath: `member/${memberId}`,
       newMethod: 'PATCH',
-      newData: roleClickData,
+      // newData: { role: roleClickData,
+      newData: { role: roleClickData, grade: '팀원' },
     }).then(() => {
       closeClick && closeClick();
     });
