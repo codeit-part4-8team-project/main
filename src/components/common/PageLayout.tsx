@@ -6,7 +6,8 @@ import FloatingButton from '@/components/common/FloatingButton';
 import Nav from '@/components/common/Nav';
 import SideBar from '@/components/common/sideBar/SideBar';
 import TeamBar from '@/components/TeamsPage/TeamBar';
-import ChatList from '@/components/chat/ChatList';
+import ChatPopup from '@/components/chat/ChatPopup';
+import ChatProvider from '@/contexts/ChatProvider';
 import { TeamProvider } from '@/contexts/TeamProvider';
 
 interface PageLayoutProps {
@@ -34,7 +35,11 @@ export default function PageLayout({ type }: PageLayoutProps) {
         <Board>
           <Outlet />
         </Board>
-        {isChatOpen && <ChatList onCloseClick={handleChatClick} />}
+        {isChatOpen && (
+          <ChatProvider>
+            <ChatPopup />
+          </ChatProvider>
+        )}
         <FloatingButton onClick={handleChatClick} />
       </div>
     </TeamProvider>

@@ -4,7 +4,7 @@ import ChatIcon from '@/assets/ChatIcon';
 import CloseIcon from '@/assets/CloseIcon';
 
 interface ChatListProps {
-  onCloseClick: () => void;
+  onCloseClick?: () => void;
 }
 
 export default function ChatList({ onCloseClick }: ChatListProps) {
