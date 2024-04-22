@@ -1,13 +1,12 @@
 import TextButton from '@/components/common/TextButton';
 import ChatListItem from '@/components/chat/ChatListItem';
+import { useChat } from '@/contexts/ChatProvider';
 import ChatIcon from '@/assets/ChatIcon';
 import CloseIcon from '@/assets/CloseIcon';
 
-interface ChatListProps {
-  onCloseClick?: () => void;
-}
+export default function ChatList() {
+  const { handleCloseClick } = useChat();
 
-export default function ChatList({ onCloseClick }: ChatListProps) {
   return (
     <div className="fixed right-0 top-[5.8rem] z-50 flex h-full w-[49.7rem] flex-col gap-[3.8rem] bg-white px-16 pb-[5.2rem] pt-16">
       <div className="flex items-center justify-between">
@@ -15,7 +14,7 @@ export default function ChatList({ onCloseClick }: ChatListProps) {
           <ChatIcon />
           <span className="text-body1-bold">채팅 목록</span>
         </div>
-        <button type="button" onClick={onCloseClick}>
+        <button type="button" onClick={handleCloseClick}>
           <CloseIcon />
         </button>
       </div>
