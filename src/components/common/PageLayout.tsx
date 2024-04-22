@@ -6,8 +6,7 @@ import FloatingButton from '@/components/common/FloatingButton';
 import Nav from '@/components/common/Nav';
 import SideBar from '@/components/common/sideBar/SideBar';
 import TeamBar from '@/components/TeamsPage/TeamBar';
-import ChatPopup from '@/components/chat/ChatPopup';
-import ChatProvider from '@/contexts/ChatProvider';
+import { useChat } from '@/contexts/ChatProvider';
 import { TeamProvider } from '@/contexts/TeamProvider';
 
 interface PageLayoutProps {
@@ -17,8 +16,10 @@ interface PageLayoutProps {
 export default function PageLayout({ type }: PageLayoutProps) {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
+  const { chatPortal } = useChat();
+
   const handleChatClick = () => {
-    setIsChatOpen(!isChatOpen);
+    setIsChatOpen(true);
   };
 
   return (
@@ -35,11 +36,7 @@ export default function PageLayout({ type }: PageLayoutProps) {
         <Board>
           <Outlet />
         </Board>
-        {isChatOpen && (
-          <ChatProvider>
-            <ChatPopup />
-          </ChatProvider>
-        )}
+        {isChatOpen && chatPortal}
         <FloatingButton onClick={handleChatClick} />
       </div>
     </TeamProvider>

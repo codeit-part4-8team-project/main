@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useChat } from '@/contexts/ChatProvider';
 import ProfileImg from '@/assets/assets/profile-small.svg';
 
 interface ChatListItemProps {
@@ -6,12 +7,19 @@ interface ChatListItemProps {
 }
 
 export default function ChatListItem({ isActive = false }: ChatListItemProps) {
+  const { setCurrentPage } = useChat();
+
+  const handleItemClick = () => {
+    setCurrentPage('chat');
+  };
+
   return (
     <div
       className={clsx(
         'flex h-[10.3rem] w-[41.7rem] items-center justify-center rounded-[2.4rem] bg-gray20 px-[2.4rem]',
         isActive ? 'bg-gray20' : 'border border-gray20 bg-white',
       )}
+      onClick={handleItemClick}
     >
       <div className="flex w-full items-center gap-[1.7rem]">
         <img
