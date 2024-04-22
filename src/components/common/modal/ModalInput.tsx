@@ -25,10 +25,10 @@ export default function ModalInput({
 
   hookform,
   children,
-  onChange,
+  // onChange,
   defaultValue,
   disabled,
-  value,
+  // value,
 }: ModalInputProps) {
   const inputSize = ' px-[1.8rem] py-[1.2rem] w-full';
 
@@ -43,9 +43,9 @@ export default function ModalInput({
           placeholder={placeholder}
           id={id}
           type={type}
-          value={value}
+          // value={value}
           disabled={disabled}
-          onChange={onChange}
+          // onChange={onChange}
         />
         {children}
       </div>
