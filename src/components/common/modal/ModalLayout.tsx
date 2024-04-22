@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
-import deleteTrash from '@/assets/assets/Trash.svg';
+import Edit from '@/assets/assets/Edit.svg';
+import DeleteTrash from '@/assets/assets/Trash.svg';
 import calendar from '@/assets/assets/calendar-dark.svg';
 import close from '@/assets/assets/close.svg';
 import people from '@/assets/assets/people-fill.svg';
@@ -7,10 +8,12 @@ import people from '@/assets/assets/people-fill.svg';
 interface ModalProps {
   children?: ReactNode;
   closeClick?: () => void;
-  title: string;
+  title?: string;
   className?: string;
   detail?: boolean;
   deleteOnClick?: () => void;
+  edit?: boolean;
+  editOnClick?: () => void;
   onClick?: () => void;
   calendarType?: '나' | '팀';
 }
@@ -22,6 +25,8 @@ export default function ModalLayout({
   className,
   detail = false,
   deleteOnClick,
+  edit,
+  editOnClick,
   onClick,
 }: ModalProps) {
   return (
@@ -40,7 +45,12 @@ export default function ModalLayout({
           <div className="flex gap-[1.6rem]" onClick={onClick}>
             {detail && (
               <button onClick={deleteOnClick}>
-                <img src={deleteTrash} alt="deleteButton" />
+                <img src={DeleteTrash} alt="DeleteButton" />
+              </button>
+            )}
+            {edit && (
+              <button onClick={editOnClick}>
+                <img src={Edit} alt="EditButton" />
               </button>
             )}
             <button onClick={closeClick}>

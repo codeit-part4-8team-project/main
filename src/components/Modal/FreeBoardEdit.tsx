@@ -42,6 +42,7 @@ export default function FreeBoardEditModal({ closeClick, postId }: FreeBoardModa
       content: defalutContent,
     },
   });
+
   const onSubmit: SubmitHandler<Inputs> = ({ title, content }, event) => {
     const createFreeBoard = {
       content: content,
