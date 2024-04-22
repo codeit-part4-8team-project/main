@@ -20,7 +20,7 @@ export default function ChatList({ onCloseClick }: ChatListProps) {
         </button>
       </div>
       <div className="flex flex-auto flex-col gap-[1.6rem]">
-        <ChatListItem isActive={true} />
+        <ChatListItem />
         <ChatListItem />
         <ChatListItem />
         <ChatListItem />
