@@ -24,12 +24,8 @@ interface DefaultValue {
 interface GroupApproveData {
   id?: number;
 }
-// 얘는 어떻게 프롭으로 받아야하지? 들어가는 위치를 모르겠네
-export default function InvitationGroupModal({
-  closeClick,
-  teamId,
-  // 합칠때 얘도 기본값 빼기 에러 떠서 넣어놓음
-}: InvitationGroupModalProps) {
+
+export default function InvitationGroupModal({ closeClick, teamId }: InvitationGroupModalProps) {
   const { data: defaultValue } = useAxios<DefaultValue>(
     {
       path: `team/${teamId}`,
@@ -46,7 +42,6 @@ export default function InvitationGroupModal({
   const { user } = useUserContext();
   const openModal = useModal();
 
-  // 여기 teamId는 프롭으로 useParms를 못 받을것 같은데 어떻게 가져오지?
   const handleDeleteClick = () => {
     deleteFetch({
       newPath: `member/invite/${teamId}`,
@@ -59,11 +54,11 @@ export default function InvitationGroupModal({
       newPath: `member/invite/${teamId}`,
       newMethod: 'PATCH',
     });
-
-    openModal(({ close }) => <AfterApproval closeClick={close} memberId={memberId} />);
+    if (memberId) {
+      openModal(({ close }) => <AfterApproval closeClick={close} memberId={memberId} />);
+    }
   };
 
-  // console.log('memberId', memberId);
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle =
