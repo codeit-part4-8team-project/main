@@ -45,7 +45,7 @@ export default function FreeBoardDetail({
   const openModal = useModal();
 
   const handleDelete = () => {
-    const confirmDelete = window.confirm('이 이슈를 삭제하시겠습니까?');
+    const confirmDelete = window.confirm('이 댓글을 삭제하시겠습니까?');
     if (confirmDelete) {
       deleteFetch({
         newPath: `post/${postId}`,

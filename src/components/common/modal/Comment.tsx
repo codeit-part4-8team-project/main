@@ -60,23 +60,21 @@ export default function Comment({ postId, children }: CommentProps) {
     },
     true,
   );
+  console.log(defaultValue);
   const { fetchData: deleteFetch } = useAxios({});
   const { fetchData: commentFetch } = useAxios({});
-  // const { fetchData: patchFetch } = useAxios({});
-  const { content, numberOfElements, last, first, totalPages, pageable }: DefaultValue =
+
+  const { content, totalElements, last, first, totalPages, pageable }: DefaultValue =
     defaultValue || {};
-  // console.log(content);
 
   const { handleSubmit, register, watch, reset } = useForm<Inputs>({});
   const [reRending, setReRending] = useState<number | undefined>(0);
+
   const onSubmit: SubmitHandler<Inputs> = ({ content }) => {
     const createComment = {
       content: content,
     };
 
-    // if () {
-
-    // }
     handleCommentPost(createComment);
 
     reset();
@@ -94,9 +92,15 @@ export default function Comment({ postId, children }: CommentProps) {
         newData: data,
       });
     }
-    getAxios({
-      newPath: `comment/post/${postId}?page=${totalPages}`,
-    });
+    if (totalPages === 0) {
+      getAxios({
+        newPath: `comment/post/${postId}?page=1`,
+      });
+    } else {
+      getAxios({
+        newPath: `comment/post/${postId}?page=${totalPages}`,
+      });
+    }
     setReRending(totalPages);
   };
 
@@ -121,25 +125,12 @@ export default function Comment({ postId, children }: CommentProps) {
     }
   };
 
-  // const handleCommentPatch = async (commentId?: number, newData?: Partial<Inputs>) => {
-  //   await patchFetch({
-  //     newPath: `comment/${commentId}`,
-  //     newMethod: 'PATCH',
-  //     newData: newData,
-  //   });
-  //   if (pageable) {
-  //     getAxios({
-  //       newPath: `comment/post/${postId}?page=${pageable?.pageNumber + 1}`,
-  //     });
-  //   }
-  // };
-
   return (
     <>
       <div className="mx-[2.4rem] px-16  pb-[2.4rem] text-gray50">
         <div className="flex items-center gap-[0.4rem]">
           <img src={comment} alt="comment" />
-          <p>{numberOfElements}</p>
+          <p>{totalElements}</p>
           {children}
         </div>
       </div>
@@ -169,12 +160,7 @@ export default function Comment({ postId, children }: CommentProps) {
           )}
         </form>
         {content?.map((item) => (
-          <CommentItem
-            item={item}
-            key={item.id}
-            handleCommentDelete={handleCommentDelete}
-            // handleCommentPatch={handleCommentPatch}
-          />
+          <CommentItem item={item} key={item.id} handleCommentDelete={handleCommentDelete} />
         ))}
         <CommentPageination
           reRending={reRending}

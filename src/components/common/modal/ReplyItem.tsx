@@ -22,7 +22,7 @@ interface ReplyItemProps {
 }
 
 export default function ReplyItem({ item }: ReplyItemProps) {
-  console.log(item);
+  // console.log(item);
   const { author, content, createdDate, mention } = item;
   //   createdDate: "2024-04-18"
   // grade: "TEAM_MEMBER"

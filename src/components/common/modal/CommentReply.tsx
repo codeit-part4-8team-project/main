@@ -10,10 +10,6 @@ interface Inputs {
 
 interface MentionType {
   username: string;
-  // createdDate: string
-  // grade: string;
-  // imageUrl: string;
-  // id: string;
 }
 interface ReplyType {
   mention: MentionType;
@@ -27,15 +23,13 @@ interface CommentReplyProps {
   commentId: number;
   reply: ReplyType[];
 }
-// author: {id: 8, name: '문필겸', imageUrl: 'https://lh3.googleusercontent.com/a/ACg8ocKBuPrK58zOvSMHby2qRJ_jwlfiMvMMknErFI_8ajC_Qeeqpw=s96-c', role: null, grade: 'TEAM_MEMBER', …}
-// content: "title"
-// createdDate: "2024-04-19 18:33:23"
-// deletable: true
-// editable: true
-// id: 97
+
+interface replyDataType {
+  reply: ReplyType[];
+}
+
 export default function CommentReply({ commentId, reply }: CommentReplyProps) {
-  console.log(reply);
-  const { fetchData: replyFetch } = useAxios({});
+  const { data: replyData, fetchData: replyFetch } = useAxios<replyDataType>({});
   const { handleSubmit, register, watch, reset } = useForm<Inputs>({});
 
   const onSubmit: SubmitHandler<Inputs> = ({ content }) => {
@@ -46,9 +40,8 @@ export default function CommentReply({ commentId, reply }: CommentReplyProps) {
     reset();
   };
 
-  const handleCommentReply = (data: Inputs) => {
-    console.log(data);
-    replyFetch({
+  const handleCommentReply = async (data: Inputs) => {
+    await replyFetch({
       newPath: `comment/reply/${commentId}`,
       newMethod: 'POST',
       newData: data,
@@ -56,7 +49,19 @@ export default function CommentReply({ commentId, reply }: CommentReplyProps) {
   };
   return (
     <div className="pl-[10.4rem] pr-[6.4rem]">
-      {reply?.map((item) => <ReplyItem item={item} key={item.id} />)}
+      {replyData ? (
+        <>
+          {replyData.reply.map((item) => (
+            <ReplyItem key={item.id} item={item} />
+          ))}
+        </>
+      ) : (
+        <>
+          {reply.map((item) => (
+            <ReplyItem item={item} key={item.id} />
+          ))}
+        </>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalInput
@@ -67,11 +72,7 @@ export default function CommentReply({ commentId, reply }: CommentReplyProps) {
           className=" w-[35.1rem] "
           divClassName="flex gap-4 justify-between"
         >
-          <button
-            type="button"
-            className="flex h-[2.8rem] w-[7.1rem] items-center justify-center rounded-[0.6rem] border-[0.1rem] border-gray30 bg-white px-[1.2rem] py-[1.8rem] text-center"
-          >
-            {/* text-[#D2D2D2] */}
+          <button className="flex h-[2.8rem] w-[7.1rem] items-center justify-center rounded-[0.6rem] border-[0.1rem] border-gray30 bg-white px-[1.2rem] py-[1.8rem] text-center">
             전송
           </button>
         </ModalInput>

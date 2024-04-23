@@ -20,6 +20,7 @@ export default function CommentPageination({
   // totalElements,
 }: PaginationProps) {
   const [activePage, setActivePage] = useState<number>(1);
+  // console.log('activePage', activePage);
   // 여기 first 값 잘못 받아서 임시로 activePage =>로 bollean 처리함
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
@@ -39,12 +40,6 @@ export default function CommentPageination({
   useEffect(() => {
     onPageChange(activePage);
   }, [activePage]);
-
-  // useEffect(() => {
-  //   if (totalElements % 5 === 0) {
-  //     setActivePage(totalPages + 1);
-  //   }
-  // }, [reRending]);
 
   return (
     <div className="flex items-center justify-center gap-[2.4rem] pb-[4.8rem]">
