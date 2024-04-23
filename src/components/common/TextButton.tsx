@@ -11,15 +11,18 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
   className?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>; //빌드 오류나서 일단 바꿔놓음
+  reloadParent?: any;
 }
 
 const TextButton = ({
   buttonSize,
   color = 'black',
   children,
+  reloadParent,
   onClick,
   disabled = false,
   className,
+
   ...props
 }: ButtonProps) => {
   const buttonSizeClasses = clsx({

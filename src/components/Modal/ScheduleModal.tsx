@@ -6,6 +6,7 @@ import ModalInput from '@/components/common/modal/ModalInput';
 import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalScheduleCalendarInput from '@/components/common/modal/ModalScheduleCalendarInput';
+import { Schedule } from '@/contexts/CalenarProvider';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
 
@@ -18,12 +19,16 @@ interface ScheduleModalProps {
   user?: boolean;
   team?: boolean;
   teamId?: string;
+  scheduleData: Schedule[];
+  onAddSchedule?: (newSchedule: Schedule) => void;
 }
 type Inputs = {
+  id: number;
   title: string;
   startDateTime: string;
   endDateTime: string;
   content: string;
+  name: string;
 };
 // 여기는 user인지 team인지 구분이 필요함
 // 합칠때 teamId 에러가 계속 떠서 일단 기본값 넣어줌
@@ -34,6 +39,7 @@ function ScheduleModal({
   teamId,
   onModalStartDateClick,
 
+  onAddSchedule,
   onModalEndDateClick,
 }: ScheduleModalProps) {
   const { fetchData: userFetchData } = useAxios({});
@@ -43,21 +49,24 @@ function ScheduleModal({
   const [selectedEndDate, setSelectedEndDate] = useState<string>('');
 
   const { register, handleSubmit, watch } = useForm<Inputs>();
-
-  const onSubmit: SubmitHandler<Inputs> = async ({ title, content }, event) => {
+  //const { setSchedules, setFilteredSchedules, mode, nowDate } = useContext(calendarContext);
+  const onSubmit: SubmitHandler<Inputs> = async ({ title, content, id, name }, event) => {
     const createSchedlue = {
+      id: id,
       title: title,
       startDateTime: selectedStartDate,
       endDateTime: selectedEndDate,
       content: content,
+      name: name,
     };
-    console.log('dk');
+
     try {
-      console.log('스캐줄', createSchedlue);
+      // console.log('스캐줄', createSchedlue);
       await handleScheduleUserFetch(createSchedlue);
       //event?.target.closest('dialog').close();
 
-      window.location.reload();
+      //window.location.reload();
+      onAddSchedule?.(createSchedlue);
       closeClick?.();
     } catch (error) {
       console.error('Failed to add schedule:', error);
@@ -88,7 +97,6 @@ function ScheduleModal({
       });
     }
   };
-
   const handleStartDateClick = (date: string) => {
     setSelectedStartDate(date); // 변수와 문자열을 올바르게 결합
     if (onModalStartDateClick) {
@@ -99,6 +107,8 @@ function ScheduleModal({
     setSelectedEndDate(date);
     if (onModalEndDateClick) {
       onModalEndDateClick(date);
+    } else if (new Date(date) < new Date(selectedStartDate)) {
+      alert('종료날짜는 시작 날짜보다 이후여햐 합니다. ');
     }
   };
   const handleStartTimeClick = (Time: string) => {

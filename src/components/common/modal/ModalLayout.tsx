@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
+import ChatIcon from '@/assets/ChatIcon';
 import Edit from '@/assets/assets/Edit.svg';
 import DeleteTrash from '@/assets/assets/Trash.svg';
+import deleteTrash from '@/assets/assets/Trash.svg';
 import calendar from '@/assets/assets/calendar-dark.svg';
 import close from '@/assets/assets/close.svg';
 import people from '@/assets/assets/people-fill.svg';
@@ -39,6 +41,8 @@ export default function ModalLayout({
               title === '그룹 초대' ||
               title === '그룹 관리' ||
               title === '프로필 변경') && <img src={people} alt="사람들" />}
+            {title === '채팅방 생성하기' && <ChatIcon />}
+
             {title}
           </div>
 

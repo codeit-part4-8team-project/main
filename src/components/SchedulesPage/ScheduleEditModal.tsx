@@ -28,7 +28,10 @@ type Inputs = {
   endDateTime: string;
   content: string;
 };
-
+interface defaultValue {
+  content: string;
+  title: string;
+}
 function ScheduleEditModal({
   closeClick,
   team = false,
@@ -38,12 +41,26 @@ function ScheduleEditModal({
   onModalStartDateClick,
   onModalEndDateClick,
 }: ScheduleEditModalProps) {
-  const [formData, setFormData] = useState<Inputs>({
-    title: selectedSchedule.title,
-    startDateTime: selectedSchedule.startDateTime,
-    endDateTime: selectedSchedule.endDateTime,
+  const { data: defaultValue } = useAxios<defaultValue>(
+    {
+      path: `schedule/${selectedSchedule.id}`,
+    },
+    true,
+  );
+  const { content: defaultContent, title: defaultTitle }: defaultValue = defaultValue || {
     content: selectedSchedule.content,
+    title: selectedSchedule.title,
+  };
+  const { register, handleSubmit, watch } = useForm<Inputs>({
+    defaultValues: {
+      content: defaultContent,
+      title: defaultTitle,
+    },
   });
+  const titleWatch = watch('title');
+  console.log(watch('title'));
+  const contentWatch = watch('content');
+
   const { fetchData: userFetchData } = useAxios({});
   const { fetchData: teamFetchData } = useAxios({});
   const { user: userInformation } = useUserContext();
@@ -51,14 +68,6 @@ function ScheduleEditModal({
     selectedSchedule.startDateTime,
   );
   const [selectedEndDate, setSelectedEndDate] = useState<string>(selectedSchedule.endDateTime);
-  const [selectedStartTime, setSelectedStartTime] = useState<string>('');
-  const [selectedEndTime, setSelectedEndTime] = useState<string>('');
-  const [startTimeData, setStartTimeData] = useState<string>('');
-  const [endTimeData, setEndTimeData] = useState<string>('');
-
-  const { register, handleSubmit, watch } = useForm<Inputs>();
-  const titleWatch = watch('title');
-  const contentWatch = watch('content');
 
   useEffect(() => {
     if (selectedSchedule) {
@@ -66,30 +75,15 @@ function ScheduleEditModal({
       setSelectedEndDate(selectedSchedule.endDateTime);
     }
   }, [selectedSchedule]);
+  const onSubmit: SubmitHandler<Inputs> = async ({ title, content }) => {
+    const createSchedlue = {
+      title: title,
+      startDateTime: selectedStartDate,
+      endDateTime: selectedEndDate,
+      content: content,
+    };
 
-  useEffect(() => {
-    setFormData((prevData) => ({
-      ...prevData,
-      startDateTime: selectedStartDate + ' ' + selectedStartTime,
-      endDateTime: selectedEndDate + ' ' + selectedEndTime,
-    }));
-  }, [
-    selectedStartDate,
-    selectedStartTime,
-    selectedEndDate,
-    selectedEndTime,
-    startTimeData,
-    endTimeData,
-  ]);
-
-  const onSubmit: SubmitHandler<Inputs> = async () => {
-    try {
-      await handleScheduleUserFetch();
-      window.location.reload();
-      closeClick?.();
-    } catch (error) {
-      console.error('Failed to add schedule:', error);
-    }
+    handleScheduleUserFetch(createSchedlue);
   };
 
   const handleStartDateClick = (date: string) => {
@@ -107,63 +101,36 @@ function ScheduleEditModal({
   };
 
   const handleStartTimeClick = (Time: string) => {
-    setStartTimeData(Time);
-    setSelectedStartTime(Time);
     setSelectedStartDate(selectedStartDate + ' ' + Time);
   };
 
-  const handleEndTimeClick = (Time: string) => {
-    setEndTimeData(Time);
-    setSelectedEndTime(Time);
-    setSelectedEndDate(selectedEndDate + ' ' + Time);
+  const handleEndTimeClick = (time: string) => {
+    setSelectedEndDate(selectedEndDate + ' ' + time);
   };
-
   const handleStartDateChange = (date: string) => {
     setSelectedStartDate(date);
-    setFormData((prevData) => ({
-      ...prevData,
-      startDateTime: date + ' ' + selectedStartTime,
-    }));
   };
 
   const handleEndDateChange = (date: string) => {
     setSelectedEndDate(date);
-    setFormData((prevData) => ({
-      ...prevData,
-      endDateTime: date + ' ' + selectedEndTime,
-    }));
   };
-
-  const handleScheduleUserFetch = () => {
-    const data = {
-      title: formData.title,
-      startDateTime: formData.startDateTime,
-      endDateTime: formData.endDateTime,
-      content: formData.content,
-    };
-    console.log('Data to be sent:', data);
+  const handleScheduleUserFetch = (data: Inputs) => {
     if (user) {
       userFetchData({
         newPath: `schedule/${selectedSchedule.id}`,
         newMethod: 'PATCH',
-        newData: formData,
+        newData: data,
       });
     } else if (team) {
       teamFetchData({
         newPath: `schedule/${selectedSchedule.id}`,
         newMethod: 'PATCH',
-        newData: formData,
+        newData: data,
       });
     }
     closeClick?.();
   };
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle = 'rounded-[0.6rem] border-[0.1rem] border-gray30';
@@ -185,14 +152,14 @@ function ScheduleEditModal({
             </div>
             <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
               <ModalLabel label="제목" className={`${formTextSize}`} htmlFor="title" />
+
               <ModalInput
+                defaultValue={defaultTitle}
                 hookform={register('title', { required: true, maxLength: 20 })}
                 className={`${inputTextSize} ${borderStyle}`}
                 id="title"
                 type="text"
                 name="title"
-                value={formData.title}
-                onChange={handleInputChange}
               />
             </div>
             {titleWatch?.length > 20 && (
@@ -202,20 +169,19 @@ function ScheduleEditModal({
             )}
 
             {titleWatch ? (
-              <p className={`${InputValueLength}`}>{titleWatch?.length}/20</p>
+              <p className={`${InputValueLength}`}>{titleWatch.length}/20</p>
             ) : (
               <p className={`${InputValueLength}`}>0/20</p>
             )}
             <div className=" mb-[0.8rem] flex flex-col gap-[0.8rem]">
               <ModalLabel label="내용" className={`${formTextSize}`} htmlFor="content" />
               <ModalInput
+                defaultValue={defaultContent}
                 hookform={register('content', { required: true, maxLength: 40 })}
                 className={`${inputTextSize} ${borderStyle}`}
                 id="content"
                 type="text"
                 name="content"
-                value={formData.content}
-                onChange={handleInputChange}
               />
             </div>
             {contentWatch?.length > 40 && (
@@ -235,20 +201,20 @@ function ScheduleEditModal({
               endHookform={register('endDateTime')}
               endName="endDateTime"
               onModalStartDateClick={handleStartDateClick}
+              onModalEndDateClick={handleEndDateClick}
               onStartClickTime={handleStartTimeClick}
               onEndClickTime={handleEndTimeClick}
               startValue={selectedStartDate}
               onStartDateChange={handleStartDateChange}
               onEndDateChange={handleEndDateChange}
               endValue={selectedEndDate}
-              onModalEndDateClick={handleEndDateClick}
             />
           </ModalFormBorder>
           <TextButton
             buttonSize="md"
             className="mt-16 text-body4-bold text-point_red"
             color="black"
-            onClick={() => handleScheduleUserFetch()}
+            type="submit"
           >
             수정완료
           </TextButton>
