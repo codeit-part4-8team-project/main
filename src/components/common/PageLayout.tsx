@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import clsx from 'clsx';
 import Board from '@/components/common/Board';
@@ -14,13 +13,13 @@ interface PageLayoutProps {
 }
 
 export default function PageLayout({ type }: PageLayoutProps) {
-  const [isChatOpen, setIsChatOpen] = useState(false);
-
-  const { chatPortal } = useChat();
+  const { setCurrentPage, chatPortal } = useChat();
 
   const handleChatClick = () => {
-    setIsChatOpen(true);
+    setCurrentPage('list');
   };
+
+  const isChatOpen = chatPortal ? true : false;
 
   return (
     <TeamProvider>

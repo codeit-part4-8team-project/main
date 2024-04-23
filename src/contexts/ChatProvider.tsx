@@ -24,7 +24,7 @@ const defaultValues: ChatContextValues = {
 const ChatContext = createContext<ChatContextValues>(defaultValues);
 
 export default function ChatProvider({ children }: ChatProviderProps) {
-  const [currentPage, setCurrentPage] = useState<ChatPage>('list');
+  const [currentPage, setCurrentPage] = useState<ChatPage>(null);
 
   let chatPageEl = null;
   if (currentPage === 'list') chatPageEl = <ChatList />;
