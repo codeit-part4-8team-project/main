@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import clsx from 'clsx';
 import Board from '@/components/common/Board';
@@ -6,7 +6,7 @@ import FloatingButton from '@/components/common/FloatingButton';
 import Nav from '@/components/common/Nav';
 import SideBar from '@/components/common/sideBar/SideBar';
 import TeamBar from '@/components/TeamsPage/TeamBar';
-import ChatList from '@/components/chat/ChatList';
+import { useChat } from '@/contexts/ChatProvider';
 import { TeamProvider } from '@/contexts/TeamProvider';
 
 interface PageLayoutProps {
@@ -14,11 +14,24 @@ interface PageLayoutProps {
 }
 
 export default function PageLayout({ type }: PageLayoutProps) {
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const { currentPage, setCurrentPage, chatPortal, chatRef } = useChat();
 
   const handleChatClick = () => {
-    setIsChatOpen(!isChatOpen);
+    setCurrentPage('list');
   };
+
+  useEffect(() => {
+    const closeChat = (e: MouseEvent) => {
+      if (currentPage && chatRef?.current && !chatRef.current.contains(e.target as Node))
+        setCurrentPage(null);
+    };
+
+    document.addEventListener('mousedown', closeChat);
+
+    return () => {
+      document.removeEventListener('mousedown', closeChat);
+    };
+  }, [currentPage]);
 
   return (
     <TeamProvider>
@@ -34,7 +47,7 @@ export default function PageLayout({ type }: PageLayoutProps) {
         <Board>
           <Outlet />
         </Board>
-        {isChatOpen && <ChatList onCloseClick={handleChatClick} />}
+        {currentPage && chatPortal}
         <FloatingButton onClick={handleChatClick} />
       </div>
     </TeamProvider>

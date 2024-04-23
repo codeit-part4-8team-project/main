@@ -1,12 +1,21 @@
+import { useChat } from '@/contexts/ChatProvider';
 import ArrowLeftIcon from '@/assets/ArrowLeftIcon';
 import MeatbollsIcon from '@/assets/MeatbollsIcon';
 import ProfileImg from '@/assets/assets/profile-small.svg';
 
 export default function ChatHeader() {
+  const { setCurrentPage } = useChat();
+
+  const handleBackClick = () => {
+    setCurrentPage('list');
+  };
+
   return (
     <div className="absolute left-0 right-0 top-0 flex h-[9.6rem] w-full items-center justify-between border-b-[0.1rem] border-gray20 px-12">
       <div className="flex items-center gap-[3.1rem]">
-        <ArrowLeftIcon />
+        <button type="button" onClick={handleBackClick}>
+          <ArrowLeftIcon />
+        </button>
         <div className="flex items-center gap-4">
           <img
             src={ProfileImg}
