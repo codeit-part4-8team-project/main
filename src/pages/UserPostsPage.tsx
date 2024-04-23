@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import BoardSection from '@/components/common/BoardSection';
 import Filter from '@/components/common/Filter';

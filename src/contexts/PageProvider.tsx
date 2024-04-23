@@ -1,6 +1,4 @@
 /* eslint-disable react-refresh/only-export-components */
-
-/* eslint-disable react-hooks/exhaustive-deps */
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAnnouncementPage } from '@/hooks/useAnnouncement';
