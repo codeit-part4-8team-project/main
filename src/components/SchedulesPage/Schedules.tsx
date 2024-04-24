@@ -8,6 +8,7 @@ import GroupFilter from './GroupFilter';
 import { calendarContext } from '@/contexts/CalenarProvider';
 import { Schedule } from '@/contexts/CalenarProvider';
 import { useModal } from '@/contexts/ModalProvider';
+import { useAxios } from '@/hooks/useAxios';
 import useScheduleData from '@/hooks/useScheduleData';
 
 interface SchedulesProps {
@@ -17,6 +18,8 @@ interface SchedulesProps {
 
 function Schedules({ calendarType, teamId }: SchedulesProps) {
   const { setSchedules, setFilteredSchedules, mode, nowDate } = useContext(calendarContext);
+  const { data: userData, fetchData: userFetchData } = useAxios({});
+  const { data: teamData, fetchData: teamFetchData } = useAxios({});
   const [groupData, setGroupData] = useState<Schedule[]>([]);
   const [scheduleData, setScheduleData] = useState<Schedule[]>([]); // 추가
   const container = ' bg-gray10 mb-[2.4rem] mr-[2.4rem] pr-[26.9rem] rounded-[2.4rem]';
@@ -40,6 +43,7 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
     if (calendarType === '나') {
       openModal(({ close }) => (
         <ScheduleModal
+          userFetchData={userFetchData}
           onAddSchedule={handleAddSchedule}
           user={true}
           closeClick={close}
@@ -49,6 +53,7 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
     } else {
       openModal(({ close }) => (
         <ScheduleModal
+          teamFetchData={teamFetchData}
           onAddSchedule={handleAddSchedule}
           team={true}
           closeClick={close}
@@ -76,6 +81,7 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
       setScheduleData([...schedule]);
     },
   });
+
   // useEffect(() => {
   //   useScheduleData({
   //     calendarType,
@@ -113,7 +119,13 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
         {calendarType === '나' && (
           <GroupFilter className="w-[16.5rem]" items={groupData} onCheck={handleCheck} />
         )}
-        <DateBox calendarType={calendarType} mode="month" scheduleData={scheduleData} />
+        <DateBox
+          calendarType={calendarType}
+          mode="month"
+          scheduleData={scheduleData}
+          userData={userData}
+          teamData={teamData}
+        />
       </div>
     </div>
   );

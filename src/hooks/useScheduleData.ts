@@ -45,6 +45,7 @@ function useScheduleData({
   useEffect(() => {
     fetchData();
   }, [calendarType, teamId, nowDate]);
+  return data;
 }
 
 export default useScheduleData;
