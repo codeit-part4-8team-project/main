@@ -8,9 +8,11 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalScheduleCalendarInput from '@/components/common/modal/ModalScheduleCalendarInput';
 import { Schedule } from '@/contexts/CalenarProvider';
 import { useUserContext } from '@/contexts/UserProvider';
-import { useAxios } from '@/hooks/useAxios';
+import { Trigger, useAxios } from '@/hooks/useAxios';
 
 interface ScheduleModalProps {
+  teamFetchData?: Trigger;
+  userFetchData?: Trigger;
   onModalStartDateClick?: (date: string) => void;
   onModalEndDateClick?: (date: string) => void;
   onStartTimeClick?: (time: string) => void;
@@ -33,6 +35,8 @@ type Inputs = {
 // 여기는 user인지 team인지 구분이 필요함
 // 합칠때 teamId 에러가 계속 떠서 일단 기본값 넣어줌
 function ScheduleModal({
+  userFetchData,
+  teamFetchData,
   closeClick,
   team = false,
   user = false,
@@ -42,12 +46,13 @@ function ScheduleModal({
   onAddSchedule,
   onModalEndDateClick,
 }: ScheduleModalProps) {
-  const { fetchData: userFetchData } = useAxios({});
-  const { fetchData: teamFetchData } = useAxios({});
+  // const { data: userData, fetchData: userFetchData } = useAxios({});
+  // const { data: teamData, fetchData: teamFetchData } = useAxios({});
   const { user: userInformation } = useUserContext();
   const [selectedStartDate, setSelectedStartDate] = useState<string>('');
   const [selectedEndDate, setSelectedEndDate] = useState<string>('');
-
+  // console.log(userData);
+  // console.log(teamData);
   const { register, handleSubmit, watch } = useForm<Inputs>();
   //const { setSchedules, setFilteredSchedules, mode, nowDate } = useContext(calendarContext);
   const onSubmit: SubmitHandler<Inputs> = async ({ title, content, id, name }, event) => {
@@ -83,13 +88,13 @@ function ScheduleModal({
   const InputValueLength = 'mb-[0.9rem] flex justify-end text-gray50';
 
   const handleScheduleUserFetch = (data: Inputs) => {
-    if (user) {
+    if (user && userFetchData) {
       userFetchData({
         newPath: 'schedule/user',
         newMethod: 'POST',
         newData: data,
       });
-    } else if (team) {
+    } else if (team && teamFetchData) {
       teamFetchData({
         newPath: `schedule/team/${teamId}`,
         newMethod: 'POST',
