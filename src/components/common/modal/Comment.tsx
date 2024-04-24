@@ -21,6 +21,8 @@ interface ContentType {
   createdDate: string;
   id: number;
   reply: ReplyType[];
+  liked: boolean;
+  likeCount: number;
 }
 
 interface pageableType {
@@ -60,7 +62,7 @@ export default function Comment({ postId, children }: CommentProps) {
     },
     true,
   );
-  console.log(defaultValue);
+  // console.log(defaultValue);
   const { fetchData: deleteFetch } = useAxios({});
   const { fetchData: commentFetch } = useAxios({});
 

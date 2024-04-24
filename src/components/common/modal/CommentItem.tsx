@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import CommentReply from '@/components/common/modal/CommentReply';
 import ModalInput from '@/components/common/modal/ModalInput';
+import PostLike from '@/components/Post/PostLike';
 import { useAxios } from '@/hooks/useAxios';
 import { Author } from '@/types/commonTypes';
-import HeartIcon from '@/assets/HeartIcon';
 import Edit from '@/assets/assets/Edit.svg';
 import DeleteTrash from '@/assets/assets/Trash.svg';
 import comment from '@/assets/assets/comment.svg';
@@ -31,6 +31,8 @@ interface ContentType {
   content: string;
   createdDate: string;
   id: number;
+  liked: boolean;
+  likeCount: number;
 }
 
 interface PatchDataType {
@@ -44,7 +46,7 @@ interface CommentItemProps {
 
 export default function CommentItem({ item, handleCommentDelete }: CommentItemProps) {
   const { data: patchData, fetchData: patchFetch } = useAxios<PatchDataType>({});
-  console.log(patchData);
+  // console.log(item.reply.length);
   const [openReply, setOpenReply] = useState(false);
   const [commentEdit, setCommentEdit] = useState<boolean>(false);
 
@@ -127,12 +129,12 @@ export default function CommentItem({ item, handleCommentDelete }: CommentItemPr
       <div className="flex items-center px-[6.4rem] pb-8 ">
         <div className="mr-[0.4rem] flex items-center text-body4-regular text-gray50">
           <img src={comment} alt="comment" />
-          <p>0</p>
+          <p>{item.reply.length}</p>
         </div>
-        <div className="mr-[1.6rem] flex items-center text-body4-regular text-gray50">
-          <HeartIcon />
-          <p>0</p>
+        <div className="mr-[1.6rem]">
+          <PostLike commentId={item.id} liked={item.liked} likeCount={item.likeCount} />
         </div>
+
         <button type="button" onClick={handleOpenReply}>
           {openReply ? (
             <p className="text-body5-bold">취소</p>
