@@ -5,7 +5,7 @@ import { useChat } from '@/contexts/ChatProvider';
 import ChatIcon from '@/assets/ChatIcon';
 import CloseIcon from '@/assets/CloseIcon';
 
-export const ChatList = forwardRef<HTMLDivElement>(function ChatList(props, ref) {
+export const ChatList = forwardRef<HTMLDivElement>(function ChatList(_, ref) {
   const { handleCloseClick } = useChat();
 
   return (
