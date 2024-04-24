@@ -11,6 +11,9 @@ interface AllDayProp {
   mode: 'month' | 'modal';
   calendarType?: '나' | '팀';
   onModalDateClick?: (date: string) => void;
+  scheduleData: Schedule[];
+  postUser?: (data: any) => Promise<any>; // postUser 함수 추가
+  postTeam?: (data: any) => Promise<any>; // postTeam 함수 추가
 }
 
 function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
@@ -98,7 +101,12 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
   const handleOpenDeleteModal = (schedule: Schedule) => {
     if (calendarType === '나') {
       openModal(({ close }) => (
-        <ScheduleDeleteModal user={true} closeClick={close} selectedSchedule={schedule} />
+        <ScheduleDeleteModal
+          user={true}
+          closeClick={close}
+          selectedSchedule={schedule}
+          calendarType="나"
+        />
       ));
     } else {
       openModal(({ close }) => (
@@ -107,6 +115,7 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
           closeClick={close}
           teamId={teamId}
           selectedSchedule={schedule}
+          calendarType="팀"
         />
       ));
     }
