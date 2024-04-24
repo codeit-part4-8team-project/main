@@ -13,7 +13,6 @@ interface AllDayProp {
   mode: 'month' | 'modal';
   calendarType?: '나' | '팀';
   onModalDateClick?: (date: string) => void;
-  scheduleData: Schedule[];
   postUser?: (data: any) => Promise<any>; // postUser 함수 추가
   postTeam?: (data: any) => Promise<any>; // postTeam 함수 추가
 }

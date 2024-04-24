@@ -88,7 +88,7 @@ export type Trigger = ({
   newPath,
   newMethod,
   newData,
-}?: {
+}: {
   newPath?: string;
   newMethod?: Method;
   newData?: unknown;
