@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import CommentReply from '@/components/common/modal/CommentReply';
-// import { useAxios } from '@/hooks/useAxios';
+import ModalInput from '@/components/common/modal/ModalInput';
+import PostLike from '@/components/Post/PostLike';
+import { useAxios } from '@/hooks/useAxios';
 import { Author } from '@/types/commonTypes';
-import HeartIcon from '@/assets/HeartIcon';
 import Edit from '@/assets/assets/Edit.svg';
 import DeleteTrash from '@/assets/assets/Trash.svg';
 import comment from '@/assets/assets/comment.svg';
@@ -15,12 +17,12 @@ interface ReplyType {
   mention: MentionType;
 }
 
+interface Inputs {
+  content: string;
+}
+
 interface MentionType {
   username: string;
-  // createdDate: string
-  // grade: string;
-  // imageUrl: string;
-  // id: string;
 }
 
 interface ContentType {
@@ -29,36 +31,53 @@ interface ContentType {
   content: string;
   createdDate: string;
   id: number;
+  liked: boolean;
+  likeCount: number;
+}
+
+interface PatchDataType {
+  content: string;
 }
 
 interface CommentItemProps {
   item: ContentType;
   handleCommentDelete: (id: number) => void;
-  // handleCommentPatch: (id: number) => void;
 }
 
-export default function CommentItem({
-  item,
-  handleCommentDelete,
-  // handleCommentPatch,
-}: CommentItemProps) {
-  // const { fetchData: patchFetch } = useAxios({});
+export default function CommentItem({ item, handleCommentDelete }: CommentItemProps) {
+  const { data: patchData, fetchData: patchFetch } = useAxios<PatchDataType>({});
+  // console.log(item.reply.length);
   const [openReply, setOpenReply] = useState(false);
+  const [commentEdit, setCommentEdit] = useState<boolean>(false);
+
+  const { handleSubmit, register } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = ({ content }) => {
+    const patchComment = {
+      content: content,
+    };
+
+    handleCommentPatch(patchComment);
+  };
+
+  const openCommentEdit = () => {
+    setCommentEdit(!commentEdit);
+  };
 
   const handleOpenReply = () => {
     setOpenReply(!openReply);
   };
 
-  // const handleCommentPatch = async (commentId: number, data?: Inputs) => {
-  //   console.log(commentId);
-  //   patchFetch({
-  //     newPath: `comment/${commentId}`,
-  //     newMethod: 'PATCH',
-  //     newData: data
-  //   });
-  // };
+  const handleCommentPatch = (data: Inputs) => {
+    const commentId = item.id;
+    patchFetch({
+      newPath: `comment/${commentId}`,
+      newMethod: 'PATCH',
+      newData: data,
+    });
+    setCommentEdit(false);
+  };
 
-  console.log(item.reply);
   return (
     <>
       <div className="flex flex-col gap-[1.6rem] px-[6.4rem]">
@@ -73,25 +92,49 @@ export default function CommentItem({
             <p className="text-body5-regular text-gray50">{item.createdDate}</p>
           </div>
           <div className="flex gap-[1.6rem]">
-            {/* <button type="button" onClick={() => handleCommentPatch(item.id)}> */}
-            <img src={Edit} alt={Edit} />
-            {/* </button> */}
+            <button onClick={openCommentEdit} type="button">
+              <img src={Edit} alt={Edit} />
+            </button>
             <button type="button" onClick={() => handleCommentDelete(item.id)}>
               <img src={DeleteTrash} alt="DeleteTrash" />
             </button>
           </div>
         </div>
-        <p className=" px-[3.4rem] pb-[0.8rem] text-body4-regular">{item.content}</p>
+        {!commentEdit ? (
+          <>
+            {patchData ? (
+              <p className=" px-[3.4rem] pb-[0.8rem] text-body4-regular">{patchData.content}</p>
+            ) : (
+              <p className=" px-[3.4rem] pb-[0.8rem] text-body4-regular">{item.content}</p>
+            )}
+          </>
+        ) : (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="relative flex w-full justify-between gap-4">
+              <ModalInput
+                hookform={register('content')}
+                placeholder="댓글을 입력해 주세요"
+                defaultValue={item.content}
+                id="content"
+                name="content"
+                className="rounded-[0.6rem] border-[0.1rem] border-gray30 text-body4-regular"
+              />
+              <button className="flex  w-[7.1rem] items-center justify-center rounded-[0.6rem] border-[0.1rem] border-gray30 bg-white px-[1.8rem] py-[1.2rem] text-center">
+                변경
+              </button>
+            </div>
+          </form>
+        )}
       </div>
       <div className="flex items-center px-[6.4rem] pb-8 ">
         <div className="mr-[0.4rem] flex items-center text-body4-regular text-gray50">
           <img src={comment} alt="comment" />
-          <p>0</p>
+          <p>{item.reply.length}</p>
         </div>
-        <div className="mr-[1.6rem] flex items-center text-body4-regular text-gray50">
-          <HeartIcon />
-          <p>0</p>
+        <div className="mr-[1.6rem]">
+          <PostLike commentId={item.id} liked={item.liked} likeCount={item.likeCount} />
         </div>
+
         <button type="button" onClick={handleOpenReply}>
           {openReply ? (
             <p className="text-body5-bold">취소</p>
