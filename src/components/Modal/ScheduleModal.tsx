@@ -8,7 +8,7 @@ import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalScheduleCalendarInput from '@/components/common/modal/ModalScheduleCalendarInput';
 import { Schedule } from '@/contexts/CalenarProvider';
 import { useUserContext } from '@/contexts/UserProvider';
-import { Trigger, useAxios } from '@/hooks/useAxios';
+import { Trigger } from '@/hooks/useAxios';
 
 interface ScheduleModalProps {
   teamFetchData?: Trigger;

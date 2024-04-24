@@ -2,7 +2,6 @@ import { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import PopupModal from '../Modal/PopupModal';
 import ScheduleEditModal from './ScheduleEditModal';
-import Schedules from './Schedules';
 import TextButton from '@/components/common/TextButton';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalInput from '@/components/common/modal/ModalInput';
@@ -41,7 +40,6 @@ type Inputs = {
 // 합칠때 teamId 에러가 계속 떠서 일단 기본값 넣어줌
 function ScheduleDeleteModal({
   closeClick,
-  team = false,
   user = false,
   onClick,
   selectedSchedule,

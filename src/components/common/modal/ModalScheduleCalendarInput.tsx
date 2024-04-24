@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import ModalCalendar from './ModalCalendar';
 import ModalInput from './ModalInput';
 import ModalLabel from './ModalLabel';
-import Schedules from '@/components/SchedulesPage/Schedules';
 import { Time } from '@/components/SchedulesPage/Time';
 import calender from '@/assets/assets/calendar-dark.svg';
 
