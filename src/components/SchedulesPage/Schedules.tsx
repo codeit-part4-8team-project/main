@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 import clsx from 'clsx';
 import ScheduleModal from '../Modal/ScheduleModal';
 import TextButton from '../common/TextButton';
-import ProfileModal from '../common/modal/ProfileModal';
 import DateBox from './DateBox';
 import GroupFilter from './GroupFilter';
 import { calendarContext } from '@/contexts/CalenarProvider';
@@ -119,13 +118,7 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
         {calendarType === '나' && (
           <GroupFilter className="w-[16.5rem]" items={groupData} onCheck={handleCheck} />
         )}
-        <DateBox
-          calendarType={calendarType}
-          mode="month"
-          scheduleData={scheduleData}
-          userData={userData}
-          teamData={teamData}
-        />
+        <DateBox calendarType={calendarType} mode="month" userData={userData} teamData={teamData} />
       </div>
     </div>
   );
