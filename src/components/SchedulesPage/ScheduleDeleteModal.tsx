@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import PopupModal from '../Modal/PopupModal';
 import ScheduleEditModal from './ScheduleEditModal';
+import Schedules from './Schedules';
 import TextButton from '@/components/common/TextButton';
 import ModalFormBorder from '@/components/common/modal/ModalFormBorder';
 import ModalInput from '@/components/common/modal/ModalInput';
@@ -9,9 +10,11 @@ import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalScheduleCalendarInput from '@/components/common/modal/ModalScheduleCalendarInput';
 import { Schedule } from '@/contexts/CalenarProvider';
+import { calendarContext } from '@/contexts/CalenarProvider';
 import { useModal } from '@/contexts/ModalProvider';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
+import useScheduleData from '@/hooks/useScheduleData';
 import EditPenIcon from '@/assets/EditPenIcon';
 
 interface ScheduleDeleteModalProps {
@@ -48,6 +51,7 @@ function ScheduleDeleteModal({
   const { fetchData: userFetchData } = useAxios({});
   const { fetchData: teamFetchData } = useAxios({});
   const { user: userInformation } = useUserContext();
+  const { setSchedules, setFilteredSchedules } = useContext(calendarContext);
 
   const { register, handleSubmit, watch } = useForm<Inputs>();
 
@@ -56,7 +60,7 @@ function ScheduleDeleteModal({
   const onSubmit: SubmitHandler<Inputs> = async (selectedSchedule) => {
     try {
       await handleScheduleUserFetch(selectedSchedule);
-      window.location.reload();
+      //window.location.reload();
     } catch (error) {
       console.error('Failed to add schedule:', error);
     }
@@ -70,26 +74,28 @@ function ScheduleDeleteModal({
   const InputValueLength = 'mb-[0.9rem] flex justify-end text-gray50';
   const disabledStyle = 'bg-gray10';
 
-  const handleScheduleUserFetch = (data: Inputs) => {
-    if (user) {
-      userFetchData({
-        newPath: `schedule/${selectedSchedule.id}`,
+  const handleScheduleUserFetch = async (data: Inputs) => {
+    const fetchDataFunction = user ? userFetchData : teamFetchData;
+
+    const path =
+      calendarType === '나'
+        ? `schedule/${selectedSchedule.id}`
+        : `schedule/team/${teamId}/${selectedSchedule.team?.id}`;
+
+    try {
+      await fetchDataFunction({
+        newPath: path,
         newMethod: 'DELETE',
         newData: data,
       });
-    } else if (team) {
-      teamFetchData({
-        newPath: `schedule/${selectedSchedule.id}`,
-        newMethod: 'DELETE',
-        newData: data,
-      });
+
+      closeClick?.();
+    } catch (error) {
+      console.error('Failed to delete schedule:', error);
     }
-    closeClick?.();
   };
 
-  useEffect(() => {
-    userFetchData;
-  }, [selectedSchedule]);
+  useEffect(() => {}, [selectedSchedule, setSchedules, setFilteredSchedules]);
 
   const handleOpenPopupModal = () => {
     openModal(({ close }) => (
@@ -112,7 +118,15 @@ function ScheduleDeleteModal({
         buttonClick2={() => {
           handleScheduleUserFetch(selectedSchedule);
           close();
-          window.location.reload();
+
+          useScheduleData({
+            calendarType,
+            teamId: selectedSchedule.team?.id,
+            nowDate: new Date(),
+            setSchedules,
+            setFilteredSchedules,
+            onUpdateData: (data) => console.log('Updated data:', data),
+          });
         }}
       >
         <div className=" mb-6 whitespace-nowrap">keepyuppy.com 내용:</div>

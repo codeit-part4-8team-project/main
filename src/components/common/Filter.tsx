@@ -25,7 +25,7 @@ export default function Filter({
 }: FilterProps) {
   return (
     <div className={clsx('flex flex-col gap-12', className)}>
-      <span className="text-body3-bold text-gray50">그룹 필터</span>
+      <span className="text-body3-bold text-gray50">{myTeams.length > 0 && '그룹 필터'}</span>
       <ul className="flex flex-col gap-[1.3rem]">
         {myTeams.map((team) => {
           return (

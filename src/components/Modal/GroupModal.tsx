@@ -15,7 +15,7 @@ import arrowDown from '@/assets/assets/arrow-down-dark.png';
 import discord from '@/assets/assets/discord.svg';
 import figma from '@/assets/assets/figma.svg';
 
-interface Inputs {
+export interface Inputs {
   name: string;
   description: string;
   members?: string[];
@@ -27,7 +27,7 @@ interface Inputs {
   figmaLink?: string;
 }
 
-interface dataType {
+export interface dataType {
   bio: string;
   id: number;
   imageUrl: string;

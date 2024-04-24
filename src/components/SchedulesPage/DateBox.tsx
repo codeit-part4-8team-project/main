@@ -4,13 +4,24 @@ import { WeekDisplay } from '../MainPage/WeekDisplay';
 import AllDay from './AllDay';
 import WeekBox from './WeekBox';
 import { calendarContext } from '@/contexts/CalenarProvider';
+import { Schedule } from '@/contexts/CalenarProvider';
 
 interface DateBoxProp {
+  teamData?: any;
+  userData?: any;
   mode: 'week' | 'month' | 'modal';
   calendarType?: '나' | '팀';
   onModalDateClick?: (date: string) => void;
+  scheduleData: Schedule[];
 }
-function DateBox({ mode, calendarType, onModalDateClick }: DateBoxProp) {
+function DateBox({
+  mode,
+  calendarType,
+  onModalDateClick,
+  scheduleData,
+  teamData,
+  userData,
+}: DateBoxProp) {
   const [week, setWeek] = useState<Array<[number, Date]>>([]);
   const [allDay, setAllDay] = useState<Date[]>([]);
   const { nowDate } = useContext(calendarContext);
@@ -74,7 +85,15 @@ function DateBox({ mode, calendarType, onModalDateClick }: DateBoxProp) {
           ))}
 
           {allDay.map((day: Date) => (
-            <AllDay calendarType={calendarType} mode="month" key={day.getTime()} day={day} />
+            <AllDay
+              calendarType={calendarType}
+              mode="month"
+              key={day.getTime()}
+              day={day}
+              scheduleData={scheduleData}
+              teamData={teamData}
+              userData={userData}
+            />
           ))}
         </div>
       )}
@@ -92,6 +111,7 @@ function DateBox({ mode, calendarType, onModalDateClick }: DateBoxProp) {
               key={day.getTime()}
               mode="modal"
               day={day}
+              scheduleData={scheduleData}
             />
           ))}
         </div>

@@ -7,13 +7,18 @@ import { calendarContext } from '@/contexts/CalenarProvider';
 import { useModal } from '@/contexts/ModalProvider';
 
 interface AllDayProp {
+  teamData?: any;
+  userData?: any;
   day: Date;
   mode: 'month' | 'modal';
   calendarType?: '나' | '팀';
   onModalDateClick?: (date: string) => void;
+  scheduleData: Schedule[];
+  postUser?: (data: any) => Promise<any>; // postUser 함수 추가
+  postTeam?: (data: any) => Promise<any>; // postTeam 함수 추가
 }
 
-function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
+function AllDay({ day, mode, calendarType, onModalDateClick, teamData, userData }: AllDayProp) {
   const { nowDate, filteredSchedules, teamId } = useContext(calendarContext);
   const [showAllSchedules, setShowAllSchedules] = useState(false);
   const ModalRef = useRef<HTMLDivElement>(null);
@@ -21,7 +26,7 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
     "w-full h-full flex justify-center items-center border-none relative 'last-of-type:rounded-bl-[2.4rem]' ";
   const hover = 'hover:bg-gray10  ';
   const today = new Date();
-
+  console.log('test', teamData?.team?.name);
   const notTodayStyle = 'text-gray50 ';
 
   let todayClass = '';
@@ -98,7 +103,12 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
   const handleOpenDeleteModal = (schedule: Schedule) => {
     if (calendarType === '나') {
       openModal(({ close }) => (
-        <ScheduleDeleteModal user={true} closeClick={close} selectedSchedule={schedule} />
+        <ScheduleDeleteModal
+          user={true}
+          closeClick={close}
+          selectedSchedule={schedule}
+          calendarType="나"
+        />
       ));
     } else {
       openModal(({ close }) => (
@@ -107,11 +117,15 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
           closeClick={close}
           teamId={teamId}
           selectedSchedule={schedule}
+          calendarType="팀"
         />
       ));
     }
   };
-
+  // teamData?.team?.color
+  // 1번째 방법: delete가 실행이 되고 에러가 안 뜨면 여기 ui를 그려주는 fetch를 한번더 가져오면 됨.
+  // useAxios기준 2번째 방법: delete가 실행이 되고나서 혹시 data를 찍어봤을때 반환하는 값이 있다면  그 data를 가져와서 ui를 랜더링 시켜준다.
+  // 주의점: 초기 랜더링하고 axios실행 후 그리는 ui를 헷갈리시면 안됩니다.
   const renderSchedules = () => {
     if (filterData.length > 0) {
       const schedulesToRender = showAllSchedules ? filterData : filterData.slice(0, 2);
@@ -125,19 +139,46 @@ function AllDay({ day, mode, calendarType, onModalDateClick }: AllDayProp) {
               }}
             ></div>
             <div>
+              {/* 위가 유저 밑에가 팀 */}
               {calendarType === '나' ? (
                 <>
-                  <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
-                    {schedule.user?.name || schedule.team?.name}
-                  </p>
-                  <p className="text-gray50">{schedule.title}</p>
+                  {userData ? (
+                    <>
+                      <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
+                        {userData?.user?.name || userData?.team?.name}
+                      </p>
+                      <p className="text-gray50">{schedule.title}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
+                        {schedule.user?.name || schedule.team?.name}
+                      </p>
+                      <p className="text-gray50">{schedule.title}</p>
+                    </>
+                  )}
                 </>
               ) : (
                 <>
-                  <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
+                  {teamData ? (
+                    <>
+                      <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
+                        {teamData?.team?.name}
+                      </p>
+                      <p className="text-gray50">{schedule.title}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
+                        {schedule.team?.name}
+                      </p>
+                      <p className="text-gray50">{schedule.title}</p>
+                    </>
+                  )}
+                  {/* <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
                     {schedule.team?.name}
                   </p>
-                  <p className="text-gray50">{schedule.title}</p>
+                  <p className="text-gray50">{schedule.title}</p> */}
                 </>
               )}
             </div>

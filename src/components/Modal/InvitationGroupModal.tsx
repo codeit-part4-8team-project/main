@@ -54,16 +54,15 @@ export default function InvitationGroupModal({
     });
   };
 
-  const handleGroupApproveClick = () => {
-    GroupApproveClick({
+  const handleGroupApproveClick = async () => {
+    await GroupApproveClick({
       newPath: `member/invite/${teamId}`,
       newMethod: 'PATCH',
     });
-
-    openModal(({ close }) => <AfterApproval closeClick={close} memberId={memberId} />);
+    if (GroupApproveData) {
+      openModal(({ close }) => <AfterApproval closeClick={close} memberId={memberId} />);
+    }
   };
-
-  // console.log('memberId', memberId);
   const formTextSize = 'text-body3-medium';
   const inputTextSize = 'text-body3-regular';
   const borderStyle =

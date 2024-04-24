@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import { ReactNode, lazy } from 'react';
 import { PageProvider } from '@/contexts/PageProvider';
 import BoxIcon from '@/assets/BoxIcon';

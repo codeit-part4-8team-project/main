@@ -5,15 +5,15 @@ import FilterCheckIconLight from '@/assets/FilterCheckIconLight';
 
 interface ChecklistItemProps {
   isChecked: boolean;
-  item: Schedule; // 수정된 부분
-  onCheck: (id: number, isChecked: boolean) => void;
+  item: Schedule;
+  onCheck: (id: number, isChecked: boolean) => void; // 수정된 부분
 }
 
 function ChecklistItem({ item, isChecked, onCheck }: ChecklistItemProps) {
   const nameStyle = 'text-body4-bold ml-4 text-[#292929]';
   const color = item.team ? item.team.color : 'black';
   const handleToggleCheck = () => {
-    onCheck(item.id, !isChecked);
+    onCheck(item.id, !isChecked); // 수정된 부분
   };
   return (
     <div className="mr-[7.4rem] flex w-[17.3rem] items-center justify-between">
@@ -31,7 +31,7 @@ function ChecklistItem({ item, isChecked, onCheck }: ChecklistItemProps) {
 
 interface GroupFilterProps {
   items: Schedule[];
-  onCheck: (checkedItems: Schedule[]) => void;
+  onCheck: (checkedItems: Schedule[]) => void; // 변경 전: (checkedItems: Schedule[]) => void;
   className?: string;
 }
 
@@ -43,7 +43,7 @@ function GroupFilter({ items, onCheck, className }: GroupFilterProps) {
       : checkedIds.filter((checkedId) => checkedId !== id);
     const updatedCheckedItems = items.filter((item) => updatedCheckedIds.includes(item.id));
     setCheckedIds(updatedCheckedIds);
-    onCheck(updatedCheckedItems);
+    onCheck(updatedCheckedItems); // 수정된 부분: onCheck(updatedCheckedItems);
   };
 
   return (

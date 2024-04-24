@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import ModalCalendar from './ModalCalendar';
 import ModalInput from './ModalInput';
 import ModalLabel from './ModalLabel';
+import Schedules from '@/components/SchedulesPage/Schedules';
 import { Time } from '@/components/SchedulesPage/Time';
 import calender from '@/assets/assets/calendar-dark.svg';
 
@@ -60,7 +61,7 @@ export default function ModalScheduleCalendarInput({
 
   // 종료일 선택이 변경될 때 호출되는 함수
   const handleEndDateChange = (date: string) => {
-    onEndDateChange?.(date); // 부모 컴포넌트로 종료일 변경을 알림
+    onEndDateChange?.(date);
   };
   useEffect(() => {
     if (startDateToggle) {

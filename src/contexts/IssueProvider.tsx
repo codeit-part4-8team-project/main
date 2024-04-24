@@ -1,6 +1,4 @@
 /* eslint-disable react-refresh/only-export-components */
-
-/* eslint-disable react-hooks/exhaustive-deps */
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { useIssue } from '@/hooks/useIssue';
 import { Issue } from '@/types/issueTypes';
