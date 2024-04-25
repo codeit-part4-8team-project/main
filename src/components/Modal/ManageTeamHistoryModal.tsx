@@ -107,7 +107,7 @@ export default function ManageTeamHistoryModal({ me, team, onClose }: ManageTeam
     } catch (error) {
       alert('그룹 정보 변경에 실패하였습니다.');
     } finally {
-      refetch && refetch();
+      refetch && refetch({});
       onClose();
     }
   };

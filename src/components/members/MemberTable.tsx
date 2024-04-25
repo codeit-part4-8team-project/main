@@ -54,7 +54,7 @@ export default function MemberTable({ members }: MemberTableProps) {
           return defaultInstance.patch(`/member/${memberId}`, { role, grade });
         });
         await Promise.allSettled(memberUpdates);
-        refetch && refetch();
+        refetch && refetch({});
       } catch (error) {
         alert('변경사항 저장에 실패하였습니다.');
       } finally {

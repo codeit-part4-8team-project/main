@@ -13,11 +13,11 @@ export default function UserPostsPage() {
   const { myTeams } = useMyTeams();
 
   const reloadPosts = () => {
-    refetch();
+    refetch({});
   };
 
   useEffect(() => {
-    refetch();
+    refetch({});
   }, [checkedTeamId]);
 
   return (
