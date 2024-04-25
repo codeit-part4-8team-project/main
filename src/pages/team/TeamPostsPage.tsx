@@ -8,7 +8,7 @@ export default function TeamPostsPage() {
   const { dataContent, refetch } = usePagenation();
 
   const reloadPosts = () => {
-    refetch();
+    refetch({});
   };
 
   return (

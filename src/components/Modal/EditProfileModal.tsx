@@ -92,7 +92,7 @@ export default function EditProfileModal({ handleClose, userContext }: EditProfi
 
       if (fetchUserResponse.status === 'fulfilled') {
         setUser(fetchUserResponse.value.data);
-        refetch && refetch(); //유저네임 바뀌는 것 때문에 팀 히스토리 쪽 모달에 문제생겨서 유
+        refetch && refetch({}); //유저네임 바뀌는 것 때문에 팀 히스토리 쪽 모달에 문제생겨서 유
         handleClose();
       } else if (fetchUserResponse.status === 'rejected') {
         const error = fetchUserResponse.reason;

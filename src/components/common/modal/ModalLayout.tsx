@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import ChatIcon from '@/assets/ChatIcon';
 import Edit from '@/assets/assets/Edit.svg';
 import DeleteTrash from '@/assets/assets/Trash.svg';
-import deleteTrash from '@/assets/assets/Trash.svg';
 import calendar from '@/assets/assets/calendar-dark.svg';
 import close from '@/assets/assets/close.svg';
 import people from '@/assets/assets/people-fill.svg';

@@ -8,7 +8,7 @@ export default function TeamAnnouncementsPage() {
   const { dataContent, refetch } = usePagenation();
 
   const reloadAnnouncements = () => {
-    refetch();
+    refetch({});
   };
 
   return (
