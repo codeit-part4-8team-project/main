@@ -59,7 +59,7 @@ function MainSchedules({ calendarType, teamId }: MainSchedulesProps) {
 
   useEffect(() => {
     fetchData();
-  }, [setSchedules, localDate, teamId]);
+  }, [setSchedules, teamId]);
 
   return (
     <>

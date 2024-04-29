@@ -12,14 +12,8 @@ interface DateBoxProp {
   calendarType?: '나' | '팀';
   onModalDateClick?: (date: string) => void;
 }
-function DateBox({
-  mode,
-  calendarType,
-  onModalDateClick,
 
-  teamData,
-  userData,
-}: DateBoxProp) {
+function DateBox({ mode, calendarType, onModalDateClick, teamData, userData }: DateBoxProp) {
   const [week, setWeek] = useState<Array<[number, Date]>>([]);
   const [allDay, setAllDay] = useState<Date[]>([]);
   const { nowDate } = useContext(calendarContext);
@@ -55,11 +49,12 @@ function DateBox({
     if (mode === 'month' || mode === 'modal') {
       setAllDay(monthList(nowDate));
     } else if (mode === 'week') {
-      const currentDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate());
-      const weekArray = makeWeekArr(currentDate);
+      const firstDayOfWeek = new Date(nowDate);
+      firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay()); // 주의 첫 번째 날짜를 일요일로 설정
+      const weekArray = makeWeekArr(firstDayOfWeek); // makeWeekArr 함수를 사용하여 주 생성
       setWeek(weekArray);
     }
-  }, [nowDate]);
+  }, [nowDate, week]);
 
   useEffect(() => {
     updateDateList();
