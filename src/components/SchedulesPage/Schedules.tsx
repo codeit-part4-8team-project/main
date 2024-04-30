@@ -1,5 +1,4 @@
 import { useContext, useState } from 'react';
-import { set } from 'react-hook-form';
 import clsx from 'clsx';
 import ScheduleModal from '../Modal/ScheduleModal';
 import TextButton from '../common/TextButton';

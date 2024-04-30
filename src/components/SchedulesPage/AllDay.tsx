@@ -21,15 +21,7 @@ interface AllDayProp {
   onDataDeleted?: () => void;
 }
 
-function AllDay({
-  day,
-  mode,
-  calendarType,
-  onModalDateClick,
-  teamData,
-  userData,
-  onDataDeleted,
-}: AllDayProp) {
+function AllDay({ day, mode, calendarType, onModalDateClick, teamData, userData }: AllDayProp) {
   const { nowDate, filteredSchedules, teamId } = useContext(calendarContext);
   const [showAllSchedules, setShowAllSchedules] = useState(false);
 
