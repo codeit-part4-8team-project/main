@@ -6,7 +6,6 @@ import AllowRightIcon from '@/assets/AllowRightIcon';
 interface PaginationProps {
   reRending?: number;
   totalPages?: number;
-  // totalElements?: number;
   onPageChange: (page: number) => void;
   first?: boolean;
   last?: boolean;
@@ -16,11 +15,8 @@ export default function CommentPageination({
   totalPages = 1,
   onPageChange,
   last,
-  // reRending,
-  // totalElements,
 }: PaginationProps) {
   const [activePage, setActivePage] = useState<number>(1);
-  // console.log('activePage', activePage);
   // 여기 first 값 잘못 받아서 임시로 activePage =>로 bollean 처리함
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 

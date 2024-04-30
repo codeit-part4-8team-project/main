@@ -62,7 +62,6 @@ export default function Comment({ postId, children }: CommentProps) {
     },
     true,
   );
-  // console.log(defaultValue);
   const { fetchData: deleteFetch } = useAxios({});
   const { fetchData: commentFetch } = useAxios({});
 

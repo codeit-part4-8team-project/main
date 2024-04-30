@@ -67,7 +67,7 @@ export default function GroupMemberInviteModal({
     const res = await defaultInstance.get(`/user/search?username=${userName}`);
     if (res.data !== '') {
       const newMember = res.data;
-      console.log(res.data);
+
       // 새로운 팀원을 기존 팀원 목록에 추가
       setMemberCheck(false);
       setMember(newMember);

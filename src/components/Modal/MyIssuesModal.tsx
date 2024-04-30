@@ -97,7 +97,7 @@ export default function MyIssuesModal({
   const handleGetTeamMemberList = async () => {
     const userName = getValues('assignedMembersUsernames');
     const res = await defaultInstance.get(`member/${teamId}/search?username=${userName}`);
-    console.log('res.data입니다', res.data);
+
     if (res.data) {
       const newMember = res.data;
       setMemberList((prevMembers) => [...prevMembers, ...newMember]);

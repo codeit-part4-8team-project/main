@@ -35,7 +35,6 @@ function AllDay({
 
   const { data: userDeleteData, fetchData: userFetchDeleteData } = useAxios({});
   const { data: teamDeleteData, fetchData: teamFetchDeleteData } = useAxios({});
-  console.log(userDeleteData);
   const ModalRef = useRef<HTMLDivElement>(null);
   const Container =
     "w-full h-full flex justify-center items-center border-none relative 'last-of-type:rounded-bl-[2.4rem]' ";
@@ -145,7 +144,7 @@ function AllDay({
       ));
     }
   };
-  console.log(userDeleteData);
+
   const handleDataDeleted = () => {
     if (teamDeleteData || userDeleteData) {
       renderSchedules();

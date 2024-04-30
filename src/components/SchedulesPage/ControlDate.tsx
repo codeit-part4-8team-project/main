@@ -24,7 +24,6 @@ function ControlDate({ mode }: ControlDateProp) {
     const date = new Date(nowDate.getTime());
     date.setMonth(date.getMonth() + change);
     setNowDate(date);
-    console.log('여기입니다!', date);
   };
 
   const getWeekRange = (date: Date): [Date, Date] => {

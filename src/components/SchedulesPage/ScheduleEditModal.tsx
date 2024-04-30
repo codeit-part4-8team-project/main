@@ -58,7 +58,6 @@ function ScheduleEditModal({
     },
   });
   const titleWatch = watch('title');
-  console.log(watch('title'));
   const contentWatch = watch('content');
 
   const { fetchData: userFetchData } = useAxios({});
