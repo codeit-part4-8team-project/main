@@ -129,6 +129,7 @@ function ScheduleEditModal({
       });
     }
     closeClick?.();
+    window.location.reload();
   };
 
   const formTextSize = 'text-body3-medium';

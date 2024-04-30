@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import EntrancePageLayout from './components/common/EntrancePageLayout';
+import NotFound from './pages/NotFound';
 import PrivateRoutes from './routes/PrivateRoutes';
 import LoadingPage from '@/pages/LoadingPage';
 import PageLayout from '@/components/common/PageLayout';
@@ -25,6 +26,7 @@ function App() {
             <ChatProvider>
               <Router>
                 <Routes>
+                  <Route path="*" element={<NotFound />} />
                   <Route path="/login/oauth2/code/:provider" element={<OauthRedirectPage />} />
                   <Route path="/" element={<HomePage />} />
                   <Route element={<EntrancePageLayout />}>
