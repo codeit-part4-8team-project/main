@@ -18,7 +18,7 @@ export default function GroupList({ onClick }: GroupList) {
     },
     true,
   );
-  console.log(groupData);
+
   return (
     <div className="absolute right-0 top-20 z-50 w-full rounded-[0.6rem] border-[0.1rem] border-gray30 bg-white text-gray100">
       {groupData?.map((group, index) => (
