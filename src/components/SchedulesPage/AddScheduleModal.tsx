@@ -10,13 +10,10 @@ interface AddScheduleModalProps {
 export default function AddScheduleModal({ content, onClick, onClose }: AddScheduleModalProps) {
   const handleCloseModal = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
-      // 모달 닫기 함수 호출
       onClick();
     }
-    // 모달 닫기 함수 호출
   };
   const handleModalClick = (e: MouseEvent<HTMLDivElement>) => {
-    // 모달 요소를 클릭했을 때는 클릭 이벤트를 중단하여 모달이 닫히지 않도록 합니다.
     e.stopPropagation();
   };
   return (
