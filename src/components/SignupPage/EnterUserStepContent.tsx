@@ -56,7 +56,7 @@ function EnterUserStepContent() {
     });
   };
 
-  const [imagePreviewURL, setImagePreviewURL] = useState('');
+  const [imagePreviewURL, setImagePreviewURL] = useState(user?.imageUrl || '');
   const image = watch('profileImage');
 
   const onSubmit: SubmitHandler<UserEditForm> = async (formData) => {

@@ -22,15 +22,8 @@ interface ReplyItemProps {
 }
 
 export default function ReplyItem({ item }: ReplyItemProps) {
-  // console.log(item);
   const { author, content, createdDate, mention } = item;
-  //   createdDate: "2024-04-18"
-  // grade: "TEAM_MEMBER"
-  // id: 8
-  // imageUrl: "https://lh3.googleusercontent.com/a/ACg8ocKBuPrK58zOvSMHby2qRJ_jwlfiMvMMknErFI_8ajC_Qeeqpw=s96-c"
-  // name: "문필겸"
-  // role: null
-  // username: "user-nB7K9p2eEC"
+
   return (
     <>
       <div className="mb-[1.6rem] flex justify-between">

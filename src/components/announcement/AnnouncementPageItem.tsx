@@ -1,8 +1,10 @@
+import { MouseEventHandler, useRef, useState } from 'react';
 import FreeBoardDetail from '@/components/Modal/FreeBoardDetail';
-import PostLike from '@/components/Post/PostLike';
 import { useModal } from '@/contexts/ModalProvider';
 import { toDateFormat } from '@/lib/formatDate';
+import { useAxios } from '@/hooks/useAxios';
 import { Announcement } from '@/types/announcementTypes';
+import Check2CircleIcon from '@/assets/Check2CircleIcon';
 import PinAngleIcon from '@/assets/PinAngleIcon';
 import ProfileImg from '@/assets/assets/profile-large.svg';
 
@@ -12,20 +14,34 @@ interface AnnouncementPageItemProps {
 
 export default function AnnouncementPageItem({ announcement }: AnnouncementPageItemProps) {
   const { id, author, title, content, createdDate, team, pinned } = announcement;
-
   const { color, name } = team;
+
+  const [isChecked, setIsChecked] = useState(false);
+  const checkRef = useRef<HTMLDivElement>(null);
 
   const openModal = useModal();
 
-  const handleModalClick = () => {
-    openModal(({ close }) => (
-      <FreeBoardDetail
-        closeClick={close}
-        postId={id}
-        liked={false}
-        likeCount={0}
-      /> /* TODO 상세보기 모달 만들어지면 교체 */
-    ));
+  const { fetchData: readAnnouncement } = useAxios({
+    path: `/announcement/read/${id}`,
+    method: 'PATCH',
+  });
+
+  const handleModalClick: MouseEventHandler<HTMLDivElement> = (e) => {
+    if (checkRef?.current && !checkRef.current.contains(e.target as Node)) {
+      openModal(({ close }) => (
+        <FreeBoardDetail
+          closeClick={close}
+          postId={id}
+          liked={false}
+          likeCount={0}
+        /> /* TODO 상세보기 모달 만들어지면 교체 */
+      ));
+    }
+  };
+
+  const handleCheckClick = async () => {
+    setIsChecked(!isChecked);
+    await readAnnouncement();
   };
 
   return (
@@ -61,8 +77,12 @@ export default function AnnouncementPageItem({ announcement }: AnnouncementPageI
           {content}
         </span>
       </div>
-      <div className="absolute bottom-[2.4rem] left-[2.7rem] flex gap-[0.6rem]">
-        <PostLike postId={id} liked={false} likeCount={0} /> {/* TODO api 데이터 없음 */}
+      <div
+        onClick={handleCheckClick}
+        ref={checkRef}
+        className="absolute bottom-[2.4rem] left-[2.7rem] flex gap-[0.6rem]"
+      >
+        <Check2CircleIcon fill={isChecked ? '#292929' : '#E5E5E5'} />
       </div>
     </div>
   );

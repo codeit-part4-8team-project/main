@@ -30,12 +30,10 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
     setFilteredSchedules(checkedItems);
   };
   const handleAddSchedule = (newSchedule: Schedule) => {
-    // 새로운 일정을 추가하는 로직을 수행한 후 필요한 처리를 합니다.
-    // 예를 들어, scheduleData 상태를 업데이트하고 필터링된 일정 목록을 설정할 수 있습니다.
     const updatedScheduleData = [...scheduleData, newSchedule];
     setScheduleData(updatedScheduleData);
+    setGroupData(updatedScheduleData);
 
-    // 필요한 처리가 끝나면 필터링된 일정 목록을 다시 설정합니다.
     setFilteredSchedules(updatedScheduleData);
   };
   const handleOpenModal = () => {
@@ -62,13 +60,7 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
       ));
     }
   };
-  // const handleOpenProfile = () => {
-  //   openModal(({ close }) => <ProfileModal closeClick={close} />);
-  // };
 
-  //나머지 코드는 동일하게 유지됩니다.
-
-  //리로드 함수 정의
   useScheduleData({
     calendarType,
     teamId,
@@ -81,31 +73,12 @@ function Schedules({ calendarType, teamId }: SchedulesProps) {
     },
   });
 
-  // useEffect(() => {
-  //   useScheduleData({
-  //     calendarType,
-  //     teamId,
-  //     nowDate,
-  //     setSchedules,
-  //     setFilteredSchedules,
-  //     onUpdateData: (schedule: Schedule[]) => {
-  //       setGroupData([...schedule]);
-  //       setScheduleData([...schedule]);
-  //     },
-  //   });
-  // }, []); // 빈 배열을 넘겨 처음 렌더링될 때 한 번만 호출되도록 설정
-
   return (
     <div className={container}>
       <div className="m-0 flex items-center justify-between p-0 ">
         <div className={title}></div>
 
-        <TextButton
-          onClick={handleOpenModal}
-          //onClick={handleOpenProfile}
-          buttonSize="sm"
-          color="black"
-        >
+        <TextButton onClick={handleOpenModal} buttonSize="sm" color="black">
           일정생성
         </TextButton>
       </div>

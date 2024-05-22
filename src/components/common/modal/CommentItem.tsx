@@ -46,7 +46,6 @@ interface CommentItemProps {
 
 export default function CommentItem({ item, handleCommentDelete }: CommentItemProps) {
   const { data: patchData, fetchData: patchFetch } = useAxios<PatchDataType>({});
-  // console.log(item.reply.length);
   const [openReply, setOpenReply] = useState(false);
   const [commentEdit, setCommentEdit] = useState<boolean>(false);
 

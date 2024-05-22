@@ -1,31 +1,50 @@
-import { MouseEvent, useContext, useMemo, useRef, useState } from 'react';
+import { MouseEvent, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback } from 'react';
 import clsx from 'clsx';
 import AddScheudleModal from './AddScheduleModal';
+import { ModalDateCell } from './ModalDateCell';
 import ScheduleDeleteModal from './ScheduleDeleteModal';
 import { Schedule } from '@/contexts/CalenarProvider';
 import { calendarContext } from '@/contexts/CalenarProvider';
 import { useModal } from '@/contexts/ModalProvider';
+import { useAxios } from '@/hooks/useAxios';
 
 interface AllDayProp {
-  teamData?: any;
-  userData?: any;
+  teamData?: {
+    team: {
+      name: string;
+      color: string;
+    };
+  };
+  userData?: {
+    user: {
+      name: string;
+    };
+    team: {
+      name: string;
+    };
+  };
   day: Date;
   mode: 'month' | 'modal';
   calendarType?: '나' | '팀';
   onModalDateClick?: (date: string) => void;
-  postUser?: (data: any) => Promise<any>; // postUser 함수 추가
-  postTeam?: (data: any) => Promise<any>; // postTeam 함수 추가
+  postUser?: (data: any) => Promise<any>;
+  postTeam?: (data: any) => Promise<any>;
+  onDataDeleted?: () => void;
 }
 
 function AllDay({ day, mode, calendarType, onModalDateClick, teamData, userData }: AllDayProp) {
   const { nowDate, filteredSchedules, teamId } = useContext(calendarContext);
   const [showAllSchedules, setShowAllSchedules] = useState(false);
+  const { data: userDeleteData, fetchData: userFetchDeleteData } = useAxios({});
+  const { data: teamDeleteData, fetchData: teamFetchDeleteData } = useAxios({});
+  const openModal = useModal();
+
   const ModalRef = useRef<HTMLDivElement>(null);
   const Container =
     "w-full h-full flex justify-center items-center border-none relative 'last-of-type:rounded-bl-[2.4rem]' ";
   const hover = 'hover:bg-gray10  ';
   const today = new Date();
-  console.log('test', teamData?.team?.name);
   const notTodayStyle = 'text-gray50 ';
 
   let todayClass = '';
@@ -48,7 +67,6 @@ function AllDay({ day, mode, calendarType, onModalDateClick, teamData, userData 
   const currentDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 1).getDate(); //현재 달의 일수
   const daysInPrevMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 0).getDate(); //다음 달의 마지막 날
   const rowIndex = (daysInNextMonth + currentDate + daysInPrevMonth) / 7;
-  const openModal = useModal();
   const DateDay = clsx(
     'bg-white w-full h-[16.2rem] text-body3-bold text-start py-4 px-[2.4rem] last:rouned-bl-[2.4rem]  ',
 
@@ -73,6 +91,9 @@ function AllDay({ day, mode, calendarType, onModalDateClick, teamData, userData 
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  useEffect(() => {
+    renderSchedules();
+  }, [userDeleteData, teamDeleteData]);
   const closeModal = () => {
     setIsModalOpen(false);
     setShowAllSchedules(false);
@@ -107,6 +128,8 @@ function AllDay({ day, mode, calendarType, onModalDateClick, teamData, userData 
           closeClick={close}
           selectedSchedule={schedule}
           calendarType="나"
+          userDelete={userDeleteData}
+          userFetchDeleteData={userFetchDeleteData}
         />
       ));
     } else {
@@ -117,84 +140,77 @@ function AllDay({ day, mode, calendarType, onModalDateClick, teamData, userData 
           teamId={teamId}
           selectedSchedule={schedule}
           calendarType="팀"
+          teamFetchDeleteData={teamFetchDeleteData}
         />
       ));
     }
   };
-  // teamData?.team?.color
-  // 1번째 방법: delete가 실행이 되고 에러가 안 뜨면 여기 ui를 그려주는 fetch를 한번더 가져오면 됨.
-  // useAxios기준 2번째 방법: delete가 실행이 되고나서 혹시 data를 찍어봤을때 반환하는 값이 있다면  그 data를 가져와서 ui를 랜더링 시켜준다.
-  // 주의점: 초기 랜더링하고 axios실행 후 그리는 ui를 헷갈리시면 안됩니다.
+
   const renderSchedules = () => {
-    if (filterData.length > 0) {
-      const schedulesToRender = showAllSchedules ? filterData : filterData.slice(0, 2);
-      return schedulesToRender.map((schedule: Schedule, index: number) => (
-        <div key={index}>
-          <div className=" flex items-start gap-1">
-            <div
-              className="h-5 w-5 rounded-full"
-              style={{
-                backgroundColor: schedule.team?.color || 'black',
-              }}
-            ></div>
-            <div>
-              {/* 위가 유저 밑에가 팀 */}
-              {calendarType === '나' ? (
-                <>
-                  {userData ? (
-                    <>
-                      <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
-                        {userData?.user?.name || userData?.team?.name}
-                      </p>
-                      <p className="text-gray50">{schedule.title}</p>
-                    </>
-                  ) : (
-                    <>
-                      <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
-                        {schedule.user?.name || schedule.team?.name}
-                      </p>
-                      <p className="text-gray50">{schedule.title}</p>
-                    </>
-                  )}
-                </>
-              ) : (
-                <>
-                  {teamData ? (
-                    <>
-                      <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
-                        {teamData?.team?.name}
-                      </p>
-                      <p className="text-gray50">{schedule.title}</p>
-                    </>
-                  ) : (
-                    <>
-                      <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
-                        {schedule.team?.name}
-                      </p>
-                      <p className="text-gray50">{schedule.title}</p>
-                    </>
-                  )}
-                  {/* <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
-                    {schedule.team?.name}
-                  </p>
-                  <p className="text-gray50">{schedule.title}</p> */}
-                </>
-              )}
-            </div>
+    const schedulesToRender = showAllSchedules ? filterData : filterData.slice(0, 2);
+    return schedulesToRender.map((schedule: Schedule, index: number) => (
+      <div key={index}>
+        <div className="flex items-start gap-1">
+          <div
+            className="h-5 w-5 rounded-full"
+            style={{
+              backgroundColor: teamData
+                ? teamData.team?.color || 'black'
+                : schedule.team?.color || 'black',
+            }}
+          ></div>
+          <div>
+            {calendarType === '나' ? (
+              <>
+                {userData || userDeleteData ? (
+                  <>
+                    <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
+                      {userData?.user?.name || userData?.team?.name}
+                    </p>
+                    <p className="text-gray50">{schedule.title}</p>
+                  </>
+                ) : (
+                  <>
+                    <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
+                      {schedule.user?.name || schedule.team?.name}
+                    </p>
+                    <p className="text-gray50">{schedule.title}</p>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                {teamData || teamDeleteData ? (
+                  <>
+                    <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
+                      {teamData?.team?.name}
+                    </p>
+                    <p className="text-gray50">{schedule.title}</p>
+                  </>
+                ) : (
+                  <>
+                    <p onClick={() => handleOpenDeleteModal(schedule)} className="text-gray100">
+                      {schedule.team?.name}
+                    </p>
+                    <p className="text-gray50">{schedule.title}</p>
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
-      ));
-    }
+      </div>
+    ));
   };
 
   const renderViewMoreButton = () => {
     const filteredSchedulesLength = filterData.length;
 
-    const handleViewMoreClick = () => {
+    const handleViewMoreClick = useCallback(() => {
       setShowAllSchedules(true);
-
       openModal;
-    };
+    }, [openModal]);
+
     if (filteredSchedulesLength > 2 && !showAllSchedules) {
       return (
         <>
@@ -208,30 +224,27 @@ function AllDay({ day, mode, calendarType, onModalDateClick, teamData, userData 
       );
     }
   };
-  const handleModalDateClick = (clickedDate: Date) => {
-    const formattedDate = clickedDate
-      .toLocaleDateString('en-CA', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      })
-      .replace(/\//g, '-'); // YY-MM-DD 형식으로 변환
+  const handleModalDateClick = useCallback(
+    (clickedDate: Date) => {
+      const formattedDate = clickedDate
+        .toLocaleDateString('en-CA', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        })
+        .replace(/\//g, '-');
 
-    // 부모 컴포넌트로 날짜를 전달
-    if (onModalDateClick) {
-      onModalDateClick(formattedDate);
-    }
-    console.log('Clicked date:', formattedDate);
-  };
+      if (onModalDateClick) {
+        onModalDateClick(formattedDate);
+      }
+    },
+    [onModalDateClick],
+  );
 
   const renderModalDate = () => {
     const clickedDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), day.getDate());
-    return (
-      <div onClick={() => handleModalDateClick(clickedDate)}>
-        <p className={modalCell}>{` ${day.getDate()} `}</p>
-      </div>
-    );
-  }; //밖으로빼기
+    return <ModalDateCell day={clickedDate} modalCell={modalCell} onClick={handleModalDateClick} />;
+  };
 
   const outSiedClick = (e: MouseEvent) => {
     const { target } = e;
@@ -254,6 +267,7 @@ function AllDay({ day, mode, calendarType, onModalDateClick, teamData, userData 
             {renderViewMoreButton()}
             {renderSchedules()}
           </div>
+
           <div>
             {showAllSchedules && (
               <AddScheudleModal onClose={closeModal} onClick={closeModal} content={filterData} />

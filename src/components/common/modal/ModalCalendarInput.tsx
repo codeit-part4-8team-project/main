@@ -34,7 +34,6 @@ export default function ModalCalendarInput({
 
   const [startDateToggle, setStartDateToggle] = useState(false);
   const [endDateToggle, setEndDateToggle] = useState(false);
-  console.log(startDateToggle);
   const handleStartDateClick = () => {
     // setStartDateToggle(true);
     setStartDateToggle(!startDateToggle);

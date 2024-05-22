@@ -46,15 +46,11 @@ function ScheduleModal({
   onAddSchedule,
   onModalEndDateClick,
 }: ScheduleModalProps) {
-  // const { data: userData, fetchData: userFetchData } = useAxios({});
-  // const { data: teamData, fetchData: teamFetchData } = useAxios({});
   const { user: userInformation } = useUserContext();
   const [selectedStartDate, setSelectedStartDate] = useState<string>('');
   const [selectedEndDate, setSelectedEndDate] = useState<string>('');
-  // console.log(userData);
-  // console.log(teamData);
+
   const { register, handleSubmit, watch } = useForm<Inputs>();
-  //const { setSchedules, setFilteredSchedules, mode, nowDate } = useContext(calendarContext);
   const onSubmit: SubmitHandler<Inputs> = async ({ title, content, id, name }, event) => {
     const createSchedlue = {
       id: id,
@@ -66,11 +62,7 @@ function ScheduleModal({
     };
 
     try {
-      // console.log('스캐줄', createSchedlue);
       await handleScheduleUserFetch(createSchedlue);
-      //event?.target.closest('dialog').close();
-
-      //window.location.reload();
       onAddSchedule?.(createSchedlue);
       closeClick?.();
     } catch (error) {

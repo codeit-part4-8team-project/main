@@ -11,8 +11,7 @@ export function useIssueBoard(checkedTeamId?: number[]) {
   });
 
   const { userId, teamId } = useParams();
-  console.log('userId', userId);
-  console.log('teamId', teamId);
+
   let query = '';
   checkedTeamId?.forEach((teamId, idx) => {
     if (idx === 0) query += `?teamIds=${teamId}`;

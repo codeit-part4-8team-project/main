@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+//import { useContext, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import PopupModal from '../Modal/PopupModal';
 import ScheduleEditModal from './ScheduleEditModal';
@@ -9,19 +9,24 @@ import ModalLabel from '@/components/common/modal/ModalLabel';
 import ModalLayout from '@/components/common/modal/ModalLayout';
 import ModalScheduleCalendarInput from '@/components/common/modal/ModalScheduleCalendarInput';
 import { Schedule } from '@/contexts/CalenarProvider';
-import { calendarContext } from '@/contexts/CalenarProvider';
+//import { calendarContext } from '@/contexts/CalenarProvider';
 import { useModal } from '@/contexts/ModalProvider';
 import { useUserContext } from '@/contexts/UserProvider';
 import { useAxios } from '@/hooks/useAxios';
-import useScheduleData from '@/hooks/useScheduleData';
+import { Trigger } from '@/hooks/useAxios';
 import EditPenIcon from '@/assets/EditPenIcon';
 
 interface ScheduleDeleteModalProps {
+  onDataDeleted?: () => void;
   onModalStartDateClick?: (date: string) => void;
   onModalEndDateClick?: (date: string) => void;
   onStartTimeClick?: (time: string) => void;
   onEndTimeClick?: (time: string) => void;
   closeClick?: () => void;
+  teamFetchDeleteData?: Trigger;
+  userFetchDeleteData?: Trigger;
+  teamDelete?: any;
+  userDelete?: any;
   user?: boolean;
   team?: boolean;
   teamId?: string;
@@ -36,20 +41,25 @@ type Inputs = {
   endDateTime: string;
   content: string;
 };
-// 여기는 user인지 team인지 구분이 필요함
-// 합칠때 teamId 에러가 계속 떠서 일단 기본값 넣어줌
+
 function ScheduleDeleteModal({
   closeClick,
   user = false,
+  team = false,
   onClick,
   selectedSchedule,
   calendarType,
   teamId,
+  onDataDeleted,
+  teamFetchDeleteData,
+
+  userFetchDeleteData,
 }: ScheduleDeleteModalProps) {
   const { fetchData: userFetchData } = useAxios({});
   const { fetchData: teamFetchData } = useAxios({});
+
   const { user: userInformation } = useUserContext();
-  const { setSchedules, setFilteredSchedules } = useContext(calendarContext);
+  // const { setSchedules, setFilteredSchedules } = useContext(calendarContext);
 
   const { register, handleSubmit, watch } = useForm<Inputs>();
 
@@ -58,11 +68,12 @@ function ScheduleDeleteModal({
   const onSubmit: SubmitHandler<Inputs> = async (selectedSchedule) => {
     try {
       await handleScheduleUserFetch(selectedSchedule);
-      //window.location.reload();
+      onDataDeleted?.();
     } catch (error) {
       console.error('Failed to add schedule:', error);
     }
   };
+
   const titleWatch = watch('title');
   const contentWatch = watch('content');
 
@@ -73,27 +84,30 @@ function ScheduleDeleteModal({
   const disabledStyle = 'bg-gray10';
 
   const handleScheduleUserFetch = async (data: Inputs) => {
-    const fetchDataFunction = user ? userFetchData : teamFetchData;
-
     const path =
       calendarType === '나'
         ? `schedule/${selectedSchedule.id}`
         : `schedule/team/${teamId}/${selectedSchedule.team?.id}`;
 
     try {
-      await fetchDataFunction({
-        newPath: path,
-        newMethod: 'DELETE',
-        newData: data,
-      });
-
-      closeClick?.();
+      if (user && userFetchDeleteData) {
+        await userFetchData({
+          newPath: path,
+          newMethod: 'DELETE',
+          newData: data,
+        });
+      } else if (team && teamFetchDeleteData) {
+        await teamFetchData({
+          newPath: path,
+          newMethod: 'DELETE',
+          newData: data,
+        });
+      }
     } catch (error) {
       console.error('Failed to delete schedule:', error);
     }
+    closeClick?.(); // 모달 닫기
   };
-
-  useEffect(() => {}, [selectedSchedule, setSchedules, setFilteredSchedules]);
 
   const handleOpenPopupModal = () => {
     openModal(({ close }) => (
@@ -115,16 +129,8 @@ function ScheduleDeleteModal({
         buttonText2="확인"
         buttonClick2={() => {
           handleScheduleUserFetch(selectedSchedule);
+          window.location.reload();
           close();
-
-          useScheduleData({
-            calendarType,
-            teamId: selectedSchedule.team?.id,
-            nowDate: new Date(),
-            setSchedules,
-            setFilteredSchedules,
-            onUpdateData: (data) => console.log('Updated data:', data),
-          });
         }}
       >
         <div className=" mb-6 whitespace-nowrap">keepyuppy.com 내용:</div>
@@ -134,7 +140,7 @@ function ScheduleDeleteModal({
   };
   const handleOpenEditModal = (schedules: Schedule[] | null) => {
     if (!schedules || schedules.length === 0) {
-      return; // schedules이 null 또는 빈 배열이면 아무 작업도 수행하지 않고 함수를 종료합니다.
+      return;
     }
 
     schedules.forEach((schedule) => {

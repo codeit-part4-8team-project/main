@@ -80,7 +80,6 @@ export function Time({ onTimeClick }: TimeProp) {
     if (onTimeClick) {
       onTimeClick(formattedTime);
     }
-    console.log('Selected Time:', formattedTime);
     // 여기서 선택된 시간 값을 다른 곳으로 전달하거나 사용할 수 있습니다.
   };
 

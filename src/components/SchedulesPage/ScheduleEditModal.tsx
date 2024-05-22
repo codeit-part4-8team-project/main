@@ -58,7 +58,6 @@ function ScheduleEditModal({
     },
   });
   const titleWatch = watch('title');
-  console.log(watch('title'));
   const contentWatch = watch('content');
 
   const { fetchData: userFetchData } = useAxios({});
@@ -129,6 +128,7 @@ function ScheduleEditModal({
       });
     }
     closeClick?.();
+    window.location.reload();
   };
 
   const formTextSize = 'text-body3-medium';
