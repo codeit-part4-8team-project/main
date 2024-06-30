@@ -2,7 +2,7 @@ import { MouseEventHandler, useEffect } from 'react';
 import TextButton from '@/components/common/TextButton';
 import { useAxios } from '@/hooks/useAxios';
 import GithubIcon from '@/assets/GithubIcon';
-import GoogleIcon from '@/assets/GoogleIcon';
+// import GoogleIcon from '@/assets/GoogleIcon';
 import KakaoIcon from '@/assets/KaKaoIcon';
 import KeepyUppyIcon from '@/assets/KeepyUppyIcon';
 import KeepyUppyLogo from '@/assets/KeepyUppyLogo';
@@ -58,7 +58,7 @@ const SigninPage = () => {
               <div className="black w-full border-t-[0.1rem] border-solid border-t-[#5F5F5F4D]" />
             </div>
             <div className="flex w-full flex-col items-center gap-[1.2rem] ">
-              <TextButton
+              {/* <TextButton
                 name="google"
                 buttonSize="md"
                 color="white"
@@ -67,7 +67,7 @@ const SigninPage = () => {
               >
                 <GoogleIcon />
                 <span>구글 로그인</span>
-              </TextButton>
+              </TextButton> */}
               <TextButton
                 name="kakao"
                 buttonSize="md"
